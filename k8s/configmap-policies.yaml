@@ -74,6 +74,12 @@ data:
       importDerivedRoles:
         - conqrse_roles
       resource: "product"
+      schemas:
+        principalSchema:
+          ref: "cerbos:///principal.json"
+        resourceSchema:
+          ref: "cerbos:///resource_product.json"
+        validation: WARN
       rules:
         # Rule 1: Super User — ALLOW all actions on all product resources
         - actions: ["view", "create", "edit", "delete", "upload", "download", "report", "export"]
@@ -119,6 +125,12 @@ data:
       importDerivedRoles:
         - conqrse_roles
       resource: "settings"
+      schemas:
+        principalSchema:
+          ref: "cerbos:///principal.json"
+        resourceSchema:
+          ref: "cerbos:///resource_settings.json"
+        validation: WARN
       rules:
         # Super User — ALLOW all settings actions
         - actions: ["view", "edit", "delete"]
@@ -160,6 +172,12 @@ data:
       importDerivedRoles:
         - conqrse_roles
       resource: "profile"
+      schemas:
+        principalSchema:
+          ref: "cerbos:///principal.json"
+        resourceSchema:
+          ref: "cerbos:///resource_profile.json"
+        validation: WARN
       rules:
         # SU Dashboard — only super_user
         - actions: ["view"]

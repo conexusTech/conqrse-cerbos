@@ -9,6 +9,7 @@ services:
       - "3592:3592" # HTTP (admin/health)
     volumes:
       - ./policies:/policies
+      - ./schemas:/policies/_schemas
     command: ["server", "--config=/conf.yaml"]
     configs:
       - source: cerbos_config

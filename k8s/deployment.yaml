@@ -42,6 +42,8 @@ spec:
           subPath: conf.yaml
         - name: policies
           mountPath: /policies
+        - name: schemas
+          mountPath: /policies/_schemas
         resources:
           requests:
             cpu: 100m
@@ -80,5 +82,8 @@ spec:
       - name: policies
         configMap:
           name: cerbos-policies
+      - name: schemas
+        configMap:
+          name: cerbos-schemas
       restartPolicy: Always
       terminationGracePeriodSeconds: 30

@@ -5,6 +5,12 @@ resourcePolicy:
   importDerivedRoles:
     - conqrse_roles
   resource: "product"
+  schemas:
+    principalSchema:
+      ref: "cerbos:///principal.json"
+    resourceSchema:
+      ref: "cerbos:///resource_product.json"
+    validation: WARN
   rules:
     # Rule 1: Super User — ALLOW all actions on all product resources
     - actions: ["view", "create", "edit", "delete", "upload", "download", "report", "export"]
