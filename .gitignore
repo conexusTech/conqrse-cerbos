@@ -23,3 +23,5 @@ venv/
 
 # Node (if tooling is added later)
 node_modules/
+
+.cq

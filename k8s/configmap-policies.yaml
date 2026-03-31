@@ -1,0 +1,193 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cerbos-policies
+  namespace: cerbos
+data:
+  _derived_roles.yaml: |
+    ---
+    apiVersion: "api.cerbos.dev/v1"
+    description: "Derived roles based on userLevel and userType attributes"
+    derivedRoles:
+      name: conqrse_roles
+      definitions:
+        # Super User — full access to everything
+        - name: super_user
+          parentRoles: ["authenticated"]
+          condition:
+            match:
+              expr: P.attr.userLevel == "su"
+
+        # Agency User — full access (product check bypassed)
+        - name: agency_user
+          parentRoles: ["authenticated"]
+          condition:
+            match:
+              expr: P.attr.userLevel == "agency"
+
+        # Retailer Writer — can perform all CRUD actions on own resources with product access
+        - name: retailer_writer
+          parentRoles: ["authenticated"]
+          condition:
+            match:
+              all:
+                of:
+                  - expr: P.attr.userLevel == "retailer"
+                  - expr: P.attr.userType in ["owner", "admin", "lead", "member"]
+
+        # Retailer Collaborator — read-only access on own resources with product access
+        - name: retailer_collaborator
+          parentRoles: ["authenticated"]
+          condition:
+            match:
+              all:
+                of:
+                  - expr: P.attr.userLevel == "retailer"
+                  - expr: P.attr.userType == "collaborator"
+
+        # Settings Manager — can manage product and general settings
+        - name: settings_manager
+          parentRoles: ["authenticated"]
+          condition:
+            match:
+              expr: P.attr.userType in ["owner", "admin"]
+
+        # Own Resource — principal belongs to the same retailer as the resource
+        - name: own_resource
+          parentRoles: ["authenticated"]
+          condition:
+            match:
+              expr: P.attr.retailerId == R.attr.retailerId
+
+        # Has Product — the resource's product exists in the principal's product list
+        - name: has_product
+          parentRoles: ["authenticated"]
+          condition:
+            match:
+              expr: R.attr.product in P.attr.products
+
+  resource_product.yaml: |
+    ---
+    apiVersion: "api.cerbos.dev/v1"
+    resourcePolicy:
+      version: default
+      importDerivedRoles:
+        - conqrse_roles
+      resource: "product"
+      rules:
+        # Rule 1: Super User — ALLOW all actions on all product resources
+        - actions: ["view", "create", "edit", "delete", "upload", "download", "report", "export"]
+          effect: EFFECT_ALLOW
+          derivedRoles:
+            - super_user
+
+        # Rule 2: Agency User — ALLOW all actions (product check bypassed)
+        - actions: ["view", "create", "edit", "delete", "upload", "download", "report", "export"]
+          effect: EFFECT_ALLOW
+          derivedRoles:
+            - agency_user
+
+        # Rule 3: Retailer Writer + own resource + has product — ALLOW all actions
+        - actions: ["view", "create", "edit", "delete", "upload", "download", "report", "export"]
+          effect: EFFECT_ALLOW
+          derivedRoles:
+            - retailer_writer
+          condition:
+            match:
+              all:
+                of:
+                  - expr: P.attr.retailerId == R.attr.retailerId
+                  - expr: R.attr.product in P.attr.products
+
+        # Rule 4: Retailer Collaborator + own resource + has product — ALLOW view only
+        - actions: ["view"]
+          effect: EFFECT_ALLOW
+          derivedRoles:
+            - retailer_collaborator
+          condition:
+            match:
+              all:
+                of:
+                  - expr: P.attr.retailerId == R.attr.retailerId
+                  - expr: R.attr.product in P.attr.products
+
+  resource_settings.yaml: |
+    ---
+    apiVersion: "api.cerbos.dev/v1"
+    resourcePolicy:
+      version: default
+      importDerivedRoles:
+        - conqrse_roles
+      resource: "settings"
+      rules:
+        # Super User — ALLOW all settings actions
+        - actions: ["view", "edit", "delete"]
+          effect: EFFECT_ALLOW
+          derivedRoles:
+            - super_user
+
+        # Agency User — ALLOW all settings actions
+        - actions: ["view", "edit", "delete"]
+          effect: EFFECT_ALLOW
+          derivedRoles:
+            - agency_user
+
+        # Settings personal — ALLOW view + edit for ALL authenticated users
+        - actions: ["view", "edit"]
+          effect: EFFECT_ALLOW
+          roles: ["authenticated"]
+          condition:
+            match:
+              expr: R.attr.settingsType == "personal"
+
+        # Settings product/general — ALLOW for settings_manager + own_resource
+        - actions: ["view", "edit", "delete"]
+          effect: EFFECT_ALLOW
+          derivedRoles:
+            - settings_manager
+          condition:
+            match:
+              all:
+                of:
+                  - expr: R.attr.settingsType in ["product", "general"]
+                  - expr: P.attr.retailerId == R.attr.retailerId
+
+  resource_profile.yaml: |
+    ---
+    apiVersion: "api.cerbos.dev/v1"
+    resourcePolicy:
+      version: default
+      importDerivedRoles:
+        - conqrse_roles
+      resource: "profile"
+      rules:
+        # SU Dashboard — only super_user
+        - actions: ["view"]
+          effect: EFFECT_ALLOW
+          derivedRoles:
+            - super_user
+          condition:
+            match:
+              expr: R.attr.dashboard == "su-dashboard"
+
+        # Agency Dashboard — super_user + agency_user
+        - actions: ["view"]
+          effect: EFFECT_ALLOW
+          derivedRoles:
+            - super_user
+            - agency_user
+          condition:
+            match:
+              expr: R.attr.dashboard == "agency-dashboard"
+
+        # Retailer Dashboard — super_user + agency_user + retailer_writer + retailer_collaborator
+        - actions: ["view"]
+          effect: EFFECT_ALLOW
+          derivedRoles:
+            - super_user
+            - agency_user
+            - retailer_writer
+            - retailer_collaborator
+          condition:
+            match:
+              expr: R.attr.dashboard == "retailer-dashboard"

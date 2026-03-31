@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cerbos
+  namespace: cerbos
+  labels:
+    app: cerbos
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: cerbos.conqrse.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: cerbos
+            port:
+              number: 3592
+  # TLS configuration (uncomment and configure with certificate when ready)
+  # tls:
+  # - hosts:
+  #   - cerbos.conqrse.com
+  #   secretName: cerbos-tls

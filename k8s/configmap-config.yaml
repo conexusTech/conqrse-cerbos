@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cerbos-config
+  namespace: cerbos
+data:
+  conf.yaml: |
+    server:
+      httpListenAddr: ":3592"
+      grpcListenAddr: ":3593"
+    storage:
+      driver: disk
+      disk:
+        directory: /policies
+        watchForChanges: true
+    audit:
+      enabled: false
