@@ -1,0 +1,25 @@
+# Docker
+.docker/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Python (if scripts are added later)
+__pycache__/
+*.pyc
+venv/
+
+# Node (if tooling is added later)
+node_modules/
