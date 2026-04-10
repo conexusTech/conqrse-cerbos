@@ -2,13 +2,13 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: cerbos
-  namespace: cerbos
+  namespace: cerbos-base  # Will be replaced by overlays
   labels:
     app: cerbos
 spec:
   ingressClassName: nginx
   rules:
-  - host: cerbos.conqrse.com
+  - host: cerbos.example.com  # Will be replaced by overlays
     http:
       paths:
       - path: /
@@ -21,5 +21,5 @@ spec:
   # TLS configuration (uncomment and configure with certificate when ready)
   # tls:
   # - hosts:
-  #   - cerbos.conqrse.com
+  #   - cerbos.example.com
   #   secretName: cerbos-tls

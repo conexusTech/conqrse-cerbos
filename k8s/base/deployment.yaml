@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cerbos
-  namespace: cerbos
+  namespace: cerbos-base  # Will be replaced by overlays
   labels:
     app: cerbos
     version: latest
@@ -75,6 +75,17 @@ spec:
           capabilities:
             drop:
             - ALL
+      nodeSelector:
+        Workload: heavy
+      tolerations:
+      - key: workload
+        operator: Equal
+        value: heavy
+        effect: NoSchedule
+      - key: env
+        operator: Equal
+        value: heavy
+        effect: NoSchedule
       volumes:
       - name: config
         configMap:

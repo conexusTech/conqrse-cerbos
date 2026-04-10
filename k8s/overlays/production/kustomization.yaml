@@ -1,0 +1,77 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+  - ../../base
+
+namespace: cerbos-production
+
+namePrefix: ""
+
+nameSuffix: ""
+
+commonLabels:
+  environment: production
+
+commonAnnotations:
+  environment: production
+
+# Replace namespace references in base
+replacements:
+  - source:
+      kind: Namespace
+      name: cerbos-base
+    targets:
+      - select:
+          kind: Namespace
+        fieldPaths:
+          - metadata.name
+      - select:
+          kind: ConfigMap
+        fieldPaths:
+          - metadata.namespace
+      - select:
+          kind: Service
+        fieldPaths:
+          - metadata.namespace
+      - select:
+          kind: Ingress
+        fieldPaths:
+          - metadata.namespace
+      - select:
+          kind: Deployment
+        fieldPaths:
+          - metadata.namespace
+
+# Patches for environment-specific configuration
+patches:
+  - target:
+      group: networking.k8s.io
+      version: v1
+      kind: Ingress
+      name: cerbos
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: cerbos-production.conqrse.com
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: cerbos
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: 250m
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: 256Mi
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: 1000m
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: 512Mi

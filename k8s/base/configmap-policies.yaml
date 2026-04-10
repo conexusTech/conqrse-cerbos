@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cerbos-policies
-  namespace: cerbos
+  namespace: cerbos-base  # Will be replaced by overlays
 data:
   _derived_roles.yaml: |
     ---
