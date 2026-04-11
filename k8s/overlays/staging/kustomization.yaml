@@ -4,7 +4,7 @@ kind: Kustomization
 bases:
   - ../../base
 
-namespace: cerbos-staging
+namespace: staging
 
 namePrefix: ""
 
@@ -53,7 +53,7 @@ patches:
     patch: |-
       - op: replace
         path: /spec/rules/0/host
-        value: cerbos-staging.conqrse.com
+        value: staging-cerbos.conqrse.com
   - target:
       group: apps
       version: v1

@@ -4,7 +4,7 @@ kind: Kustomization
 bases:
   - ../../base
 
-namespace: cerbos-production
+namespace: production
 
 namePrefix: ""
 
@@ -53,7 +53,7 @@ patches:
     patch: |-
       - op: replace
         path: /spec/rules/0/host
-        value: cerbos-production.conqrse.com
+        value: cerbos.conqrse.com
   - target:
       group: apps
       version: v1

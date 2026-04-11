@@ -14,7 +14,9 @@ if [[ ! " ${VALID_ENVS[@]} " =~ " ${ENVIRONMENT} " ]]; then
     exit 1
 fi
 
-OVERLAY_PATH="k8s/overlays/${ENVIRONMENT}"
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+OVERLAY_PATH="${SCRIPT_DIR}/overlays/${ENVIRONMENT}"
 
 if [ ! -d "$OVERLAY_PATH" ]; then
     echo "Error: Overlay path does not exist: $OVERLAY_PATH"
