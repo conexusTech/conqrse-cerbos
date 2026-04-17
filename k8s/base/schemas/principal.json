@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Principal Schema",
+  "description": "Cerbos principal (user) attributes schema for conqrse",
+  "type": "object",
+  "properties": {
+    "userLevel": {
+      "type": "string",
+      "enum": ["su", "agency", "retailer"],
+      "description": "User access level: super user, agency admin, or retailer operator"
+    },
+    "userType": {
+      "type": "string",
+      "enum": ["owner", "admin", "lead", "member", "collaborator"],
+      "description": "User role within the organization: owner/admin (settings manager), lead/member (writer), or collaborator (read-only)"
+    },
+    "retailerId": {
+      "type": "string",
+      "description": "Unique identifier of the retailer organization. Used for ownership checks."
+    },
+    "products": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Array of product identifiers accessible to this user"
+    }
+  },
+  "required": ["userLevel"],
+  "additionalProperties": true
+}

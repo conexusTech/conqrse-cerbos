@@ -1,0 +1,60 @@
+---
+apiVersion: "api.cerbos.dev/v1"
+description: "Derived roles based on userLevel and userType attributes"
+derivedRoles:
+  name: conqrse_roles
+  definitions:
+    # Super User — full access to everything
+    - name: super_user
+      parentRoles: ["authenticated"]
+      condition:
+        match:
+          expr: P.attr.userLevel == "su"
+
+    # Agency User — full access (product check bypassed)
+    - name: agency_user
+      parentRoles: ["authenticated"]
+      condition:
+        match:
+          expr: P.attr.userLevel == "agency"
+
+    # Retailer Writer — can perform all CRUD actions on own resources with product access
+    - name: retailer_writer
+      parentRoles: ["authenticated"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: P.attr.userLevel == "retailer"
+              - expr: P.attr.userType in ["owner", "admin", "lead", "member"]
+
+    # Retailer Collaborator — read-only access on own resources with product access
+    - name: retailer_collaborator
+      parentRoles: ["authenticated"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: P.attr.userLevel == "retailer"
+              - expr: P.attr.userType == "collaborator"
+
+    # Settings Manager — can manage product and general settings
+    - name: settings_manager
+      parentRoles: ["authenticated"]
+      condition:
+        match:
+          expr: P.attr.userType in ["owner", "admin"]
+
+    # Own Resource — principal belongs to the same retailer as the resource
+    - name: own_resource
+      parentRoles: ["authenticated"]
+      condition:
+        match:
+          expr: P.attr.retailerId == R.attr.retailerId
+
+    # Has Product — the resource's product exists in the principal's product list
+    - name: has_product
+      parentRoles: ["authenticated"]
+      condition:
+        match:
+          expr: R.attr.product in P.attr.products

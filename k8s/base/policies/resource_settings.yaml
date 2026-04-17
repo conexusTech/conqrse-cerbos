@@ -1,0 +1,45 @@
+---
+apiVersion: "api.cerbos.dev/v1"
+resourcePolicy:
+  version: default
+  importDerivedRoles:
+    - conqrse_roles
+  resource: "settings"
+  schemas:
+    principalSchema:
+      ref: "cerbos:///principal.json"
+    resourceSchema:
+      ref: "cerbos:///resource_settings.json"
+    validation: WARN
+  rules:
+    # Super User — ALLOW all settings actions
+    - actions: ["view", "edit", "delete"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - super_user
+
+    # Agency User — ALLOW all settings actions
+    - actions: ["view", "edit", "delete"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - agency_user
+
+    # Settings personal — ALLOW view + edit for ALL authenticated users
+    - actions: ["view", "edit"]
+      effect: EFFECT_ALLOW
+      roles: ["authenticated"]
+      condition:
+        match:
+          expr: R.attr.settingsType == "personal"
+
+    # Settings product/general — ALLOW for settings_manager + own_resource
+    - actions: ["view", "edit", "delete"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - settings_manager
+      condition:
+        match:
+          all:
+            of:
+              - expr: R.attr.settingsType in ["product", "general"]
+              - expr: P.attr.retailerId == R.attr.retailerId

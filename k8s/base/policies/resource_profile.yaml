@@ -1,0 +1,44 @@
+---
+apiVersion: "api.cerbos.dev/v1"
+resourcePolicy:
+  version: default
+  importDerivedRoles:
+    - conqrse_roles
+  resource: "profile"
+  schemas:
+    principalSchema:
+      ref: "cerbos:///principal.json"
+    resourceSchema:
+      ref: "cerbos:///resource_profile.json"
+    validation: WARN
+  rules:
+    # SU Dashboard — only super_user
+    - actions: ["view"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - super_user
+      condition:
+        match:
+          expr: R.attr.dashboard == "su-dashboard"
+
+    # Agency Dashboard — super_user + agency_user
+    - actions: ["view"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - super_user
+        - agency_user
+      condition:
+        match:
+          expr: R.attr.dashboard == "agency-dashboard"
+
+    # Retailer Dashboard — super_user + agency_user + retailer_writer + retailer_collaborator
+    - actions: ["view"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - super_user
+        - agency_user
+        - retailer_writer
+        - retailer_collaborator
+      condition:
+        match:
+          expr: R.attr.dashboard == "retailer-dashboard"

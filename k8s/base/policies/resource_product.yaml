@@ -1,0 +1,49 @@
+---
+apiVersion: "api.cerbos.dev/v1"
+resourcePolicy:
+  version: default
+  importDerivedRoles:
+    - conqrse_roles
+  resource: "product"
+  schemas:
+    principalSchema:
+      ref: "cerbos:///principal.json"
+    resourceSchema:
+      ref: "cerbos:///resource_product.json"
+    validation: WARN
+  rules:
+    # Rule 1: Super User — ALLOW all actions on all product resources
+    - actions: ["view", "create", "edit", "delete", "upload", "download", "report", "export"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - super_user
+
+    # Rule 2: Agency User — ALLOW all actions (product check bypassed)
+    - actions: ["view", "create", "edit", "delete", "upload", "download", "report", "export"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - agency_user
+
+    # Rule 3: Retailer Writer + own resource + has product — ALLOW all actions
+    - actions: ["view", "create", "edit", "delete", "upload", "download", "report", "export"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - retailer_writer
+      condition:
+        match:
+          all:
+            of:
+              - expr: P.attr.retailerId == R.attr.retailerId
+              - expr: R.attr.product in P.attr.products
+
+    # Rule 4: Retailer Collaborator + own resource + has product — ALLOW view only
+    - actions: ["view"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - retailer_collaborator
+      condition:
+        match:
+          all:
+            of:
+              - expr: P.attr.retailerId == R.attr.retailerId
+              - expr: R.attr.product in P.attr.products
