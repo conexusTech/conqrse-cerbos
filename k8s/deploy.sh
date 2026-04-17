@@ -42,7 +42,7 @@ if [[ $REPLY =~ ^[Yy][Ee][Ss]$ ]]; then
     echo "=== Deployment complete ==="
 
     # Get namespace
-    NAMESPACE="cerbos-${ENVIRONMENT}"
+    NAMESPACE="${ENVIRONMENT}"
 
     echo ""
     echo "=== Deployment Status ==="

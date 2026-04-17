@@ -82,7 +82,7 @@ spec:
         effect: NoSchedule
       - key: env
         operator: Equal
-        value: heavy
+        value: staging
         effect: NoSchedule
       volumes:
       - name: config
