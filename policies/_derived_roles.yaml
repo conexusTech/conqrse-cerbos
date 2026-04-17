@@ -1,60 +1,195 @@
 ---
 apiVersion: "api.cerbos.dev/v1"
-description: "Derived roles based on userLevel and userType attributes"
+description: "Derived roles based on userLevel and userType attributes with Act AS delegation support"
 derivedRoles:
   name: conqrse_roles
   definitions:
-    # Super User — full access to everything
-    - name: super_user
+    # ============================================================================
+    # SUPER USER (SU) LEVEL ROLES
+    # ============================================================================
+
+    # Super User (any type) — direct SU-level access
+    - name: su_user
       parentRoles: ["authenticated"]
       condition:
         match:
           expr: P.attr.userLevel == "su"
 
-    # Agency User — full access (product check bypassed)
+    # SU Owner/Admin — full access including settings at SU level
+    - name: su_owner_admin
+      parentRoles: ["su_user"]
+      condition:
+        match:
+          expr: P.attr.userType in ["owner", "admin"]
+
+    # SU Lead/Member/Collaborator — limited SU access
+    - name: su_lead_and_below
+      parentRoles: ["su_user"]
+      condition:
+        match:
+          expr: P.attr.userType in ["lead", "member", "collaborator"]
+
+    # SU Collaborator — read-only at SU level
+    - name: su_collaborator
+      parentRoles: ["su_user"]
+      condition:
+        match:
+          expr: P.attr.userType == "collaborator"
+
+    # ============================================================================
+    # AGENCY LEVEL ROLES
+    # ============================================================================
+
+    # Agency User (any type) — direct agency-level access
     - name: agency_user
       parentRoles: ["authenticated"]
       condition:
         match:
           expr: P.attr.userLevel == "agency"
 
-    # Retailer Writer — can perform all CRUD actions on own resources with product access
-    - name: retailer_writer
-      parentRoles: ["authenticated"]
-      condition:
-        match:
-          all:
-            of:
-              - expr: P.attr.userLevel == "retailer"
-              - expr: P.attr.userType in ["owner", "admin", "lead", "member"]
-
-    # Retailer Collaborator — read-only access on own resources with product access
-    - name: retailer_collaborator
-      parentRoles: ["authenticated"]
-      condition:
-        match:
-          all:
-            of:
-              - expr: P.attr.userLevel == "retailer"
-              - expr: P.attr.userType == "collaborator"
-
-    # Settings Manager — can manage product and general settings
-    - name: settings_manager
-      parentRoles: ["authenticated"]
+    # Agency Owner/Admin — full access including settings at agency level
+    - name: agency_owner_admin
+      parentRoles: ["agency_user"]
       condition:
         match:
           expr: P.attr.userType in ["owner", "admin"]
 
-    # Own Resource — principal belongs to the same retailer as the resource
-    - name: own_resource
+    # Agency Lead/Member — resource access, no settings
+    - name: agency_lead_member
+      parentRoles: ["agency_user"]
+      condition:
+        match:
+          expr: P.attr.userType in ["lead", "member"]
+
+    # Agency Collaborator — read-only at agency level
+    - name: agency_collaborator
+      parentRoles: ["agency_user"]
+      condition:
+        match:
+          expr: P.attr.userType == "collaborator"
+
+    # Agency can access child retailers (agency-level constraint)
+    - name: agency_owns_retailer
+      parentRoles: ["authenticated"]
+      condition:
+        match:
+          expr: P.attr.agencyId == R.attr.agencyId && P.attr.userLevel == "agency"
+
+    # ============================================================================
+    # RETAILER LEVEL ROLES
+    # ============================================================================
+
+    # Retailer User (any type) — direct retailer-level access
+    - name: retailer_user
+      parentRoles: ["authenticated"]
+      condition:
+        match:
+          expr: P.attr.userLevel == "retailer" && P.attr.retailerId == R.attr.retailerId
+
+    # Retailer Owner/Admin — full access including settings
+    - name: retailer_owner_admin
+      parentRoles: ["retailer_user"]
+      condition:
+        match:
+          expr: P.attr.userType in ["owner", "admin"]
+
+    # Retailer Lead/Member — resource access, no settings
+    - name: retailer_lead_member
+      parentRoles: ["retailer_user"]
+      condition:
+        match:
+          expr: P.attr.userType in ["lead", "member"]
+
+    # Retailer Collaborator — read-only
+    - name: retailer_collaborator
+      parentRoles: ["retailer_user"]
+      condition:
+        match:
+          expr: P.attr.userType == "collaborator"
+
+    # Retailer owns resource (owns their retailer's data)
+    - name: retailer_owns_resource
       parentRoles: ["authenticated"]
       condition:
         match:
           expr: P.attr.retailerId == R.attr.retailerId
 
-    # Has Product — the resource's product exists in the principal's product list
+    # ============================================================================
+    # ACT AS DELEGATION ROLES
+    # ============================================================================
+
+    # User is delegating via Act AS
+    - name: is_acting_as
+      parentRoles: ["authenticated"]
+      condition:
+        match:
+          expr: has(P.attr.actingAs) && P.attr.actingAs.level != ""
+
+    # SU acting AS agency (becomes agency user with their type)
+    - name: su_acting_as_agency
+      parentRoles: ["is_acting_as"]
+      condition:
+        match:
+          expr: P.attr.userLevel == "su" && P.attr.actingAs.level == "agency"
+
+    # SU acting AS retailer (becomes retailer user with their type)
+    - name: su_acting_as_retailer
+      parentRoles: ["is_acting_as"]
+      condition:
+        match:
+          expr: P.attr.userLevel == "su" && P.attr.actingAs.level == "retailer" && P.attr.actingAs.retailerId == R.attr.retailerId
+
+    # Agency acting AS retailer (becomes retailer user with their type, must be child)
+    - name: agency_acting_as_retailer
+      parentRoles: ["is_acting_as"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: P.attr.userLevel == "agency"
+              - expr: P.attr.actingAs.level == "retailer"
+              - expr: P.attr.agencyId == P.attr.actingAs.agencyId
+              - expr: P.attr.actingAs.retailerId == R.attr.retailerId
+
+    # ============================================================================
+    # PRODUCT VALIDATION
+    # ============================================================================
+
+    # Has required product subscription
     - name: has_product
       parentRoles: ["authenticated"]
       condition:
         match:
           expr: R.attr.product in P.attr.products
+
+    # Product check bypassed for SU and Agency (when acting at their direct level)
+    - name: product_check_bypass
+      parentRoles: ["authenticated"]
+      condition:
+        match:
+          expr: (P.attr.userLevel == "su") || (P.attr.userLevel == "agency")
+
+    # ============================================================================
+    # ACTION PERMISSION ROLES
+    # ============================================================================
+
+    # Can perform create/edit/delete (owner, admin, lead, member at all levels)
+    - name: can_write_resources
+      parentRoles: ["authenticated"]
+      condition:
+        match:
+          expr: P.attr.userType in ["owner", "admin", "lead", "member"]
+
+    # Can perform settings actions (owner, admin only)
+    - name: can_manage_settings
+      parentRoles: ["authenticated"]
+      condition:
+        match:
+          expr: P.attr.userType in ["owner", "admin"]
+
+    # Read-only access (collaborator and above)
+    - name: can_read_only
+      parentRoles: ["authenticated"]
+      condition:
+        match:
+          expr: P.attr.userType in ["collaborator", "member", "lead", "admin", "owner"]

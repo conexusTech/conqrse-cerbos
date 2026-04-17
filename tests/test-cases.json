@@ -1,0 +1,409 @@
+{
+  "testSuites": [
+    {
+      "name": "Allow Scenarios",
+      "description": "Valid access patterns that should ALLOW",
+      "tests": [
+        {
+          "id": "allow_1",
+          "name": "Retailer Member Listing QR Campaigns",
+          "description": "Retailer-level user viewing campaigns in their own retailer",
+          "principal": {
+            "id": "user-123",
+            "userLevel": "retailer",
+            "userType": "member",
+            "name": "john.doe",
+            "products": ["qr"],
+            "agencyId": "agency-456",
+            "retailerId": "retail-789"
+          },
+          "resource": {
+            "name": "qr:campaigns",
+            "product": "qr",
+            "retailerId": "retail-789",
+            "agencyId": "agency-456"
+          },
+          "action": "resource:list",
+          "expectedResult": "ALLOW"
+        },
+        {
+          "id": "allow_2",
+          "name": "SU Admin Acting AS Retailer Admin Creating a User",
+          "description": "Super user with admin type delegating to act as a retailer admin",
+          "principal": {
+            "id": "su-user-001",
+            "userLevel": "su",
+            "userType": "admin",
+            "name": "admin@platform.com",
+            "products": ["footprints", "signage", "qr"],
+            "actingAs": {
+              "level": "retailer",
+              "retailerId": "retail-789"
+            }
+          },
+          "resource": {
+            "name": "settings:admin:users",
+            "product": "settings",
+            "retailerId": "retail-789"
+          },
+          "action": "settings:create",
+          "expectedResult": "ALLOW"
+        },
+        {
+          "id": "allow_3",
+          "name": "Agency Admin Acting AS Retailer Creating QR Campaign",
+          "description": "Agency-level admin delegating to act as retailer admin",
+          "principal": {
+            "id": "agency-user-002",
+            "userLevel": "agency",
+            "userType": "admin",
+            "name": "manager@agency.com",
+            "products": ["footprints", "qr"],
+            "agencyId": "agency-456",
+            "actingAs": {
+              "level": "retailer",
+              "retailerId": "retail-789",
+              "agencyId": "agency-456"
+            }
+          },
+          "resource": {
+            "name": "qr:campaigns",
+            "product": "qr",
+            "retailerId": "retail-789",
+            "agencyId": "agency-456"
+          },
+          "action": "resource:create",
+          "expectedResult": "ALLOW"
+        },
+        {
+          "id": "allow_4",
+          "name": "Agency Owner Creating a User for Child Retailer",
+          "description": "Agency owner creating a new user account within a child retailer",
+          "principal": {
+            "id": "agency-user-001",
+            "userLevel": "agency",
+            "userType": "owner",
+            "name": "owner@agency.com",
+            "products": ["footprints", "signage", "qr"],
+            "agencyId": "agency-456"
+          },
+          "resource": {
+            "name": "settings:admin:users",
+            "product": "settings",
+            "retailerId": "retail-789",
+            "agencyId": "agency-456"
+          },
+          "action": "settings:create",
+          "expectedResult": "ALLOW"
+        },
+        {
+          "id": "allow_5",
+          "name": "SU Owner Managing Agency Configuration",
+          "description": "Super user with owner type accessing SU-level settings",
+          "principal": {
+            "id": "su-user-000",
+            "userLevel": "su",
+            "userType": "owner",
+            "name": "owner@platform.com",
+            "products": ["footprints", "signage", "qr"]
+          },
+          "resource": {
+            "name": "settings:admin:general",
+            "product": "settings"
+          },
+          "action": "settings:update",
+          "expectedResult": "ALLOW"
+        },
+        {
+          "id": "allow_6",
+          "name": "SU Lead Viewing System Data",
+          "description": "SU lead user viewing system-level reports",
+          "principal": {
+            "id": "su-user-003",
+            "userLevel": "su",
+            "userType": "lead",
+            "name": "lead@platform.com",
+            "products": ["footprints", "signage", "qr"]
+          },
+          "resource": {
+            "name": "dashboards:su-dashboard",
+            "product": "dashboards"
+          },
+          "action": "resource:view",
+          "expectedResult": "ALLOW"
+        },
+        {
+          "id": "allow_7",
+          "name": "SU Collaborator Acting AS Retailer Member",
+          "description": "SU collaborator delegating to act as retailer member",
+          "principal": {
+            "id": "su-user-004",
+            "userLevel": "su",
+            "userType": "collaborator",
+            "name": "viewer@platform.com",
+            "products": ["qr"],
+            "actingAs": {
+              "level": "retailer",
+              "retailerId": "retail-789"
+            }
+          },
+          "resource": {
+            "name": "qr:campaigns",
+            "product": "qr",
+            "retailerId": "retail-789"
+          },
+          "action": "resource:view",
+          "expectedResult": "ALLOW"
+        },
+        {
+          "id": "allow_8",
+          "name": "Agency Lead Acting AS Retailer Creating Resources",
+          "description": "Agency lead acting as retailer to create a campaign",
+          "principal": {
+            "id": "agency-user-003",
+            "userLevel": "agency",
+            "userType": "lead",
+            "name": "lead@agency.com",
+            "products": ["qr"],
+            "agencyId": "agency-456",
+            "actingAs": {
+              "level": "retailer",
+              "retailerId": "retail-789",
+              "agencyId": "agency-456"
+            }
+          },
+          "resource": {
+            "name": "qr:campaigns",
+            "product": "qr",
+            "retailerId": "retail-789",
+            "agencyId": "agency-456"
+          },
+          "action": "resource:create",
+          "expectedResult": "ALLOW"
+        },
+        {
+          "id": "allow_9",
+          "name": "Agency Member Viewing Child Retailer Resources",
+          "description": "Agency member viewing resources from a child retailer",
+          "principal": {
+            "id": "agency-user-004",
+            "userLevel": "agency",
+            "userType": "member",
+            "name": "operator@agency.com",
+            "products": ["footprints", "qr"],
+            "agencyId": "agency-456"
+          },
+          "resource": {
+            "name": "footprints:sites",
+            "product": "footprints",
+            "retailerId": "retail-789",
+            "agencyId": "agency-456"
+          },
+          "action": "resource:list",
+          "expectedResult": "ALLOW"
+        },
+        {
+          "id": "allow_10",
+          "name": "Retailer Owner Managing Store Settings",
+          "description": "Retailer owner updating store-level configuration",
+          "principal": {
+            "id": "user-200",
+            "userLevel": "retailer",
+            "userType": "owner",
+            "name": "owner@retailer.com",
+            "products": ["footprints", "qr"],
+            "agencyId": "agency-456",
+            "retailerId": "retail-789"
+          },
+          "resource": {
+            "name": "settings:admin:general",
+            "product": "settings",
+            "retailerId": "retail-789"
+          },
+          "action": "settings:update",
+          "expectedResult": "ALLOW"
+        }
+      ]
+    },
+    {
+      "name": "Deny Scenarios",
+      "description": "Invalid access patterns that should DENY",
+      "tests": [
+        {
+          "id": "deny_1",
+          "name": "Retailer Collaborator Attempting to Create",
+          "description": "Retail-level collaborator trying to create a resource",
+          "principal": {
+            "id": "user-456",
+            "userLevel": "retailer",
+            "userType": "collaborator",
+            "name": "guest@retailer.com",
+            "products": ["qr"],
+            "agencyId": "agency-456",
+            "retailerId": "retail-789"
+          },
+          "resource": {
+            "name": "qr:campaigns",
+            "product": "qr",
+            "retailerId": "retail-789",
+            "agencyId": "agency-456"
+          },
+          "action": "resource:create",
+          "expectedResult": "DENY"
+        },
+        {
+          "id": "deny_2",
+          "name": "Retailer Member Accessing Product Not in Subscription",
+          "description": "Retailer user trying to access a product they're not subscribed to",
+          "principal": {
+            "id": "user-789",
+            "userLevel": "retailer",
+            "userType": "member",
+            "name": "staff@retailer.com",
+            "products": ["qr"],
+            "agencyId": "agency-456",
+            "retailerId": "retail-789"
+          },
+          "resource": {
+            "name": "signage:content:templates",
+            "product": "signage",
+            "retailerId": "retail-789",
+            "agencyId": "agency-456"
+          },
+          "action": "resource:list",
+          "expectedResult": "DENY"
+        },
+        {
+          "id": "deny_3",
+          "name": "SU Collaborator Attempting to Create Settings",
+          "description": "SU collaborator trying to create a system setting",
+          "principal": {
+            "id": "su-user-005",
+            "userLevel": "su",
+            "userType": "collaborator",
+            "name": "viewer@platform.com",
+            "products": ["footprints"]
+          },
+          "resource": {
+            "name": "settings:admin:general",
+            "product": "settings"
+          },
+          "action": "settings:create",
+          "expectedResult": "DENY"
+        },
+        {
+          "id": "deny_4",
+          "name": "Agency Lead Attempting to Modify Settings",
+          "description": "Agency lead trying to update agency settings",
+          "principal": {
+            "id": "agency-user-006",
+            "userLevel": "agency",
+            "userType": "lead",
+            "name": "lead@agency.com",
+            "products": ["qr"],
+            "agencyId": "agency-456"
+          },
+          "resource": {
+            "name": "settings:admin:users",
+            "product": "settings",
+            "agencyId": "agency-456"
+          },
+          "action": "settings:create",
+          "expectedResult": "DENY"
+        },
+        {
+          "id": "deny_5",
+          "name": "Agency Collaborator Attempting to Create Resource",
+          "description": "Agency collaborator trying to create a resource",
+          "principal": {
+            "id": "agency-user-007",
+            "userLevel": "agency",
+            "userType": "collaborator",
+            "name": "viewer@agency.com",
+            "products": ["qr"],
+            "agencyId": "agency-456"
+          },
+          "resource": {
+            "name": "qr:campaigns",
+            "product": "qr",
+            "agencyId": "agency-456"
+          },
+          "action": "resource:create",
+          "expectedResult": "DENY"
+        },
+        {
+          "id": "deny_6",
+          "name": "Retailer Lead Attempting to Modify Settings",
+          "description": "Retailer team lead trying to update store settings",
+          "principal": {
+            "id": "user-204",
+            "userLevel": "retailer",
+            "userType": "lead",
+            "name": "lead@retailer.com",
+            "products": ["qr"],
+            "agencyId": "agency-456",
+            "retailerId": "retail-789"
+          },
+          "resource": {
+            "name": "settings:admin:general",
+            "product": "settings",
+            "retailerId": "retail-789"
+          },
+          "action": "settings:update",
+          "expectedResult": "DENY"
+        },
+        {
+          "id": "deny_7",
+          "name": "Agency User Acting AS Unrelated Retailer",
+          "description": "Agency admin attempting to act as a retailer not in their agency",
+          "principal": {
+            "id": "agency-user-008",
+            "userLevel": "agency",
+            "userType": "admin",
+            "name": "manager@agency-a.com",
+            "products": ["qr"],
+            "agencyId": "agency-456",
+            "actingAs": {
+              "level": "retailer",
+              "retailerId": "retail-999",
+              "agencyId": "agency-999"
+            }
+          },
+          "resource": {
+            "name": "qr:campaigns",
+            "product": "qr",
+            "retailerId": "retail-999",
+            "agencyId": "agency-999"
+          },
+          "action": "resource:list",
+          "expectedResult": "DENY"
+        },
+        {
+          "id": "deny_8",
+          "name": "Retailer User Attempting to Act AS Another Retailer",
+          "description": "Retailer staff attempting to act as another retailer",
+          "principal": {
+            "id": "user-205",
+            "userLevel": "retailer",
+            "userType": "member",
+            "name": "staff@retailer-a.com",
+            "products": ["qr"],
+            "agencyId": "agency-456",
+            "retailerId": "retail-789",
+            "actingAs": {
+              "level": "retailer",
+              "retailerId": "retail-999"
+            }
+          },
+          "resource": {
+            "name": "qr:campaigns",
+            "product": "qr",
+            "retailerId": "retail-999"
+          },
+          "action": "resource:list",
+          "expectedResult": "DENY"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+---
+apiVersion: "api.cerbos.dev/v1"
+description: "Settings resource policies for SU, Agency, and Retailer level configurations"
+resourcePolicy:
+  version: default
+  importDerivedRoles:
+    - conqrse_roles
+  resource: "settings"
+  schemas:
+    principalSchema:
+      ref: "cerbos:///principal.json"
+    resourceSchema:
+      ref: "cerbos:///settings.json"
+    validation: WARN
+  rules:
+    # ============================================================================
+    # SUPER USER RULES
+    # ============================================================================
+
+    # SU Owner/Admin — ALLOW all settings actions at SU level
+    - actions: ["settings:list", "settings:create", "settings:update", "settings:delete"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - su_owner_admin
+
+    # SU Lead/Member/Collaborator — DENY settings actions (no settings access below owner/admin)
+    - actions: ["settings:*"]
+      effect: EFFECT_DENY
+      derivedRoles:
+        - su_lead_and_below
+
+    # ============================================================================
+    # AGENCY LEVEL RULES (Direct Access)
+    # ============================================================================
+
+    # Agency Owner/Admin — ALLOW all settings actions at agency level and for child retailers
+    - actions: ["settings:list", "settings:create", "settings:update", "settings:delete"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - agency_owner_admin
+      condition:
+        match:
+          expr: P.attr.agencyId == R.attr.agencyId
+
+    # Agency Lead/Member/Collaborator — DENY settings actions at agency level
+    - actions: ["settings:*"]
+      effect: EFFECT_DENY
+      derivedRoles:
+        - agency_lead_member
+      condition:
+        match:
+          expr: P.attr.userLevel == "agency"
+
+    - actions: ["settings:*"]
+      effect: EFFECT_DENY
+      derivedRoles:
+        - agency_collaborator
+
+    # ============================================================================
+    # AGENCY ACTING AS RETAILER RULES (Delegation)
+    # ============================================================================
+
+    # Agency Acting AS Retailer (owner/admin) — ALLOW all settings actions
+    - actions: ["settings:list", "settings:create", "settings:update", "settings:delete"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - agency_acting_as_retailer
+      condition:
+        match:
+          expr: P.attr.userType in ["owner", "admin"]
+
+    # Agency Acting AS Retailer (lead/member/collaborator) — DENY settings actions
+    - actions: ["settings:*"]
+      effect: EFFECT_DENY
+      derivedRoles:
+        - agency_acting_as_retailer
+      condition:
+        match:
+          expr: P.attr.userType in ["lead", "member", "collaborator"]
+
+    # ============================================================================
+    # RETAILER LEVEL RULES (Direct Access)
+    # ============================================================================
+
+    # Retailer Owner/Admin — ALLOW all settings actions for own retailer
+    - actions: ["settings:list", "settings:create", "settings:update", "settings:delete"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - retailer_owner_admin
+
+    # Retailer Lead/Member/Collaborator — DENY settings actions
+    - actions: ["settings:*"]
+      effect: EFFECT_DENY
+      derivedRoles:
+        - retailer_lead_member
+
+    - actions: ["settings:*"]
+      effect: EFFECT_DENY
+      derivedRoles:
+        - retailer_collaborator
+
+    # ============================================================================
+    # SU ACTING AS RETAILER RULES (Delegation)
+    # ============================================================================
+
+    # SU Acting AS Retailer (owner/admin) — ALLOW all settings actions
+    - actions: ["settings:list", "settings:create", "settings:update", "settings:delete"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - su_acting_as_retailer
+      condition:
+        match:
+          expr: P.attr.userType in ["owner", "admin"]
+
+    # SU Acting AS Retailer (lead/member/collaborator) — DENY settings actions
+    - actions: ["settings:*"]
+      effect: EFFECT_DENY
+      derivedRoles:
+        - su_acting_as_retailer
+      condition:
+        match:
+          expr: P.attr.userType in ["lead", "member", "collaborator"]
+
+    # ============================================================================
+    # DEFAULT DENY
+    # ============================================================================
+
+    # Default deny all other actions
+    - actions: ["*"]
+      effect: EFFECT_DENY
