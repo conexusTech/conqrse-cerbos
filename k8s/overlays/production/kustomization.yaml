@@ -31,10 +31,6 @@ replacements:
         fieldPaths:
           - metadata.namespace
       - select:
-          kind: PersistentVolumeClaim
-        fieldPaths:
-          - metadata.namespace
-      - select:
           kind: Service
         fieldPaths:
           - metadata.namespace
@@ -49,13 +45,6 @@ replacements:
 
 # Patches for environment-specific configuration
 patches:
-  - target:
-      kind: PersistentVolumeClaim
-      name: cerbos-policies
-    patch: |-
-      - op: replace
-        path: /spec/resources/requests/storage
-        value: 5Gi
   - target:
       group: networking.k8s.io
       version: v1

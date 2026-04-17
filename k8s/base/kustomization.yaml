@@ -6,7 +6,6 @@ resources:
   - configmap-config.yaml
   - configmap-policies.yaml
   - configmap-schemas.yaml
-  - pvc-policies.yaml
   - service.yaml
   - ingress.yaml
   - deployment.yaml

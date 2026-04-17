@@ -22,31 +22,6 @@ spec:
         app: cerbos
         version: latest
     spec:
-      initContainers:
-      - name: policy-seeder
-        image: busybox:1.36
-        command:
-        - sh
-        - -c
-        - |
-          if [ -z "$(ls -A /data/policies 2>/dev/null)" ]; then
-            echo "Seeding policies from ConfigMap..."
-            mkdir -p /data/policies/_schemas
-            cp /seed/policies/* /data/policies/ 2>/dev/null || true
-            cp /seed/schemas/* /data/policies/_schemas/ 2>/dev/null || true
-            echo "Policy seeding complete."
-          else
-            echo "Policies already exist in PVC, skipping seed."
-          fi
-        volumeMounts:
-        - name: policies
-          mountPath: /data/policies
-        - name: policy-cm
-          mountPath: /seed/policies
-          readOnly: true
-        - name: schema-cm
-          mountPath: /seed/schemas
-          readOnly: true
       containers:
       - name: cerbos
         image: ghcr.io/cerbos/cerbos:latest
@@ -114,15 +89,8 @@ spec:
         configMap:
           name: cerbos-config
       - name: policies
-        persistentVolumeClaim:
-          claimName: cerbos-policies
-      - name: policy-cm
         configMap:
           name: cerbos-policies
-          defaultMode: 0644
-      - name: schema-cm
-        configMap:
-          name: cerbos-schemas
           defaultMode: 0644
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
