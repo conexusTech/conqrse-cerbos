@@ -34,6 +34,7 @@ spec:
           containerPort: 3593
           protocol: TCP
         command:
+        - cerbos
         - server
         - --config=/conf.yaml
         volumeMounts:
