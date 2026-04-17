@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: cerbos
-        image: ghcr.io/cerbos/cerbos:latest
+        image: ghcr.io/cerbos/cerbos:0.34.0
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
@@ -33,8 +33,7 @@ spec:
         - name: grpc
           containerPort: 3593
           protocol: TCP
-        command:
-        - cerbos
+        args:
         - server
         - --config=/conf.yaml
         volumeMounts:
