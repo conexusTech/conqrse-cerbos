@@ -12,9 +12,13 @@ configMapGenerator:
   - name: cerbos-policies
     files:
       - _derived_roles.yaml=policies/_derived_roles.yaml
+      - resource_base.yaml=policies/resource_base.yaml
+      - resource_dashboards.yaml=policies/resource_dashboards.yaml
       - resource_product.yaml=policies/resource_product.yaml
-      - resource_settings.yaml=policies/resource_settings.yaml
       - resource_profile.yaml=policies/resource_profile.yaml
+      - resource_settings.yaml=policies/resource_settings.yaml
+      - resource_settings_base.yaml=policies/resource_settings_base.yaml
+      - resource_users.yaml=policies/resource_users.yaml
   - name: cerbos-schemas
     files:
       - principal.json=schemas/principal.json
