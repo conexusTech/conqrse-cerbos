@@ -6,7 +6,39 @@ resourcePolicy:
   importDerivedRoles:
     - conqrse_roles
   rules:
-    - actions: ["resource:list", "resource:view"]
+    # Retailer access requires product subscription
+    - actions: ["resource:list", "resource:view", "resource:create", "resource:update", "resource:delete", "resource:export", "resource:import"]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          expr: '"reports" in P.attr.products'
+      derivedRoles:
+        - retailer_owner
+        - retailer_manager
+        - team_lead
+        - staff_operator
+        - su_acting_retailer_owner
+        - su_acting_retailer_manager
+        - su_acting_retailer_lead
+        - su_acting_retailer_member
+        - agency_acting_retailer_owner
+        - agency_acting_retailer_manager
+        - agency_acting_retailer_lead
+        - agency_acting_retailer_member
+
+    # Collaborators with product check
+    - actions: ["resource:list", "resource:view", "resource:export"]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          expr: '"reports" in P.attr.products'
+      derivedRoles:
+        - guest_collaborator
+        - su_acting_retailer_collaborator
+        - agency_acting_retailer_collaborator
+
+    # SU/Agency access (no product check needed)
+    - actions: ["resource:list", "resource:view", "resource:create", "resource:update", "resource:delete", "resource:export", "resource:import"]
       effect: EFFECT_ALLOW
       derivedRoles:
         - root_user
@@ -17,29 +49,15 @@ resourcePolicy:
         - agency_manager
         - agency_lead
         - agency_member
-        - retailer_owner
-        - retailer_manager
-        - team_lead
-        - staff_operator
-        - su_acting_retailer_owner
-        - su_acting_retailer_manager
-        - su_acting_retailer_lead
-        - su_acting_retailer_member
         - su_acting_agency_owner
         - su_acting_agency_manager
         - su_acting_agency_lead
         - su_acting_agency_member
-        - agency_acting_retailer_owner
-        - agency_acting_retailer_manager
-        - agency_acting_retailer_lead
-        - agency_acting_retailer_member
 
-    - actions: ["resource:list", "resource:view"]
+    # SU/Agency collaborators (read-only, no product check)
+    - actions: ["resource:list", "resource:view", "resource:export"]
       effect: EFFECT_ALLOW
       derivedRoles:
         - platform_collaborator
         - agency_collaborator
-        - guest_collaborator
-        - su_acting_retailer_collaborator
         - su_acting_agency_collaborator
-        - agency_acting_retailer_collaborator
