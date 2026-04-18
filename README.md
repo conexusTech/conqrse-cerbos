@@ -23,7 +23,6 @@ docker run -d \
   --name cerbos-dev \
   -p 3592:3592 \
   -p 3593:3593 \
-  -p 3591:3591 \
   -v $(pwd)/k8s/base/policies:/policies \
   cerbos:local
 ```
@@ -31,13 +30,12 @@ docker run -d \
 Cerbos will be available on:
 - **HTTP API & Admin UI**: `http://localhost:3592`
 - **gRPC API**: `localhost:3593`
-- **Metrics**: `http://localhost:3591/metrics`
 
 #### Verify
 
 ```bash
-curl http://localhost:3592/health
-# Expected: { "status": "OK" }
+curl http://localhost:3592/_cerbos/health
+# Expected: { "status": "SERVING" }
 ```
 
 #### Stop & Clean
@@ -47,8 +45,6 @@ docker stop cerbos-dev
 docker rm cerbos-dev
 docker rmi cerbos:local
 ```
-
-For detailed local setup guide, see [LOCAL_SETUP.md](./LOCAL_SETUP.md)
 
 ### Kubernetes Deployment
 
@@ -100,27 +96,20 @@ cerbos compile k8s/base/policies/
 
 All policies live in `k8s/base/policies/` and are hot-reloaded by Cerbos when storage watching is enabled.
 
+**Current Setup:** Minimal working policies for development/testing
+
 | File | Purpose |
 |------|---------|
-| `_derived_roles.yaml` | 25 derived roles mapping user attributes (`userLevel`, `userType`) + Act AS delegation |
-| `resource_base.yaml` | Base resource policy (read/write rules for all roles) |
-| `resource_product.yaml` | Product resources (footprints, signage, qr, reports, connect) with product subscription check |
-| `resource_settings_base.yaml` | Base settings policy (owner/admin only) |
-| `resource_settings.yaml` | Settings admin resources (users, teams, general) |
-| `resource_dashboards.yaml` | Dashboard resources (SU, agency, retailer dashboards) |
-| `resource_profile.yaml` | Profile resource (all can view, owner/admin can update) |
-| `resource_users.yaml` | Users settings resource (owner/admin only) |
+| `01-derived_roles.yaml` | Minimal derived roles (for testing) |
+| `02-test_resource.yaml` | Test resource policy (allow all for testing) |
 
-### Derived Roles (25 total)
+**For Production:** Extend policies using the authorization model defined in `docs/CERBOS_CONQRSE.md`
 
-**Base Roles (15):**
-- **SU Level** (5): `root_user`, `platform_administrator`, `platform_lead`, `platform_member`, `platform_collaborator`
-- **Agency Level** (5): `agency_owner`, `agency_manager`, `agency_lead`, `agency_member`, `agency_collaborator`
-- **Retailer Level** (5): `retailer_owner`, `retailer_manager`, `team_lead`, `staff_operator`, `guest_collaborator`
-
-**Act AS Delegation Roles (10):**
-- **SU delegating** (5): `su_acting_retailer_*` roles for each user type
-- **Agency delegating** (5): `agency_acting_retailer_*` roles for each user type (validates child relationship)
+The documentation includes:
+- Full resource and action mapping (90+ resources)
+- 25 derived roles (15 base + 10 act-as delegation)
+- User dimensions (userLevel × userType)
+- 22 real-world validation scenarios
 
 ### User Dimensions
 
@@ -143,51 +132,50 @@ Every user has two attributes determining access:
 
 ## Adding a New Resource
 
-1. Create or edit a policy file in `k8s/base/policies/`:
+1. Create a policy file in `k8s/base/policies/` following Cerbos 0.51.0 format:
 
 ```yaml
+---
 apiVersion: api.cerbos.dev/v1
-kind: ResourcePolicy
-metadata:
-  name: myproduct_resource_policy
-spec:
-  version: "default"
-  resource: "myproduct:*"
+resourcePolicy:
+  version: default
+  importDerivedRoles:
+    - conqrse_roles
+  resource: myproduct:resource
   rules:
-    - actions: ["resource:list", "resource:view", "resource:create"]
+    - actions: ["*"]
       effect: EFFECT_ALLOW
       derivedRoles:
-        - root_user
-        - platform_administrator
-        - agency_owner
-        - retailer_owner
+        - any_user
 ```
 
-2. Update `k8s/base/kustomization.yaml` to include the new policy file in `configMapGenerator`:
-
-```yaml
-configMapGenerator:
-  - name: cerbos-policies
-    files:
-      - policies/your_new_policy.yaml
-```
-
-3. Validate policies:
+2. Validate policies compile correctly:
 
 ```bash
 cerbos compile k8s/base/policies/
 ```
 
+3. Test locally (optional):
+
+```bash
+docker run -d --name cerbos-test -p 3592:3592 -p 3593:3593 \
+  -v $(pwd)/k8s/base/policies:/policies cerbos:local
+curl http://localhost:3592/_cerbos/health
+docker stop cerbos-test
+```
+
 4. Commit and deploy:
 
 ```bash
-git add k8s/base/policies/ k8s/base/kustomization.yaml
+git add k8s/base/policies/
 git commit -m "feat: add myproduct authorization policy"
 ./k8s/deploy.sh staging
 ./k8s/deploy.sh production
 ```
 
-5. Use in frontend (`<CanI>`) and backend (`@RequirePermission`) -- see respective repo docs.
+5. Use in applications via:
+   - Frontend: `<CanI>` component
+   - Backend: `@RequirePermission` decorator (see respective repo docs)
 
 ---
 
@@ -207,9 +195,8 @@ git commit -m "feat: add myproduct authorization policy"
 
 ### Service Configuration
 
-- **HTTP API**: Port 3592 (admin UI, health checks)
-- **gRPC API**: Port 3593 (used by applications)
-- **Metrics**: Port 3591 (Prometheus)
+- **HTTP API**: Port 3592 (admin UI, health checks, decision API)
+- **gRPC API**: Port 3593 (used by applications, decision API)
 
 ### Ingress Configuration
 
@@ -221,8 +208,8 @@ git commit -m "feat: add myproduct authorization policy"
 
 ### Health Checks
 
-- **Liveness Probe**: HTTP GET `/health` every 10s
-- **Readiness Probe**: HTTP GET `/health` every 5s
+- **Liveness Probe**: HTTP GET `/_cerbos/health` every 10s
+- **Readiness Probe**: HTTP GET `/_cerbos/health` every 5s
 
 ---
 
