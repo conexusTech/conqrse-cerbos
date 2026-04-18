@@ -1,0 +1,37 @@
+---
+apiVersion: "api.cerbos.dev/v1"
+resourcePolicy:
+  version: "default"
+  resource: "dashboards:agency-dashboard"
+  importDerivedRoles:
+    - conqrse_roles
+  rules:
+    # Agency users can view agency-level dashboards
+    - actions: ["resource:view", "resource:list"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - agency_owner
+        - agency_manager
+        - agency_lead
+        - agency_member
+        - agency_collaborator
+
+    # SU can view agency dashboards
+    - actions: ["resource:view", "resource:list"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - root_user
+        - platform_administrator
+        - platform_lead
+        - platform_member
+        - platform_collaborator
+
+    # Acting AS users can view dashboards at their delegated level
+    - actions: ["resource:view", "resource:list"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - su_acting_agency_owner
+        - su_acting_agency_manager
+        - su_acting_agency_lead
+        - su_acting_agency_member
+        - su_acting_agency_collaborator

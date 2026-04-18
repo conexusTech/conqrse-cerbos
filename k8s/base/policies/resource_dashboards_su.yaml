@@ -1,0 +1,17 @@
+---
+apiVersion: "api.cerbos.dev/v1"
+resourcePolicy:
+  version: "default"
+  resource: "dashboards:su-dashboard"
+  importDerivedRoles:
+    - conqrse_roles
+  rules:
+    # SU can view SU-level dashboards
+    - actions: ["resource:view", "resource:list"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - root_user
+        - platform_administrator
+        - platform_lead
+        - platform_member
+        - platform_collaborator
