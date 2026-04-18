@@ -6,39 +6,49 @@ Cerbos authorization server and policy definitions for the Conqrse platform. Thi
 
 ## Quick Start
 
-### Local Development
+### Local Development with Docker
 
 #### Prerequisites
 
-- Docker & Docker Compose installed
+- Docker Desktop installed and running
 
-#### Start Cerbos Server
+#### Build & Run
 
 ```bash
-cd conqrse-cerbos
-docker-compose up
+# Build image
+docker build -t cerbos:local .
+
+# Run container
+docker run -d \
+  --name cerbos-dev \
+  -p 3592:3592 \
+  -p 3593:3593 \
+  -p 3591:3591 \
+  -v $(pwd)/k8s/base/policies:/policies \
+  cerbos:local
 ```
 
 Cerbos will be available on:
-- **gRPC**: `localhost:3593` (used by frontend and API)
-- **HTTP**: `localhost:3592` (admin UI and health checks)
+- **HTTP API & Admin UI**: `http://localhost:3592`
+- **gRPC API**: `localhost:3593`
+- **Metrics**: `http://localhost:3591/metrics`
 
 #### Verify
 
 ```bash
-curl -s http://localhost:3592/health | jq .
-# Expected: { "status": "ok" }
+curl http://localhost:3592/health
+# Expected: { "status": "OK" }
 ```
 
-#### View Policies
-
-Open http://localhost:3592/ in your browser.
-
-#### Stop
+#### Stop & Clean
 
 ```bash
-docker-compose down
+docker stop cerbos-dev
+docker rm cerbos-dev
+docker rmi cerbos:local
 ```
+
+For detailed local setup guide, see [LOCAL_SETUP.md](./LOCAL_SETUP.md)
 
 ### Kubernetes Deployment
 
