@@ -1,0 +1,316 @@
+apiVersion: api.cerbos.dev/v1
+kind: DerivedRoles
+metadata:
+  name: conqrse_roles
+spec:
+  definitions:
+    # Super User Level Roles (5)
+    - name: root_user
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "su"'
+              - expr: 'P.attr.userType == "owner"'
+              - expr: 'P.attr.actingAs == null'
+
+    - name: platform_administrator
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "su"'
+              - expr: 'P.attr.userType == "admin"'
+              - expr: 'P.attr.actingAs == null'
+
+    - name: platform_lead
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "su"'
+              - expr: 'P.attr.userType == "lead"'
+              - expr: 'P.attr.actingAs == null'
+
+    - name: platform_member
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "su"'
+              - expr: 'P.attr.userType == "member"'
+              - expr: 'P.attr.actingAs == null'
+
+    - name: platform_collaborator
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "su"'
+              - expr: 'P.attr.userType == "collaborator"'
+              - expr: 'P.attr.actingAs == null'
+
+    # Agency Level Roles (5)
+    - name: agency_owner
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "agency"'
+              - expr: 'P.attr.userType == "owner"'
+              - expr: 'P.attr.actingAs == null'
+
+    - name: agency_manager
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "agency"'
+              - expr: 'P.attr.userType == "admin"'
+              - expr: 'P.attr.actingAs == null'
+
+    - name: agency_lead
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "agency"'
+              - expr: 'P.attr.userType == "lead"'
+              - expr: 'P.attr.actingAs == null'
+
+    - name: agency_member
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "agency"'
+              - expr: 'P.attr.userType == "member"'
+              - expr: 'P.attr.actingAs == null'
+
+    - name: agency_collaborator
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "agency"'
+              - expr: 'P.attr.userType == "collaborator"'
+              - expr: 'P.attr.actingAs == null'
+
+    # Retailer Level Roles (5)
+    - name: retailer_owner
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "retailer"'
+              - expr: 'P.attr.userType == "owner"'
+              - expr: 'P.attr.actingAs == null'
+
+    - name: retailer_manager
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "retailer"'
+              - expr: 'P.attr.userType == "admin"'
+              - expr: 'P.attr.actingAs == null'
+
+    - name: team_lead
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "retailer"'
+              - expr: 'P.attr.userType == "lead"'
+              - expr: 'P.attr.actingAs == null'
+
+    - name: staff_operator
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "retailer"'
+              - expr: 'P.attr.userType == "member"'
+              - expr: 'P.attr.actingAs == null'
+
+    - name: guest_collaborator
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "retailer"'
+              - expr: 'P.attr.userType == "collaborator"'
+              - expr: 'P.attr.actingAs == null'
+
+    # SU Acting AS Retailer Roles (5)
+    - name: su_acting_retailer_owner
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "su"'
+              - expr: 'P.attr.userType == "owner"'
+              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "retailer"'
+
+    - name: su_acting_retailer_manager
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "su"'
+              - expr: 'P.attr.userType == "admin"'
+              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "retailer"'
+
+    - name: su_acting_retailer_lead
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "su"'
+              - expr: 'P.attr.userType == "lead"'
+              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "retailer"'
+
+    - name: su_acting_retailer_member
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "su"'
+              - expr: 'P.attr.userType == "member"'
+              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "retailer"'
+
+    - name: su_acting_retailer_collaborator
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "su"'
+              - expr: 'P.attr.userType == "collaborator"'
+              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "retailer"'
+
+    # Agency Acting AS Retailer Roles (5)
+    - name: agency_acting_retailer_owner
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "agency"'
+              - expr: 'P.attr.userType == "owner"'
+              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "retailer"'
+              - expr: 'P.attr.actingAs.agencyId == P.attr.agencyId'
+
+    - name: agency_acting_retailer_manager
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "agency"'
+              - expr: 'P.attr.userType == "admin"'
+              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "retailer"'
+              - expr: 'P.attr.actingAs.agencyId == P.attr.agencyId'
+
+    - name: agency_acting_retailer_lead
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "agency"'
+              - expr: 'P.attr.userType == "lead"'
+              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "retailer"'
+              - expr: 'P.attr.actingAs.agencyId == P.attr.agencyId'
+
+    - name: agency_acting_retailer_member
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "agency"'
+              - expr: 'P.attr.userType == "member"'
+              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "retailer"'
+              - expr: 'P.attr.actingAs.agencyId == P.attr.agencyId'
+
+    - name: agency_acting_retailer_collaborator
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "agency"'
+              - expr: 'P.attr.userType == "collaborator"'
+              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "retailer"'
+              - expr: 'P.attr.actingAs.agencyId == P.attr.agencyId'
+
+    # SU Acting AS Agency Roles (5)
+    - name: su_acting_agency_owner
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "su"'
+              - expr: 'P.attr.userType == "owner"'
+              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "agency"'
+
+    - name: su_acting_agency_manager
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "su"'
+              - expr: 'P.attr.userType == "admin"'
+              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "agency"'
+
+    - name: su_acting_agency_lead
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "su"'
+              - expr: 'P.attr.userType == "lead"'
+              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "agency"'
+
+    - name: su_acting_agency_member
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "su"'
+              - expr: 'P.attr.userType == "member"'
+              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "agency"'
+
+    - name: su_acting_agency_collaborator
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: 'P.attr.userLevel == "su"'
+              - expr: 'P.attr.userType == "collaborator"'
+              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "agency"'

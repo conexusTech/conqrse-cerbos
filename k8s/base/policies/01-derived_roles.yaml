@@ -1,7 +1,0 @@
----
-apiVersion: api.cerbos.dev/v1
-derivedRoles:
-  name: conqrse_roles
-  definitions:
-    - name: any_user
-      parentRoles: ["*"]
