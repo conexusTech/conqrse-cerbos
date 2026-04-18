@@ -6,7 +6,6 @@ resourcePolicy:
   importDerivedRoles:
     - conqrse_roles
   rules:
-    # View-only - allowed for owner/admin only
     - actions: ["resource:view", "resource:list"]
       effect: EFFECT_ALLOW
       derivedRoles:

@@ -2,11 +2,11 @@
 apiVersion: "api.cerbos.dev/v1"
 resourcePolicy:
   version: "default"
-  resource: "footprints:products:settings:pricing-group:item"
+  resource: "settings:admin:teams"
   importDerivedRoles:
     - conqrse_roles
   rules:
-    - actions: ["resource:view", "resource:list"]
+    - actions: ["resource:list", "resource:view", "resource:create", "resource:update", "resource:delete", "resource:export", "resource:import"]
       effect: EFFECT_ALLOW
       derivedRoles:
         - root_user

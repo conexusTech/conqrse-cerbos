@@ -2,11 +2,11 @@
 apiVersion: "api.cerbos.dev/v1"
 resourcePolicy:
   version: "default"
-  resource: "footprints:sites:item"
+  resource: "reports:export"
   importDerivedRoles:
     - conqrse_roles
   rules:
-    - actions: ["resource:view", "resource:list"]
+    - actions: ["resource:list", "resource:view", "resource:create", "resource:update", "resource:delete", "resource:export", "resource:import"]
       effect: EFFECT_ALLOW
       derivedRoles:
         - root_user
@@ -34,7 +34,7 @@ resourcePolicy:
         - agency_acting_retailer_lead
         - agency_acting_retailer_member
 
-    - actions: ["resource:view", "resource:list"]
+    - actions: ["resource:list", "resource:view", "resource:export"]
       effect: EFFECT_ALLOW
       derivedRoles:
         - platform_collaborator

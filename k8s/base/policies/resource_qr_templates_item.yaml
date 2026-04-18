@@ -6,7 +6,6 @@ resourcePolicy:
   importDerivedRoles:
     - conqrse_roles
   rules:
-    # View-only - allowed for all non-collaborator roles
     - actions: ["resource:view", "resource:list"]
       effect: EFFECT_ALLOW
       derivedRoles:
@@ -35,7 +34,6 @@ resourcePolicy:
         - agency_acting_retailer_lead
         - agency_acting_retailer_member
 
-    # View-only - allowed for collaborators
     - actions: ["resource:view", "resource:list"]
       effect: EFFECT_ALLOW
       derivedRoles:
