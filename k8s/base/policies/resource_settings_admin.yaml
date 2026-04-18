@@ -2,7 +2,7 @@
 apiVersion: "api.cerbos.dev/v1"
 resourcePolicy:
   version: "default"
-  resource: "settings:admin:*"
+  resource: "settings:admin"
   importDerivedRoles:
     - conqrse_roles
   rules:

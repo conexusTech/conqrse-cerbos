@@ -2,7 +2,7 @@
 apiVersion: "api.cerbos.dev/v1"
 resourcePolicy:
   version: "default"
-  resource: "dashboards:*"
+  resource: "dashboards"
   importDerivedRoles:
     - conqrse_roles
   rules:
