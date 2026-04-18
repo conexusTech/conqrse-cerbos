@@ -19,9 +19,7 @@ spec:
       labels:
         app: cerbos
       annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "3591"
-        prometheus.io/path: "/metrics"
+        prometheus.io/scrape: "false"
     spec:
       serviceAccountName: cerbos
       containers:
@@ -30,7 +28,7 @@ spec:
           imagePullPolicy: IfNotPresent
           command:
             - cerbos
-            - run
+            - server
             - --config=/etc/cerbos/cerbos.yaml
           ports:
             - name: http
@@ -39,12 +37,9 @@ spec:
             - name: grpc
               containerPort: 3593
               protocol: TCP
-            - name: metrics
-              containerPort: 3591
-              protocol: TCP
           livenessProbe:
             httpGet:
-              path: /health
+              path: /_cerbos/health
               port: http
             initialDelaySeconds: 10
             periodSeconds: 10
@@ -52,7 +47,7 @@ spec:
             failureThreshold: 3
           readinessProbe:
             httpGet:
-              path: /health
+              path: /_cerbos/health
               port: http
             initialDelaySeconds: 5
             periodSeconds: 5
@@ -72,8 +67,6 @@ spec:
             - name: policies
               mountPath: /policies
               readOnly: true
-            - name: audit-logs
-              mountPath: /var/log/cerbos
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
@@ -89,8 +82,6 @@ spec:
         - name: policies
           configMap:
             name: cerbos-policies
-        - name: audit-logs
-          emptyDir: {}
       nodeSelector:
         Workload: heavy
       tolerations:

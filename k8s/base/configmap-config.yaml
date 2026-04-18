@@ -7,19 +7,12 @@ data:
     server:
       httpListenAddr: "0.0.0.0:3592"
       grpcListenAddr: "0.0.0.0:3593"
-      metricsListenAddr: "0.0.0.0:3591"
 
     storage:
       driver: "disk"
       disk:
         directory: "/policies"
+        watchForChanges: true
 
     logging:
       level: "info"
-      format: "json"
-
-    audit:
-      enabled: true
-      backend: "local"
-      local:
-        storagePath: "/var/log/cerbos/audit.log"

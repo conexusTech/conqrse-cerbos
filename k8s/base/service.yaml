@@ -15,10 +15,6 @@ spec:
       port: 3593
       targetPort: grpc
       protocol: TCP
-    - name: metrics
-      port: 3591
-      targetPort: metrics
-      protocol: TCP
   selector:
     app: cerbos
 ---
