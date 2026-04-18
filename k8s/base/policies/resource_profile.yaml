@@ -3,6 +3,8 @@ apiVersion: "api.cerbos.dev/v1"
 resourcePolicy:
   version: "default"
   resource: "settings:admin:profile"
+  importDerivedRoles:
+    - conqrse_roles
   rules:
     # All authenticated users can view their own profile
     - actions: ["resource:view", "resource:list"]

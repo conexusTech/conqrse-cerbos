@@ -3,6 +3,8 @@ apiVersion: "api.cerbos.dev/v1"
 resourcePolicy:
   version: "default"
   resource: "dashboards:*"
+  importDerivedRoles:
+    - conqrse_roles
   rules:
     # SU can view SU-level dashboards
     - actions: ["resource:view", "resource:list"]

@@ -8,6 +8,8 @@ resourcePolicy:
     - "qr:*"
     - "reports:*"
     - "connect:*"
+  importDerivedRoles:
+    - conqrse_roles
   rules:
     # Read operations for direct retailer access with product check
     - actions: ["resource:list", "resource:view", "resource:export"]

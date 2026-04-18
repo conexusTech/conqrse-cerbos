@@ -4,6 +4,8 @@ resourcePolicy:
   version: "default"
   resource:
     - "settings:admin:*"
+  importDerivedRoles:
+    - conqrse_roles
   rules:
     # List operations - allowed for owner/admin only
     - actions: ["settings:list"]
