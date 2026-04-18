@@ -4,46 +4,15 @@ kind: Kustomization
 bases:
   - ../../base
 
-namespace: staging
-
 namePrefix: ""
-
 nameSuffix: ""
 
-commonLabels:
-  environment: staging
+namespace: staging
 
-commonAnnotations:
-  environment: staging
+replicas:
+  - name: cerbos
+    count: 1
 
-# Replace namespace references in base
-replacements:
-  - source:
-      kind: Namespace
-      name: cerbos-base
-    targets:
-      - select:
-          kind: Namespace
-        fieldPaths:
-          - metadata.name
-      - select:
-          kind: ConfigMap
-        fieldPaths:
-          - metadata.namespace
-      - select:
-          kind: Service
-        fieldPaths:
-          - metadata.namespace
-      - select:
-          kind: Ingress
-        fieldPaths:
-          - metadata.namespace
-      - select:
-          kind: Deployment
-        fieldPaths:
-          - metadata.namespace
-
-# Patches for environment-specific configuration
 patches:
   - target:
       group: networking.k8s.io
@@ -54,24 +23,18 @@ patches:
       - op: replace
         path: /spec/rules/0/host
         value: staging-cerbos.conqrse.com
-  - target:
-      group: apps
-      version: v1
-      kind: Deployment
-      name: cerbos
-    patch: |-
-      - op: replace
-        path: /spec/replicas
-        value: 1
-      - op: replace
-        path: /spec/template/spec/containers/0/resources/requests/cpu
-        value: 100m
-      - op: replace
-        path: /spec/template/spec/containers/0/resources/requests/memory
-        value: 128Mi
-      - op: replace
-        path: /spec/template/spec/containers/0/resources/limits/cpu
-        value: 500m
-      - op: replace
-        path: /spec/template/spec/containers/0/resources/limits/memory
-        value: 256Mi
+
+configMapGenerator:
+  - name: cerbos-config
+    behavior: merge
+    files:
+      - cerbos-config.yaml
+
+labels:
+  - includeSelectors: true
+    pairs:
+      environment: staging
+
+images:
+  - name: ghcr.io/cerbos/cerbos
+    newTag: "0.51.0"

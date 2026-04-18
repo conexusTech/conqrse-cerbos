@@ -1,0 +1,36 @@
+server:
+  httpListenAddr: "0.0.0.0:3592"
+  grpcListenAddr: "0.0.0.0:3593"
+  metricsListenAddr: "0.0.0.0:3591"
+  maxRequestBodySizeBytes: 1073741824  # 1GB
+  corsPolicy:
+    enabled: true
+    allowedOrigins:
+      - "http://localhost:3000"
+      - "http://localhost:3001"
+      - "http://localhost:8080"
+      - "http://127.0.0.1:*"
+
+storage:
+  driver: "disk"
+  disk:
+    directory: "/policies"
+    watchForChanges: true  # Hot-reload policies on file change
+
+logging:
+  level: "info"
+  format: "json"
+  outputs:
+    - stdout
+
+audit:
+  enabled: true
+  backend: "local"
+  local:
+    storagePath: "/var/log/cerbos/audit.log"
+
+tracing:
+  enabled: false
+  exporter:
+    http:
+      endpoint: "http://localhost:4318"

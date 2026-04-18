@@ -2,29 +2,29 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - namespace.yaml
   - configmap-config.yaml
   - service.yaml
-  - ingress.yaml
   - deployment.yaml
+  - ingress.yaml
 
 configMapGenerator:
   - name: cerbos-policies
     files:
-      - _derived_roles.yaml=policies/_derived_roles.yaml
-      - resource_base.yaml=policies/resource_base.yaml
-      - resource_dashboards.yaml=policies/resource_dashboards.yaml
-      - resource_product.yaml=policies/resource_product.yaml
-      - resource_profile.yaml=policies/resource_profile.yaml
-      - resource_settings.yaml=policies/resource_settings.yaml
-      - resource_settings_base.yaml=policies/resource_settings_base.yaml
-      - resource_users.yaml=policies/resource_users.yaml
-  - name: cerbos-schemas
-    files:
-      - principal.json=schemas/principal.json
-      - resource_product.json=schemas/resource_product.json
-      - resource_settings.json=schemas/resource_settings.json
-      - resource_profile.json=schemas/resource_profile.json
+      - policies/_derived_roles.yaml
+      - policies/resource_base.yaml
+      - policies/resource_dashboards.yaml
+      - policies/resource_product.yaml
+      - policies/resource_profile.yaml
+      - policies/resource_settings.yaml
+      - policies/resource_settings_base.yaml
+      - policies/resource_users.yaml
 
-commonLabels:
-  app: cerbos
+images:
+  - name: ghcr.io/cerbos/cerbos
+    newTag: "0.51.0"
+
+labels:
+  - includeSelectors: true
+    pairs:
+      app: cerbos
+      version: v1

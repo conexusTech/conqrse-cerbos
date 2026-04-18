@@ -2,12 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cerbos
-  namespace: cerbos-base  # Will be replaced by overlays
   labels:
     app: cerbos
-    version: latest
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -20,77 +18,87 @@ spec:
     metadata:
       labels:
         app: cerbos
-        version: latest
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3591"
+        prometheus.io/path: "/metrics"
     spec:
+      serviceAccountName: cerbos
       containers:
-      - name: cerbos
-        image: ghcr.io/cerbos/cerbos:0.34.0
-        imagePullPolicy: IfNotPresent
-        ports:
-        - name: http
-          containerPort: 3592
-          protocol: TCP
-        - name: grpc
-          containerPort: 3593
-          protocol: TCP
-        args:
-        - server
-        - --config=/conf.yaml
-        volumeMounts:
+        - name: cerbos
+          image: ghcr.io/cerbos/cerbos:0.51.0
+          imagePullPolicy: IfNotPresent
+          command:
+            - cerbos
+            - run
+            - --config=/etc/cerbos/cerbos.yaml
+          ports:
+            - name: http
+              containerPort: 3592
+              protocol: TCP
+            - name: grpc
+              containerPort: 3593
+              protocol: TCP
+            - name: metrics
+              containerPort: 3591
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 2
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          volumeMounts:
+            - name: config
+              mountPath: /etc/cerbos
+              readOnly: true
+            - name: policies
+              mountPath: /policies
+              readOnly: true
+            - name: audit-logs
+              mountPath: /var/log/cerbos
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+      volumes:
         - name: config
-          mountPath: /conf.yaml
-          subPath: conf.yaml
+          configMap:
+            name: cerbos-config
         - name: policies
-          mountPath: /policies
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-          limits:
-            cpu: 500m
-            memory: 256Mi
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: http
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          timeoutSeconds: 5
-          failureThreshold: 3
-        readinessProbe:
-          httpGet:
-            path: /healthz
-            port: http
-          initialDelaySeconds: 5
-          periodSeconds: 5
-          timeoutSeconds: 3
-          failureThreshold: 2
-        securityContext:
-          allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          runAsUser: 1000
-          capabilities:
-            drop:
-            - ALL
+          configMap:
+            name: cerbos-policies
+        - name: audit-logs
+          emptyDir: {}
       nodeSelector:
         Workload: heavy
       tolerations:
-      - key: workload
-        operator: Equal
-        value: heavy
-        effect: NoSchedule
-      - key: env
-        operator: Equal
-        value: staging
-        effect: NoSchedule
-      volumes:
-      - name: config
-        configMap:
-          name: cerbos-config
-      - name: policies
-        configMap:
-          name: cerbos-policies
-          defaultMode: 0644
-      restartPolicy: Always
-      terminationGracePeriodSeconds: 30
+        - key: workload
+          operator: Equal
+          value: heavy
+          effect: NoSchedule
+        - key: env
+          operator: Equal
+          value: staging
+          effect: NoSchedule

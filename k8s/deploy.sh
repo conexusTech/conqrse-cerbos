@@ -1,61 +1,86 @@
 #!/bin/bash
 
-# Deploy script for Cerbos Kubernetes manifests
-# Usage: ./deploy.sh [staging|production]
+set -euo pipefail
 
-set -e
-
-ENVIRONMENT=${1:-staging}
-VALID_ENVS=("staging" "production")
-
-if [[ ! " ${VALID_ENVS[@]} " =~ " ${ENVIRONMENT} " ]]; then
-    echo "Error: Invalid environment. Must be 'staging' or 'production'"
-    echo "Usage: $0 [staging|production]"
-    exit 1
-fi
-
-# Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-OVERLAY_PATH="${SCRIPT_DIR}/overlays/${ENVIRONMENT}"
+ENVIRONMENT="${1:-staging}"
+KUBECTL_CONTEXT="${2:-}"
 
-if [ ! -d "$OVERLAY_PATH" ]; then
-    echo "Error: Overlay path does not exist: $OVERLAY_PATH"
+validate_environment() {
+  case "$ENVIRONMENT" in
+    staging|production)
+      echo "✓ Valid environment: $ENVIRONMENT"
+      ;;
+    *)
+      echo "✗ Invalid environment: $ENVIRONMENT"
+      echo "Usage: $0 [staging|production] [kubectl-context]"
+      exit 1
+      ;;
+  esac
+}
+
+set_kubectl_context() {
+  if [ -n "$KUBECTL_CONTEXT" ]; then
+    echo "Setting kubectl context to: $KUBECTL_CONTEXT"
+    kubectl config use-context "$KUBECTL_CONTEXT"
+  fi
+}
+
+validate_kubeconfig() {
+  if ! kubectl cluster-info &>/dev/null; then
+    echo "✗ Cannot connect to Kubernetes cluster"
     exit 1
-fi
+  fi
+  echo "✓ Connected to cluster: $(kubectl config current-context)"
+}
 
-echo "=== Deploying Cerbos to $ENVIRONMENT ==="
-echo "Overlay path: $OVERLAY_PATH"
-echo ""
+validate_cerbos_policies() {
+  if command -v cerbos &>/dev/null; then
+    echo "Validating Cerbos policies..."
+    cerbos compile "${SCRIPT_DIR}/base/policies/" || {
+      echo "✗ Policy validation failed"
+      exit 1
+    }
+    echo "✓ Policies are valid"
+  else
+    echo "⚠ Cerbos CLI not found, skipping policy validation"
+  fi
+}
 
-# Preview manifests
-echo "=== Previewing manifests that will be applied ==="
-kubectl kustomize "$OVERLAY_PATH"
-echo ""
+deploy() {
+  local overlay="$SCRIPT_DIR/overlays/$ENVIRONMENT"
 
-# Confirm deployment
-read -p "Do you want to proceed with deployment? (yes/no) " -n 3 -r
-echo
-if [[ $REPLY =~ ^[Yy][Ee][Ss]$ ]]; then
-    echo "Applying manifests to cluster..."
-    kubectl apply -k "$OVERLAY_PATH"
-    echo ""
-    echo "=== Deployment complete ==="
-
-    # Get namespace
-    NAMESPACE="${ENVIRONMENT}"
-
-    echo ""
-    echo "=== Deployment Status ==="
-    kubectl get deployments -n "$NAMESPACE"
-    echo ""
-    kubectl get pods -n "$NAMESPACE"
-    echo ""
-    echo "=== Service Status ==="
-    kubectl get svc -n "$NAMESPACE"
-    echo ""
-    echo "=== Ingress Status ==="
-    kubectl get ingress -n "$NAMESPACE"
-else
-    echo "Deployment cancelled."
+  if [ ! -d "$overlay" ]; then
+    echo "✗ Overlay not found: $overlay"
     exit 1
-fi
+  fi
+
+  echo "Deploying Cerbos to $ENVIRONMENT environment..."
+  kubectl apply -k "$overlay"
+
+  echo "✓ Deployment complete"
+  echo ""
+  echo "Waiting for rollout..."
+  kubectl rollout status deployment/cerbos -n "$ENVIRONMENT" --timeout=5m
+
+  echo ""
+  echo "Cerbos service endpoints:"
+  kubectl get service -n "$ENVIRONMENT" -l app=cerbos -o wide
+}
+
+main() {
+  echo "Cerbos Deployment Script"
+  echo "========================"
+  echo ""
+
+  validate_environment
+  set_kubectl_context
+  validate_kubeconfig
+  validate_cerbos_policies
+  deploy
+
+  echo ""
+  echo "✓ Deployment successful!"
+}
+
+main

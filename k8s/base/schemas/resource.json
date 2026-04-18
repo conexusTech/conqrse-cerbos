@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Resource",
+  "description": "Resource being accessed and validated",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Resource identifier (e.g., footprints:sites, settings:admin:users, qr:campaigns)"
+    },
+    "product": {
+      "type": "string",
+      "enum": ["footprints", "signage", "qr", "reports", "connect", "settings", "dashboards"],
+      "description": "Product code"
+    },
+    "resourceId": {
+      "type": "string",
+      "description": "Resource record ID (only for resources with :item suffix)"
+    },
+    "agencyId": {
+      "type": "string",
+      "description": "Agency ID if resource is scoped to agency"
+    },
+    "retailerId": {
+      "type": "string",
+      "description": "Retailer ID if resource is scoped to retailer"
+    }
+  },
+  "required": ["name", "product"]
+}

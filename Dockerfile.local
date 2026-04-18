@@ -1,0 +1,17 @@
+FROM ghcr.io/cerbos/cerbos:0.51.0
+
+# Copy configuration
+COPY cerbos.yaml /etc/cerbos/cerbos.yaml
+
+# Copy policies and schemas
+COPY k8s/base/policies /policies
+COPY k8s/base/schemas /schemas
+
+# Create audit log directory
+RUN mkdir -p /var/log/cerbos
+
+# Health check
+HEALTHCHECK --interval=10s --timeout=5s --retries=3 \
+  CMD curl -f http://localhost:3592/health || exit 1
+
+CMD ["run", "--config=/etc/cerbos/cerbos.yaml"]

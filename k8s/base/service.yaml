@@ -2,19 +2,29 @@ apiVersion: v1
 kind: Service
 metadata:
   name: cerbos
-  namespace: cerbos-base  # Will be replaced by overlays
   labels:
     app: cerbos
 spec:
   type: ClusterIP
   ports:
-  - name: http
-    port: 3592
-    targetPort: http
-    protocol: TCP
-  - name: grpc
-    port: 3593
-    targetPort: grpc
-    protocol: TCP
+    - name: http
+      port: 3592
+      targetPort: http
+      protocol: TCP
+    - name: grpc
+      port: 3593
+      targetPort: grpc
+      protocol: TCP
+    - name: metrics
+      port: 3591
+      targetPort: metrics
+      protocol: TCP
   selector:
+    app: cerbos
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cerbos
+  labels:
     app: cerbos

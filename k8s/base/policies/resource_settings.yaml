@@ -1,45 +1,76 @@
----
-apiVersion: "api.cerbos.dev/v1"
-resourcePolicy:
-  version: default
-  importDerivedRoles:
-    - conqrse_roles
-  resource: "settings"
-  schemas:
-    principalSchema:
-      ref: "cerbos:///principal.json"
-    resourceSchema:
-      ref: "cerbos:///resource_settings.json"
-    validation: WARN
+apiVersion: api.cerbos.dev/v1
+kind: ResourcePolicy
+metadata:
+  name: settings_resource_policy
+spec:
+  version: "default"
+  resource:
+    - "settings:admin:*"
   rules:
-    # Super User — ALLOW all settings actions
-    - actions: ["view", "edit", "delete"]
+    # List operations - allowed for owner/admin only
+    - actions: ["settings:list"]
       effect: EFFECT_ALLOW
       derivedRoles:
-        - super_user
+        - root_user
+        - platform_administrator
+        - agency_owner
+        - agency_manager
+        - retailer_owner
+        - retailer_manager
+        - su_acting_retailer_owner
+        - su_acting_retailer_manager
+        - su_acting_agency_owner
+        - su_acting_agency_manager
+        - agency_acting_retailer_owner
+        - agency_acting_retailer_manager
 
-    # Agency User — ALLOW all settings actions
-    - actions: ["view", "edit", "delete"]
+    # Create operations - allowed for owner/admin only
+    - actions: ["settings:create"]
       effect: EFFECT_ALLOW
       derivedRoles:
-        - agency_user
+        - root_user
+        - platform_administrator
+        - agency_owner
+        - agency_manager
+        - retailer_owner
+        - retailer_manager
+        - su_acting_retailer_owner
+        - su_acting_retailer_manager
+        - su_acting_agency_owner
+        - su_acting_agency_manager
+        - agency_acting_retailer_owner
+        - agency_acting_retailer_manager
 
-    # Settings personal — ALLOW view + edit for ALL authenticated users
-    - actions: ["view", "edit"]
-      effect: EFFECT_ALLOW
-      roles: ["authenticated"]
-      condition:
-        match:
-          expr: R.attr.settingsType == "personal"
-
-    # Settings product/general — ALLOW for settings_manager + own_resource
-    - actions: ["view", "edit", "delete"]
+    # Update operations - allowed for owner/admin only
+    - actions: ["settings:update"]
       effect: EFFECT_ALLOW
       derivedRoles:
-        - settings_manager
-      condition:
-        match:
-          all:
-            of:
-              - expr: R.attr.settingsType in ["product", "general"]
-              - expr: P.attr.retailerId == R.attr.retailerId
+        - root_user
+        - platform_administrator
+        - agency_owner
+        - agency_manager
+        - retailer_owner
+        - retailer_manager
+        - su_acting_retailer_owner
+        - su_acting_retailer_manager
+        - su_acting_agency_owner
+        - su_acting_agency_manager
+        - agency_acting_retailer_owner
+        - agency_acting_retailer_manager
+
+    # Delete operations - allowed for owner/admin only
+    - actions: ["settings:delete"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - root_user
+        - platform_administrator
+        - agency_owner
+        - agency_manager
+        - retailer_owner
+        - retailer_manager
+        - su_acting_retailer_owner
+        - su_acting_retailer_manager
+        - su_acting_agency_owner
+        - su_acting_agency_manager
+        - agency_acting_retailer_owner
+        - agency_acting_retailer_manager

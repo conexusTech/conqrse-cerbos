@@ -1,25 +1,35 @@
-apiVersion: networking.k8s.io/v1
 kind: Ingress
+apiVersion: networking.k8s.io/v1
 metadata:
   name: cerbos
-  namespace: cerbos-base  # Will be replaced by overlays
-  labels:
-    app: cerbos
+  annotations:
+    nginx.ingress.kubernetes.io/configuration-snippet: >
+      gzip on; gzip_vary on; gzip_comp_level  1; gzip_min_length  256;
+      gzip_proxied any; gzip_types text/plain text/css application/json
+      application/x-javascript application/javascript text/xml application/xml
+      application/rss+xml text/javascript image/svg+xml
+      application/vnd.ms-fontobject application/x-font-ttf font/opentype;
+
+      error_page 404 /; error_page 500 /;
+    nginx.ingress.kubernetes.io/load-balance: round_robin
+    nginx.ingress.kubernetes.io/proxy-body-size: 1024m
+    nginx.ingress.kubernetes.io/proxy-buffer-size: 128k
+    nginx.ingress.kubernetes.io/proxy-buffering: 'on'
+    nginx.ingress.kubernetes.io/proxy-buffers: 4 256k
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: '90'
+    nginx.ingress.kubernetes.io/proxy-read-timeout: '90'
+    nginx.ingress.kubernetes.io/proxy-send-timeout: '90'
+    nginx.ingress.kubernetes.io/use-regex: 'true'
 spec:
   ingressClassName: nginx
   rules:
-  - host: cerbos.example.com  # Will be replaced by overlays
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: cerbos
-            port:
-              number: 3592
-  # TLS configuration (uncomment and configure with certificate when ready)
-  # tls:
-  # - hosts:
-  #   - cerbos.example.com
-  #   secretName: cerbos-tls
+    - host: staging-cerbos.conqrse.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cerbos
+                port:
+                  number: 3592
