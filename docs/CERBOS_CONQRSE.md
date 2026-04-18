@@ -121,6 +121,8 @@ Every user has two attributes that determine access:
 
 ### First Dimension: User Level Scoping & Access Model
 
+> **Key Architectural Constraint**: All product resources (footprints, signage, qr, reports, connect) are **retailer-scoped** and require a retailer context for access. SU and Agency users do not have a native retailer context, therefore they **cannot access any product features directly**. They must use the "Act AS" delegation model to assume a retailer context first. This constraint is enforced at the API level — v3 endpoints do not support product access without retailer information.
+
 #### Super User (SU) Level
 - **Direct Actions**: Create/manage agencies, view all system data at SU level, manage SU-level settings
 - **Delegation**: Can "Act AS" any agency or retailer (child or not)
