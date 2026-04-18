@@ -2,7 +2,7 @@
 apiVersion: "api.cerbos.dev/v1"
 resourcePolicy:
   version: "default"
-  resource: "settings:*"
+  resource: "settings:admin:*"
   importDerivedRoles:
     - conqrse_roles
   rules:
@@ -73,26 +73,3 @@ resourcePolicy:
         - su_acting_agency_manager
         - agency_acting_retailer_owner
         - agency_acting_retailer_manager
-
-    # Deny all settings actions for lead, member, collaborator
-    - actions: ["settings:list", "settings:create", "settings:update", "settings:delete"]
-      effect: EFFECT_DENY
-      derivedRoles:
-        - platform_lead
-        - platform_member
-        - platform_collaborator
-        - agency_lead
-        - agency_member
-        - agency_collaborator
-        - team_lead
-        - staff_operator
-        - guest_collaborator
-        - su_acting_retailer_lead
-        - su_acting_retailer_member
-        - su_acting_retailer_collaborator
-        - su_acting_agency_lead
-        - su_acting_agency_member
-        - su_acting_agency_collaborator
-        - agency_acting_retailer_lead
-        - agency_acting_retailer_member
-        - agency_acting_retailer_collaborator
