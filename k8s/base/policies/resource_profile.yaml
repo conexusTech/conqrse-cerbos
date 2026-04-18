@@ -1,8 +1,5 @@
-apiVersion: api.cerbos.dev/v1
-kind: ResourcePolicy
-metadata:
-  name: profile_resource_policy
-spec:
+---
+resourcePolicy:
   version: "default"
   resource: "settings:admin:profile"
   rules:

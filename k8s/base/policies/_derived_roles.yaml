@@ -1,8 +1,6 @@
-apiVersion: api.cerbos.dev/v1
-kind: DerivedRoles
-metadata:
+---
+derivedRoles:
   name: conqrse_roles
-spec:
   definitions:
     # Super User Level Roles (5)
     - name: root_user

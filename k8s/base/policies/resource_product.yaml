@@ -1,8 +1,5 @@
-apiVersion: api.cerbos.dev/v1
-kind: ResourcePolicy
-metadata:
-  name: product_resource_policy
-spec:
+---
+resourcePolicy:
   version: "default"
   resource:
     - "footprints:*"
