@@ -127,13 +127,13 @@ Every user has two attributes that determine access:
 - **Direct Actions**: Create/manage agencies, view all system data at SU level, manage SU-level settings
 - **Delegation**: Can "Act AS" any agency or retailer (child or not)
 - **User Type Inheritance**: Retains their user type when acting as (e.g., SU Admin acting as Retailer = Retailer Admin)
-- **Product Check**: Bypasses product checks when acting as retailer
+- **Product Access**: Cannot access any product features directly. When acting as a retailer, can access only the products enabled for that retailer
 
 #### Agency Level
 - **Direct Actions**: Create/manage users for their retailers, manage child retailers, view agency-level data, manage agency settings
 - **Delegation**: Can "Act AS" only their child retailers
 - **User Type Inheritance**: Retains their user type when acting as (e.g., Agency Member acting as Retailer = Retailer Member)
-- **Product Check**: Bypasses product checks for their child retailers
+- **Product Access**: Cannot access any product features directly. When acting as a child retailer, can access only the products enabled for that retailer
 
 #### Retailer Level
 - **Direct Actions**: Manage resources and operations within their retailer scope
