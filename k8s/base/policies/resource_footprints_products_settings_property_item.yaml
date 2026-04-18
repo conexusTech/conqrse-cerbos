@@ -1,0 +1,24 @@
+---
+apiVersion: "api.cerbos.dev/v1"
+resourcePolicy:
+  version: "default"
+  resource: "footprints:products:settings:property:item"
+  importDerivedRoles:
+    - conqrse_roles
+  rules:
+    # View-only - allowed for owner/admin only
+    - actions: ["resource:view", "resource:list"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - root_user
+        - platform_administrator
+        - agency_owner
+        - agency_manager
+        - retailer_owner
+        - retailer_manager
+        - su_acting_retailer_owner
+        - su_acting_retailer_manager
+        - su_acting_agency_owner
+        - su_acting_agency_manager
+        - agency_acting_retailer_owner
+        - agency_acting_retailer_manager
