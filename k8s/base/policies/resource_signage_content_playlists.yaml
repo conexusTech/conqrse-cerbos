@@ -6,7 +6,7 @@ resourcePolicy:
   importDerivedRoles:
     - conqrse_roles
   rules:
-    # Retailer access requires product subscription
+    # Retailer access with product subscription check
     - actions: ["resource:list", "resource:view", "resource:create", "resource:update", "resource:delete", "resource:export", "resource:import"]
       effect: EFFECT_ALLOW
       condition:
@@ -26,7 +26,7 @@ resourcePolicy:
         - agency_acting_retailer_lead
         - agency_acting_retailer_member
 
-    # Collaborators with product check
+    # Collaborators with product subscription check
     - actions: ["resource:list", "resource:view", "resource:export"]
       effect: EFFECT_ALLOW
       condition:
@@ -36,28 +36,3 @@ resourcePolicy:
         - guest_collaborator
         - su_acting_retailer_collaborator
         - agency_acting_retailer_collaborator
-
-    # SU/Agency access (no product check needed)
-    - actions: ["resource:list", "resource:view", "resource:create", "resource:update", "resource:delete", "resource:export", "resource:import"]
-      effect: EFFECT_ALLOW
-      derivedRoles:
-        - root_user
-        - platform_administrator
-        - platform_lead
-        - platform_member
-        - agency_owner
-        - agency_manager
-        - agency_lead
-        - agency_member
-        - su_acting_agency_owner
-        - su_acting_agency_manager
-        - su_acting_agency_lead
-        - su_acting_agency_member
-
-    # SU/Agency collaborators (read-only, no product check)
-    - actions: ["resource:list", "resource:view", "resource:export"]
-      effect: EFFECT_ALLOW
-      derivedRoles:
-        - platform_collaborator
-        - agency_collaborator
-        - su_acting_agency_collaborator
