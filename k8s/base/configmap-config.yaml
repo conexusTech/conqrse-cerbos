@@ -5,6 +5,7 @@ metadata:
 data:
   cerbos.yaml: |
     server:
+      apiExplorerEnabled: false
       httpListenAddr: "0.0.0.0:3592"
       grpcListenAddr: "0.0.0.0:3593"
       adminAPI:
@@ -20,3 +21,6 @@ data:
 
     logging:
       level: "info"
+
+    telemetry:
+      disabled: true
