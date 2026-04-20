@@ -20,6 +20,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-read-timeout: '90'
     nginx.ingress.kubernetes.io/proxy-send-timeout: '90'
     nginx.ingress.kubernetes.io/use-regex: 'true'
+    nginx.ingress.kubernetes.io/force-ssl-redirect: 'true'
 spec:
   ingressClassName: nginx
   rules:
