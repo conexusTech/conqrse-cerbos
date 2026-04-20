@@ -70,17 +70,6 @@ spec:
             runAsUser: 1000
             readOnlyRootFilesystem: false
             allowPrivilegeEscalation: false
-          env:
-            - name: CERBOS_ADMIN_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: cerbos-admin-credentials
-                  key: username
-            - name: CERBOS_ADMIN_PASSWORD_HASH
-              valueFrom:
-                secretKeyRef:
-                  name: cerbos-admin-credentials
-                  key: passwordHash
       volumes:
         - name: config
           configMap:
