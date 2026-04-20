@@ -13,7 +13,7 @@ data:
     storage:
       driver: "sqlite3"
       sqlite3:
-        dsn: "/data/cerbos.db?_journal=WAL&cache=shared"
+        dsn: "/data/cerbos.db?_journal=WAL"
 
     logging:
       level: "info"
