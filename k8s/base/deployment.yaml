@@ -54,11 +54,11 @@ spec:
             failureThreshold: 2
           resources:
             requests:
-              cpu: 100m
-              memory: 512Mi
-            limits:
-              cpu: 500m
+              cpu: 50m
               memory: 1Gi
+            limits:
+              cpu: 300m
+              memory: 2Gi
           volumeMounts:
             - name: config
               mountPath: /etc/cerbos
