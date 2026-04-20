@@ -13,9 +13,6 @@ replicas:
   - name: cerbos
     count: 3
 
-patchesStrategicMerge:
-  - deployment-patch.yaml
-
 patches:
   - target:
       group: networking.k8s.io
@@ -25,9 +22,6 @@ patches:
     patch: |-
       - op: replace
         path: /spec/rules/0/host
-        value: cerbos.conqrse.com
-      - op: replace
-        path: /spec/tls/0/hosts/0
         value: cerbos.conqrse.com
 
 labels:
