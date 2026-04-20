@@ -5,7 +5,7 @@ metadata:
   labels:
     app: cerbos
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -64,24 +64,34 @@ spec:
             - name: config
               mountPath: /etc/cerbos
               readOnly: true
-            - name: policies
-              mountPath: /policies
-              readOnly: true
+            - name: cerbos-data
+              mountPath: /data
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
-            readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: false
             allowPrivilegeEscalation: false
             capabilities:
               drop:
                 - ALL
+          env:
+            - name: CERBOS_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: cerbos-admin-credentials
+                  key: username
+            - name: CERBOS_ADMIN_PASSWORD_HASH
+              valueFrom:
+                secretKeyRef:
+                  name: cerbos-admin-credentials
+                  key: passwordHash
       volumes:
         - name: config
           configMap:
             name: cerbos-config
-        - name: policies
-          configMap:
-            name: cerbos-policies
+        - name: cerbos-data
+          persistentVolumeClaim:
+            claimName: cerbos-data
       nodeSelector:
         Workload: heavy
       tolerations:
