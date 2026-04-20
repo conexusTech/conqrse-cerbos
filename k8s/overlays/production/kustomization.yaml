@@ -30,12 +30,6 @@ patches:
         path: /spec/tls/0/hosts/0
         value: cerbos.conqrse.com
 
-configMapGenerator:
-  - name: cerbos-config
-    behavior: merge
-    files:
-      - cerbos-config.yaml
-
 labels:
   - includeSelectors: true
     pairs:

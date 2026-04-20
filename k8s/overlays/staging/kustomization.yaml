@@ -24,12 +24,6 @@ patches:
         path: /spec/rules/0/host
         value: staging-cerbos.conqrse.com
 
-configMapGenerator:
-  - name: cerbos-config
-    behavior: merge
-    files:
-      - cerbos-config.yaml
-
 labels:
   - includeSelectors: true
     pairs:

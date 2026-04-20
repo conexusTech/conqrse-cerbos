@@ -22,36 +22,11 @@ spec:
         prometheus.io/scrape: "false"
     spec:
       serviceAccountName: cerbos
-      initContainers:
-        - name: seed-policies
-          image: node:22-alpine
-          command:
-            - node
-            - /scripts/seed-policies.js
-          env:
-            - name: CERBOS_BASE_URL
-              value: "http://localhost:3592"
-            - name: CERBOS_ADMIN_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: cerbos-admin-credentials
-                  key: username
-            - name: CERBOS_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: cerbos-admin-credentials
-                  key: passwordHash
-          volumeMounts:
-            - name: seed-script
-              mountPath: /scripts
-            - name: policies-seed
-              mountPath: /policies-seed
       containers:
         - name: cerbos
           image: ghcr.io/cerbos/cerbos:0.51.0
           imagePullPolicy: IfNotPresent
-          command:
-            - cerbos
+          args:
             - server
             - --config=/etc/cerbos/cerbos.yaml
           ports:
@@ -95,9 +70,6 @@ spec:
             runAsUser: 1000
             readOnlyRootFilesystem: false
             allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
           env:
             - name: CERBOS_ADMIN_USERNAME
               valueFrom:
@@ -116,16 +88,6 @@ spec:
         - name: cerbos-data
           persistentVolumeClaim:
             claimName: cerbos-data
-        - name: seed-script
-          configMap:
-            name: cerbos-seed-script
-            defaultMode: 0755
-            items:
-              - key: seed-policies.js
-                path: seed-policies.js
-        - name: policies-seed
-          configMap:
-            name: cerbos-policies-seed
       nodeSelector:
         Workload: heavy
       tolerations:
