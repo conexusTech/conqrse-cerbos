@@ -13,6 +13,16 @@ data:
         adminCredentials:
           username: cerbos
           passwordHash: JDJ5JDEwJHhvTjd2RjhlNEVZa3hmdVFYMWlrME9XOWNDemV5RzlYcERTYUNHVWZkcWo2ODdRdkhIcUcyCgo=
+      cors:
+        allowedOrigins:
+          - cerbos
+          - cerbos.production.svc.cluster.local
+          - cerbos.conqrse.com
+        allowedHeaders:
+          - accept
+          - content-type
+          - user-agent
+          - x-requested-with
 
     storage:
       driver: "sqlite3"
