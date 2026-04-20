@@ -24,6 +24,44 @@ patches:
         path: /spec/rules/0/host
         value: staging-cerbos.conqrse.com
 
+  - target:
+      kind: ConfigMap
+      name: cerbos-config
+    patch: |-
+      - op: replace
+        path: /data/cerbos.yaml
+        value: |
+          server:
+            apiExplorerEnabled: true
+            httpListenAddr: "0.0.0.0:3592"
+            grpcListenAddr: "0.0.0.0:3593"
+            adminAPI:
+              enabled: true
+              adminCredentials:
+                username: cerbos
+                passwordHash: JDJ5JDEwJHhvTjd2RjhlNEVZa3hmdVFYMWlrME9XOWNDemV5RzlYcERTYUNHVWZkcWo2ODdRdkhIcUcyCgo=
+            cors:
+              allowedOrigins:
+                - cerbos
+                - cerbos.staging.svc.cluster.local
+                - staging-cerbos.conqrse.com
+              allowedHeaders:
+                - accept
+                - content-type
+                - user-agent
+                - x-requested-with
+
+          storage:
+            driver: "sqlite3"
+            sqlite3:
+              dsn: "/data/cerbos.db"
+
+          logging:
+            level: "info"
+
+          telemetry:
+            disabled: true
+
 labels:
   - includeSelectors: true
     pairs:
