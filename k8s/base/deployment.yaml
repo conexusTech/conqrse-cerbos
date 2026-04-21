@@ -22,6 +22,8 @@ spec:
         prometheus.io/scrape: "false"
     spec:
       serviceAccountName: cerbos
+      securityContext:
+        fsGroup: 1000
       containers:
         - name: cerbos
           image: ghcr.io/cerbos/cerbos:0.51.0

@@ -3,11 +3,83 @@ kind: Kustomization
 
 resources:
   - configmap-config.yaml
+  - configmap-seed-script.yaml
+  - seed-job.yaml
   - service.yaml
   - deployment.yaml
   - ingress.yaml
   - pvc.yaml
 
+configMapGenerator:
+  - name: cerbos-policies
+    options:
+      disableNameSuffixHash: true
+    files:
+      - policies/_derived_roles.yaml
+      - policies/resource_connect_contacts.yaml
+      - policies/resource_dashboards_agency.yaml
+      - policies/resource_dashboards_retailer.yaml
+      - policies/resource_dashboards_su.yaml
+      - policies/resource_footprints_endpoints_item.yaml
+      - policies/resource_footprints_endpoints.yaml
+      - policies/resource_footprints_pricing.yaml
+      - policies/resource_footprints_products_item.yaml
+      - policies/resource_footprints_products_settings_pricinggroup_item.yaml
+      - policies/resource_footprints_products_settings_pricinggroup.yaml
+      - policies/resource_footprints_products_settings_property_item.yaml
+      - policies/resource_footprints_products_settings_property.yaml
+      - policies/resource_footprints_products.yaml
+      - policies/resource_footprints_sites_item.yaml
+      - policies/resource_footprints_sites_settings_property_item.yaml
+      - policies/resource_footprints_sites_settings_property.yaml
+      - policies/resource_footprints_sites.yaml
+      - policies/resource_qr_campaigns.yaml
+      - policies/resource_qr_media_item.yaml
+      - policies/resource_qr_media.yaml
+      - policies/resource_qr_settings_defaultredirect.yaml
+      - policies/resource_qr_settings_design_item.yaml
+      - policies/resource_qr_settings_design.yaml
+      - policies/resource_qr_settings_domain_item.yaml
+      - policies/resource_qr_settings_domain.yaml
+      - policies/resource_qr_settings_powertag_item.yaml
+      - policies/resource_qr_settings_powertag.yaml
+      - policies/resource_qr_site_item.yaml
+      - policies/resource_qr_site.yaml
+      - policies/resource_qr_templates_item.yaml
+      - policies/resource_qr_templates.yaml
+      - policies/resource_reports_campaign_compliance_details.yaml
+      - policies/resource_reports_campaign_compliance.yaml
+      - policies/resource_reports_campaign_performance_maps.yaml
+      - policies/resource_reports_content_proof_of_play.yaml
+      - policies/resource_reports_export.yaml
+      - policies/resource_reports_media_performance_maps.yaml
+      - policies/resource_reports_qrperformance_sitetosite.yaml
+      - policies/resource_reports_qrperformance.yaml
+      - policies/resource_reports_site_performance_maps.yaml
+      - policies/resource_reports.yaml
+      - policies/resource_settings_admin_teams.yaml
+      - policies/resource_settings_admin_users.yaml
+      - policies/resource_signage_content_assets.yaml
+      - policies/resource_signage_content_backgrounds.yaml
+      - policies/resource_signage_content_channels_item.yaml
+      - policies/resource_signage_content_channels.yaml
+      - policies/resource_signage_content_contentgroups_item.yaml
+      - policies/resource_signage_content_contentgroups.yaml
+      - policies/resource_signage_content_playlists.yaml
+      - policies/resource_signage_content_tags.yaml
+      - policies/resource_signage_content_templates_item.yaml
+      - policies/resource_signage_content_templates.yaml
+      - policies/resource_signage_people_settings_property_item.yaml
+      - policies/resource_signage_people_settings_property.yaml
+      - policies/resource_signage_people.yaml
+      - policies/resource_signage_places_settings_property_item.yaml
+      - policies/resource_signage_places_settings_property.yaml
+      - policies/resource_signage_places.yaml
+      - policies/resource_signage_settings_layout_item.yaml
+      - policies/resource_signage_settings_layout.yaml
+      - policies/resource_signage_things_settings_property_item.yaml
+      - policies/resource_signage_things_settings_property.yaml
+      - policies/resource_signage_things.yaml
 
 images:
   - name: ghcr.io/cerbos/cerbos

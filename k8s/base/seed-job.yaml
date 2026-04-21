@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cerbos-seed-policies
+spec:
+  ttlSecondsAfterFinished: 600
+  backoffLimit: 5
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: seed
+          image: python:3.12-alpine
+          command:
+            - sh
+            - -c
+            - pip install pyyaml requests -q && python /scripts/seed.py
+          env:
+            - name: CERBOS_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: cerbos-admin-credentials
+                  key: username
+            - name: CERBOS_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cerbos-admin-credentials
+                  key: password
+          volumeMounts:
+            - name: policies
+              mountPath: /policies
+              readOnly: true
+            - name: seed-script
+              mountPath: /scripts
+              readOnly: true
+      volumes:
+        - name: policies
+          configMap:
+            name: cerbos-policies
+        - name: seed-script
+          configMap:
+            name: cerbos-seed-script
