@@ -11,7 +11,7 @@ namespace: production
 
 replicas:
   - name: cerbos
-    count: 3
+    count: 1
 
 patches:
   - target:
