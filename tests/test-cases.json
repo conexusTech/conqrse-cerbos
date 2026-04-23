@@ -30,6 +30,24 @@
           "expectedResult": "ALLOW"
         },
         {
+          "id": "allow_11",
+          "name": "Agency Owner Viewing Agency Dashboard",
+          "description": "Agency-level owner accessing their agency dashboard",
+          "principal": {
+            "id": "agency-user-010",
+            "userLevel": "agency",
+            "userType": "owner",
+            "name": "owner@agency.com",
+            "agencyId": "agency-456",
+            "isDelegating": false
+          },
+          "resource": {
+            "name": "dashboards:agency-dashboard"
+          },
+          "action": "resource:view",
+          "expectedResult": "ALLOW"
+        },
+        {
           "id": "allow_2",
           "name": "SU Admin Acting AS Retailer Admin Creating a User",
           "description": "Super user with admin type delegating to act as a retailer admin",
@@ -261,31 +279,6 @@
           "expectedResult": "ALLOW"
         },
         {
-          "id": "allow_11",
-          "name": "Agency Owner Viewing Agency Dashboard",
-          "description": "Agency-level owner accessing their agency dashboard",
-          "principal": {
-            "id": "agency-user-010",
-            "userLevel": "agency",
-            "userType": "owner",
-            "name": "owner@agency.com",
-            "products": [
-              "footprints",
-              "signage",
-              "qr"
-            ],
-            "agencyId": "agency-456",
-            "isDelegating": false
-          },
-          "resource": {
-            "name": "dashboards:agency-dashboard",
-            "product": "dashboards",
-            "agencyId": "agency-456"
-          },
-          "action": "resource:view",
-          "expectedResult": "ALLOW"
-        },
-        {
           "id": "allow_12",
           "name": "Retailer Manager Viewing Retailer Dashboard",
           "description": "Retailer-level admin accessing their retailer dashboard",
@@ -306,6 +299,54 @@
             "name": "dashboards:retailer-dashboard",
             "product": "dashboards",
             "retailerId": "retail-789"
+          },
+          "action": "resource:view",
+          "expectedResult": "ALLOW"
+        },
+        {
+          "id": "allow_13",
+          "name": "SU Owner Viewing Acting-As Audit Logs",
+          "description": "Super user owner can view delegation/acting-as records",
+          "principal": {
+            "id": "su-user-100",
+            "userLevel": "su",
+            "userType": "owner",
+            "name": "owner@platform.com",
+            "products": [
+              "footprints",
+              "signage",
+              "qr"
+            ],
+            "isDelegating": false
+          },
+          "resource": {
+            "name": "admin:acting-as",
+            "product": "admin"
+          },
+          "action": "resource:view",
+          "expectedResult": "ALLOW"
+        },
+        {
+          "id": "allow_14",
+          "name": "Agency Manager Viewing Acting-As Records",
+          "description": "Agency admin can view delegation records for their retailers",
+          "principal": {
+            "id": "agency-user-020",
+            "userLevel": "agency",
+            "userType": "admin",
+            "name": "manager@agency.com",
+            "products": [
+              "footprints",
+              "signage",
+              "qr"
+            ],
+            "agencyId": "agency-456",
+            "isDelegating": false
+          },
+          "resource": {
+            "name": "admin:acting-as",
+            "product": "admin",
+            "agencyId": "agency-456"
           },
           "action": "resource:view",
           "expectedResult": "ALLOW"
@@ -557,6 +598,54 @@
             "name": "dashboards:agency-dashboard",
             "product": "dashboards",
             "agencyId": "agency-456"
+          },
+          "action": "resource:view",
+          "expectedResult": "DENY"
+        },
+        {
+          "id": "deny_11",
+          "name": "Agency Collaborator Attempting to View Acting-As Records",
+          "description": "Agency collaborator trying to view delegation/acting-as audit logs",
+          "principal": {
+            "id": "agency-user-030",
+            "userLevel": "agency",
+            "userType": "collaborator",
+            "name": "viewer@agency.com",
+            "products": [
+              "qr"
+            ],
+            "agencyId": "agency-456",
+            "isDelegating": false
+          },
+          "resource": {
+            "name": "admin:acting-as",
+            "product": "admin",
+            "agencyId": "agency-456"
+          },
+          "action": "resource:view",
+          "expectedResult": "DENY"
+        },
+        {
+          "id": "deny_12",
+          "name": "Retailer Member Attempting to View Acting-As Records",
+          "description": "Retailer-level member trying to view delegation records",
+          "principal": {
+            "id": "user-410",
+            "userLevel": "retailer",
+            "userType": "member",
+            "name": "staff@retailer.com",
+            "products": [
+              "footprints",
+              "qr"
+            ],
+            "agencyId": "agency-456",
+            "retailerId": "retail-789",
+            "isDelegating": false
+          },
+          "resource": {
+            "name": "admin:acting-as",
+            "product": "admin",
+            "retailerId": "retail-789"
           },
           "action": "resource:view",
           "expectedResult": "DENY"

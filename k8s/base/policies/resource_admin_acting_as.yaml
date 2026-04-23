@@ -1,0 +1,42 @@
+---
+apiVersion: "api.cerbos.dev/v1"
+resourcePolicy:
+  version: "default"
+  resource: "admin:acting-as"
+  importDerivedRoles:
+    - conqrse_roles
+  rules:
+    # Super User level
+    - actions: ["resource:view"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - root_user
+        - platform_administrator
+
+    # Agency level
+    - actions: ["resource:view"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - agency_owner
+        - agency_manager
+
+    # SU acting as retailer
+    - actions: ["resource:view"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - su_acting_retailer_owner
+        - su_acting_retailer_manager
+
+    # SU acting as agency
+    - actions: ["resource:view"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - su_acting_agency_owner
+        - su_acting_agency_manager
+
+    # Agency acting as retailer
+    - actions: ["resource:view"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - agency_acting_retailer_owner
+        - agency_acting_retailer_manager
