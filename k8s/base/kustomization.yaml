@@ -25,14 +25,14 @@ configMapGenerator:
       - policies/resource_footprints_endpoints.yaml
       - policies/resource_footprints_pricing.yaml
       - policies/resource_footprints_products_item.yaml
-      - policies/resource_footprints_products_settings_pricinggroup_item.yaml
-      - policies/resource_footprints_products_settings_pricinggroup.yaml
-      - policies/resource_footprints_products_settings_property_item.yaml
-      - policies/resource_footprints_products_settings_property.yaml
+      - policies/resource_settings_footprints_products_pricinggroup_item.yaml
+      - policies/resource_settings_footprints_products_pricinggroup.yaml
+      - policies/resource_settings_footprints_products_property_item.yaml
+      - policies/resource_settings_footprints_products_property.yaml
       - policies/resource_footprints_products.yaml
       - policies/resource_footprints_sites_item.yaml
-      - policies/resource_footprints_sites_settings_property_item.yaml
-      - policies/resource_footprints_sites_settings_property.yaml
+      - policies/resource_settings_footprints_sites_property_item.yaml
+      - policies/resource_settings_footprints_sites_property.yaml
       - policies/resource_footprints_sites.yaml
       - policies/resource_qr_campaigns.yaml
       - policies/resource_qr_media_item.yaml
