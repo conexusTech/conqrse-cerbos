@@ -2,7 +2,7 @@
 apiVersion: "api.cerbos.dev/v1"
 resourcePolicy:
   version: "default"
-  resource: "cerbos"
+  resource: "permission"
   importDerivedRoles:
     - conqrse_roles
   rules:

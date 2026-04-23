@@ -16,7 +16,7 @@ configMapGenerator:
       disableNameSuffixHash: true
     files:
       - policies/_derived_roles.yaml
-      - policies/resource_cerbos.yaml
+      - policies/resource_permission.yaml
       - policies/resource_connect_contacts.yaml
       - policies/resource_dashboards_agency.yaml
       - policies/resource_dashboards_retailer.yaml

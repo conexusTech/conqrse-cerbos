@@ -16,7 +16,7 @@ The following products are supported by Cerbos authorization, identified by the 
 | **Connect** | `connect:` | contacts |
 
 **Administrative Features** (not products):
-- `cerbos:` — Cerbos authorization management (policies, resources)
+- `permission:` — Permission and authorization management
 - `dashboards:` — User dashboards by role (su-dashboard, agency-dashboard, retailer-dashboard)
 
 ## Resources
@@ -66,7 +66,7 @@ The following products are supported by Cerbos authorization, identified by the 
 | reports:content-proof-of-play | `/reports/content-proof-of-play` | `ContentProofOfPlayClient.tsx` | | ProofOfPlayTable | | | | ProofOfPlayTable | |
 | reports:export | `/export` | `BatchClient.tsx` | | | | | | BatchClient | |
 | connect:contacts | `/connect/contacts` | `ContactsClient.tsx` | AddContact | ContactTable | | | | ContactTable | ContactTable |
-| cerbos | `/cerbos` | `CerbosManagementClient.tsx` | AddCerbosPolicy | CerbosTable | | | | | |
+| permission | `/permission` | `PermissionManagementClient.tsx` | AddPermission | PermissionTable | | | | | |
 | dashboards:su-dashboard | `/su-dashboard` | `SUDashboardClient.tsx` | | | | | | | |
 | dashboards:agency-dashboard | `/agency-dashboard` | `AgencyDashboardClient.tsx` | | | | | | | |
 | dashboards:retailer-dashboard | `/retailer-dashboard` | `RetailerDashboardClient.tsx` | | | | | | | |
