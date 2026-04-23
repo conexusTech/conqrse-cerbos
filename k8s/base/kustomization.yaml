@@ -37,13 +37,13 @@ configMapGenerator:
       - policies/resource_qr_campaigns.yaml
       - policies/resource_qr_media_item.yaml
       - policies/resource_qr_media.yaml
-      - policies/resource_qr_settings_defaultredirect.yaml
-      - policies/resource_qr_settings_design_item.yaml
-      - policies/resource_qr_settings_design.yaml
-      - policies/resource_qr_settings_domain_item.yaml
-      - policies/resource_qr_settings_domain.yaml
-      - policies/resource_qr_settings_powertag_item.yaml
-      - policies/resource_qr_settings_powertag.yaml
+      - policies/resource_settings_qr_defaultredirect.yaml
+      - policies/resource_settings_qr_design_item.yaml
+      - policies/resource_settings_qr_design.yaml
+      - policies/resource_settings_qr_domain_item.yaml
+      - policies/resource_settings_qr_domain.yaml
+      - policies/resource_settings_qr_powertag_item.yaml
+      - policies/resource_settings_qr_powertag.yaml
       - policies/resource_qr_site_item.yaml
       - policies/resource_qr_site.yaml
       - policies/resource_qr_templates_item.yaml
