@@ -259,6 +259,56 @@
           },
           "action": "resource:update",
           "expectedResult": "ALLOW"
+        },
+        {
+          "id": "allow_11",
+          "name": "Agency Owner Viewing Agency Dashboard",
+          "description": "Agency-level owner accessing their agency dashboard",
+          "principal": {
+            "id": "agency-user-010",
+            "userLevel": "agency",
+            "userType": "owner",
+            "name": "owner@agency.com",
+            "products": [
+              "footprints",
+              "signage",
+              "qr"
+            ],
+            "agencyId": "agency-456",
+            "isDelegating": false
+          },
+          "resource": {
+            "name": "dashboards:agency-dashboard",
+            "product": "dashboards",
+            "agencyId": "agency-456"
+          },
+          "action": "resource:view",
+          "expectedResult": "ALLOW"
+        },
+        {
+          "id": "allow_12",
+          "name": "Retailer Manager Viewing Retailer Dashboard",
+          "description": "Retailer-level admin accessing their retailer dashboard",
+          "principal": {
+            "id": "user-300",
+            "userLevel": "retailer",
+            "userType": "admin",
+            "name": "manager@retailer.com",
+            "products": [
+              "footprints",
+              "qr"
+            ],
+            "agencyId": "agency-456",
+            "retailerId": "retail-789",
+            "isDelegating": false
+          },
+          "resource": {
+            "name": "dashboards:retailer-dashboard",
+            "product": "dashboards",
+            "retailerId": "retail-789"
+          },
+          "action": "resource:view",
+          "expectedResult": "ALLOW"
         }
       ]
     },
@@ -460,6 +510,55 @@
             "retailerId": "retail-999"
           },
           "action": "resource:list",
+          "expectedResult": "DENY"
+        },
+        {
+          "id": "deny_9",
+          "name": "Agency User Attempting to View SU Dashboard",
+          "description": "Agency-level user trying to access platform-level dashboard",
+          "principal": {
+            "id": "agency-user-011",
+            "userLevel": "agency",
+            "userType": "owner",
+            "name": "owner@agency.com",
+            "products": [
+              "footprints",
+              "signage",
+              "qr"
+            ],
+            "agencyId": "agency-456",
+            "isDelegating": false
+          },
+          "resource": {
+            "name": "dashboards:su-dashboard",
+            "product": "dashboards"
+          },
+          "action": "resource:view",
+          "expectedResult": "DENY"
+        },
+        {
+          "id": "deny_10",
+          "name": "Retailer User Attempting to View Agency Dashboard",
+          "description": "Retailer-level user trying to access agency dashboard",
+          "principal": {
+            "id": "user-310",
+            "userLevel": "retailer",
+            "userType": "owner",
+            "name": "owner@retailer.com",
+            "products": [
+              "footprints",
+              "qr"
+            ],
+            "agencyId": "agency-456",
+            "retailerId": "retail-789",
+            "isDelegating": false
+          },
+          "resource": {
+            "name": "dashboards:agency-dashboard",
+            "product": "dashboards",
+            "agencyId": "agency-456"
+          },
+          "action": "resource:view",
           "expectedResult": "DENY"
         }
       ]
