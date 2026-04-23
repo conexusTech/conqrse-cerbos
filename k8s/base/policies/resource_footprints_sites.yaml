@@ -26,6 +26,15 @@ resourcePolicy:
         - agency_acting_retailer_lead
         - agency_acting_retailer_member
 
+    # Agency member access to child retailer resources
+    - actions: ["resource:list", "resource:view", "resource:export"]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          expr: '"footprints" in P.attr.products'
+      derivedRoles:
+        - agency_member
+
     # Collaborators with product subscription check
     - actions: ["resource:list", "resource:view", "resource:export"]
       effect: EFFECT_ALLOW

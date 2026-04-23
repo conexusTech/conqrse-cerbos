@@ -10,9 +10,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "su"'
-              - expr: 'P.attr.userType == "owner"'
-              - expr: 'P.attr.actingAs == null'
+              - expr: (P.attr.userLevel == "su")
+              - expr: (P.attr.userType == "owner")
+              - expr: (P.attr.isDelegating == false)
 
     - name: platform_administrator
       parentRoles: ["*"]
@@ -20,9 +20,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "su"'
-              - expr: 'P.attr.userType == "admin"'
-              - expr: 'P.attr.actingAs == null'
+              - expr: (P.attr.userLevel == "su")
+              - expr: (P.attr.userType == "admin")
+              - expr: (P.attr.isDelegating == false)
 
     - name: platform_lead
       parentRoles: ["*"]
@@ -30,9 +30,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "su"'
-              - expr: 'P.attr.userType == "lead"'
-              - expr: 'P.attr.actingAs == null'
+              - expr: (P.attr.userLevel == "su")
+              - expr: (P.attr.userType == "lead")
+              - expr: (P.attr.isDelegating == false)
 
     - name: platform_member
       parentRoles: ["*"]
@@ -40,9 +40,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "su"'
-              - expr: 'P.attr.userType == "member"'
-              - expr: 'P.attr.actingAs == null'
+              - expr: (P.attr.userLevel == "su")
+              - expr: (P.attr.userType == "member")
+              - expr: (P.attr.isDelegating == false)
 
     - name: platform_collaborator
       parentRoles: ["*"]
@@ -50,9 +50,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "su"'
-              - expr: 'P.attr.userType == "collaborator"'
-              - expr: 'P.attr.actingAs == null'
+              - expr: (P.attr.userLevel == "su")
+              - expr: (P.attr.userType == "collaborator")
+              - expr: (P.attr.isDelegating == false)
 
     # Agency Level Roles (5)
     - name: agency_owner
@@ -61,9 +61,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "agency"'
-              - expr: 'P.attr.userType == "owner"'
-              - expr: 'P.attr.actingAs == null'
+              - expr: (P.attr.userLevel == "agency")
+              - expr: (P.attr.userType == "owner")
+              - expr: (P.attr.isDelegating == false)
 
     - name: agency_manager
       parentRoles: ["*"]
@@ -71,9 +71,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "agency"'
-              - expr: 'P.attr.userType == "admin"'
-              - expr: 'P.attr.actingAs == null'
+              - expr: (P.attr.userLevel == "agency")
+              - expr: (P.attr.userType == "admin")
+              - expr: (P.attr.isDelegating == false)
 
     - name: agency_lead
       parentRoles: ["*"]
@@ -81,9 +81,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "agency"'
-              - expr: 'P.attr.userType == "lead"'
-              - expr: 'P.attr.actingAs == null'
+              - expr: (P.attr.userLevel == "agency")
+              - expr: (P.attr.userType == "lead")
+              - expr: (P.attr.isDelegating == false)
 
     - name: agency_member
       parentRoles: ["*"]
@@ -91,9 +91,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "agency"'
-              - expr: 'P.attr.userType == "member"'
-              - expr: 'P.attr.actingAs == null'
+              - expr: (P.attr.userLevel == "agency")
+              - expr: (P.attr.userType == "member")
+              - expr: (P.attr.isDelegating == false)
 
     - name: agency_collaborator
       parentRoles: ["*"]
@@ -101,9 +101,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "agency"'
-              - expr: 'P.attr.userType == "collaborator"'
-              - expr: 'P.attr.actingAs == null'
+              - expr: (P.attr.userLevel == "agency")
+              - expr: (P.attr.userType == "collaborator")
+              - expr: (P.attr.isDelegating == false)
 
     # Retailer Level Roles (5)
     - name: retailer_owner
@@ -112,9 +112,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "retailer"'
-              - expr: 'P.attr.userType == "owner"'
-              - expr: 'P.attr.actingAs == null'
+              - expr: (P.attr.userLevel == "retailer")
+              - expr: (P.attr.userType == "owner")
+              - expr: (P.attr.isDelegating == false)
 
     - name: retailer_manager
       parentRoles: ["*"]
@@ -122,9 +122,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "retailer"'
-              - expr: 'P.attr.userType == "admin"'
-              - expr: 'P.attr.actingAs == null'
+              - expr: (P.attr.userLevel == "retailer")
+              - expr: (P.attr.userType == "admin")
+              - expr: (P.attr.isDelegating == false)
 
     - name: team_lead
       parentRoles: ["*"]
@@ -132,9 +132,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "retailer"'
-              - expr: 'P.attr.userType == "lead"'
-              - expr: 'P.attr.actingAs == null'
+              - expr: (P.attr.userLevel == "retailer")
+              - expr: (P.attr.userType == "lead")
+              - expr: (P.attr.isDelegating == false)
 
     - name: staff_operator
       parentRoles: ["*"]
@@ -142,9 +142,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "retailer"'
-              - expr: 'P.attr.userType == "member"'
-              - expr: 'P.attr.actingAs == null'
+              - expr: (P.attr.userLevel == "retailer")
+              - expr: (P.attr.userType == "member")
+              - expr: (P.attr.isDelegating == false)
 
     - name: guest_collaborator
       parentRoles: ["*"]
@@ -152,9 +152,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "retailer"'
-              - expr: 'P.attr.userType == "collaborator"'
-              - expr: 'P.attr.actingAs == null'
+              - expr: (P.attr.userLevel == "retailer")
+              - expr: (P.attr.userType == "collaborator")
+              - expr: (P.attr.isDelegating == false)
 
     # SU Acting AS Retailer Roles (5)
     - name: su_acting_retailer_owner
@@ -163,9 +163,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "su"'
-              - expr: 'P.attr.userType == "owner"'
-              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "retailer"'
+              - expr: (P.attr.userLevel == "su")
+              - expr: (P.attr.userType == "owner")
+              - expr: (P.attr.actingAs != null && P.attr.actingAs.level == "retailer")
 
     - name: su_acting_retailer_manager
       parentRoles: ["*"]
@@ -173,9 +173,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "su"'
-              - expr: 'P.attr.userType == "admin"'
-              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "retailer"'
+              - expr: (P.attr.userLevel == "su")
+              - expr: (P.attr.userType == "admin")
+              - expr: (P.attr.actingAs != null && P.attr.actingAs.level == "retailer")
 
     - name: su_acting_retailer_lead
       parentRoles: ["*"]
@@ -183,9 +183,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "su"'
-              - expr: 'P.attr.userType == "lead"'
-              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "retailer"'
+              - expr: (P.attr.userLevel == "su")
+              - expr: (P.attr.userType == "lead")
+              - expr: (P.attr.actingAs != null && P.attr.actingAs.level == "retailer")
 
     - name: su_acting_retailer_member
       parentRoles: ["*"]
@@ -193,9 +193,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "su"'
-              - expr: 'P.attr.userType == "member"'
-              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "retailer"'
+              - expr: (P.attr.userLevel == "su")
+              - expr: (P.attr.userType == "member")
+              - expr: (P.attr.actingAs != null && P.attr.actingAs.level == "retailer")
 
     - name: su_acting_retailer_collaborator
       parentRoles: ["*"]
@@ -203,9 +203,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "su"'
-              - expr: 'P.attr.userType == "collaborator"'
-              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "retailer"'
+              - expr: (P.attr.userLevel == "su")
+              - expr: (P.attr.userType == "collaborator")
+              - expr: (P.attr.actingAs != null && P.attr.actingAs.level == "retailer")
 
     # Agency Acting AS Retailer Roles (5)
     - name: agency_acting_retailer_owner
@@ -214,10 +214,10 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "agency"'
-              - expr: 'P.attr.userType == "owner"'
-              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "retailer"'
-              - expr: 'P.attr.actingAs.agencyId == P.attr.agencyId'
+              - expr: (P.attr.userLevel == "agency")
+              - expr: (P.attr.userType == "owner")
+              - expr: (P.attr.actingAs != null && P.attr.actingAs.level == "retailer")
+              - expr: (P.attr.actingAs.agencyId == P.attr.agencyId)
 
     - name: agency_acting_retailer_manager
       parentRoles: ["*"]
@@ -225,10 +225,10 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "agency"'
-              - expr: 'P.attr.userType == "admin"'
-              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "retailer"'
-              - expr: 'P.attr.actingAs.agencyId == P.attr.agencyId'
+              - expr: (P.attr.userLevel == "agency")
+              - expr: (P.attr.userType == "admin")
+              - expr: (P.attr.actingAs != null && P.attr.actingAs.level == "retailer")
+              - expr: (P.attr.actingAs.agencyId == P.attr.agencyId)
 
     - name: agency_acting_retailer_lead
       parentRoles: ["*"]
@@ -236,10 +236,10 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "agency"'
-              - expr: 'P.attr.userType == "lead"'
-              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "retailer"'
-              - expr: 'P.attr.actingAs.agencyId == P.attr.agencyId'
+              - expr: (P.attr.userLevel == "agency")
+              - expr: (P.attr.userType == "lead")
+              - expr: (P.attr.actingAs != null && P.attr.actingAs.level == "retailer")
+              - expr: (P.attr.actingAs.agencyId == P.attr.agencyId)
 
     - name: agency_acting_retailer_member
       parentRoles: ["*"]
@@ -247,10 +247,10 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "agency"'
-              - expr: 'P.attr.userType == "member"'
-              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "retailer"'
-              - expr: 'P.attr.actingAs.agencyId == P.attr.agencyId'
+              - expr: (P.attr.userLevel == "agency")
+              - expr: (P.attr.userType == "member")
+              - expr: (P.attr.actingAs != null && P.attr.actingAs.level == "retailer")
+              - expr: (P.attr.actingAs.agencyId == P.attr.agencyId)
 
     - name: agency_acting_retailer_collaborator
       parentRoles: ["*"]
@@ -258,10 +258,10 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "agency"'
-              - expr: 'P.attr.userType == "collaborator"'
-              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "retailer"'
-              - expr: 'P.attr.actingAs.agencyId == P.attr.agencyId'
+              - expr: (P.attr.userLevel == "agency")
+              - expr: (P.attr.userType == "collaborator")
+              - expr: (P.attr.actingAs != null && P.attr.actingAs.level == "retailer")
+              - expr: (P.attr.actingAs.agencyId == P.attr.agencyId)
 
     # SU Acting AS Agency Roles (5)
     - name: su_acting_agency_owner
@@ -270,9 +270,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "su"'
-              - expr: 'P.attr.userType == "owner"'
-              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "agency"'
+              - expr: (P.attr.userLevel == "su")
+              - expr: (P.attr.userType == "owner")
+              - expr: (P.attr.actingAs != null && P.attr.actingAs.level == "agency")
 
     - name: su_acting_agency_manager
       parentRoles: ["*"]
@@ -280,9 +280,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "su"'
-              - expr: 'P.attr.userType == "admin"'
-              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "agency"'
+              - expr: (P.attr.userLevel == "su")
+              - expr: (P.attr.userType == "admin")
+              - expr: (P.attr.actingAs != null && P.attr.actingAs.level == "agency")
 
     - name: su_acting_agency_lead
       parentRoles: ["*"]
@@ -290,9 +290,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "su"'
-              - expr: 'P.attr.userType == "lead"'
-              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "agency"'
+              - expr: (P.attr.userLevel == "su")
+              - expr: (P.attr.userType == "lead")
+              - expr: (P.attr.actingAs != null && P.attr.actingAs.level == "agency")
 
     - name: su_acting_agency_member
       parentRoles: ["*"]
@@ -300,9 +300,9 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "su"'
-              - expr: 'P.attr.userType == "member"'
-              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "agency"'
+              - expr: (P.attr.userLevel == "su")
+              - expr: (P.attr.userType == "member")
+              - expr: (P.attr.actingAs != null && P.attr.actingAs.level == "agency")
 
     - name: su_acting_agency_collaborator
       parentRoles: ["*"]
@@ -310,6 +310,6 @@ derivedRoles:
         match:
           all:
             of:
-              - expr: 'P.attr.userLevel == "su"'
-              - expr: 'P.attr.userType == "collaborator"'
-              - expr: 'P.attr.actingAs != null && P.attr.actingAs.level == "agency"'
+              - expr: (P.attr.userLevel == "su")
+              - expr: (P.attr.userType == "collaborator")
+              - expr: (P.attr.actingAs != null && P.attr.actingAs.level == "agency")

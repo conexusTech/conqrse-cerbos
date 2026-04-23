@@ -6,18 +6,21 @@ resourcePolicy:
   importDerivedRoles:
     - conqrse_roles
   rules:
-    - actions: ["resource:view"]
+    - actions: ["resource:view", "resource:update"]
       effect: EFFECT_ALLOW
       derivedRoles:
         - root_user
         - platform_administrator
-        - agency_owner
-        - agency_manager
         - retailer_owner
         - retailer_manager
         - su_acting_retailer_owner
         - su_acting_retailer_manager
         - su_acting_agency_owner
-        - su_acting_agency_manager
         - agency_acting_retailer_owner
         - agency_acting_retailer_manager
+
+    - actions: ["resource:view"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - agency_owner
+        - agency_manager

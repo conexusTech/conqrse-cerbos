@@ -81,12 +81,19 @@ for ((i=0; i<SUITE_COUNT; i++)); do
 
         TOTAL_TESTS=$((TOTAL_TESTS + 1))
 
-        # Build request payload
+        # Build request payload with proper Cerbos API format
+        PRINCIPAL_ID=$(echo "$PRINCIPAL" | jq -r '.id')
+        PRINCIPAL_ATTRS=$(echo "$PRINCIPAL" | jq 'del(.id)')
+        RESOURCE_KIND=$(echo "$RESOURCE" | jq -r '.name')
+        RESOURCE_ATTRS=$(echo "$RESOURCE" | jq 'del(.name)')
+
         PAYLOAD=$(jq -n \
-            --argjson principal "$PRINCIPAL" \
-            --argjson resource "$RESOURCE" \
+            --arg id "$PRINCIPAL_ID" \
+            --argjson attr "$PRINCIPAL_ATTRS" \
+            --arg kind "$RESOURCE_KIND" \
+            --argjson resource_attr "$RESOURCE_ATTRS" \
             --arg action "$ACTION" \
-            '{principal: $principal, resource: $resource, action: $action}')
+            '{principal: {id: $id, roles: ["user"], attr: $attr}, resource: {kind: $kind, instances: {"resource-1": {attr: $resource_attr}}}, actions: [$action]}')
 
         # Send to Cerbos
         RESPONSE=$(curl -s -X POST \
@@ -94,18 +101,21 @@ for ((i=0; i<SUITE_COUNT; i++)); do
             -d "$PAYLOAD" \
             "$CERBOS_URL/api/check" 2>/dev/null || echo '{}')
 
-        # Extract decision
-        DECISION=$(echo "$RESPONSE" | jq -r '.result.allow // empty')
-
-        if [ -z "$DECISION" ]; then
+        # Extract decision from resource instances and handle errors
+        ERROR_MSG=$(echo "$RESPONSE" | jq -r '.message // empty')
+        if [ -n "$ERROR_MSG" ]; then
             DECISION="ERROR"
-        fi
-
-        # Normalize comparison (true/false vs ALLOW/DENY)
-        if [ "$DECISION" = "true" ]; then
-            DECISION="ALLOW"
-        elif [ "$DECISION" = "false" ]; then
-            DECISION="DENY"
+        else
+            EFFECT=$(echo "$RESPONSE" | jq -r '.resourceInstances["resource-1"].actions["'$ACTION'"] // empty')
+            if [ -z "$EFFECT" ]; then
+                DECISION="ERROR"
+            elif [ "$EFFECT" = "EFFECT_ALLOW" ]; then
+                DECISION="ALLOW"
+            elif [ "$EFFECT" = "EFFECT_DENY" ]; then
+                DECISION="DENY"
+            else
+                DECISION="ERROR"
+            fi
         fi
 
         # Check result
@@ -139,7 +149,8 @@ echo "Test Suites: $TOTAL_SUITES"
 echo "Total Tests: $TOTAL_TESTS"
 echo -e "Passed: ${GREEN}$PASSED${NC}"
 echo -e "Failed: ${RED}$FAILED${NC}"
-echo "Success Rate: $(awk "BEGIN {printf \"%.1f%%\", ($PASSED/$TOTAL_TESTS)*100}")"
+SUCCESS_RATE=$(awk "BEGIN {printf \"%.1f\", ($PASSED/$TOTAL_TESTS)*100}")
+echo "Success Rate: ${SUCCESS_RATE}%"
 echo ""
 
 # Generate JSON results file

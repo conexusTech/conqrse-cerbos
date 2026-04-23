@@ -13,9 +13,12 @@
             "userLevel": "retailer",
             "userType": "member",
             "name": "john.doe",
-            "products": ["qr"],
+            "products": [
+              "qr"
+            ],
             "agencyId": "agency-456",
-            "retailerId": "retail-789"
+            "retailerId": "retail-789",
+            "isDelegating": false
           },
           "resource": {
             "name": "qr:campaigns",
@@ -35,7 +38,11 @@
             "userLevel": "su",
             "userType": "admin",
             "name": "admin@platform.com",
-            "products": ["footprints", "signage", "qr"],
+            "products": [
+              "footprints",
+              "signage",
+              "qr"
+            ],
             "actingAs": {
               "level": "retailer",
               "retailerId": "retail-789"
@@ -46,7 +53,7 @@
             "product": "settings",
             "retailerId": "retail-789"
           },
-          "action": "settings:create",
+          "action": "resource:create",
           "expectedResult": "ALLOW"
         },
         {
@@ -58,7 +65,10 @@
             "userLevel": "agency",
             "userType": "admin",
             "name": "manager@agency.com",
-            "products": ["footprints", "qr"],
+            "products": [
+              "footprints",
+              "qr"
+            ],
             "agencyId": "agency-456",
             "actingAs": {
               "level": "retailer",
@@ -84,8 +94,13 @@
             "userLevel": "agency",
             "userType": "owner",
             "name": "owner@agency.com",
-            "products": ["footprints", "signage", "qr"],
-            "agencyId": "agency-456"
+            "products": [
+              "footprints",
+              "signage",
+              "qr"
+            ],
+            "agencyId": "agency-456",
+            "isDelegating": false
           },
           "resource": {
             "name": "settings:admin:users",
@@ -93,7 +108,7 @@
             "retailerId": "retail-789",
             "agencyId": "agency-456"
           },
-          "action": "settings:create",
+          "action": "resource:create",
           "expectedResult": "ALLOW"
         },
         {
@@ -105,13 +120,18 @@
             "userLevel": "su",
             "userType": "owner",
             "name": "owner@platform.com",
-            "products": ["footprints", "signage", "qr"]
+            "products": [
+              "footprints",
+              "signage",
+              "qr"
+            ],
+            "isDelegating": false
           },
           "resource": {
             "name": "settings:admin:general",
             "product": "settings"
           },
-          "action": "settings:update",
+          "action": "resource:update",
           "expectedResult": "ALLOW"
         },
         {
@@ -123,7 +143,12 @@
             "userLevel": "su",
             "userType": "lead",
             "name": "lead@platform.com",
-            "products": ["footprints", "signage", "qr"]
+            "products": [
+              "footprints",
+              "signage",
+              "qr"
+            ],
+            "isDelegating": false
           },
           "resource": {
             "name": "dashboards:su-dashboard",
@@ -141,7 +166,9 @@
             "userLevel": "su",
             "userType": "collaborator",
             "name": "viewer@platform.com",
-            "products": ["qr"],
+            "products": [
+              "qr"
+            ],
             "actingAs": {
               "level": "retailer",
               "retailerId": "retail-789"
@@ -164,7 +191,9 @@
             "userLevel": "agency",
             "userType": "lead",
             "name": "lead@agency.com",
-            "products": ["qr"],
+            "products": [
+              "qr"
+            ],
             "agencyId": "agency-456",
             "actingAs": {
               "level": "retailer",
@@ -190,8 +219,12 @@
             "userLevel": "agency",
             "userType": "member",
             "name": "operator@agency.com",
-            "products": ["footprints", "qr"],
-            "agencyId": "agency-456"
+            "products": [
+              "footprints",
+              "qr"
+            ],
+            "agencyId": "agency-456",
+            "isDelegating": false
           },
           "resource": {
             "name": "footprints:sites",
@@ -211,16 +244,20 @@
             "userLevel": "retailer",
             "userType": "owner",
             "name": "owner@retailer.com",
-            "products": ["footprints", "qr"],
+            "products": [
+              "footprints",
+              "qr"
+            ],
             "agencyId": "agency-456",
-            "retailerId": "retail-789"
+            "retailerId": "retail-789",
+            "isDelegating": false
           },
           "resource": {
             "name": "settings:admin:general",
             "product": "settings",
             "retailerId": "retail-789"
           },
-          "action": "settings:update",
+          "action": "resource:update",
           "expectedResult": "ALLOW"
         }
       ]
@@ -238,9 +275,12 @@
             "userLevel": "retailer",
             "userType": "collaborator",
             "name": "guest@retailer.com",
-            "products": ["qr"],
+            "products": [
+              "qr"
+            ],
             "agencyId": "agency-456",
-            "retailerId": "retail-789"
+            "retailerId": "retail-789",
+            "isDelegating": false
           },
           "resource": {
             "name": "qr:campaigns",
@@ -260,9 +300,12 @@
             "userLevel": "retailer",
             "userType": "member",
             "name": "staff@retailer.com",
-            "products": ["qr"],
+            "products": [
+              "qr"
+            ],
             "agencyId": "agency-456",
-            "retailerId": "retail-789"
+            "retailerId": "retail-789",
+            "isDelegating": false
           },
           "resource": {
             "name": "signage:content:templates",
@@ -282,13 +325,16 @@
             "userLevel": "su",
             "userType": "collaborator",
             "name": "viewer@platform.com",
-            "products": ["footprints"]
+            "products": [
+              "footprints"
+            ],
+            "isDelegating": false
           },
           "resource": {
             "name": "settings:admin:general",
             "product": "settings"
           },
-          "action": "settings:create",
+          "action": "resource:create",
           "expectedResult": "DENY"
         },
         {
@@ -300,15 +346,18 @@
             "userLevel": "agency",
             "userType": "lead",
             "name": "lead@agency.com",
-            "products": ["qr"],
-            "agencyId": "agency-456"
+            "products": [
+              "qr"
+            ],
+            "agencyId": "agency-456",
+            "isDelegating": false
           },
           "resource": {
             "name": "settings:admin:users",
             "product": "settings",
             "agencyId": "agency-456"
           },
-          "action": "settings:create",
+          "action": "resource:create",
           "expectedResult": "DENY"
         },
         {
@@ -320,8 +369,11 @@
             "userLevel": "agency",
             "userType": "collaborator",
             "name": "viewer@agency.com",
-            "products": ["qr"],
-            "agencyId": "agency-456"
+            "products": [
+              "qr"
+            ],
+            "agencyId": "agency-456",
+            "isDelegating": false
           },
           "resource": {
             "name": "qr:campaigns",
@@ -340,16 +392,19 @@
             "userLevel": "retailer",
             "userType": "lead",
             "name": "lead@retailer.com",
-            "products": ["qr"],
+            "products": [
+              "qr"
+            ],
             "agencyId": "agency-456",
-            "retailerId": "retail-789"
+            "retailerId": "retail-789",
+            "isDelegating": false
           },
           "resource": {
             "name": "settings:admin:general",
             "product": "settings",
             "retailerId": "retail-789"
           },
-          "action": "settings:update",
+          "action": "resource:update",
           "expectedResult": "DENY"
         },
         {
@@ -361,7 +416,9 @@
             "userLevel": "agency",
             "userType": "admin",
             "name": "manager@agency-a.com",
-            "products": ["qr"],
+            "products": [
+              "qr"
+            ],
             "agencyId": "agency-456",
             "actingAs": {
               "level": "retailer",
@@ -387,7 +444,9 @@
             "userLevel": "retailer",
             "userType": "member",
             "name": "staff@retailer-a.com",
-            "products": ["qr"],
+            "products": [
+              "qr"
+            ],
             "agencyId": "agency-456",
             "retailerId": "retail-789",
             "actingAs": {
