@@ -2,7 +2,7 @@
 apiVersion: "api.cerbos.dev/v1"
 resourcePolicy:
   version: "default"
-  resource: "footprints:sites:settings:property:item"
+  resource: "settings:footprints:sites:property:item"
   importDerivedRoles:
     - conqrse_roles
   rules:

@@ -2,7 +2,7 @@
 apiVersion: "api.cerbos.dev/v1"
 resourcePolicy:
   version: "default"
-  resource: "footprints:products:settings:pricing-group"
+  resource: "settings:footprints:products:pricing-group"
   importDerivedRoles:
     - conqrse_roles
   rules:

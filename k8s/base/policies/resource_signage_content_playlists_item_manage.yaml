@@ -2,7 +2,7 @@
 apiVersion: "api.cerbos.dev/v1"
 resourcePolicy:
   version: "default"
-  resource: "signage:signage:people:settings:property"
+  resource: "signage:content:playlists:item:manage"
   importDerivedRoles:
     - conqrse_roles
   rules:

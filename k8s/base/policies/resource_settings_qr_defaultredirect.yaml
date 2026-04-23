@@ -2,7 +2,7 @@
 apiVersion: "api.cerbos.dev/v1"
 resourcePolicy:
   version: "default"
-  resource: "qr:settings:default-redirect"
+  resource: "settings:qr:default-redirect"
   importDerivedRoles:
     - conqrse_roles
   rules:

@@ -7,7 +7,7 @@ resourcePolicy:
     - conqrse_roles
   rules:
     # SU can view SU-level dashboards
-    - actions: ["resource:view", "resource:list"]
+    - actions: ["resource:view"]
       effect: EFFECT_ALLOW
       derivedRoles:
         - root_user

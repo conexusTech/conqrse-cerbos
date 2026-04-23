@@ -2,16 +2,16 @@
 apiVersion: "api.cerbos.dev/v1"
 resourcePolicy:
   version: "default"
-  resource: "settings:footprints:sites:property"
+  resource: "settings:signage:things:property:item"
   importDerivedRoles:
     - conqrse_roles
   rules:
     # Retailer access with product subscription check
-    - actions: ["resource:list", "resource:view", "resource:create", "resource:update", "resource:delete", "resource:export", "resource:import"]
+    - actions: ["resource:view", "resource:list"]
       effect: EFFECT_ALLOW
       condition:
         match:
-          expr: '"footprints" in P.attr.products'
+          expr: '"signage" in P.attr.products'
       derivedRoles:
         - retailer_owner
         - retailer_manager
@@ -27,11 +27,11 @@ resourcePolicy:
         - agency_acting_retailer_member
 
     # Collaborators with product subscription check
-    - actions: ["resource:list", "resource:view", "resource:export"]
+    - actions: ["resource:view", "resource:list"]
       effect: EFFECT_ALLOW
       condition:
         match:
-          expr: '"footprints" in P.attr.products'
+          expr: '"signage" in P.attr.products'
       derivedRoles:
         - guest_collaborator
         - su_acting_retailer_collaborator

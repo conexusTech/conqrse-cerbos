@@ -7,7 +7,7 @@ resourcePolicy:
     - conqrse_roles
   rules:
     # Agency users can view agency-level dashboards
-    - actions: ["resource:view", "resource:list"]
+    - actions: ["resource:view"]
       effect: EFFECT_ALLOW
       derivedRoles:
         - agency_owner
@@ -17,7 +17,7 @@ resourcePolicy:
         - agency_collaborator
 
     # SU can view agency dashboards
-    - actions: ["resource:view", "resource:list"]
+    - actions: ["resource:view"]
       effect: EFFECT_ALLOW
       derivedRoles:
         - root_user
@@ -27,7 +27,7 @@ resourcePolicy:
         - platform_collaborator
 
     # Acting AS users can view dashboards at their delegated level
-    - actions: ["resource:view", "resource:list"]
+    - actions: ["resource:view"]
       effect: EFFECT_ALLOW
       derivedRoles:
         - su_acting_agency_owner

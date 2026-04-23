@@ -2,7 +2,7 @@
 apiVersion: "api.cerbos.dev/v1"
 resourcePolicy:
   version: "default"
-  resource: "qr:settings:power-tag:item"
+  resource: "settings:qr:power-tag:item"
   importDerivedRoles:
     - conqrse_roles
   rules:

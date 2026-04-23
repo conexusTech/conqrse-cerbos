@@ -2,7 +2,7 @@
 apiVersion: "api.cerbos.dev/v1"
 resourcePolicy:
   version: "default"
-  resource: "signage:settings:layout"
+  resource: "settings:signage:places:property"
   importDerivedRoles:
     - conqrse_roles
   rules:

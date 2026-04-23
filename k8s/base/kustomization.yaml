@@ -61,15 +61,20 @@ configMapGenerator:
       - policies/resource_settings_admin_teams.yaml
       - policies/resource_settings_admin_users.yaml
       - policies/resource_signage_content_assets.yaml
+      - policies/resource_signage_content_assets_create_content_template.yaml
+      - policies/resource_signage_content_assets_create_template.yaml
       - policies/resource_signage_content_backgrounds.yaml
       - policies/resource_signage_content_channels_item.yaml
       - policies/resource_signage_content_channels.yaml
+      - policies/resource_signage_content_channels_add.yaml
       - policies/resource_signage_content_contentgroups_item.yaml
       - policies/resource_signage_content_contentgroups.yaml
       - policies/resource_signage_content_playlists.yaml
+      - policies/resource_signage_content_playlists_item_manage.yaml
       - policies/resource_signage_content_tags.yaml
       - policies/resource_signage_content_templates_item.yaml
       - policies/resource_signage_content_templates.yaml
+      - policies/resource_signage_content_templates_create.yaml
       - policies/resource_signage_people_settings_property_item.yaml
       - policies/resource_signage_people_settings_property.yaml
       - policies/resource_signage_people.yaml

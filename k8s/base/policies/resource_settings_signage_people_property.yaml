@@ -2,12 +2,12 @@
 apiVersion: "api.cerbos.dev/v1"
 resourcePolicy:
   version: "default"
-  resource: "signage:settings:layout:item"
+  resource: "settings:signage:people:property"
   importDerivedRoles:
     - conqrse_roles
   rules:
     # Retailer access with product subscription check
-    - actions: ["resource:view", "resource:list"]
+    - actions: ["resource:list", "resource:view", "resource:create", "resource:update", "resource:delete", "resource:export", "resource:import"]
       effect: EFFECT_ALLOW
       condition:
         match:
@@ -27,7 +27,7 @@ resourcePolicy:
         - agency_acting_retailer_member
 
     # Collaborators with product subscription check
-    - actions: ["resource:view", "resource:list"]
+    - actions: ["resource:list", "resource:view", "resource:export"]
       effect: EFFECT_ALLOW
       condition:
         match:

@@ -1,0 +1,21 @@
+---
+apiVersion: "api.cerbos.dev/v1"
+resourcePolicy:
+  version: "default"
+  resource: "settings:signage"
+  importDerivedRoles:
+    - conqrse_roles
+  rules:
+    # Retailer access with product subscription check
+    - actions: ["resource:view"]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          expr: '"signage" in P.attr.products'
+      derivedRoles:
+        - retailer_owner
+        - retailer_manager
+        - su_acting_retailer_owner
+        - su_acting_retailer_manager
+        - agency_acting_retailer_owner
+        - agency_acting_retailer_manager

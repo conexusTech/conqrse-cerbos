@@ -31,16 +31,16 @@ The following products are supported by Cerbos authorization, identified by the 
 | footprints:products:item | `/footprint/products/[id]` | `ProductDetailClient.tsx` | | | | | | | |
 | footprints:pricing | `/footprint/pricing` | `PricingClient.tsx` | AddPricing | PricingTable | | | | PricingTable | PricingTable |
 | signage:content:templates | `/content/templates` | `TemplatesClient.tsx` | | TemplateTable | | | | TemplateTable | TemplateTable |
-| signage:content:templates:create | `/content/templates/create` | `CreateTemplatePageClient.tsx` | CreateTemplatePageClient | | | | | | |
+| signage:content:templates:create | `/content/templates/create` | `CreateTemplatePageClient.tsx` | | | | | | | |
 | signage:content:templates:item | `/content/templates/[id]` | `TemplateDetailClient.tsx` | | | | | | | |
 | signage:content:assets | `/content/assets` | `PlaylistAssetsClient.tsx` | AddAsset | AssetTable | | | | AssetTable | AssetTable |
-| signage:content:assets:create-template | `/content/assets/create-template` | `CreateTemplateClient.tsx` | CreateTemplateClient | | | | | | |
-| signage:content:assets:create-content-template | `/content/assets/create-content-template` | `CreateContentTemplateClient.tsx` | CreateContentTemplateClient | | | | | | |
+| signage:content:assets:create-template | `/content/assets/create-template` | `CreateTemplateClient.tsx` | | | | | | | |
+| signage:content:assets:create-content-template | `/content/assets/create-content-template` | `CreateContentTemplateClient.tsx` | | | | | | | |
 | signage:content:playlists | `/content/playlists` | `PlaylistConfigsClient.tsx` | AddPlaylistConfig | PlaylistConfigTable | | | | PlaylistConfigTable | PlaylistConfigTable |
 | signage:content:playlists:item:manage | `/content/playlists/[playlistConfigId]/manage` | `ManagePlaylistConfigClient.tsx` | | | | | | | |
 | signage:content:backgrounds | `/content/backgrounds` | `BackgroundsClient.tsx` | AddBackground | BackgroundTable | | | | BackgroundTable | BackgroundTable |
 | signage:content:channels | `/content/channels` | `MediaPlayerChannelsClient.tsx` | | MediaPlayerChannelTable | | | | MediaPlayerChannelTable | MediaPlayerChannelTable |
-| signage:content:channels:add | `/content/channels/add` | `MediaPlayerChannelAddClient.tsx` | MediaPlayerChannelAddClient | | | | | | |
+| signage:content:channels:add | `/content/channels/add` | `MediaPlayerChannelAddClient.tsx` | | | | | | | |
 | signage:content:channels:item | `/content/channels/[id]` | `MediaPlayerChannelDetailClient.tsx` | | | | | | | |
 | signage:content:tags | `/content/tags` | `TagManagerClient.tsx` | AddTag | TagTable | | | | TagTable | TagTable |
 | signage:content:content-groups | `/content/content-groups` | `ContentGroupsClient.tsx` | AddContentGroup | ContentGroupTable | | | | ContentGroupTable | ContentGroupTable |
@@ -73,28 +73,30 @@ The following products are supported by Cerbos authorization, identified by the 
 | settings:admin:general | `/settings/general` | `GeneralSettingsClient.tsx` | | | | | | | |
 | settings:admin:users | `/settings/users` | `UserSettingsClient.tsx` | AddUser | UserTable | | | | UserTable | UserTable |
 | settings:admin:teams | `/settings/teams` | `TeamSettingsClient.tsx` | AddTeam | TeamTable | | | | TeamTable | TeamTable |
-| settings:admin:profile | `/profile` | `ProfileClient.tsx` | | | | | | | |
+| settings:user:profile | `/profile` | `ProfileClient.tsx` | | | | | | | |
+| settings:qr | `/settings/qr` | `QrSettingsClient.tsx` | | | | | | | |
+| settings:signage | `/settings/signage` | `SignageSettingsClient.tsx` | | | | | | | |
 | footprints:sites:settings:property | `/settings/footprint` | `FootprintSettingsClient.tsx` | AddProperty | PropertyTable | | | | PropertyTable | PropertyTable |
 | footprints:sites:settings:property:item | `/settings/footprint` | `FootprintSettingsClient.tsx` | | | | | | | |
 | footprints:products:settings:property | `/settings/product` | `ProductSettingsClient.tsx` | AddProperty | PropertyTable | | | | PropertyTable | PropertyTable |
 | footprints:products:settings:property:item | `/settings/product` | `ProductSettingsClient.tsx` | | | | | | | |
 | footprints:products:settings:pricing-group | `/settings/price-tag` | `PriceTagSettingsClient.tsx` | AddPricingGroup | PricingGroupTable | | | | PricingGroupTable | PricingGroupTable |
 | footprints:products:settings:pricing-group:item | `/settings/price-tag` | `PriceTagSettingsClient.tsx` | | | | | | | |
-| qr:settings:design | `/settings/qr` | `QrSettingsClient.tsx` | AddQrDesign | QrDesignTable | | | | QrDesignTable | QrDesignTable |
-| qr:settings:design:item | `/settings/qr` | `QrSettingsClient.tsx` | | | | | | | |
-| qr:settings:power-tag | `/settings/qr` | `QrSettingsClient.tsx` | AddPowerTag | PowerTagTable | | | | PowerTagTable | PowerTagTable |
-| qr:settings:power-tag:item | `/settings/qr` | `QrSettingsClient.tsx` | | | | | | | |
-| qr:settings:default-redirect | `/settings/qr` | `QrSettingsClient.tsx` | AddDefaultRedirect | DefaultRedirectTable | | | | DefaultRedirectTable | DefaultRedirectTable |
-| qr:settings:domain | `/settings/qr` | `QrSettingsClient.tsx` | AddDomain | DomainTable | | | | DomainTable | DomainTable |
-| qr:settings:domain:item | `/settings/qr` | `QrSettingsClient.tsx` | | | | | | | |
-| signage:signage:people:settings:property | `/settings/properties-manager/people` | `PeoplePropertiesClient.tsx` | AddProperty | PropertyTable | | | | PropertyTable | PropertyTable |
-| signage:signage:people:settings:property:item | `/settings/properties-manager/people` | `PeoplePropertiesClient.tsx` | | | | | | | |
-| signage:signage:places:settings:property | `/settings/properties-manager/places` | `PlacePropertiesClient.tsx` | AddProperty | PropertyTable | | | | PropertyTable | PropertyTable |
-| signage:signage:places:settings:property:item | `/settings/properties-manager/places` | `PlacePropertiesClient.tsx` | | | | | | | |
-| signage:signage:things:settings:property | `/settings/properties-manager/things` | `ThingPropertiesClient.tsx` | AddProperty | PropertyTable | | | | PropertyTable | PropertyTable |
-| signage:signage:things:settings:property:item | `/settings/properties-manager/things` | `ThingPropertiesClient.tsx` | | | | | | | |
-| signage:settings:layout | `/settings/signage` | `SignageSettingsClient.tsx` | AddLayout | LayoutTable | | | | LayoutTable | LayoutTable |
-| signage:settings:layout:item | `/settings/signage` | `SignageSettingsClient.tsx` | | | | | | | |
+| settings:qr:design | `/settings/qr` | `QrSettingsClient.tsx` | AddQrDesign | QrDesignTable | | | | QrDesignTable | QrDesignTable |
+| settings:qr:design:item | `/settings/qr` | `QrSettingsClient.tsx` | | | | | | | |
+| settings:qr:power-tag | `/settings/qr` | `QrSettingsClient.tsx` | AddPowerTag | PowerTagTable | | | | PowerTagTable | PowerTagTable |
+| settings:qr:power-tag:item | `/settings/qr` | `QrSettingsClient.tsx` | | | | | | | |
+| settings:qr:default-redirect | `/settings/qr` | `QrSettingsClient.tsx` | AddDefaultRedirect | DefaultRedirectTable | | | | DefaultRedirectTable | DefaultRedirectTable |
+| settings:qr:domain | `/settings/qr` | `QrSettingsClient.tsx` | AddDomain | DomainTable | | | | DomainTable | DomainTable |
+| settings:qr:domain:item | `/settings/qr` | `QrSettingsClient.tsx` | | | | | | | |
+| settings:signage:people:property | `/settings/properties-manager/people` | `PeoplePropertiesClient.tsx` | AddProperty | PropertyTable | | | | PropertyTable | PropertyTable |
+| settings:signage:people:property:item | `/settings/properties-manager/people` | `PeoplePropertiesClient.tsx` | | | | | | | |
+| settings:signage:places:property | `/settings/properties-manager/places` | `PlacePropertiesClient.tsx` | AddProperty | PropertyTable | | | | PropertyTable | PropertyTable |
+| settings:signage:places:property:item | `/settings/properties-manager/places` | `PlacePropertiesClient.tsx` | | | | | | | |
+| settings:signage:things:property | `/settings/properties-manager/things` | `ThingPropertiesClient.tsx` | AddProperty | PropertyTable | | | | PropertyTable | PropertyTable |
+| settings:signage:things:property:item | `/settings/properties-manager/things` | `ThingPropertiesClient.tsx` | | | | | | | |
+| settings:signage:layout | `/settings/signage` | `SignageSettingsClient.tsx` | AddLayout | LayoutTable | | | | LayoutTable | LayoutTable |
+| settings:signage:layout:item | `/settings/signage` | `SignageSettingsClient.tsx` | | | | | | | |
 
 ## Actions
 

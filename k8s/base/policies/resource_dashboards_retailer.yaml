@@ -7,7 +7,7 @@ resourcePolicy:
     - conqrse_roles
   rules:
     # Retailer users can view retailer-level dashboards
-    - actions: ["resource:view", "resource:list"]
+    - actions: ["resource:view"]
       effect: EFFECT_ALLOW
       derivedRoles:
         - retailer_owner
@@ -17,7 +17,7 @@ resourcePolicy:
         - guest_collaborator
 
     # Agency and SU can view retailer dashboards
-    - actions: ["resource:view", "resource:list"]
+    - actions: ["resource:view"]
       effect: EFFECT_ALLOW
       derivedRoles:
         - root_user
@@ -32,7 +32,7 @@ resourcePolicy:
         - agency_collaborator
 
     # Acting AS users can view dashboards at their delegated level
-    - actions: ["resource:view", "resource:list"]
+    - actions: ["resource:view"]
       effect: EFFECT_ALLOW
       derivedRoles:
         - su_acting_retailer_owner
