@@ -16,7 +16,6 @@ configMapGenerator:
       disableNameSuffixHash: true
     files:
       - policies/_derived_roles.yaml
-      - policies/resource_permission.yaml
       - policies/resource_connect_contacts.yaml
       - policies/resource_dashboards_agency.yaml
       - policies/resource_dashboards_retailer.yaml
@@ -25,25 +24,13 @@ configMapGenerator:
       - policies/resource_footprints_endpoints.yaml
       - policies/resource_footprints_pricing.yaml
       - policies/resource_footprints_products_item.yaml
-      - policies/resource_settings_footprints_products_pricinggroup_item.yaml
-      - policies/resource_settings_footprints_products_pricinggroup.yaml
-      - policies/resource_settings_footprints_products_property_item.yaml
-      - policies/resource_settings_footprints_products_property.yaml
       - policies/resource_footprints_products.yaml
       - policies/resource_footprints_sites_item.yaml
-      - policies/resource_settings_footprints_sites_property_item.yaml
-      - policies/resource_settings_footprints_sites_property.yaml
       - policies/resource_footprints_sites.yaml
+      - policies/resource_permission.yaml
       - policies/resource_qr_campaigns.yaml
       - policies/resource_qr_media_item.yaml
       - policies/resource_qr_media.yaml
-      - policies/resource_settings_qr_defaultredirect.yaml
-      - policies/resource_settings_qr_design_item.yaml
-      - policies/resource_settings_qr_design.yaml
-      - policies/resource_settings_qr_domain_item.yaml
-      - policies/resource_settings_qr_domain.yaml
-      - policies/resource_settings_qr_powertag_item.yaml
-      - policies/resource_settings_qr_powertag.yaml
       - policies/resource_qr_site_item.yaml
       - policies/resource_qr_site.yaml
       - policies/resource_qr_templates_item.yaml
@@ -58,33 +45,50 @@ configMapGenerator:
       - policies/resource_reports_qrperformance.yaml
       - policies/resource_reports_site_performance_maps.yaml
       - policies/resource_reports.yaml
+      - policies/resource_settings_admin_general.yaml
       - policies/resource_settings_admin_teams.yaml
       - policies/resource_settings_admin_users.yaml
-      - policies/resource_signage_content_assets.yaml
+      - policies/resource_settings_footprints_products_pricinggroup_item.yaml
+      - policies/resource_settings_footprints_products_pricinggroup.yaml
+      - policies/resource_settings_footprints_products_property_item.yaml
+      - policies/resource_settings_footprints_products_property.yaml
+      - policies/resource_settings_footprints_sites_property_item.yaml
+      - policies/resource_settings_footprints_sites_property.yaml
+      - policies/resource_settings_qr_defaultredirect.yaml
+      - policies/resource_settings_qr_design_item.yaml
+      - policies/resource_settings_qr_design.yaml
+      - policies/resource_settings_qr_domain_item.yaml
+      - policies/resource_settings_qr_domain.yaml
+      - policies/resource_settings_qr_powertag_item.yaml
+      - policies/resource_settings_qr_powertag.yaml
+      - policies/resource_settings_qr.yaml
+      - policies/resource_settings_signage_layout_item.yaml
+      - policies/resource_settings_signage_layout.yaml
+      - policies/resource_settings_signage_people_property_item.yaml
+      - policies/resource_settings_signage_people_property.yaml
+      - policies/resource_settings_signage_places_property_item.yaml
+      - policies/resource_settings_signage_places_property.yaml
+      - policies/resource_settings_signage_things_property_item.yaml
+      - policies/resource_settings_signage_things_property.yaml
+      - policies/resource_settings_signage.yaml
+      - policies/resource_settings_user_profile.yaml
       - policies/resource_signage_content_assets_create_content_template.yaml
       - policies/resource_signage_content_assets_create_template.yaml
+      - policies/resource_signage_content_assets.yaml
       - policies/resource_signage_content_backgrounds.yaml
+      - policies/resource_signage_content_channels_add.yaml
       - policies/resource_signage_content_channels_item.yaml
       - policies/resource_signage_content_channels.yaml
-      - policies/resource_signage_content_channels_add.yaml
       - policies/resource_signage_content_contentgroups_item.yaml
       - policies/resource_signage_content_contentgroups.yaml
-      - policies/resource_signage_content_playlists.yaml
       - policies/resource_signage_content_playlists_item_manage.yaml
+      - policies/resource_signage_content_playlists.yaml
       - policies/resource_signage_content_tags.yaml
+      - policies/resource_signage_content_templates_create.yaml
       - policies/resource_signage_content_templates_item.yaml
       - policies/resource_signage_content_templates.yaml
-      - policies/resource_signage_content_templates_create.yaml
-      - policies/resource_signage_people_settings_property_item.yaml
-      - policies/resource_signage_people_settings_property.yaml
       - policies/resource_signage_people.yaml
-      - policies/resource_signage_places_settings_property_item.yaml
-      - policies/resource_signage_places_settings_property.yaml
       - policies/resource_signage_places.yaml
-      - policies/resource_signage_settings_layout_item.yaml
-      - policies/resource_signage_settings_layout.yaml
-      - policies/resource_signage_things_settings_property_item.yaml
-      - policies/resource_signage_things_settings_property.yaml
       - policies/resource_signage_things.yaml
 
 images:
