@@ -26,3 +26,10 @@ resourcePolicy:
       derivedRoles:
         - su_acting_agency_owner
         - su_acting_agency_manager
+
+    # Agency acting as retailer - agency users delegating to retailers can view delegation records
+    - actions: ["resource:view"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - agency_acting_retailer_owner
+        - agency_acting_retailer_manager

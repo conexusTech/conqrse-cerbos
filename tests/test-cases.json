@@ -350,6 +350,36 @@
           },
           "action": "resource:view",
           "expectedResult": "ALLOW"
+        },
+        {
+          "id": "allow_15",
+          "name": "Agency Owner Acting AS Retailer Viewing Delegation Records",
+          "description": "Agency user delegating to retailer can view delegation audit records",
+          "principal": {
+            "id": "agency-user-025",
+            "userLevel": "agency",
+            "userType": "owner",
+            "name": "owner@agency.com",
+            "products": [
+              "footprints",
+              "signage",
+              "qr"
+            ],
+            "agencyId": "agency-456",
+            "actingAs": {
+              "level": "retailer",
+              "retailerId": "retail-789",
+              "agencyId": "agency-456"
+            }
+          },
+          "resource": {
+            "name": "admin:acting-as",
+            "product": "admin",
+            "retailerId": "retail-789",
+            "agencyId": "agency-456"
+          },
+          "action": "resource:view",
+          "expectedResult": "ALLOW"
         }
       ]
     },
@@ -641,6 +671,33 @@
             "agencyId": "agency-456",
             "retailerId": "retail-789",
             "isDelegating": false
+          },
+          "resource": {
+            "name": "admin:acting-as",
+            "product": "admin",
+            "retailerId": "retail-789"
+          },
+          "action": "resource:view",
+          "expectedResult": "DENY"
+        },
+        {
+          "id": "deny_13",
+          "name": "SU Admin Acting AS Retailer Attempting to View Delegation Records",
+          "description": "SU user acting as retailer cannot view delegation records (end-user context)",
+          "principal": {
+            "id": "su-user-200",
+            "userLevel": "su",
+            "userType": "admin",
+            "name": "admin@platform.com",
+            "products": [
+              "footprints",
+              "signage",
+              "qr"
+            ],
+            "actingAs": {
+              "level": "retailer",
+              "retailerId": "retail-789"
+            }
           },
           "resource": {
             "name": "admin:acting-as",

@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-23T18:08:40Z",
+  "timestamp": "2026-04-23T18:11:53Z",
   "cerbosUrl": "https://staging-cerbos.conqrse.com",
   "summary": {
     "totalSuites": 2,
-    "totalTests": 26,
-    "passed": 24,
-    "failed": 2,
-    "successRate": 92.31
+    "totalTests": 28,
+    "passed": 25,
+    "failed": 3,
+    "successRate": 89.29
   }
 }
