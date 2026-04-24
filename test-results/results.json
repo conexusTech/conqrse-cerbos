@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-24T06:01:13Z",
+  "timestamp": "2026-04-24T06:05:08Z",
   "cerbosUrl": "https://staging-cerbos.conqrse.com",
   "summary": {
     "totalSuites": 2,
     "totalTests": 31,
-    "passed": 27,
-    "failed": 4,
-    "successRate": 87.10
+    "passed": 31,
+    "failed": 0,
+    "successRate": 100.00
   },
   "tests": [
     {
@@ -34,8 +34,8 @@
       "id": "allow_3",
       "name": "Agency Admin Acting AS Retailer Creating QR Campaign",
       "expected": "ALLOW",
-      "actual": "DENY",
-      "status": "FAIL"
+      "actual": "ALLOW",
+      "status": "PASS"
     },
     {
       "id": "allow_4",
@@ -62,22 +62,22 @@
       "id": "allow_7",
       "name": "SU Collaborator Acting AS Retailer Member",
       "expected": "ALLOW",
-      "actual": "DENY",
-      "status": "FAIL"
+      "actual": "ALLOW",
+      "status": "PASS"
     },
     {
       "id": "allow_8",
       "name": "Agency Lead Acting AS Retailer Creating Resources",
       "expected": "ALLOW",
-      "actual": "DENY",
-      "status": "FAIL"
+      "actual": "ALLOW",
+      "status": "PASS"
     },
     {
       "id": "allow_9",
       "name": "Agency Member Viewing Child Retailer Resources",
       "expected": "ALLOW",
-      "actual": "DENY",
-      "status": "FAIL"
+      "actual": "ALLOW",
+      "status": "PASS"
     },
     {
       "id": "allow_10",
