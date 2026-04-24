@@ -16,15 +16,15 @@ resourcePolicy:
         - agency_member
         - agency_collaborator
 
-    # SU can view agency dashboards
-    - actions: ["resource:view"]
-      effect: EFFECT_ALLOW
-      derivedRoles:
-        - root_user
-        - platform_administrator
-        - platform_lead
-        - platform_member
-        - platform_collaborator
+    # # SU can view agency dashboards
+    # - actions: ["resource:view"]
+    #   effect: EFFECT_ALLOW
+    #   derivedRoles:
+    #     - root_user
+    #     - platform_administrator
+    #     - platform_lead
+    #     - platform_member
+    #     - platform_collaborator
 
     # Acting AS users can view dashboards at their delegated level
     - actions: ["resource:view"]
