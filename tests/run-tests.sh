@@ -22,6 +22,7 @@ TOTAL_SUITES=0
 TOTAL_TESTS=0
 PASSED=0
 FAILED=0
+ALL_RESULTS=()
 
 # Create output directory
 mkdir -p "$OUTPUT_DIR"
@@ -132,8 +133,8 @@ for ((i=0; i<SUITE_COUNT; i++)); do
             RESULT_STATUS="FAIL"
         fi
 
-        # Store result for JSON output
-        SUITE_RESULTS+=("{\"id\":\"$TEST_ID\",\"name\":\"$TEST_NAME\",\"expected\":\"$EXPECTED\",\"actual\":\"$DECISION\",\"status\":\"$RESULT_STATUS\"}")
+        # Store result for JSON output (collect all results)
+        ALL_RESULTS+=("{\"id\":\"$TEST_ID\",\"name\":\"$TEST_NAME\",\"expected\":\"$EXPECTED\",\"actual\":\"$DECISION\",\"status\":\"$RESULT_STATUS\"}")
     done
 
     echo ""
@@ -164,7 +165,10 @@ RESULTS_JSON=$(cat <<EOF
     "passed": $PASSED,
     "failed": $FAILED,
     "successRate": $(awk "BEGIN {printf \"%.2f\", ($PASSED/$TOTAL_TESTS)*100}")
-  }
+  },
+  "tests": [
+    $(IFS=','; echo "${ALL_RESULTS[*]}")
+  ]
 }
 EOF
 )
