@@ -19,7 +19,7 @@ The following products are supported by Cerbos authorization, identified by the 
 - `permission:` — Permission and authorization management
 - `dashboards:` — User dashboards by role (su-dashboard, agency-dashboard, retailer-dashboard)
 - `settings:` — Configuration and settings management (cross-cutting concern, see [Resource Naming Patterns](#resource-naming-patterns))
-- `admin:` — Administrative audit and governance features (e.g., `admin:acting-as`)
+- `admin:` — Administrative audit and governance features (e.g., `settings:admin:acting-as`)
 
 ## Resource Naming Patterns
 
@@ -60,7 +60,7 @@ settings:user:profile         ← User profile/preferences
 
 Administrative and audit resources use the `admin:{feature}` pattern for platform governance features:
 
-- `admin:acting-as` — Delegation/audit logs (who acted as whom)
+- `settings:admin:acting-as` — Delegation/audit logs (who acted as whom)
 
 ## Resources
 

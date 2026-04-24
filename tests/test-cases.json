@@ -444,8 +444,8 @@
             }
           },
           "resource": {
-            "kind": "admin:acting-as",
-            "id": "admin:acting-as",
+            "kind": "settings:admin:acting-as",
+            "id": "settings:admin:acting-as",
             "attr": {
               "product": "admin"
             }
@@ -478,8 +478,8 @@
             }
           },
           "resource": {
-            "kind": "admin:acting-as",
-            "id": "admin:acting-as",
+            "kind": "settings:admin:acting-as",
+            "id": "settings:admin:acting-as",
             "attr": {
               "product": "admin",
               "agencyId": "agency-456"
@@ -517,8 +517,8 @@
             }
           },
           "resource": {
-            "kind": "admin:acting-as",
-            "id": "admin:acting-as",
+            "kind": "settings:admin:acting-as",
+            "id": "settings:admin:acting-as",
             "attr": {
               "product": "admin",
               "retailerId": "retail-789",
@@ -937,8 +937,8 @@
             }
           },
           "resource": {
-            "kind": "admin:acting-as",
-            "id": "admin:acting-as",
+            "kind": "settings:admin:acting-as",
+            "id": "settings:admin:acting-as",
             "attr": {
               "product": "admin",
               "agencyId": "agency-456"
@@ -972,8 +972,8 @@
             }
           },
           "resource": {
-            "kind": "admin:acting-as",
-            "id": "admin:acting-as",
+            "kind": "settings:admin:acting-as",
+            "id": "settings:admin:acting-as",
             "attr": {
               "product": "admin",
               "retailerId": "retail-789"
@@ -1009,8 +1009,8 @@
             }
           },
           "resource": {
-            "kind": "admin:acting-as",
-            "id": "admin:acting-as",
+            "kind": "settings:admin:acting-as",
+            "id": "settings:admin:acting-as",
             "attr": {
               "product": "admin",
               "retailerId": "retail-789"
