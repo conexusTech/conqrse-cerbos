@@ -16,7 +16,6 @@ The test suite validates the authorization policies against the documented scena
 
 - **`test-cases.json`** — Structured test case definitions
 - **`run-tests.sh`** — Bash test runner (uses curl)
-- **`run-tests.js`** — Node.js test runner (recommended)
 - **`validate-policies.sh`** — Legacy bash parser (WIP)
 
 ## Quick Start
@@ -27,24 +26,6 @@ The test suite validates the authorization policies against the documented scena
 - Node.js 14+ (for JavaScript runner) OR bash with jq (for shell runner)
 
 ### Running Tests
-
-#### Using Node.js (Recommended)
-
-```bash
-# Run tests with default Cerbos URL (http://localhost:3592)
-npm test
-
-# Or directly with Node.js
-node tests/run-tests.js
-
-# With custom Cerbos URL
-CERBOS_URL=http://cerbos.example.com:3592 node tests/run-tests.js
-
-# With custom output directory
-OUTPUT_DIR=./custom-results node tests/run-tests.js
-```
-
-#### Using Bash
 
 ```bash
 # Run tests with default Cerbos URL
@@ -237,7 +218,6 @@ Example:
 
 ### Permission errors
 - Ensure test runner has access to write to `test-results/` directory
-- Check file permissions: `chmod +x tests/run-tests.js`
 
 ## Integration
 
