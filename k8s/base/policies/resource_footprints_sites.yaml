@@ -26,12 +26,12 @@ resourcePolicy:
         - agency_acting_retailer_lead
         - agency_acting_retailer_member
 
-    # Agency member access to child retailer resources
+    # Agency member access to child retailer resources (check against agencyId)
     - actions: ["resource:list", "resource:view", "resource:export"]
       effect: EFFECT_ALLOW
       condition:
         match:
-          expr: '"footprints" in P.attr.products && (P.attr.retailerId == R.attr.retailerId || P.attr.actingAs.retailerId == R.attr.retailerId)'
+          expr: '"footprints" in P.attr.products && P.attr.agencyId == R.attr.agencyId'
       derivedRoles:
         - agency_member
 
@@ -40,7 +40,7 @@ resourcePolicy:
       effect: EFFECT_ALLOW
       condition:
         match:
-          expr: '"footprints" in P.attr.products && (P.attr.retailerId == R.attr.retailerId || P.attr.actingAs.retailerId == R.attr.retailerId)'
+          expr: '"footprints" in P.attr.products && P.attr.agencyId == R.attr.agencyId'
       derivedRoles:
         - guest_collaborator
         - su_acting_retailer_collaborator
