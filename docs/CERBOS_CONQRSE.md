@@ -15,9 +15,52 @@ The following products are supported by Cerbos authorization, identified by the 
 | **Reports** | `reports:` | qr-performance, campaign-compliance, site-performance-maps, export |
 | **Connect** | `connect:` | contacts |
 
-**Administrative Features** (not products):
+**Administrative & Configuration Features** (not products):
 - `permission:` — Permission and authorization management
 - `dashboards:` — User dashboards by role (su-dashboard, agency-dashboard, retailer-dashboard)
+- `settings:` — Configuration and settings management (cross-cutting concern, see [Resource Naming Patterns](#resource-naming-patterns))
+- `admin:` — Administrative audit and governance features (e.g., `admin:acting-as`)
+
+## Resource Naming Patterns
+
+### Settings: Cross-Cutting Concern
+
+Settings resources use the `settings:{context}:{resource}` pattern as a **cross-cutting concern**, separate from product resources. This architectural decision enables:
+
+1. **Unified Authorization** — All settings follow consistent access control patterns in a single place
+2. **Scalability** — Adding new products doesn't require new settings policies
+3. **Consistency** — Every product-level and admin-level setting follows the same semantic structure
+4. **Maintainability** — Settings logic is not duplicated across product namespaces
+
+**Pattern:**
+- `settings:admin:*` — Platform/system-level settings (owners/admins only)
+- `settings:user:*` — User-specific settings (personal profile, preferences)
+- `settings:{product}` — Product-specific configuration (e.g., `settings:qr`, `settings:signage`, `settings:footprints`)
+- `settings:{product}:{category}` — Sub-categories within product settings
+
+**Example:**
+```
+settings:admin:general         ← Platform-wide configuration
+settings:admin:users          ← User management
+settings:admin:teams          ← Team management
+settings:qr                   ← QR product settings
+settings:qr:design            ← QR design sub-settings
+settings:signage              ← Signage product settings
+settings:footprints:property  ← Footprints property settings
+settings:user:profile         ← User profile/preferences
+```
+
+**Why NOT `product:settings`?**
+- ❌ Leads to repetitive policy patterns
+- ❌ Harder to enforce platform-wide settings governance
+- ❌ Settings and product access have different rules (should be separated)
+- ❌ Violates separation of concerns
+
+### Administrative Resources
+
+Administrative and audit resources use the `admin:{feature}` pattern for platform governance features:
+
+- `admin:acting-as` — Delegation/audit logs (who acted as whom)
 
 ## Resources
 
