@@ -11,7 +11,7 @@ resourcePolicy:
       effect: EFFECT_ALLOW
       condition:
         match:
-          expr: '"signage" in P.attr.products && R.attr.retailerId == P.attr.retailerId'
+          expr: '"signage" in P.attr.products && (P.attr.retailerId == R.attr.retailerId || P.attr.actingAs.retailerId == R.attr.retailerId)'
       derivedRoles:
         - retailer_owner
         - retailer_manager
@@ -31,7 +31,7 @@ resourcePolicy:
       effect: EFFECT_ALLOW
       condition:
         match:
-          expr: '"signage" in P.attr.products && R.attr.retailerId == P.attr.retailerId'
+          expr: '"signage" in P.attr.products && (P.attr.retailerId == R.attr.retailerId || P.attr.actingAs.retailerId == R.attr.retailerId)'
       derivedRoles:
         - guest_collaborator
         - su_acting_retailer_collaborator
