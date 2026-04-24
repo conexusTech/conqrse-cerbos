@@ -77,24 +77,26 @@ for ((i=0; i<SUITE_COUNT; i++)); do
         TEST_NAME=$(echo "$TEST" | jq -r '.name')
         PRINCIPAL=$(echo "$TEST" | jq '.principal')
         RESOURCE=$(echo "$TEST" | jq '.resource')
-        ACTION=$(echo "$TEST" | jq -r '.action')
+        ACTION=$(echo "$TEST" | jq -r '.actions[0]')
         EXPECTED=$(echo "$TEST" | jq -r '.expectedResult')
 
         TOTAL_TESTS=$((TOTAL_TESTS + 1))
 
         # Build request payload with proper Cerbos API format
         PRINCIPAL_ID=$(echo "$PRINCIPAL" | jq -r '.id')
-        PRINCIPAL_ATTRS=$(echo "$PRINCIPAL" | jq 'del(.id)')
-        RESOURCE_KIND=$(echo "$RESOURCE" | jq -r '.name')
-        RESOURCE_ATTRS=$(echo "$RESOURCE" | jq 'del(.name)')
+        PRINCIPAL_ROLES=$(echo "$PRINCIPAL" | jq '.roles')
+        PRINCIPAL_ATTRS=$(echo "$PRINCIPAL" | jq '.attr')
+        RESOURCE_KIND=$(echo "$RESOURCE" | jq -r '.kind')
+        RESOURCE_ATTRS=$(echo "$RESOURCE" | jq '.attr')
 
         PAYLOAD=$(jq -n \
             --arg id "$PRINCIPAL_ID" \
+            --argjson roles "$PRINCIPAL_ROLES" \
             --argjson attr "$PRINCIPAL_ATTRS" \
             --arg kind "$RESOURCE_KIND" \
             --argjson resource_attr "$RESOURCE_ATTRS" \
             --arg action "$ACTION" \
-            '{principal: {id: $id, roles: ["user"], attr: $attr}, resource: {kind: $kind, instances: {"resource-1": {attr: $resource_attr}}}, actions: [$action]}')
+            '{principal: {id: $id, roles: $roles, attr: $attr}, resource: {kind: $kind, instances: {"resource-1": {attr: $resource_attr}}}, actions: [$action]}')
 
         # Send to Cerbos
         RESPONSE=$(curl -s -X POST \
