@@ -23,6 +23,9 @@ data:
           - content-type
           - user-agent
           - x-requested-with
+      requestLimits:
+        maxActionsPerResource: 100
+        maxResourcesPerRequest: 100
 
     storage:
       driver: "sqlite3"
