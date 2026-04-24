@@ -380,6 +380,31 @@
           },
           "action": "resource:view",
           "expectedResult": "ALLOW"
+        },
+        {
+          "id": "allow_16",
+          "name": "Retailer Owner Accessing Own Retailer Resources",
+          "description": "Retailer user can access resources scoped to their retailer",
+          "principal": {
+            "id": "user-500",
+            "userLevel": "retailer",
+            "userType": "owner",
+            "name": "owner@retailer-789.com",
+            "products": [
+              "qr"
+            ],
+            "agencyId": "agency-456",
+            "retailerId": "retail-789",
+            "isDelegating": false
+          },
+          "resource": {
+            "name": "qr:campaigns",
+            "product": "qr",
+            "retailerId": "retail-789",
+            "agencyId": "agency-456"
+          },
+          "action": "resource:view",
+          "expectedResult": "ALLOW"
         }
       ]
     },
@@ -705,6 +730,56 @@
             "retailerId": "retail-789"
           },
           "action": "resource:view",
+          "expectedResult": "DENY"
+        },
+        {
+          "id": "deny_14",
+          "name": "Retailer Owner Accessing Different Retailer Resources",
+          "description": "Retailer user cannot access resources from a different retailer (retailer isolation)",
+          "principal": {
+            "id": "user-501",
+            "userLevel": "retailer",
+            "userType": "owner",
+            "name": "owner@retailer-789.com",
+            "products": [
+              "qr"
+            ],
+            "agencyId": "agency-456",
+            "retailerId": "retail-789",
+            "isDelegating": false
+          },
+          "resource": {
+            "name": "qr:campaigns",
+            "product": "qr",
+            "retailerId": "retail-999",
+            "agencyId": "agency-456"
+          },
+          "action": "resource:view",
+          "expectedResult": "DENY"
+        },
+        {
+          "id": "deny_15",
+          "name": "Retailer Member Accessing Different Retailer Footprints",
+          "description": "Retailer staff cannot access footprints resources from another retailer",
+          "principal": {
+            "id": "user-502",
+            "userLevel": "retailer",
+            "userType": "member",
+            "name": "staff@retailer-789.com",
+            "products": [
+              "footprints"
+            ],
+            "agencyId": "agency-456",
+            "retailerId": "retail-789",
+            "isDelegating": false
+          },
+          "resource": {
+            "name": "footprints:sites",
+            "product": "footprints",
+            "retailerId": "retail-999",
+            "agencyId": "agency-456"
+          },
+          "action": "resource:list",
           "expectedResult": "DENY"
         }
       ]
