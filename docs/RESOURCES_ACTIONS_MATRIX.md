@@ -21,13 +21,40 @@ This document provides a comprehensive matrix of all Cerbos resources and their 
 
 ---
 
-## Resources by Product
+## Non-Product Related Resources
 
-### Connect Product
+These are the resources that doesn't need product and retailer validation.
+
+### Settings - Admin
 
 | Resource | Type | Actions |
 |----------|------|---------|
-| `connect:contacts` | Collection | list, view, create, update, delete, export, import |
+| `settings:admin:general` | Settings | list, view, create, update, delete |
+| `settings:admin:users` | Settings | list, view, create, update, delete, export, import |
+| `settings:admin:teams` | Settings | list, view, create, update, delete, export, import |
+| `settings:admin:cerbos` | Settings | list, view, update, export, import |
+
+### Settings - User
+
+| Resource | Type | Actions |
+|----------|------|---------|
+| `settings:user:profile` | Settings | list, view, update |
+
+## Product Related Resources
+
+### Reports Product
+
+| Resource | Type | Actions |
+|----------|------|---------|
+| `reports:qr-performance` | Collection | list, view, export |
+| `reports:qr-performance-site-to-site` | Collection | list, view, export |
+| `reports:campaign-compliance` | Collection | list, view, export |
+| `reports:campaign-compliance-details` | Collection | list, view, export |
+| `reports:site-performance-maps` | Collection | list, view, export |
+| `reports:media-performance-maps` | Collection | list, view, export |
+| `reports:campaign-performance-maps` | Collection | list, view, export |
+| `reports:content-proof-of-play` | Collection | list, view, export |
+| `reports:export` | Collection | export |
 
 ### Footprints Product
 
@@ -41,28 +68,45 @@ This document provides a comprehensive matrix of all Cerbos resources and their 
 | `footprints:products:item` | Item | view, update, delete |
 | `footprints:pricing` | Collection | list, view, create, update, delete, export, import |
 
+### Content Management Product
+
+| Resource | Type | Actions |
+|----------|------|---------|
+| `contents:templates` | Collection | list, view, create, update, delete, export, import |
+| `contents:templates:item` | Item | view, update, delete |
+| `contents:assets` | Collection | list, view, create, update, delete, export, import |
+| `contents:assets:item` | Item | view, update, delete |
+| `contents:playlists` | Collection | list, view, create, update, delete, export, import |
+| `contents:playlists:item` | Item | view, update, delete |
+| `contents:backgrounds` | Collection | list, view, create, update, delete, export, import |
+| `contents:backgrounds:item` | Item | view, update, delete |
+| `contents:backgrounds:transistion` | Collection | list, view, create, update, delete, export, import |
+| `contents:backgrounds:transistion:item` | Item | view, update, delete |
+| `contents:channels` | Collection | list, view, create, update, delete, export, import |
+| `contents:channels:item` | Item | view, update, delete |
+| `contents:tags` | Collection | list, view, create, update, delete, export, import |
+| `contents:tags:item` | Item | view, update, delete |
+| `contents:tags:assignments` | Item | view, update, delete |
+| `contents:content-groups` | Collection | list, view, create, update, delete, export, import |
+| `contents:content-groups:item` | Item | view, update, delete |
+
 ### Signage Product
 
 | Resource | Type | Actions |
 |----------|------|---------|
-| `signage:content:templates` | Collection | list, view, create, update, delete, export, import |
-| `signage:content:templates:create` | Action | create |
-| `signage:content:templates:item` | Item | view, update, delete |
-| `signage:content:assets` | Collection | list, view, create, update, delete, export, import |
-| `signage:content:assets:create-template` | Action | create |
-| `signage:content:assets:create-content-template` | Action | create |
-| `signage:content:playlists` | Collection | list, view, create, update, delete, export, import |
-| `signage:content:playlists:item:manage` | Item | view, update, delete |
-| `signage:content:backgrounds` | Collection | list, view, create, update, delete, export, import |
-| `signage:content:channels` | Collection | list, view, create, update, delete, export, import |
-| `signage:content:channels:add` | Action | create |
-| `signage:content:channels:item` | Item | view, update, delete |
-| `signage:content:tags` | Collection | list, view, create, update, delete, export, import |
-| `signage:content:content-groups` | Collection | list, view, create, update, delete, export, import |
-| `signage:content:content-groups:item` | Item | view, update, delete |
-| `signage:signage:people` | Collection | list, view, create, update, delete, export, import |
-| `signage:signage:places` | Collection | list, view, create, update, delete, export, import |
-| `signage:signage:things` | Collection | list, view, create, update, delete, export, import |
+| `signages:people` | Collection | list, view, create, update, delete, export, import |
+| `signages:people:item` | Item | view, update, delete |
+| `signages:places` | Collection | list, view, create, update, delete, export, import |
+| `signages:places:item` | Item | view, update, delete |
+| `signages:things` | Collection | list, view, create, update, delete, export, import |
+| `signages:things:item` | Item | view, update, delete |
+
+### Connect Product
+
+| Resource | Type | Actions |
+|----------|------|---------|
+| `connect:contacts` | Collection | list, view, create, update, delete, export, import |
+| `connect:contacts:item` | Item | view, update, delete |
 
 ### QR Product
 
@@ -75,111 +119,45 @@ This document provides a comprehensive matrix of all Cerbos resources and their 
 | `qr:templates` | Collection | list, view, create, update, delete, export, import |
 | `qr:templates:item` | Item | view, update, delete |
 | `qr:campaigns` | Collection | list, view, create, update, delete, export, import |
+| `qr:campaigns:item` | Item | view, update, delete |
 
-### Reports Product
-
-| Resource | Type | Actions |
-|----------|------|---------|
-| `reports` | Root | list, view |
-| `reports:qr-performance` | Collection | list, view, export |
-| `reports:qr-performance-site-to-site` | Collection | list, view, export |
-| `reports:campaign-compliance` | Collection | list, view, export |
-| `reports:campaign-compliance-details` | Collection | list, view, export |
-| `reports:site-performance-maps` | Collection | list, view, export |
-| `reports:media-performance-maps` | Collection | list, view, export |
-| `reports:campaign-performance-maps` | Collection | list, view, export |
-| `reports:content-proof-of-play` | Collection | list, view, export |
-| `reports:export` | Collection | export |
-
-### Dashboards (Non-Product)
-
-| Resource | Type | Actions |
-|----------|------|---------|
-| `dashboards:su-dashboard` | Dashboard | view |
-| `dashboards:agency-dashboard` | Dashboard | view |
-| `dashboards:retailer-dashboard` | Dashboard | view |
-
-### Permission Management (Non-Product)
-
-| Resource | Type | Actions |
-|----------|------|---------|
-| `permission` | Settings | list, view, create, update, delete, export, import |
-
-### Settings - Admin
-
-| Resource | Type | Actions |
-|----------|------|---------|
-| `settings:admin:general` | Settings | list, view, create, update, delete |
-| `settings:admin:users` | Settings | list, view, create, update, delete, export, import |
-| `settings:admin:teams` | Settings | list, view, create, update, delete, export, import |
-| `settings:admin:acting-as` | Settings | view |
-
-### Settings - User
-
-| Resource | Type | Actions |
-|----------|------|---------|
-| `settings:user:profile` | Settings | list, view, update |
+## Product Settings Related Resources
 
 ### Settings - Footprints
 
 | Resource | Type | Actions |
 |----------|------|---------|
-| `settings:footprints:sites:property` | Settings | list, view, create, update, delete, export, import |
-| `settings:footprints:sites:property:item` | Item | view, update, delete |
-| `settings:footprints:products:property` | Settings | list, view, create, update, delete, export, import |
-| `settings:footprints:products:property:item` | Item | view, update, delete |
-| `settings:footprints:products:pricing-group` | Settings | list, view, create, update, delete, export, import |
-| `settings:footprints:products:pricing-group:item` | Item | view, update, delete |
+| `settings:footprints_sites_property` | Collection | list, view, create, update, delete, export, import |
+| `settings:footprints_sites_property:item` | Item | view, update, delete |
+| `settings:footprints_products_property` | Collection | list, view, create, update, delete, export, import |
+| `settings:footprints_products_property:item` | Item | view, update, delete |
+| `settings:footprints_products_pricing_group` | Collection | list, view, create, update, delete, export, import |
+| `settings:footprints_products_pricing_group:item` | Item | view, update, delete |
 
 ### Settings - QR
 
 | Resource | Type | Actions |
 |----------|------|---------|
-| `settings:qr` | Settings | list, view, create, update, delete |
-| `settings:qr:design` | Settings | list, view, create, update, delete, export, import |
-| `settings:qr:design:item` | Item | view, update, delete |
-| `settings:qr:power-tag` | Settings | list, view, create, update, delete, export, import |
-| `settings:qr:power-tag:item` | Item | view, update, delete |
-| `settings:qr:default-redirect` | Settings | list, view, create, update, delete |
-| `settings:qr:domain` | Settings | list, view, create, update, delete, export, import |
-| `settings:qr:domain:item` | Item | view, update, delete |
+| `settings:qr_design` | Collection | list, view, create, update, delete, export, import |
+| `settings:qr_design:item` | Item | view, update, delete |
+| `settings:qr_power-tag` | Collection | list, view, create, update, delete, export, import |
+| `settings:qr_power-tag:item` | Item | view, update, delete |
+| `settings:qr_default-redirect` | Collection | list, view, create, update, delete |
+| `settings:qr_domain` | Collection | list, view, create, update, delete, export, import |
+| `settings:qr_domain:item` | Item | view, update, delete |
 
 ### Settings - Signage
 
 | Resource | Type | Actions |
 |----------|------|---------|
-| `settings:signage` | Settings | list, view, create, update, delete |
-| `settings:signage:layout` | Settings | list, view, create, update, delete, export, import |
-| `settings:signage:layout:item` | Item | view, update, delete |
-| `settings:signage:people:property` | Settings | list, view, create, update, delete, export, import |
-| `settings:signage:people:property:item` | Item | view, update, delete |
-| `settings:signage:places:property` | Settings | list, view, create, update, delete, export, import |
-| `settings:signage:places:property:item` | Item | view, update, delete |
-| `settings:signage:things:property` | Settings | list, view, create, update, delete, export, import |
-| `settings:signage:things:property:item` | Item | view, update, delete |
-
----
-
-## Summary Statistics
-
-- **Total Resources**: 71
-- **Collection Resources**: 49
-- **Item Resources**: 17
-- **Action Resources**: 5
-- **Total Unique Resource:Action Combinations**: Varies by role and conditions
-
-### Action Coverage
-
-| Action | Count | Scope |
-|--------|-------|-------|
-| `list` | 49 | resource |
-| `view` | 70 | resource |
-| `create` | 47 | resource |
-| `update` | 47 | resource |
-| `delete` | 47 | resource |
-| `export` | 32 | resource |
-| `import` | 20 | resource |
-| Settings actions | 4 per resource | settings |
+| `settings:signage_layout` | Collection | list, view, create, update, delete, export, import |
+| `settings:signage_layout:item` | Item | view, update, delete |
+| `settings:signage_people_property` | Collection | list, view, create, update, delete, export, import |
+| `settings:signage_people_property:item` | Item | view, update, delete |
+| `settings:signage_places_property` | Collection | list, view, create, update, delete, export, import |
+| `settings:signage_places_property:item` | Item | view, update, delete |
+| `settings:signage_things_property` | Collection | list, view, create, update, delete, export, import |
+| `settings:signage_things_property:item` | Item | view, update, delete |
 
 ---
 
@@ -188,27 +166,44 @@ This document provides a comprehensive matrix of all Cerbos resources and their 
 - **Collection**: Full CRUD operations (list, view, create, update, delete), plus export/import
 - **Item**: Detail view and mutations (view, update, delete)
 - **Action**: Specific operation triggers (e.g., create-template)
-- **Settings**: Configuration management with settings scope (list, create, update, delete)
-- **Dashboard**: Read-only dashboard views (view only)
 
 ---
 
 ## Access Control Notes
 
-1. **Product Resources** (`footprints:*`, `signage:*`, `qr:*`, `reports:*`, `connect:*`):
+1. **Resource Segment** Product in a resource is the first segment. Example, `settings:signage_layout`, the product is `settings`. Another example, `qr:templates:item`, the product is `qr`. The second and third segments are the features of the given product. Example, `connect:contacts:item`, `contacts` is a feature in product `connect`, where the `item` indicates that the resource is pertaining to a resource item, otherwise resource collection.
+
+2. **Product Resources** (`footprints:*`, `signages:*`, `qr:*`, `reports:*`, `connect:*`, `settings:*`, `contents:*`):
    - Retailer-scoped and require product subscription validation
    - Require proper `retailerId` in request
-   - Support delegation via "Act AS" model
 
-2. **Settings Resources**:
-   - Cross-cutting concern, managed centrally
-   - May have stricter access control (e.g., admin-only)
-   - User settings are personal to the authenticated user
+3. **Cerbos Payload**
 
-3. **Dashboard Resources**:
-   - Read-only, role-based visibility
-   - No modification actions allowed
+Principal
 
-4. **Permission Resource**:
-   - Special management resource for permission administration
-   - Typically restricted to system admins
+```text
+{
+   "id": string - the ID of the logged in user,
+   "roles": string[] - derived roles, see "k8s/base/policies/_derived_roles.yaml",
+   "attr": {
+      "userLevel": 'retailer', 'su', 'agency' or 'user',
+      "userType": 'admin', 'collaborator', 'owner', 'lead', and 'member',
+      "name": string,
+      "products": list of known products (footprints, signages, qr, reports, connect, settings, contents),
+      "agencyId": string - retailer's agency ID,
+      "retailerId": string - the retailer in subject,
+   }
+}
+```
+Resource
+
+```json
+{
+   "id": string - the resource in subject,
+   "kind": string - the resource in subject,
+   "attr": {
+      "retailerId": string - the retailer of the resource,
+      "product": string,
+   },
+}
+```
