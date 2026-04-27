@@ -182,83 +182,83 @@ These are the resources that doesn't need product and retailer validation.
 
 ## Product × Resource Matrix
 
-| Resource                                        | default  | qr       | priceTags | compliance | product  | signage  | landing  | connect  | ppt      |
-| ----------------------------------------------- | -------- | -------- | --------- | ---------- | -------- | -------- | -------- | -------- | -------- |
-| connect:contacts:list                           |          |          |           |            |          |          |          | required |          |
-| connect:contacts:item                           |          |          |           |            |          |          |          | required |          |
-| contents:assets:list                            |          |          |           |            |          | required |          |          |          |
-| contents:assets:item                            |          |          |           |            |          | required |          |          |          |
-| contents:backgrounds:list                       |          |          |           |            |          | required |          |          |          |
-| contents:backgrounds:item                       |          |          |           |            |          | required |          |          |          |
-| contents:backgrounds:transistion:list           |          |          |           |            |          | required |          |          |          |
-| contents:backgrounds:transistion:item           |          |          |           |            |          | required |          |          |          |
-| contents:channels:list                          |          |          |           |            |          | required |          |          |          |
-| contents:channels:item                          |          |          |           |            |          | required |          |          |          |
-| contents:content-groups:list                    |          |          |           |            |          | required |          |          |          |
-| contents:content-groups:item                    |          |          |           |            |          | required |          |          |          |
-| contents:playlists:list                         |          |          |           |            |          | required |          |          |          |
-| contents:playlists:item                         |          |          |           |            |          | required |          |          |          |
-| contents:tags:list                              |          | required | required  | required   | required | required |          |          |          |
-| contents:tags:assignments                       |          | required | required  | required   | required | required |          |          |          |
-| contents:tags:item                              |          | required | required  | required   | required | required |          |          |          |
-| contents:templates:list                         |          |          | required  |            |          | required |          |          |          |
-| contents:templates:item                         |          |          | required  |            |          | required |          |          |          |
-| footprints:endpoints:list                       |          |          | required  |            |          | required |          |          |          |
-| footprints:endpoints:item                       |          |          | required  |            |          | required |          |          |          |
-| footprints:pricing:list                         |          |          | required  |            | required | required |          |          |          |
-| footprints:products:list                        |          |          | required  | required   | required | required |          |          |          |
-| footprints:products:item                        |          |          | required  | required   | required | required |          |          |          |
-| footprints:sites:list                           |          | required | required  | required   | required | required |          |          |          |
-| footprints:sites:item                           |          | required | required  | required   | required | required |          |          |          |
-| qr:campaigns:list                               |          | required | required  | required   | required | required | required | required | required |
-| qr:campaigns:item                               |          | required | required  | required   | required | required | required | required | required |
-| qr:media:list                                   |          | required |           |            |          |          |          |          |          |
-| qr:media:item                                   |          | required |           |            |          |          |          |          |          |
-| qr:site:list                                    |          | required |           |            |          |          |          |          |          |
-| qr:site:item                                    |          | required |           |            |          |          |          |          |          |
-| qr:templates:list                               |          | required |           |            |          |          |          |          |          |
-| qr:templates:item                               |          | required |           |            |          |          |          |          |          |
-| reports:campaign-compliance-details:list        |          | required |           | required   |          | required |          |          |          |
-| reports:campaign-compliance:list                |          | required |           | required   |          | required |          |          |          |
-| reports:campaign-performance-maps:list          |          | required |           | required   |          | required |          |          |          |
-| reports:content-proof-of-play:list              |          |          |           |            |          | required |          |          |          |
-| reports:media-performance-maps:list             |          | required |           |            |          |          |          |          |          |
-| reports:qr-performance-site-to-site:list        |          | required |           |            |          |          |          |          |          |
-| reports:qr-performance:list                     |          | required |           |            |          |          |          |          |          |
-| reports:site-performance-maps:list              |          | required |           |            |          |          |          |          |          |
-| reports:export                                  |          | required |           | required   | required | required |          | required |          |
-| settings:admin:cerbos:list                      | required |          |           |            |          |          |          |          |          |
-| settings:admin:general:list                     | required |          |           |            |          |          |          |          |          |
-| settings:admin:teams:list                       | required |          |           |            |          |          |          |          |          |
-| settings:admin:users:list                       | required |          |           |            |          |          |          |          |          |
-| settings:footprints_products_pricing_group:list |          |          | required  |            | required |          |          |          |          |
-| settings:footprints_products_pricing_group:item |          |          | required  |            | required |          |          |          |          |
-| settings:footprints_products_property:list      |          |          | required  | required   | required |          |          |          |          |
-| settings:footprints_products_property:item      |          |          | required  | required   | required |          |          |          |          |
-| settings:footprints_sites_property:list         |          | required | required  | required   |          |          |          |          |          |
-| settings:footprints_sites_property:item         |          | required | required  | required   |          |          |          |          |          |
-| settings:qr_default-redirect:list               |          | required |           |            |          |          |          |          |          |
-| settings:qr_design:list                         |          | required |           |            |          |          |          |          |          |
-| settings:qr_design:item                         |          | required |           |            |          |          |          |          |          |
-| settings:qr_domain:list                         |          | required |           |            |          |          |          |          |          |
-| settings:qr_domain:item                         |          | required |           |            |          |          |          |          |          |
-| settings:qr_power-tag:list                      |          | required |           |            |          |          |          |          |          |
-| settings:qr_power-tag:item                      |          | required |           |            |          |          |          |          |          |
-| settings:signage_layout:list                    |          |          |           |            |          | required |          |          |          |
-| settings:signage_layout:item                    |          |          |           |            |          | required |          |          |          |
-| settings:signage_people_property:list           |          |          |           |            |          |          |          |          | required |
-| settings:signage_people_property:item           |          |          |           |            |          |          |          |          | required |
-| settings:signage_places_property:list           |          |          |           |            |          |          |          |          | required |
-| settings:signage_places_property:item           |          |          |           |            |          |          |          |          | required |
-| settings:signage_things_property:list           |          |          |           |            |          |          |          |          | required |
-| settings:signage_things_property:item           |          |          |           |            |          |          |          |          | required |
-| settings:user:profile:list                      | required |          |           |            |          |          |          |          |          |
-| signages:people:list                            |          |          |           |            |          | required |          |          | required |
-| signages:people:item                            |          |          |           |            |          | required |          |          | required |
-| signages:places:list                            |          |          |           |            |          | required |          |          | required |
-| signages:places:item                            |          |          |           |            |          | required |          |          | required |
-| signages:things:list                            |          |          |           |            |          | required |          |          | required |
-| signages:things:item                            |          |          |           |            |          | required |          |          | required |
+| Resource (policy file)                                                                                                           | default  | qr       | priceTags | compliance | product  | signage  | landing  | connect  | ppt      |
+| -------------------------------------------------------------------------------------------------------------------------------- | -------- | -------- | --------- | ---------- | -------- | -------- | -------- | -------- | -------- |
+| connect:contacts (k8s/base/policies/resource_connect_contacts.yaml)                                                              |          |          |           |            |          |          |          | required |          |
+| connect:contacts:item (k8s/base/policies/resource_connect_contacts_item.yaml)                                                    |          |          |           |            |          |          |          | required |          |
+| contents:assets (k8s/base/policies/resource_contents_assets.yaml)                                                                |          |          |           |            |          | required |          |          |          |
+| contents:assets:item (k8s/base/policies/resource_contents_assets_item.yaml)                                                      |          |          |           |            |          | required |          |          |          |
+| contents:backgrounds (k8s/base/policies/resource_contents_backgrounds.yaml)                                                      |          |          |           |            |          | required |          |          |          |
+| contents:backgrounds:item (k8s/base/policies/resource_contents_backgrounds_item.yaml)                                            |          |          |           |            |          | required |          |          |          |
+| contents:backgrounds:transistion (k8s/base/policies/resource_contents_backgrounds_transistion.yaml)                              |          |          |           |            |          | required |          |          |          |
+| contents:backgrounds:transistion:item (k8s/base/policies/resource_contents_backgrounds_transistion_item.yaml)                    |          |          |           |            |          | required |          |          |          |
+| contents:channels (k8s/base/policies/resource_contents_channels.yaml)                                                            |          |          |           |            |          | required |          |          |          |
+| contents:channels:item (k8s/base/policies/resource_contents_channels_item.yaml)                                                  |          |          |           |            |          | required |          |          |          |
+| contents:content-groups (k8s/base/policies/resource_contents_content_groups.yaml)                                                |          |          |           |            |          | required |          |          |          |
+| contents:content-groups:item (k8s/base/policies/resource_contents_content_groups_item.yaml)                                      |          |          |           |            |          | required |          |          |          |
+| contents:playlists (k8s/base/policies/resource_contents_playlists.yaml)                                                          |          |          |           |            |          | required |          |          |          |
+| contents:playlists:item (k8s/base/policies/resource_contents_playlists_item.yaml)                                                |          |          |           |            |          | required |          |          |          |
+| contents:tags (k8s/base/policies/resource_contents_tags.yaml)                                                                    |          | required | required  | required   | required | required |          |          |          |
+| contents:tags:assignments (k8s/base/policies/resource_contents_tags_assignments.yaml)                                            |          | required | required  | required   | required | required |          |          |          |
+| contents:tags:item (k8s/base/policies/resource_contents_tags_item.yaml)                                                          |          | required | required  | required   | required | required |          |          |          |
+| contents:templates (k8s/base/policies/resource_contents_templates.yaml)                                                          |          |          | required  |            |          | required |          |          |          |
+| contents:templates:item (k8s/base/policies/resource_contents_templates_item.yaml)                                                |          |          | required  |            |          | required |          |          |          |
+| footprints:endpoints (k8s/base/policies/resource_footprints_endpoints.yaml)                                                      |          |          | required  |            |          | required |          |          |          |
+| footprints:endpoints:item (k8s/base/policies/resource_footprints_endpoints_item.yaml)                                            |          |          | required  |            |          | required |          |          |          |
+| footprints:pricing (k8s/base/policies/resource_footprints_pricing.yaml)                                                          |          |          | required  |            | required | required |          |          |          |
+| footprints:products (k8s/base/policies/resource_footprints_products.yaml)                                                        |          |          | required  | required   | required | required |          |          |          |
+| footprints:products:item (k8s/base/policies/resource_footprints_products_item.yaml)                                              |          |          | required  | required   | required | required |          |          |          |
+| footprints:sites (k8s/base/policies/resource_footprints_sites.yaml)                                                              |          | required | required  | required   | required | required |          |          |          |
+| footprints:sites:item (k8s/base/policies/resource_footprints_sites_item.yaml)                                                    |          | required | required  | required   | required | required |          |          |          |
+| qr:campaigns (k8s/base/policies/resource_qr_campaigns.yaml)                                                                      |          | required | required  | required   | required | required | required | required | required |
+| qr:campaigns:item (k8s/base/policies/resource_qr_campaigns_item.yaml)                                                            |          | required | required  | required   | required | required | required | required | required |
+| qr:media (k8s/base/policies/resource_qr_media.yaml)                                                                              |          | required |           |            |          |          |          |          |          |
+| qr:media:item (k8s/base/policies/resource_qr_media_item.yaml)                                                                    |          | required |           |            |          |          |          |          |          |
+| qr:site (k8s/base/policies/resource_qr_site.yaml)                                                                                |          | required |           |            |          |          |          |          |          |
+| qr:site:item (k8s/base/policies/resource_qr_site_item.yaml)                                                                      |          | required |           |            |          |          |          |          |          |
+| qr:templates (k8s/base/policies/resource_qr_templates.yaml)                                                                      |          | required |           |            |          |          |          |          |          |
+| qr:templates:item (k8s/base/policies/resource_qr_templates_item.yaml)                                                            |          | required |           |            |          |          |          |          |          |
+| reports:campaign-compliance-details (k8s/base/policies/resource_reports_campaign_compliance_details.yaml)                        |          | required |           | required   |          | required |          |          |          |
+| reports:campaign-compliance (k8s/base/policies/resource_reports_campaign_compliance.yaml)                                        |          | required |           | required   |          | required |          |          |          |
+| reports:campaign-performance-maps (k8s/base/policies/resource_reports_campaign_performance_maps.yaml)                            |          | required |           | required   |          | required |          |          |          |
+| reports:content-proof-of-play (k8s/base/policies/resource_reports_content_proof_of_play.yaml)                                    |          |          |           |            |          | required |          |          |          |
+| reports:media-performance-maps (k8s/base/policies/resource_reports_media_performance_maps.yaml)                                  |          | required |           |            |          |          |          |          |          |
+| reports:qr-performance-site-to-site (k8s/base/policies/resource_reports_qrperformance_sitetosite.yaml)                           |          | required |           |            |          |          |          |          |          |
+| reports:qr-performance (k8s/base/policies/resource_reports_qrperformance.yaml)                                                   |          | required |           |            |          |          |          |          |          |
+| reports:site-performance-maps (k8s/base/policies/resource_reports_site_performance_maps.yaml)                                    |          | required |           |            |          |          |          |          |          |
+| reports:export (k8s/base/policies/resource_reports_export.yaml)                                                                  |          | required |           | required   | required | required |          | required |          |
+| settings:admin:cerbos (k8s/base/policies/resource_settings_admin_cerbos.yaml)                                                    | required |          |           |            |          |          |          |          |          |
+| settings:admin:general (k8s/base/policies/resource_settings_admin_general.yaml)                                                  | required |          |           |            |          |          |          |          |          |
+| settings:admin:teams (k8s/base/policies/resource_settings_admin_teams.yaml)                                                      | required |          |           |            |          |          |          |          |          |
+| settings:admin:users (k8s/base/policies/resource_settings_admin_users.yaml)                                                      | required |          |           |            |          |          |          |          |          |
+| settings:footprints_products_pricing_group (k8s/base/policies/resource_settings_footprints_products_pricinggroup.yaml)           |          |          | required  |            | required |          |          |          |          |
+| settings:footprints_products_pricing_group:item (k8s/base/policies/resource_settings_footprints_products_pricinggroup_item.yaml) |          |          | required  |            | required |          |          |          |          |
+| settings:footprints_products_property (k8s/base/policies/resource_settings_footprints_products_property.yaml)                    |          |          | required  | required   | required |          |          |          |          |
+| settings:footprints_products_property:item (k8s/base/policies/resource_settings_footprints_products_property_item.yaml)          |          |          | required  | required   | required |          |          |          |          |
+| settings:footprints_sites_property (k8s/base/policies/resource_settings_footprints_sites_property.yaml)                          |          | required | required  | required   |          |          |          |          |          |
+| settings:footprints_sites_property:item (k8s/base/policies/resource_settings_footprints_sites_property_item.yaml)                |          | required | required  | required   |          |          |          |          |          |
+| settings:qr_default-redirect (k8s/base/policies/resource_settings_qr_defaultredirect.yaml)                                       |          | required |           |            |          |          |          |          |          |
+| settings:qr_design (k8s/base/policies/resource_settings_qr_design.yaml)                                                          |          | required |           |            |          |          |          |          |          |
+| settings:qr_design:item (k8s/base/policies/resource_settings_qr_design_item.yaml)                                                |          | required |           |            |          |          |          |          |          |
+| settings:qr_domain (k8s/base/policies/resource_settings_qr_domain.yaml)                                                          |          | required |           |            |          |          |          |          |          |
+| settings:qr_domain:item (k8s/base/policies/resource_settings_qr_domain_item.yaml)                                                |          | required |           |            |          |          |          |          |          |
+| settings:qr_power-tag (k8s/base/policies/resource_settings_qr_powertag.yaml)                                                     |          | required |           |            |          |          |          |          |          |
+| settings:qr_power-tag:item (k8s/base/policies/resource_settings_qr_powertag_item.yaml)                                           |          | required |           |            |          |          |          |          |          |
+| settings:signage_layout (k8s/base/policies/resource_settings_signage_layout.yaml)                                                |          |          |           |            |          | required |          |          |          |
+| settings:signage_layout:item (k8s/base/policies/resource_settings_signage_layout_item.yaml)                                      |          |          |           |            |          | required |          |          |          |
+| settings:signage_people_property (k8s/base/policies/resource_settings_signage_people_property.yaml)                              |          |          |           |            |          |          |          |          | required |
+| settings:signage_people_property:item (k8s/base/policies/resource_settings_signage_people_property_item.yaml)                    |          |          |           |            |          |          |          |          | required |
+| settings:signage_places_property (k8s/base/policies/resource_settings_signage_places_property.yaml)                              |          |          |           |            |          |          |          |          | required |
+| settings:signage_places_property:item (k8s/base/policies/resource_settings_signage_places_property_item.yaml)                    |          |          |           |            |          |          |          |          | required |
+| settings:signage_things_property (k8s/base/policies/resource_settings_signage_things_property.yaml)                              |          |          |           |            |          |          |          |          | required |
+| settings:signage_things_property:item (k8s/base/policies/resource_settings_signage_things_property_item.yaml)                    |          |          |           |            |          |          |          |          | required |
+| settings:user:profile (k8s/base/policies/resource_settings_user_profile.yaml)                                                    | required |          |           |            |          |          |          |          |          |
+| signages:people (k8s/base/policies/resource_signages_people.yaml)                                                                |          |          |           |            |          | required |          |          | required |
+| signages:people:item (k8s/base/policies/resource_signages_people_item.yaml)                                                      |          |          |           |            |          | required |          |          | required |
+| signages:places (k8s/base/policies/resource_signages_places.yaml)                                                                |          |          |           |            |          | required |          |          | required |
+| signages:places:item (k8s/base/policies/resource_signages_places_item.yaml)                                                      |          |          |           |            |          | required |          |          | required |
+| signages:things (k8s/base/policies/resource_signages_things.yaml)                                                                |          |          |           |            |          | required |          |          | required |
+| signages:things:item (k8s/base/policies/resource_signages_things_item.yaml)                                                      |          |          |           |            |          | required |          |          | required |
 
 ---
 
