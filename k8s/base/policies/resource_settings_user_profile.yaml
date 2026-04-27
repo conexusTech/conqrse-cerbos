@@ -23,23 +23,7 @@ resourcePolicy:
         - retailer_manager
         - team_lead
         - staff_operator
-        - guest_collaborator
-        - su_acting_retailer_owner
-        - su_acting_retailer_manager
-        - su_acting_retailer_lead
-        - su_acting_retailer_member
-        - su_acting_retailer_collaborator
-        - agency_acting_retailer_owner
-        - agency_acting_retailer_manager
-        - agency_acting_retailer_lead
-        - agency_acting_retailer_member
-        - agency_acting_retailer_collaborator
-        - su_acting_agency_owner
-        - su_acting_agency_manager
-        - su_acting_agency_lead
-        - su_acting_agency_member
-        - su_acting_agency_collaborator
-    - actions: ["resource:update"]
+        - guest_collaborator    - actions: ["resource:update"]
       effect: EFFECT_ALLOW
       derivedRoles:
         - root_user
@@ -54,16 +38,3 @@ resourcePolicy:
         - retailer_manager
         - team_lead
         - staff_operator
-        - su_acting_retailer_owner
-        - su_acting_retailer_manager
-        - su_acting_retailer_lead
-        - su_acting_retailer_member
-        - agency_acting_retailer_owner
-        - agency_acting_retailer_manager
-        - agency_acting_retailer_lead
-        - agency_acting_retailer_member
-        - su_acting_agency_owner
-        - su_acting_agency_manager
-        - su_acting_agency_lead
-        - su_acting_agency_member
-

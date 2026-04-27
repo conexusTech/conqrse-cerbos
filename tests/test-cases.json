@@ -21,8 +21,7 @@
                 "qr"
               ],
               "agencyId": "agency-456",
-              "retailerId": "retail-789",
-              "isDelegating": false
+              "retailerId": "retail-789"
             }
           },
           "resource": {
@@ -40,36 +39,9 @@
           ]
         },
         {
-          "id": "allow_11",
-          "name": "Agency Owner Viewing Agency Dashboard",
-          "description": "Agency-level owner accessing their agency dashboard",
-          "principal": {
-            "id": "agency-user-010",
-            "roles": [
-              "user"
-            ],
-            "attr": {
-              "userLevel": "agency",
-              "userType": "owner",
-              "name": "owner@agency.com",
-              "agencyId": "agency-456",
-              "isDelegating": false
-            }
-          },
-          "resource": {
-            "kind": "dashboards:agency-dashboard",
-            "id": "dashboards:agency-dashboard",
-            "attr": {}
-          },
-          "expectedResult": "ALLOW",
-          "actions": [
-            "resource:view"
-          ]
-        },
-        {
           "id": "allow_2",
-          "name": "SU Admin Acting AS Retailer Admin Creating a User",
-          "description": "Super user with admin type delegating to act as a retailer admin",
+          "name": "SU Admin Managing Agency Configuration",
+          "description": "Super user with admin type accessing SU-level settings",
           "principal": {
             "id": "su-user-001",
             "roles": [
@@ -81,21 +53,16 @@
               "name": "admin@platform.com",
               "products": [
                 "footprints",
-                "signage",
+                "signages",
                 "qr"
-              ],
-              "actingAs": {
-                "level": "retailer",
-                "retailerId": "retail-789"
-              }
+              ]
             }
           },
           "resource": {
-            "kind": "settings:admin:users",
-            "id": "settings:admin:users",
+            "kind": "settings:admin_users",
+            "id": "settings:admin_users",
             "attr": {
-              "product": "settings",
-              "retailerId": "retail-789"
+              "product": "settings"
             }
           },
           "expectedResult": "ALLOW",
@@ -105,8 +72,8 @@
         },
         {
           "id": "allow_3",
-          "name": "Agency Admin Acting AS Retailer Creating QR Campaign",
-          "description": "Agency-level admin delegating to act as retailer admin",
+          "name": "Agency Admin Creating QR Campaign",
+          "description": "Agency-level admin creating a campaign for their agency",
           "principal": {
             "id": "agency-user-002",
             "roles": [
@@ -120,12 +87,7 @@
                 "footprints",
                 "qr"
               ],
-              "agencyId": "agency-456",
-              "actingAs": {
-                "level": "retailer",
-                "retailerId": "retail-789",
-                "agencyId": "agency-456"
-              }
+              "agencyId": "agency-456"
             }
           },
           "resource": {
@@ -133,7 +95,6 @@
             "id": "qr:campaigns",
             "attr": {
               "product": "qr",
-              "retailerId": "retail-789",
               "agencyId": "agency-456"
             }
           },
@@ -157,16 +118,15 @@
               "name": "owner@agency.com",
               "products": [
                 "footprints",
-                "signage",
+                "signages",
                 "qr"
               ],
-              "agencyId": "agency-456",
-              "isDelegating": false
+              "agencyId": "agency-456"
             }
           },
           "resource": {
-            "kind": "settings:admin:users",
-            "id": "settings:admin:users",
+            "kind": "settings:admin_users",
+            "id": "settings:admin_users",
             "attr": {
               "product": "settings",
               "retailerId": "retail-789",
@@ -180,7 +140,7 @@
         },
         {
           "id": "allow_5",
-          "name": "SU Owner Managing Agency Configuration",
+          "name": "SU Owner Managing System Configuration",
           "description": "Super user with owner type accessing SU-level settings",
           "principal": {
             "id": "su-user-000",
@@ -193,15 +153,14 @@
               "name": "owner@platform.com",
               "products": [
                 "footprints",
-                "signage",
+                "signages",
                 "qr"
-              ],
-              "isDelegating": false
+              ]
             }
           },
           "resource": {
-            "kind": "settings:admin:general",
-            "id": "settings:admin:general",
+            "kind": "settings:admin_general",
+            "id": "settings:admin_general",
             "attr": {
               "product": "settings"
             }
@@ -226,17 +185,17 @@
               "name": "lead@platform.com",
               "products": [
                 "footprints",
-                "signage",
-                "qr"
-              ],
-              "isDelegating": false
+                "signages",
+                "qr",
+                "reports"
+              ]
             }
           },
           "resource": {
-            "kind": "dashboards:su-dashboard",
-            "id": "dashboards:su-dashboard",
+            "kind": "reports:system",
+            "id": "reports:system",
             "attr": {
-              "product": "dashboards"
+              "product": "reports"
             }
           },
           "expectedResult": "ALLOW",
@@ -246,79 +205,6 @@
         },
         {
           "id": "allow_7",
-          "name": "SU Collaborator Acting AS Retailer Member",
-          "description": "SU collaborator delegating to act as retailer member",
-          "principal": {
-            "id": "su-user-004",
-            "roles": [
-              "user"
-            ],
-            "attr": {
-              "userLevel": "su",
-              "userType": "collaborator",
-              "name": "viewer@platform.com",
-              "products": [
-                "qr"
-              ],
-              "actingAs": {
-                "level": "retailer",
-                "retailerId": "retail-789"
-              }
-            }
-          },
-          "resource": {
-            "kind": "qr:campaigns",
-            "id": "qr:campaigns",
-            "attr": {
-              "product": "qr",
-              "retailerId": "retail-789"
-            }
-          },
-          "expectedResult": "ALLOW",
-          "actions": [
-            "resource:view"
-          ]
-        },
-        {
-          "id": "allow_8",
-          "name": "Agency Lead Acting AS Retailer Creating Resources",
-          "description": "Agency lead acting as retailer to create a campaign",
-          "principal": {
-            "id": "agency-user-003",
-            "roles": [
-              "user"
-            ],
-            "attr": {
-              "userLevel": "agency",
-              "userType": "lead",
-              "name": "lead@agency.com",
-              "products": [
-                "qr"
-              ],
-              "agencyId": "agency-456",
-              "actingAs": {
-                "level": "retailer",
-                "retailerId": "retail-789",
-                "agencyId": "agency-456"
-              }
-            }
-          },
-          "resource": {
-            "kind": "qr:campaigns",
-            "id": "qr:campaigns",
-            "attr": {
-              "product": "qr",
-              "retailerId": "retail-789",
-              "agencyId": "agency-456"
-            }
-          },
-          "expectedResult": "ALLOW",
-          "actions": [
-            "resource:create"
-          ]
-        },
-        {
-          "id": "allow_9",
           "name": "Agency Member Viewing Child Retailer Resources",
           "description": "Agency member viewing resources from a child retailer",
           "principal": {
@@ -334,8 +220,7 @@
                 "footprints",
                 "qr"
               ],
-              "agencyId": "agency-456",
-              "isDelegating": false
+              "agencyId": "agency-456"
             }
           },
           "resource": {
@@ -353,7 +238,7 @@
           ]
         },
         {
-          "id": "allow_10",
+          "id": "allow_8",
           "name": "Retailer Owner Managing Store Settings",
           "description": "Retailer owner updating store-level configuration",
           "principal": {
@@ -370,13 +255,12 @@
                 "qr"
               ],
               "agencyId": "agency-456",
-              "retailerId": "retail-789",
-              "isDelegating": false
+              "retailerId": "retail-789"
             }
           },
           "resource": {
-            "kind": "settings:admin:general",
-            "id": "settings:admin:general",
+            "kind": "settings:admin_general",
+            "id": "settings:admin_general",
             "attr": {
               "product": "settings",
               "retailerId": "retail-789"
@@ -388,150 +272,7 @@
           ]
         },
         {
-          "id": "allow_12",
-          "name": "Retailer Manager Viewing Retailer Dashboard",
-          "description": "Retailer-level admin accessing their retailer dashboard",
-          "principal": {
-            "id": "user-300",
-            "roles": [
-              "user"
-            ],
-            "attr": {
-              "userLevel": "retailer",
-              "userType": "admin",
-              "name": "manager@retailer.com",
-              "products": [
-                "footprints",
-                "qr"
-              ],
-              "agencyId": "agency-456",
-              "retailerId": "retail-789",
-              "isDelegating": false
-            }
-          },
-          "resource": {
-            "kind": "dashboards:retailer-dashboard",
-            "id": "dashboards:retailer-dashboard",
-            "attr": {
-              "product": "dashboards",
-              "retailerId": "retail-789"
-            }
-          },
-          "expectedResult": "ALLOW",
-          "actions": [
-            "resource:view"
-          ]
-        },
-        {
-          "id": "allow_13",
-          "name": "SU Owner Viewing Acting-As Audit Logs",
-          "description": "Super user owner can view delegation/acting-as records",
-          "principal": {
-            "id": "su-user-100",
-            "roles": [
-              "user"
-            ],
-            "attr": {
-              "userLevel": "su",
-              "userType": "owner",
-              "name": "owner@platform.com",
-              "products": [
-                "footprints",
-                "signage",
-                "qr"
-              ],
-              "isDelegating": false
-            }
-          },
-          "resource": {
-            "kind": "settings:admin:acting-as",
-            "id": "settings:admin:acting-as",
-            "attr": {
-              "product": "admin"
-            }
-          },
-          "expectedResult": "ALLOW",
-          "actions": [
-            "resource:view"
-          ]
-        },
-        {
-          "id": "allow_14",
-          "name": "Agency Manager Viewing Acting-As Records",
-          "description": "Agency admin can view delegation records for their retailers",
-          "principal": {
-            "id": "agency-user-020",
-            "roles": [
-              "user"
-            ],
-            "attr": {
-              "userLevel": "agency",
-              "userType": "admin",
-              "name": "manager@agency.com",
-              "products": [
-                "footprints",
-                "signage",
-                "qr"
-              ],
-              "agencyId": "agency-456",
-              "isDelegating": false
-            }
-          },
-          "resource": {
-            "kind": "settings:admin:acting-as",
-            "id": "settings:admin:acting-as",
-            "attr": {
-              "product": "admin",
-              "agencyId": "agency-456"
-            }
-          },
-          "expectedResult": "ALLOW",
-          "actions": [
-            "resource:view"
-          ]
-        },
-        {
-          "id": "allow_15",
-          "name": "Agency Owner Acting AS Retailer Viewing Delegation Records",
-          "description": "Agency user delegating to retailer can view delegation audit records",
-          "principal": {
-            "id": "agency-user-025",
-            "roles": [
-              "user"
-            ],
-            "attr": {
-              "userLevel": "agency",
-              "userType": "owner",
-              "name": "owner@agency.com",
-              "products": [
-                "footprints",
-                "signage",
-                "qr"
-              ],
-              "agencyId": "agency-456",
-              "actingAs": {
-                "level": "retailer",
-                "retailerId": "retail-789",
-                "agencyId": "agency-456"
-              }
-            }
-          },
-          "resource": {
-            "kind": "settings:admin:acting-as",
-            "id": "settings:admin:acting-as",
-            "attr": {
-              "product": "admin",
-              "retailerId": "retail-789",
-              "agencyId": "agency-456"
-            }
-          },
-          "expectedResult": "ALLOW",
-          "actions": [
-            "resource:view"
-          ]
-        },
-        {
-          "id": "allow_16",
+          "id": "allow_9",
           "name": "Retailer Owner Accessing Own Retailer Resources",
           "description": "Retailer user can access resources scoped to their retailer",
           "principal": {
@@ -547,8 +288,7 @@
                 "qr"
               ],
               "agencyId": "agency-456",
-              "retailerId": "retail-789",
-              "isDelegating": false
+              "retailerId": "retail-789"
             }
           },
           "resource": {
@@ -563,6 +303,210 @@
           "expectedResult": "ALLOW",
           "actions": [
             "resource:view"
+          ]
+        },
+        {
+          "id": "allow_10",
+          "name": "Retailer Owner Accessing Content Templates",
+          "description": "Retailer user accessing newly added contents product",
+          "principal": {
+            "id": "user-600",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "owner@retailer-789.com",
+              "products": [
+                "contents",
+                "qr"
+              ],
+              "agencyId": "agency-456",
+              "retailerId": "retail-789"
+            }
+          },
+          "resource": {
+            "kind": "contents:templates",
+            "id": "contents:templates",
+            "attr": {
+              "product": "contents",
+              "retailerId": "retail-789",
+              "agencyId": "agency-456"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "resource:view"
+          ]
+        },
+        {
+          "id": "allow_11",
+          "name": "Retailer Member Accessing Content Assets",
+          "description": "Retailer member accessing content assets",
+          "principal": {
+            "id": "user-610",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "member",
+              "name": "member@retailer-789.com",
+              "products": [
+                "contents"
+              ],
+              "agencyId": "agency-456",
+              "retailerId": "retail-789"
+            }
+          },
+          "resource": {
+            "kind": "contents:assets",
+            "id": "contents:assets",
+            "attr": {
+              "product": "contents",
+              "retailerId": "retail-789",
+              "agencyId": "agency-456"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "resource:list"
+          ]
+        },
+        {
+          "id": "allow_12",
+          "name": "Retailer Owner Accessing Signages People",
+          "description": "Retailer user accessing signages product (renamed from signage)",
+          "principal": {
+            "id": "user-700",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "owner@retailer-789.com",
+              "products": [
+                "signages"
+              ],
+              "agencyId": "agency-456",
+              "retailerId": "retail-789"
+            }
+          },
+          "resource": {
+            "kind": "signages:people",
+            "id": "signages:people",
+            "attr": {
+              "product": "signages",
+              "retailerId": "retail-789",
+              "agencyId": "agency-456"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "resource:view"
+          ]
+        },
+        {
+          "id": "allow_13",
+          "name": "Retailer Member Accessing Signages Places Items",
+          "description": "Retailer member accessing signages places item resources",
+          "principal": {
+            "id": "user-710",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "member",
+              "name": "member@retailer-789.com",
+              "products": [
+                "signages"
+              ],
+              "agencyId": "agency-456",
+              "retailerId": "retail-789"
+            }
+          },
+          "resource": {
+            "kind": "signages:places:item",
+            "id": "signages:places:item:123",
+            "attr": {
+              "product": "signages",
+              "retailerId": "retail-789",
+              "agencyId": "agency-456"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "resource:list"
+          ]
+        },
+        {
+          "id": "allow_14",
+          "name": "Retailer Admin Accessing Connect Contacts",
+          "description": "Retailer admin accessing new connect product contacts",
+          "principal": {
+            "id": "user-800",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "admin",
+              "name": "admin@retailer-789.com",
+              "products": [
+                "connect"
+              ],
+              "agencyId": "agency-456",
+              "retailerId": "retail-789"
+            }
+          },
+          "resource": {
+            "kind": "connect:contacts",
+            "id": "connect:contacts",
+            "attr": {
+              "product": "connect",
+              "retailerId": "retail-789",
+              "agencyId": "agency-456"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "resource:view"
+          ]
+        },
+        {
+          "id": "allow_15",
+          "name": "Retailer Owner Accessing QR Design Settings",
+          "description": "Retailer owner accessing underscore-separated settings resource",
+          "principal": {
+            "id": "user-900",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "owner@retailer-789.com",
+              "products": [
+                "qr"
+              ],
+              "agencyId": "agency-456",
+              "retailerId": "retail-789"
+            }
+          },
+          "resource": {
+            "kind": "settings:qr_design",
+            "id": "settings:qr_design",
+            "attr": {
+              "product": "settings",
+              "retailerId": "retail-789"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "resource:update"
           ]
         }
       ]
@@ -588,8 +532,7 @@
                 "qr"
               ],
               "agencyId": "agency-456",
-              "retailerId": "retail-789",
-              "isDelegating": false
+              "retailerId": "retail-789"
             }
           },
           "resource": {
@@ -623,15 +566,14 @@
                 "qr"
               ],
               "agencyId": "agency-456",
-              "retailerId": "retail-789",
-              "isDelegating": false
+              "retailerId": "retail-789"
             }
           },
           "resource": {
-            "kind": "signage:content:templates",
-            "id": "signage:content:templates",
+            "kind": "contents:templates",
+            "id": "contents:templates",
             "attr": {
-              "product": "signage",
+              "product": "contents",
               "retailerId": "retail-789",
               "agencyId": "agency-456"
             }
@@ -656,13 +598,12 @@
               "name": "viewer@platform.com",
               "products": [
                 "footprints"
-              ],
-              "isDelegating": false
+              ]
             }
           },
           "resource": {
-            "kind": "settings:admin:general",
-            "id": "settings:admin:general",
+            "kind": "settings:admin_general",
+            "id": "settings:admin_general",
             "attr": {
               "product": "settings"
             }
@@ -688,13 +629,12 @@
               "products": [
                 "qr"
               ],
-              "agencyId": "agency-456",
-              "isDelegating": false
+              "agencyId": "agency-456"
             }
           },
           "resource": {
-            "kind": "settings:admin:users",
-            "id": "settings:admin:users",
+            "kind": "settings:admin_users",
+            "id": "settings:admin_users",
             "attr": {
               "product": "settings",
               "agencyId": "agency-456"
@@ -721,8 +661,7 @@
               "products": [
                 "qr"
               ],
-              "agencyId": "agency-456",
-              "isDelegating": false
+              "agencyId": "agency-456"
             }
           },
           "resource": {
@@ -755,13 +694,12 @@
                 "qr"
               ],
               "agencyId": "agency-456",
-              "retailerId": "retail-789",
-              "isDelegating": false
+              "retailerId": "retail-789"
             }
           },
           "resource": {
-            "kind": "settings:admin:general",
-            "id": "settings:admin:general",
+            "kind": "settings:admin_general",
+            "id": "settings:admin_general",
             "attr": {
               "product": "settings",
               "retailerId": "retail-789"
@@ -774,255 +712,6 @@
         },
         {
           "id": "deny_7",
-          "name": "Agency User Acting AS Unrelated Retailer",
-          "description": "Agency admin attempting to act as a retailer not in their agency",
-          "principal": {
-            "id": "agency-user-008",
-            "roles": [
-              "user"
-            ],
-            "attr": {
-              "userLevel": "agency",
-              "userType": "admin",
-              "name": "manager@agency-a.com",
-              "products": [
-                "qr"
-              ],
-              "agencyId": "agency-456",
-              "actingAs": {
-                "level": "retailer",
-                "retailerId": "retail-999",
-                "agencyId": "agency-999"
-              }
-            }
-          },
-          "resource": {
-            "kind": "qr:campaigns",
-            "id": "qr:campaigns",
-            "attr": {
-              "product": "qr",
-              "retailerId": "retail-999",
-              "agencyId": "agency-999"
-            }
-          },
-          "expectedResult": "DENY",
-          "actions": [
-            "resource:list"
-          ]
-        },
-        {
-          "id": "deny_8",
-          "name": "Retailer User Attempting to Act AS Another Retailer",
-          "description": "Retailer staff attempting to act as another retailer",
-          "principal": {
-            "id": "user-205",
-            "roles": [
-              "user"
-            ],
-            "attr": {
-              "userLevel": "retailer",
-              "userType": "member",
-              "name": "staff@retailer-a.com",
-              "products": [
-                "qr"
-              ],
-              "agencyId": "agency-456",
-              "retailerId": "retail-789",
-              "actingAs": {
-                "level": "retailer",
-                "retailerId": "retail-999"
-              }
-            }
-          },
-          "resource": {
-            "kind": "qr:campaigns",
-            "id": "qr:campaigns",
-            "attr": {
-              "product": "qr",
-              "retailerId": "retail-999"
-            }
-          },
-          "expectedResult": "DENY",
-          "actions": [
-            "resource:list"
-          ]
-        },
-        {
-          "id": "deny_9",
-          "name": "Agency User Attempting to View SU Dashboard",
-          "description": "Agency-level user trying to access platform-level dashboard",
-          "principal": {
-            "id": "agency-user-011",
-            "roles": [
-              "user"
-            ],
-            "attr": {
-              "userLevel": "agency",
-              "userType": "owner",
-              "name": "owner@agency.com",
-              "products": [
-                "footprints",
-                "signage",
-                "qr"
-              ],
-              "agencyId": "agency-456",
-              "isDelegating": false
-            }
-          },
-          "resource": {
-            "kind": "dashboards:su-dashboard",
-            "id": "dashboards:su-dashboard",
-            "attr": {
-              "product": "dashboards"
-            }
-          },
-          "expectedResult": "DENY",
-          "actions": [
-            "resource:view"
-          ]
-        },
-        {
-          "id": "deny_10",
-          "name": "Retailer User Attempting to View Agency Dashboard",
-          "description": "Retailer-level user trying to access agency dashboard",
-          "principal": {
-            "id": "user-310",
-            "roles": [
-              "user"
-            ],
-            "attr": {
-              "userLevel": "retailer",
-              "userType": "owner",
-              "name": "owner@retailer.com",
-              "products": [
-                "footprints",
-                "qr"
-              ],
-              "agencyId": "agency-456",
-              "retailerId": "retail-789",
-              "isDelegating": false
-            }
-          },
-          "resource": {
-            "kind": "dashboards:agency-dashboard",
-            "id": "dashboards:agency-dashboard",
-            "attr": {
-              "product": "dashboards",
-              "agencyId": "agency-456"
-            }
-          },
-          "expectedResult": "DENY",
-          "actions": [
-            "resource:view"
-          ]
-        },
-        {
-          "id": "deny_11",
-          "name": "Agency Collaborator Attempting to View Acting-As Records",
-          "description": "Agency collaborator trying to view delegation/acting-as audit logs",
-          "principal": {
-            "id": "agency-user-030",
-            "roles": [
-              "user"
-            ],
-            "attr": {
-              "userLevel": "agency",
-              "userType": "collaborator",
-              "name": "viewer@agency.com",
-              "products": [
-                "qr"
-              ],
-              "agencyId": "agency-456",
-              "isDelegating": false
-            }
-          },
-          "resource": {
-            "kind": "settings:admin:acting-as",
-            "id": "settings:admin:acting-as",
-            "attr": {
-              "product": "admin",
-              "agencyId": "agency-456"
-            }
-          },
-          "expectedResult": "DENY",
-          "actions": [
-            "resource:view"
-          ]
-        },
-        {
-          "id": "deny_12",
-          "name": "Retailer Member Attempting to View Acting-As Records",
-          "description": "Retailer-level member trying to view delegation records",
-          "principal": {
-            "id": "user-410",
-            "roles": [
-              "user"
-            ],
-            "attr": {
-              "userLevel": "retailer",
-              "userType": "member",
-              "name": "staff@retailer.com",
-              "products": [
-                "footprints",
-                "qr"
-              ],
-              "agencyId": "agency-456",
-              "retailerId": "retail-789",
-              "isDelegating": false
-            }
-          },
-          "resource": {
-            "kind": "settings:admin:acting-as",
-            "id": "settings:admin:acting-as",
-            "attr": {
-              "product": "admin",
-              "retailerId": "retail-789"
-            }
-          },
-          "expectedResult": "DENY",
-          "actions": [
-            "resource:view"
-          ]
-        },
-        {
-          "id": "deny_13",
-          "name": "SU Admin Acting AS Retailer Attempting to View Delegation Records",
-          "description": "SU user acting as retailer cannot view delegation records (end-user context)",
-          "principal": {
-            "id": "su-user-200",
-            "roles": [
-              "user"
-            ],
-            "attr": {
-              "userLevel": "su",
-              "userType": "admin",
-              "name": "admin@platform.com",
-              "products": [
-                "footprints",
-                "signage",
-                "qr"
-              ],
-              "actingAs": {
-                "level": "retailer",
-                "retailerId": "retail-789"
-              }
-            }
-          },
-          "resource": {
-            "kind": "settings:admin:acting-as",
-            "id": "settings:admin:acting-as",
-            "attr": {
-              "product": "admin",
-              "retailerId": "retail-789"
-            }
-          },
-          "expectedResult": "DENY",
-          "actions": [
-            "resource:view"
-          ]
-        },
-        {
-          "id": "deny_14",
           "name": "Retailer Owner Accessing Different Retailer Resources",
           "description": "Retailer user cannot access resources from a different retailer (retailer isolation)",
           "principal": {
@@ -1038,8 +727,7 @@
                 "qr"
               ],
               "agencyId": "agency-456",
-              "retailerId": "retail-789",
-              "isDelegating": false
+              "retailerId": "retail-789"
             }
           },
           "resource": {
@@ -1057,7 +745,7 @@
           ]
         },
         {
-          "id": "deny_15",
+          "id": "deny_8",
           "name": "Retailer Member Accessing Different Retailer Footprints",
           "description": "Retailer staff cannot access footprints resources from another retailer",
           "principal": {
@@ -1073,8 +761,7 @@
                 "footprints"
               ],
               "agencyId": "agency-456",
-              "retailerId": "retail-789",
-              "isDelegating": false
+              "retailerId": "retail-789"
             }
           },
           "resource": {
@@ -1089,6 +776,73 @@
           "expectedResult": "DENY",
           "actions": [
             "resource:list"
+          ]
+        },
+        {
+          "id": "deny_9",
+          "name": "Agency Member Attempting to Access Contents Without Subscription",
+          "description": "Agency member trying to access contents product without subscription",
+          "principal": {
+            "id": "agency-user-050",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "agency",
+              "userType": "member",
+              "name": "member@agency.com",
+              "products": [
+                "qr"
+              ],
+              "agencyId": "agency-456"
+            }
+          },
+          "resource": {
+            "kind": "contents:assets",
+            "id": "contents:assets",
+            "attr": {
+              "product": "contents",
+              "retailerId": "retail-789",
+              "agencyId": "agency-456"
+            }
+          },
+          "expectedResult": "DENY",
+          "actions": [
+            "resource:view"
+          ]
+        },
+        {
+          "id": "deny_10",
+          "name": "Retailer Member Attempting to Modify Signages People",
+          "description": "Retailer collaborator cannot modify signages resources",
+          "principal": {
+            "id": "user-720",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "collaborator",
+              "name": "collaborator@retailer-789.com",
+              "products": [
+                "signages"
+              ],
+              "agencyId": "agency-456",
+              "retailerId": "retail-789"
+            }
+          },
+          "resource": {
+            "kind": "signages:people",
+            "id": "signages:people",
+            "attr": {
+              "product": "signages",
+              "retailerId": "retail-789",
+              "agencyId": "agency-456"
+            }
+          },
+          "expectedResult": "DENY",
+          "actions": [
+            "resource:create"
           ]
         }
       ]

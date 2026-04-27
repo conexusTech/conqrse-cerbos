@@ -10,22 +10,20 @@ The following products are supported by Cerbos authorization, identified by the 
 | Product | Resource Prefix | Key Resources |
 |---------|-----------------|----------------|
 | **Footprints** | `footprints:` | sites, endpoints, products, pricing |
-| **Signage** | `signage:` | content (templates, assets, playlists, channels), signage (people, places, things, layouts) |
+| **Signages** | `signages:` | people, places, things |
+| **Contents** | `contents:` | templates, assets, playlists, channels, tags, content-groups, backgrounds |
 | **QR** | `qr:` | site, media, templates, campaigns |
 | **Reports** | `reports:` | qr-performance, campaign-compliance, site-performance-maps, export |
 | **Connect** | `connect:` | contacts |
 
 **Administrative & Configuration Features** (not products):
-- `permission:` — Permission and authorization management
-- `dashboards:` — User dashboards by role (su-dashboard, agency-dashboard, retailer-dashboard)
 - `settings:` — Configuration and settings management (cross-cutting concern, see [Resource Naming Patterns](#resource-naming-patterns))
-- `admin:` — Administrative audit and governance features (e.g., `settings:admin:acting-as`)
 
 ## Resource Naming Patterns
 
 ### Settings: Cross-Cutting Concern
 
-Settings resources use the `settings:{context}:{resource}` pattern as a **cross-cutting concern**, separate from product resources. This architectural decision enables:
+Settings resources use the `settings:{context}_{resource}` pattern (underscore-separated) as a **cross-cutting concern**, separate from product resources. This architectural decision enables:
 
 1. **Unified Authorization** — All settings follow consistent access control patterns in a single place
 2. **Scalability** — Adding new products doesn't require new settings policies
@@ -35,19 +33,20 @@ Settings resources use the `settings:{context}:{resource}` pattern as a **cross-
 **Pattern:**
 - `settings:admin:*` — Platform/system-level settings (owners/admins only)
 - `settings:user:*` — User-specific settings (personal profile, preferences)
-- `settings:{product}` — Product-specific configuration (e.g., `settings:qr`, `settings:signage`, `settings:footprints`)
-- `settings:{product}:{category}` — Sub-categories within product settings
+- `settings:{product}_{feature}` — Product-specific configuration (e.g., `settings:qr_design`, `settings:signage_layout`)
+- `settings:{product}_{feature}_{category}` — Sub-categories within product settings
 
 **Example:**
 ```
-settings:admin:general         ← Platform-wide configuration
-settings:admin:users          ← User management
-settings:admin:teams          ← Team management
-settings:qr                   ← QR product settings
-settings:qr:design            ← QR design sub-settings
-settings:signage              ← Signage product settings
-settings:footprints:property  ← Footprints property settings
-settings:user:profile         ← User profile/preferences
+settings:admin:general              ← Platform-wide configuration
+settings:admin:users                ← User management
+settings:admin:teams                ← Team management
+settings:qr_design                  ← QR design settings
+settings:qr_power-tag               ← QR power-tag settings
+settings:signage_layout             ← Signage layout settings
+settings:signage_people_property    ← Signage people property settings
+settings:footprints_sites_property  ← Footprints site property settings
+settings:user:profile               ← User profile/preferences
 ```
 
 **Why NOT `product:settings`?**
@@ -56,90 +55,82 @@ settings:user:profile         ← User profile/preferences
 - ❌ Settings and product access have different rules (should be separated)
 - ❌ Violates separation of concerns
 
-### Administrative Resources
-
-Administrative and audit resources use the `admin:{feature}` pattern for platform governance features:
-
-- `settings:admin:acting-as` — Delegation/audit logs (who acted as whom)
-
 ## Resources
 
-| Resource | Admin Route | Client Component | Create | List | View | Update | Delete | Export | Import |
-|----------|-------------|------------------|--------|------|------|--------|--------|--------|--------|
-| footprints:sites | `/footprint/sites` | `SitesClient.tsx` | AddSite | SiteTable | | | | SiteTable | SiteTable |
-| footprints:sites:item | `/footprint/sites/[id]` | `SiteDetailClient.tsx` | | | | | | | |
-| footprints:endpoints | `/footprint/endpoints` | `MediaPlayersClient.tsx` | AddMediaPlayer | MediaPlayerTable | | | | MediaPlayerTable | MediaPlayerTable |
-| footprints:endpoints:item | `/footprint/endpoints/[endpointId]` | `MediaPlayerDetailClient.tsx` | | | | | | | |
-| footprints:products | `/footprint/products` | `ProductsClient.tsx` | AddProduct | ProductTable | | | | ProductTable | ProductTable |
-| footprints:products:item | `/footprint/products/[id]` | `ProductDetailClient.tsx` | | | | | | | |
-| footprints:pricing | `/footprint/pricing` | `PricingClient.tsx` | AddPricing | PricingTable | | | | PricingTable | PricingTable |
-| signage:content:templates | `/content/templates` | `TemplatesClient.tsx` | | TemplateTable | | | | TemplateTable | TemplateTable |
-| signage:content:templates:create | `/content/templates/create` | `CreateTemplatePageClient.tsx` | | | | | | | |
-| signage:content:templates:item | `/content/templates/[id]` | `TemplateDetailClient.tsx` | | | | | | | |
-| signage:content:assets | `/content/assets` | `PlaylistAssetsClient.tsx` | AddAsset | AssetTable | | | | AssetTable | AssetTable |
-| signage:content:assets:create-template | `/content/assets/create-template` | `CreateTemplateClient.tsx` | | | | | | | |
-| signage:content:assets:create-content-template | `/content/assets/create-content-template` | `CreateContentTemplateClient.tsx` | | | | | | | |
-| signage:content:playlists | `/content/playlists` | `PlaylistConfigsClient.tsx` | AddPlaylistConfig | PlaylistConfigTable | | | | PlaylistConfigTable | PlaylistConfigTable |
-| signage:content:playlists:item:manage | `/content/playlists/[playlistConfigId]/manage` | `ManagePlaylistConfigClient.tsx` | | | | | | | |
-| signage:content:backgrounds | `/content/backgrounds` | `BackgroundsClient.tsx` | AddBackground | BackgroundTable | | | | BackgroundTable | BackgroundTable |
-| signage:content:channels | `/content/channels` | `MediaPlayerChannelsClient.tsx` | | MediaPlayerChannelTable | | | | MediaPlayerChannelTable | MediaPlayerChannelTable |
-| signage:content:channels:add | `/content/channels/add` | `MediaPlayerChannelAddClient.tsx` | | | | | | | |
-| signage:content:channels:item | `/content/channels/[id]` | `MediaPlayerChannelDetailClient.tsx` | | | | | | | |
-| signage:content:tags | `/content/tags` | `TagManagerClient.tsx` | AddTag | TagTable | | | | TagTable | TagTable |
-| signage:content:content-groups | `/content/content-groups` | `ContentGroupsClient.tsx` | AddContentGroup | ContentGroupTable | | | | ContentGroupTable | ContentGroupTable |
-| signage:content:content-groups:item | `/content/content-groups/[id]` | `ManageContentGroupClient.tsx` | | | | | | | |
-| signage:signage:people | `/signages/people` | `SignagePeopleClient.tsx` | AddPerson | PeopleTable | | | | PeopleTable | PeopleTable |
-| signage:signage:places | `/signages/places` | `SignagePlacesClient.tsx` | AddPlace | PlaceTable | | | | PlaceTable | PlaceTable |
-| signage:signage:things | `/signages/things` | `SignageThingsClient.tsx` | AddThing | ThingTable | | | | ThingTable | ThingTable |
-| qr:site | `/qr/site` | `ManagedSiteQrClient.tsx` | AddSiteQr | SiteQrTable | | | | SiteQrTable | SiteQrTable |
-| qr:site:item | `/qr/site/[id]` | `ManagedSiteQrDetailClient.tsx` | | | | | | | |
-| qr:media | `/qr/media` | `ManageMediaQrClient.tsx` | AddMediaQr | MediaQrTable | | | | MediaQrTable | MediaQrTable |
-| qr:media:item | `/qr/media/[id]` | `ManageMediaQrDetailClient.tsx` | | | | | | | |
-| qr:templates | `/qr/templates` | `QrTemplatesClient.tsx` | AddQrTemplate | QrTemplateTable | | | | QrTemplateTable | QrTemplateTable |
-| qr:templates:item | `/qr/templates/[id]` | `QrTemplateDetailClient.tsx` | | | | | | | |
-| qr:campaigns | `/qr/campaigns` | `CampaignsClient.tsx` | AddCampaign | CampaignTable | | | | CampaignTable | CampaignTable |
-| reports | `/reports` | `ReportsClient.tsx` | | | | | | | |
-| reports:qr-performance | `/reports/qr-performance` | `QRPerformanceAnalysisClient.tsx` | | QRPerformanceTable | | | | QRPerformanceTable | |
-| reports:qr-performance-site-to-site | `/reports/qr-performance-site-to-site` | `QRSiteAnalysisClient.tsx` | | QRSiteAnalysisTable | | | | QRSiteAnalysisTable | |
-| reports:campaign-compliance | `/reports/campaign-compliance` | `CampaignComplianceClient.tsx` | | ComplianceTable | | | | ComplianceTable | |
-| reports:campaign-compliance-details | `/reports/campaign-compliance-details` | `CampaignComplianceDetailsClient.tsx` | | ComplianceDetailsTable | | | | ComplianceDetailsTable | |
-| reports:site-performance-maps | `/reports/site-performance-maps` | `SitePerformanceMapsClient.tsx` | | SitePerformanceTable | | | | SitePerformanceTable | |
-| reports:media-performance-maps | `/reports/media-performance-maps` | `MediaPerformanceClient.tsx` | | MediaPerformanceTable | | | | MediaPerformanceTable | |
-| reports:campaign-performance-maps | `/reports/campaign-performance-maps` | `CampaignPerformanceMapsClient.tsx` | | CampaignPerformanceTable | | | | CampaignPerformanceTable | |
-| reports:content-proof-of-play | `/reports/content-proof-of-play` | `ContentProofOfPlayClient.tsx` | | ProofOfPlayTable | | | | ProofOfPlayTable | |
-| reports:export | `/export` | `BatchClient.tsx` | | | | | | BatchClient | |
-| connect:contacts | `/connect/contacts` | `ContactsClient.tsx` | AddContact | ContactTable | | | | ContactTable | ContactTable |
-| permission | `/permission` | `PermissionManagementClient.tsx` | AddPermission | PermissionTable | | | | | |
-| dashboards:su-dashboard | `/su-dashboard` | `SUDashboardClient.tsx` | | | | | | | |
-| dashboards:agency-dashboard | `/agency-dashboard` | `AgencyDashboardClient.tsx` | | | | | | | |
-| dashboards:retailer-dashboard | `/retailer-dashboard` | `RetailerDashboardClient.tsx` | | | | | | | |
-| settings:admin:general | `/settings/general` | `GeneralSettingsClient.tsx` | | | | | | | |
-| settings:admin:users | `/settings/users` | `UserSettingsClient.tsx` | AddUser | UserTable | | | | UserTable | UserTable |
-| settings:admin:teams | `/settings/teams` | `TeamSettingsClient.tsx` | AddTeam | TeamTable | | | | TeamTable | TeamTable |
-| settings:user:profile | `/profile` | `ProfileClient.tsx` | | | | | | | |
-| settings:qr | `/settings/qr` | `QrSettingsClient.tsx` | | | | | | | |
-| settings:signage | `/settings/signage` | `SignageSettingsClient.tsx` | | | | | | | |
-| footprints:sites:settings:property | `/settings/footprint` | `FootprintSettingsClient.tsx` | AddProperty | PropertyTable | | | | PropertyTable | PropertyTable |
-| footprints:sites:settings:property:item | `/settings/footprint` | `FootprintSettingsClient.tsx` | | | | | | | |
-| footprints:products:settings:property | `/settings/product` | `ProductSettingsClient.tsx` | AddProperty | PropertyTable | | | | PropertyTable | PropertyTable |
-| footprints:products:settings:property:item | `/settings/product` | `ProductSettingsClient.tsx` | | | | | | | |
-| footprints:products:settings:pricing-group | `/settings/price-tag` | `PriceTagSettingsClient.tsx` | AddPricingGroup | PricingGroupTable | | | | PricingGroupTable | PricingGroupTable |
-| footprints:products:settings:pricing-group:item | `/settings/price-tag` | `PriceTagSettingsClient.tsx` | | | | | | | |
-| settings:qr:design | `/settings/qr` | `QrSettingsClient.tsx` | AddQrDesign | QrDesignTable | | | | QrDesignTable | QrDesignTable |
-| settings:qr:design:item | `/settings/qr` | `QrSettingsClient.tsx` | | | | | | | |
-| settings:qr:power-tag | `/settings/qr` | `QrSettingsClient.tsx` | AddPowerTag | PowerTagTable | | | | PowerTagTable | PowerTagTable |
-| settings:qr:power-tag:item | `/settings/qr` | `QrSettingsClient.tsx` | | | | | | | |
-| settings:qr:default-redirect | `/settings/qr` | `QrSettingsClient.tsx` | AddDefaultRedirect | DefaultRedirectTable | | | | DefaultRedirectTable | DefaultRedirectTable |
-| settings:qr:domain | `/settings/qr` | `QrSettingsClient.tsx` | AddDomain | DomainTable | | | | DomainTable | DomainTable |
-| settings:qr:domain:item | `/settings/qr` | `QrSettingsClient.tsx` | | | | | | | |
-| settings:signage:people:property | `/settings/properties-manager/people` | `PeoplePropertiesClient.tsx` | AddProperty | PropertyTable | | | | PropertyTable | PropertyTable |
-| settings:signage:people:property:item | `/settings/properties-manager/people` | `PeoplePropertiesClient.tsx` | | | | | | | |
-| settings:signage:places:property | `/settings/properties-manager/places` | `PlacePropertiesClient.tsx` | AddProperty | PropertyTable | | | | PropertyTable | PropertyTable |
-| settings:signage:places:property:item | `/settings/properties-manager/places` | `PlacePropertiesClient.tsx` | | | | | | | |
-| settings:signage:things:property | `/settings/properties-manager/things` | `ThingPropertiesClient.tsx` | AddProperty | PropertyTable | | | | PropertyTable | PropertyTable |
-| settings:signage:things:property:item | `/settings/properties-manager/things` | `ThingPropertiesClient.tsx` | | | | | | | |
-| settings:signage:layout | `/settings/signage` | `SignageSettingsClient.tsx` | AddLayout | LayoutTable | | | | LayoutTable | LayoutTable |
-| settings:signage:layout:item | `/settings/signage` | `SignageSettingsClient.tsx` | | | | | | | |
+| Resource | Admin Route | Client Component | Actions |
+|----------|-------------|------------------|---------|
+| footprints:sites | `/footprint/sites` | `SitesClient.tsx` | list, view, create, update, delete, export, import |
+| footprints:sites:item | `/footprint/sites/[id]` | `SiteDetailClient.tsx` | view, update, delete |
+| footprints:endpoints | `/footprint/endpoints` | `MediaPlayersClient.tsx` | list, view, create, update, delete, export, import |
+| footprints:endpoints:item | `/footprint/endpoints/[endpointId]` | `MediaPlayerDetailClient.tsx` | view, update, delete |
+| footprints:products | `/footprint/products` | `ProductsClient.tsx` | list, view, create, update, delete, export, import |
+| footprints:products:item | `/footprint/products/[id]` | `ProductDetailClient.tsx` | view, update, delete |
+| footprints:pricing | `/footprint/pricing` | `PricingClient.tsx` | list, view, create, update, delete, export, import |
+| contents:templates | `/content/templates` | `TemplatesClient.tsx` | list, view, create, update, delete, export, import |
+| contents:templates:item | `/content/templates/[id]` | `TemplateDetailClient.tsx` | view, update, delete |
+| contents:assets | `/content/assets` | `PlaylistAssetsClient.tsx` | list, view, create, update, delete, export, import |
+| contents:assets:item | `/content/assets` | `PlaylistAssetsClient.tsx` | view, update, delete |
+| contents:playlists | `/content/playlists` | `PlaylistConfigsClient.tsx` | list, view, create, update, delete, export, import |
+| contents:playlists:item | `/content/playlists/[playlistConfigId]` | `ManagePlaylistConfigClient.tsx` | view, update, delete |
+| contents:backgrounds | `/content/backgrounds` | `BackgroundsClient.tsx` | list, view, create, update, delete, export, import |
+| contents:backgrounds:item | `/content/backgrounds` | `BackgroundsClient.tsx` | view, update, delete |
+| contents:channels | `/content/channels` | `MediaPlayerChannelsClient.tsx` | list, view, create, update, delete, export, import |
+| contents:channels:item | `/content/channels/[id]` | `MediaPlayerChannelDetailClient.tsx` | view, update, delete |
+| contents:tags | `/content/tags` | `TagManagerClient.tsx` | list, view, create, update, delete, export, import |
+| contents:tags:item | `/content/tags` | `TagManagerClient.tsx` | view, update, delete |
+| contents:content-groups | `/content/content-groups` | `ContentGroupsClient.tsx` | list, view, create, update, delete, export, import |
+| contents:content-groups:item | `/content/content-groups/[id]` | `ManageContentGroupClient.tsx` | view, update, delete |
+| signages:people | `/signages/people` | `SignagePeopleClient.tsx` | list, view, create, update, delete, export, import |
+| signages:people:item | `/signages/people` | `SignagePeopleClient.tsx` | view, update, delete |
+| signages:places | `/signages/places` | `SignagePlacesClient.tsx` | list, view, create, update, delete, export, import |
+| signages:places:item | `/signages/places` | `SignagePlacesClient.tsx` | view, update, delete |
+| signages:things | `/signages/things` | `SignageThingsClient.tsx` | list, view, create, update, delete, export, import |
+| signages:things:item | `/signages/things` | `SignageThingsClient.tsx` | view, update, delete |
+| qr:site | `/qr/site` | `ManagedSiteQrClient.tsx` | list, view, create, update, delete, export, import |
+| qr:site:item | `/qr/site/[id]` | `ManagedSiteQrDetailClient.tsx` | view, update, delete |
+| qr:media | `/qr/media` | `ManageMediaQrClient.tsx` | list, view, create, update, delete, export, import |
+| qr:media:item | `/qr/media/[id]` | `ManageMediaQrDetailClient.tsx` | view, update, delete |
+| qr:templates | `/qr/templates` | `QrTemplatesClient.tsx` | list, view, create, update, delete, export, import |
+| qr:templates:item | `/qr/templates/[id]` | `QrTemplateDetailClient.tsx` | view, update, delete |
+| qr:campaigns | `/qr/campaigns` | `CampaignsClient.tsx` | list, view, create, update, delete, export, import |
+| qr:campaigns:item | `/qr/campaigns/[id]` | `CampaignsClient.tsx` | view, update, delete |
+| reports:qr-performance | `/reports/qr-performance` | `QRPerformanceAnalysisClient.tsx` | list, view, export |
+| reports:qr-performance-site-to-site | `/reports/qr-performance-site-to-site` | `QRSiteAnalysisClient.tsx` | list, view, export |
+| reports:campaign-compliance | `/reports/campaign-compliance` | `CampaignComplianceClient.tsx` | list, view, export |
+| reports:campaign-compliance-details | `/reports/campaign-compliance-details` | `CampaignComplianceDetailsClient.tsx` | list, view, export |
+| reports:site-performance-maps | `/reports/site-performance-maps` | `SitePerformanceMapsClient.tsx` | list, view, export |
+| reports:media-performance-maps | `/reports/media-performance-maps` | `MediaPerformanceClient.tsx` | list, view, export |
+| reports:campaign-performance-maps | `/reports/campaign-performance-maps` | `CampaignPerformanceMapsClient.tsx` | list, view, export |
+| reports:content-proof-of-play | `/reports/content-proof-of-play` | `ContentProofOfPlayClient.tsx` | list, view, export |
+| reports:export | `/export` | `BatchClient.tsx` | export |
+| connect:contacts | `/connect/contacts` | `ContactsClient.tsx` | list, view, create, update, delete, export, import |
+| connect:contacts:item | `/connect/contacts/[id]` | `ContactsClient.tsx` | view, update, delete |
+| settings:admin:general | `/settings/general` | `GeneralSettingsClient.tsx` | list, view, create, update, delete |
+| settings:admin:users | `/settings/users` | `UserSettingsClient.tsx` | list, view, create, update, delete, export, import |
+| settings:admin:teams | `/settings/teams` | `TeamSettingsClient.tsx` | list, view, create, update, delete, export, import |
+| settings:admin:cerbos | `/settings/cerbos` | `CerbosSettingsClient.tsx` | list, view, update, export, import |
+| settings:user:profile | `/profile` | `ProfileClient.tsx` | list, view, update |
+| settings:footprints_sites_property | `/settings/footprint` | `FootprintSettingsClient.tsx` | list, view, create, update, delete, export, import |
+| settings:footprints_sites_property:item | `/settings/footprint` | `FootprintSettingsClient.tsx` | view, update, delete |
+| settings:footprints_products_property | `/settings/product` | `ProductSettingsClient.tsx` | list, view, create, update, delete, export, import |
+| settings:footprints_products_property:item | `/settings/product` | `ProductSettingsClient.tsx` | view, update, delete |
+| settings:footprints_products_pricing_group | `/settings/price-tag` | `PriceTagSettingsClient.tsx` | list, view, create, update, delete, export, import |
+| settings:footprints_products_pricing_group:item | `/settings/price-tag` | `PriceTagSettingsClient.tsx` | view, update, delete |
+| settings:qr_design | `/settings/qr` | `QrSettingsClient.tsx` | list, view, create, update, delete, export, import |
+| settings:qr_design:item | `/settings/qr` | `QrSettingsClient.tsx` | view, update, delete |
+| settings:qr_power-tag | `/settings/qr` | `QrSettingsClient.tsx` | list, view, create, update, delete, export, import |
+| settings:qr_power-tag:item | `/settings/qr` | `QrSettingsClient.tsx` | view, update, delete |
+| settings:qr_default-redirect | `/settings/qr` | `QrSettingsClient.tsx` | list, view, create, update, delete |
+| settings:qr_domain | `/settings/qr` | `QrSettingsClient.tsx` | list, view, create, update, delete, export, import |
+| settings:qr_domain:item | `/settings/qr` | `QrSettingsClient.tsx` | view, update, delete |
+| settings:signage_layout | `/settings/signage` | `SignageSettingsClient.tsx` | list, view, create, update, delete, export, import |
+| settings:signage_layout:item | `/settings/signage` | `SignageSettingsClient.tsx` | view, update, delete |
+| settings:signage_people_property | `/settings/properties-manager/people` | `PeoplePropertiesClient.tsx` | list, view, create, update, delete, export, import |
+| settings:signage_people_property:item | `/settings/properties-manager/people` | `PeoplePropertiesClient.tsx` | view, update, delete |
+| settings:signage_places_property | `/settings/properties-manager/places` | `PlacePropertiesClient.tsx` | list, view, create, update, delete, export, import |
+| settings:signage_places_property:item | `/settings/properties-manager/places` | `PlacePropertiesClient.tsx` | view, update, delete |
+| settings:signage_things_property | `/settings/properties-manager/things` | `ThingPropertiesClient.tsx` | list, view, create, update, delete, export, import |
+| settings:signage_things_property:item | `/settings/properties-manager/things` | `ThingPropertiesClient.tsx` | view, update, delete |
 
 ## Actions
 
@@ -168,24 +159,19 @@ Every user has two attributes that determine access:
 
 ### First Dimension: User Level Scoping & Access Model
 
-> **Key Architectural Constraint**: All product resources (footprints, signage, qr, reports, connect) are **retailer-scoped** and require a retailer context for access. SU and Agency users do not have a native retailer context, therefore they **cannot access any product features directly**. They must use the "Act AS" delegation model to assume a retailer context first. This constraint is enforced at the API level — v3 endpoints do not support product access without retailer information.
-
 #### Super User (SU) Level
 - **Direct Actions**: Create/manage agencies, view all system data at SU level, manage SU-level settings
-- **Delegation**: Can "Act AS" any agency or retailer (child or not)
-- **User Type Inheritance**: Retains their user type when acting as (e.g., SU Admin acting as Retailer = Retailer Admin)
-- **Product Access**: Cannot access any product features directly. When acting as a retailer, can access only the products enabled for that retailer
+- **Scope**: Platform-wide visibility and control
+- **Product Access**: Can view system-level data and reports
 
 #### Agency Level
 - **Direct Actions**: Create/manage users for their retailers, manage child retailers, view agency-level data, manage agency settings
-- **Delegation**: Can "Act AS" only their child retailers
-- **User Type Inheritance**: Retains their user type when acting as (e.g., Agency Member acting as Retailer = Retailer Member)
-- **Product Access**: Cannot access any product features directly. When acting as a child retailer, can access only the products enabled for that retailer
+- **Scope**: Agency and child retailer visibility
+- **Product Access**: Can view and manage resources across child retailers
 
 #### Retailer Level
 - **Direct Actions**: Manage resources and operations within their retailer scope
-- **Delegation**: NO delegation capability (end users of the system)
-- **User Type Inheritance**: N/A
+- **Scope**: Retailer-scoped access only
 - **Product Check**: All actions validated against `retailer.products[]`
 
 ### Second Dimension: User Type Action Restrictions
@@ -200,39 +186,41 @@ Every user has two attributes that determine access:
 
 ### User Level × User Type Combinations (Derived Roles)
 
-#### SU Level Roles
+The system defines 15 base roles (5 per user level):
 
-| User Type | **Derived Role** | **Direct Actions (SU-level)** | **Can Act AS** | **When Acting As, Becomes** | Description |
-|---|---|---|---|---|---|
-| owner | **Root User** | settings:list, settings:create, settings:update, settings:delete, resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Agency (any level), Retailer (any level) | Agency Owner / Retailer Owner | Owner of the overall system with unrestricted access |
-| admin | **Platform Administrator** | settings:list, settings:create, settings:update, settings:delete, resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Agency (any level), Retailer (any level) | Agency Admin / Retailer Admin | Manages system configuration, users, and integrations |
-| lead | **Platform Lead** | resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Agency (any level), Retailer (any level) | Agency Lead / Retailer Lead | Supervises platform operations, limited system modifications |
-| member | **Platform Member** | resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Agency (any level), Retailer (any level) | Agency Member / Retailer Member | System support and operations |
-| collaborator | **Platform Collaborator** | resource:list, resource:view, resource:export | Agency (any level), Retailer (any level) | Agency Collaborator / Retailer Collaborator | System viewer, read-only access |
+#### SU Level Roles (5 roles)
 
-#### Agency Level Roles
+| User Type | **Derived Role** | **Actions** | Description |
+|---|---|---|---|
+| owner | **Root User** | settings:list, settings:create, settings:update, settings:delete, resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Owner of the overall system with unrestricted access |
+| admin | **Platform Administrator** | settings:list, settings:create, settings:update, settings:delete, resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Manages system configuration, users, and integrations |
+| lead | **Platform Lead** | resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Supervises platform operations, limited system modifications |
+| member | **Platform Member** | resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | System support and operations |
+| collaborator | **Platform Collaborator** | resource:list, resource:view, resource:export | System viewer, read-only access |
 
-| User Type | **Derived Role** | **Direct Actions (Agency-level)** | **Can Act AS** | **When Acting As, Becomes** | Description |
-|---|---|---|---|---|---|
-| owner | **Agency Owner** | settings:list, settings:create, settings:update, settings:delete, resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Child Retailers (any level) | Retailer Owner | Owner/principal of the agency/subscriber |
-| admin | **Agency Manager** | settings:list, settings:create, settings:update, settings:delete, resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Child Retailers (any level) | Retailer Admin | Trusted employee managing agency resources and retailers |
-| lead | **Agency Lead** | resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Child Retailers (any level) | Retailer Lead | Senior operator, supervises agency operations |
-| member | **Agency Member** | resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Child Retailers (any level) | Retailer Member | Operator, day-to-day agency operations |
-| collaborator | **Agency Collaborator** | resource:list, resource:view, resource:export | Child Retailers (any level) | Retailer Collaborator | Viewer, limited agency visibility |
+#### Agency Level Roles (5 roles)
 
-#### Retailer Level Roles
+| User Type | **Derived Role** | **Actions** | Description |
+|---|---|---|---|
+| owner | **Agency Owner** | settings:list, settings:create, settings:update, settings:delete, resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Owner/principal of the agency/subscriber |
+| admin | **Agency Manager** | settings:list, settings:create, settings:update, settings:delete, resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Trusted employee managing agency resources and retailers |
+| lead | **Agency Lead** | resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Senior operator, supervises agency operations |
+| member | **Agency Member** | resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Operator, day-to-day agency operations |
+| collaborator | **Agency Collaborator** | resource:list, resource:view, resource:export | Viewer, limited agency visibility |
 
-| User Type | **Derived Role** | **Direct Actions (Retailer-level)** | **Can Act AS** | Product Validation | Description |
-|---|---|---|---|---|---|
-| owner | **Retailer Owner** | settings:list, settings:create, settings:update, settings:delete, resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | NONE | Yes: `retailer.products[]` | Owner/principal of the retail business |
-| admin | **Retailer Manager** | settings:list, settings:create, settings:update, settings:delete, resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | NONE | Yes: `retailer.products[]` | Store manager, manages staff and operations |
-| lead | **Team Lead** | resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | NONE | Yes: `retailer.products[]` | Senior staff, supervises operations |
-| member | **Staff / Operator** | resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | NONE | Yes: `retailer.products[]` | Day-to-day operational user |
-| collaborator | **Guest / Collaborator** | resource:list, resource:view, resource:export | NONE | Yes: `retailer.products[]` | Limited access, viewer/collaborator |
+#### Retailer Level Roles (5 roles)
+
+| User Type | **Derived Role** | **Actions** | Product Validation | Description |
+|---|---|---|---|---|
+| owner | **Retailer Owner** | settings:list, settings:create, settings:update, settings:delete, resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Yes: `retailer.products[]` | Owner/principal of the retail business |
+| admin | **Retailer Manager** | settings:list, settings:create, settings:update, settings:delete, resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Yes: `retailer.products[]` | Store manager, manages staff and operations |
+| lead | **Team Lead** | resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Yes: `retailer.products[]` | Senior staff, supervises operations |
+| member | **Staff / Operator** | resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Yes: `retailer.products[]` | Day-to-day operational user |
+| collaborator | **Guest / Collaborator** | resource:list, resource:view, resource:export | Yes: `retailer.products[]` | Limited access, viewer/collaborator |
 
 ## Cerbos Validation Payload
 
-The following data structure must be sent to Cerbos for permission evaluation using the "Act AS" delegation model.
+The following data structure must be sent to Cerbos for permission evaluation.
 
 ### Principal Attributes
 
@@ -244,13 +232,9 @@ User or service principal making the request:
 | `userLevel` | string | Yes | `su`, `agency`, or `retailer` |
 | `userType` | string | Yes | `owner`, `admin`, `lead`, `member`, `collaborator` |
 | `name` | string | Yes | Human-readable identifier (username, email) |
-| `products` | string[] | Yes | Product codes where user has subscription access (e.g., `["footprints", "signage", "qr"]`) |
+| `products` | string[] | Yes | Product codes where user has subscription access (e.g., `["footprints", "signages", "qr"]`) |
 | `agencyId` | string | Conditional | Agency ID if userLevel is `agency` or `retailer` |
 | `retailerId` | string | Conditional | Retailer ID if userLevel is `retailer` |
-| `actingAs` | object | Conditional | **NEW** — Only present if user is delegating via "Act AS" |
-| `actingAs.level` | string | When actingAs present | Target level: `agency` or `retailer` |
-| `actingAs.retailerId` | string | When actingAs present and level is `retailer` | The retailer ID being delegated to |
-| `actingAs.agencyId` | string | When actingAs present and level is `agency` | The agency ID being delegated to |
 
 ### Resource Attributes
 
@@ -295,6 +279,13 @@ Namespaced action string in format: `{scope}:{action}`
   "action": "resource:list"
 }
 ```
+
+### Notes
+
+- Principal `products` array must include the resource's product to pass product subscription validation
+- Retailer-level users are scoped to their own retailer; all product resources require a valid `retailerId`
+- Agency-level users can access resources across their child retailers
+- SU-level users have system-wide access but still require proper resource scoping
 
 ## Validation Examples
 

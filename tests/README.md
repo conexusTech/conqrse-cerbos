@@ -6,11 +6,12 @@ This directory contains test scripts and test cases for validating the Conqrse C
 
 The test suite validates the authorization policies against the documented scenarios in [`docs/CERBOS_CONQRSE_EXAMPLES.md`](../docs/CERBOS_CONQRSE_EXAMPLES.md).
 
-**Test Cases**: 18 scenarios (10 ALLOW + 8 DENY)
+**Test Cases**: 25 scenarios (15 ALLOW + 10 DENY)
 - Covers all user levels: SU, Agency, Retailer
 - Covers all user types: Owner, Admin, Lead, Member, Collaborator
-- Tests direct access and "Act AS" delegation patterns
+- Tests direct access patterns (Act AS delegation removed)
 - Validates product subscription checks
+- Covers new products: Contents, Signages, Connect
 
 ## Files
 
@@ -55,18 +56,26 @@ Test cases are defined in `test-cases.json` with the following structure:
           "description": "Retailer-level user viewing campaigns in their own retailer",
           "principal": {
             "id": "user-123",
-            "userLevel": "retailer",
-            "userType": "member",
-            "products": ["qr"],
-            "agencyId": "agency-456",
-            "retailerId": "retail-789"
+            "roles": ["user"],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "member",
+              "name": "john.doe",
+              "products": ["qr"],
+              "agencyId": "agency-456",
+              "retailerId": "retail-789"
+            }
           },
           "resource": {
-            "name": "qr:campaigns",
-            "product": "qr",
-            "retailerId": "retail-789"
+            "kind": "qr:campaigns",
+            "id": "qr:campaigns",
+            "attr": {
+              "product": "qr",
+              "retailerId": "retail-789",
+              "agencyId": "agency-456"
+            }
           },
-          "action": "resource:list",
+          "actions": ["resource:list"],
           "expectedResult": "ALLOW"
         }
       ]
@@ -116,33 +125,40 @@ After running tests, results are saved to `test-results/results.json`:
 
 ## Scenario Coverage
 
-### Allow Scenarios (10)
+### Allow Scenarios (15)
 
-| ID | Scenario | User Level | User Type | Pattern |
-|---|---|---|---|---|
-| allow_1 | Retailer Member Listing QR Campaigns | Retailer | Member | Direct access |
-| allow_2 | SU Admin Acting AS Retailer Admin | SU | Admin | Act AS delegation |
-| allow_3 | Agency Admin Acting AS Retailer | Agency | Admin | Act AS delegation |
-| allow_4 | Agency Owner Creating User | Agency | Owner | Direct access |
-| allow_5 | SU Owner Managing Settings | SU | Owner | Settings access |
-| allow_6 | SU Lead Viewing Data | SU | Lead | Read access |
-| allow_7 | SU Collaborator Acting AS Retailer | SU | Collaborator | Delegated read-only |
-| allow_8 | Agency Lead Acting AS Retailer | Agency | Lead | Act AS delegation |
-| allow_9 | Agency Member Viewing Resources | Agency | Member | Direct access |
-| allow_10 | Retailer Owner Managing Settings | Retailer | Owner | Settings access |
+| ID | Scenario | User Level | User Type | Resource Kind | Coverage |
+|---|---|---|---|---|---|
+| allow_1 | Retailer Member Listing QR Campaigns | Retailer | Member | qr:campaigns | Direct access |
+| allow_2 | SU Admin Managing Configuration | SU | Admin | settings:admin_users | Settings access |
+| allow_3 | Agency Admin Creating QR Campaign | Agency | Admin | qr:campaigns | Direct access |
+| allow_4 | Agency Owner Creating User | Agency | Owner | settings:admin_users | Settings access |
+| allow_5 | SU Owner Managing System Configuration | SU | Owner | settings:admin_general | Settings access |
+| allow_6 | SU Lead Viewing System Data | SU | Lead | reports:system | Read access |
+| allow_7 | Agency Member Viewing Resources | Agency | Member | footprints:sites | Direct access |
+| allow_8 | Retailer Owner Managing Settings | Retailer | Owner | settings:admin_general | Settings access |
+| allow_9 | Retailer Owner Accessing Own Resources | Retailer | Owner | qr:campaigns | Direct access |
+| allow_10 | Retailer Owner Accessing Content Templates | Retailer | Owner | contents:templates | Contents product |
+| allow_11 | Retailer Member Accessing Content Assets | Retailer | Member | contents:assets | Contents product |
+| allow_12 | Retailer Owner Accessing Signages People | Retailer | Owner | signages:people | Signages product |
+| allow_13 | Retailer Member Accessing Signages Places Items | Retailer | Member | signages:places:item | Signages product |
+| allow_14 | Retailer Admin Accessing Connect Contacts | Retailer | Admin | connect:contacts | Connect product |
+| allow_15 | Retailer Owner Accessing QR Design Settings | Retailer | Owner | settings:qr_design | Settings underscore format |
 
-### Deny Scenarios (8)
+### Deny Scenarios (10)
 
-| ID | Scenario | User Level | User Type | Reason |
-|---|---|---|---|---|
-| deny_1 | Retailer Collaborator Creating | Retailer | Collaborator | Read-only restriction |
-| deny_2 | Product Not in Subscription | Retailer | Member | Product validation |
-| deny_3 | SU Collaborator Creating Settings | SU | Collaborator | No settings access |
-| deny_4 | Agency Lead Modifying Settings | Agency | Lead | No settings for lead |
-| deny_5 | Agency Collaborator Creating | Agency | Collaborator | Read-only restriction |
-| deny_6 | Retailer Lead Modifying Settings | Retailer | Lead | No settings for lead |
-| deny_7 | Acting AS Unrelated Retailer | Agency | Admin | Not child retailer |
-| deny_8 | Retailer Acting AS Another | Retailer | Member | Cannot delegate |
+| ID | Scenario | User Level | User Type | Resource Kind | Reason |
+|---|---|---|---|---|---|
+| deny_1 | Retailer Collaborator Creating | Retailer | Collaborator | qr:campaigns | Read-only restriction |
+| deny_2 | Product Not in Subscription | Retailer | Member | contents:templates | Product validation |
+| deny_3 | SU Collaborator Creating Settings | SU | Collaborator | settings:admin_general | No settings access |
+| deny_4 | Agency Lead Modifying Settings | Agency | Lead | settings:admin_users | No settings for lead |
+| deny_5 | Agency Collaborator Creating | Agency | Collaborator | qr:campaigns | Read-only restriction |
+| deny_6 | Retailer Lead Modifying Settings | Retailer | Lead | settings:admin_general | No settings for lead |
+| deny_7 | Retailer Isolation Cross-Retailer | Retailer | Owner | qr:campaigns | Cross-retailer blocked |
+| deny_8 | Retailer Isolation Cross-Retailer Footprints | Retailer | Member | footprints:sites | Cross-retailer blocked |
+| deny_9 | Agency Member Contents Without Subscription | Agency | Member | contents:assets | Product validation |
+| deny_10 | Retailer Collaborator Modifying Signages | Retailer | Collaborator | signages:people | Read-only restriction |
 
 ## Cerbos API
 
@@ -155,18 +171,26 @@ Content-Type: application/json
 {
   "principal": {
     "id": "user-123",
-    "userLevel": "retailer",
-    "userType": "member",
-    "products": ["qr"],
-    "agencyId": "agency-456",
-    "retailerId": "retail-789"
+    "roles": ["user"],
+    "attr": {
+      "userLevel": "retailer",
+      "userType": "member",
+      "name": "john.doe",
+      "products": ["qr"],
+      "agencyId": "agency-456",
+      "retailerId": "retail-789"
+    }
   },
   "resource": {
-    "name": "qr:campaigns",
-    "product": "qr",
-    "retailerId": "retail-789"
+    "kind": "qr:campaigns",
+    "id": "qr:campaigns",
+    "attr": {
+      "product": "qr",
+      "retailerId": "retail-789",
+      "agencyId": "agency-456"
+    }
   },
-  "action": "resource:list"
+  "actions": ["resource:list"]
 }
 ```
 
@@ -178,6 +202,18 @@ Response:
   }
 }
 ```
+
+### Principal Attributes
+
+- **id**: Unique identifier for the user
+- **roles**: Array of role identifiers (always `["user"]` for Conqrse)
+- **attr**: User attributes object containing:
+  - **userLevel**: One of `su`, `agency`, `retailer`
+  - **userType**: One of `owner`, `admin`, `lead`, `member`, `collaborator`
+  - **name**: User's display name or email
+  - **products**: Array of subscribed products (e.g., `qr`, `footprints`, `signages`, `contents`, `connect`, `reports`)
+  - **agencyId**: Agency identifier (only for agency/retailer users)
+  - **retailerId**: Retailer identifier (only for retailer users)
 
 ## Extending Tests
 
@@ -196,9 +232,28 @@ Example:
   "id": "allow_custom",
   "name": "My Custom Test",
   "description": "Description of what this tests",
-  "principal": { /* ... */ },
-  "resource": { /* ... */ },
-  "action": "resource:view",
+  "principal": {
+    "id": "user-123",
+    "roles": ["user"],
+    "attr": {
+      "userLevel": "retailer",
+      "userType": "owner",
+      "name": "user@retailer.com",
+      "products": ["qr"],
+      "agencyId": "agency-456",
+      "retailerId": "retail-789"
+    }
+  },
+  "resource": {
+    "kind": "qr:campaigns",
+    "id": "qr:campaigns",
+    "attr": {
+      "product": "qr",
+      "retailerId": "retail-789",
+      "agencyId": "agency-456"
+    }
+  },
+  "actions": ["resource:view"],
   "expectedResult": "ALLOW"
 }
 ```

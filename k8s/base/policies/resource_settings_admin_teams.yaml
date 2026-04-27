@@ -15,9 +15,3 @@ resourcePolicy:
         - agency_manager
         - retailer_owner
         - retailer_manager
-        - su_acting_retailer_owner
-        - su_acting_retailer_manager
-        - su_acting_agency_owner
-        - su_acting_agency_manager
-        - agency_acting_retailer_owner
-        - agency_acting_retailer_manager

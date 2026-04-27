@@ -11,28 +11,18 @@ resourcePolicy:
       effect: EFFECT_ALLOW
       condition:
         match:
-          expr: '"footprints" in P.attr.products && (P.attr.retailerId == R.attr.retailerId || P.attr.actingAs.retailerId == R.attr.retailerId)'
+          expr: '"footprints" in P.attr.products && P.attr.retailerId == R.attr.retailerId'
       derivedRoles:
         - retailer_owner
         - retailer_manager
         - team_lead
-        - staff_operator
-        - su_acting_retailer_owner
-        - su_acting_retailer_manager
-        - su_acting_retailer_lead
-        - su_acting_retailer_member
-        - agency_acting_retailer_owner
-        - agency_acting_retailer_manager
-        - agency_acting_retailer_lead
-        - agency_acting_retailer_member
+        - staff_operator    
 
     # Collaborators with product subscription check
     - actions: ["resource:view", "resource:list"]
       effect: EFFECT_ALLOW
       condition:
         match:
-          expr: '"footprints" in P.attr.products && (P.attr.retailerId == R.attr.retailerId || P.attr.actingAs.retailerId == R.attr.retailerId)'
+          expr: '"footprints" in P.attr.products && P.attr.retailerId == R.attr.retailerId'
       derivedRoles:
         - guest_collaborator
-        - su_acting_retailer_collaborator
-        - agency_acting_retailer_collaborator

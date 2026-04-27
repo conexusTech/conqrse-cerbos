@@ -2,7 +2,7 @@
 
 ## Context
 
-Policies are managed via Conqrse Admin UI through API v3 REST endpoints. Cerbos Server (with native Admin REST API) is the source of truth for policy storage. MongoDB stores policy metadata only (timestamps, audit info, creator info). Storage backend uses SQLite3 with persistent volume for data durability across pod restarts.
+Policies are managed via Conqrse Admin UI through API v3 REST endpoints. Cerbos Server (with native Admin REST API) is the source of truth for policy storage. MongoDB stores policy metadata only (timestamps, audit info, creator info). Storage backend has been migrated from SQLite3 to PostgreSQL for improved scalability and concurrent write support.
 
 **Architecture Flow:**
 ```
@@ -10,7 +10,7 @@ Admin UI → POST/PUT /v1/cerbos/policies (API v3)
          → Validates request
          → Saves metadata to MongoDB
          → Proxies to Cerbos POST /admin/policy (Basic Auth)
-         → Cerbos persists policy to SQLite3 database (PVC-backed)
+         → Cerbos persists policy to PostgreSQL database
 
 Admin UI → GET /v1/cerbos/policies (API v3)
          → Fetches policy IDs from Cerbos GET /admin/policies
@@ -98,9 +98,9 @@ Uses `CerbosAuthorizationGuard` with `@RequirePermission('cerbos_policy', action
 `cerbos.yaml` (local dev):
 ```yaml
 storage:
-  driver: "sqlite3"
-  sqlite3:
-    dsn: "/data/cerbos.db?_journal=WAL&cache=shared"
+  driver: "postgres"
+  postgres:
+    connString: "postgresql://cerbos:password@localhost:5432/cerbos_policies"
 
 server:
   adminAPI:
@@ -113,9 +113,9 @@ server:
 `k8s/base/configmap-config.yaml` (deployed config):
 ```yaml
 storage:
-  driver: "sqlite3"
-  sqlite3:
-    dsn: "/data/cerbos.db?_journal=WAL&cache=shared"
+  driver: "postgres"
+  postgres:
+    connString: "postgresql://cerbos:${DB_PASSWORD}@postgres-service:5432/cerbos_policies"
 
 server:
   adminAPI:
@@ -124,24 +124,24 @@ server:
 
 **2. Kubernetes Resources**
 
-`k8s/base/pvc.yaml` — PersistentVolumeClaim:
-- 1Gi storage for SQLite3 database
-- ReadWriteOnce access mode
-- Default storage class
-
-`k8s/base/secret.yaml` — Admin Credentials:
+`k8s/base/secret.yaml` — Admin Credentials and Database Connection:
 - Stores `cerbos:conqrseCerbos` basic auth credentials
+- Stores PostgreSQL database password
 - Referenced by deployment as environment variables
 
+`k8s/base/postgres-service.yaml` — PostgreSQL StatefulSet:
+- PostgreSQL service for Cerbos policy storage
+- PersistentVolumeClaim for data durability
+- Environment variables for database initialization
+
 **3. Deployment Updates** (`k8s/base/deployment.yaml`)
-- Set `replicas: 1` (SQLite3 does not support multi-process concurrent writes)
-- Removed `policies` ConfigMap volume (policies now in SQLite3)
-- Added PVC volume mount at `/data`
-- Changed `readOnlyRootFilesystem: false` (SQLite3 requires write access)
-- Added environment variables from Secret for admin credentials
+- Set `replicas: 2+` (PostgreSQL supports multi-process concurrent writes)
+- Removed `policies` ConfigMap volume (policies now in PostgreSQL)
+- Added environment variables from Secret for admin credentials and database connection
+- ReadOnlyRootFilesystem: true (no local filesystem writes needed)
 
 **4. Kustomization** (`k8s/base/kustomization.yaml`)
-- Added `pvc.yaml` and `secret.yaml` to resources list
+- Added `secret.yaml` and `postgres-service.yaml` to resources list
 - Kept existing ConfigMap generator (policies directory for reference/seeding if needed)
 
 ---
@@ -180,10 +180,11 @@ All files are implemented and committed:
 
 ## Important Notes
 
-- **Replicas**: SQLite3 enforces single-replica deployments. If multi-replica scaling is needed in the future, migrate to PostgreSQL or MySQL.
-- **PVC Persistence**: All policy data survives pod restarts, redeployments, and rolling updates
-- **Metadata**: MongoDB stores audit trail (createdBy, timestamps, annotations). Authoritative policy content stays in Cerbos.
-- **Admin API**: Requires Basic Auth credentials. Current hardcoded to `cerbos:conqrseCerbos` (from Secret).
+- **Replicas**: PostgreSQL supports multi-replica deployments. Can scale Cerbos instances horizontally.
+- **Database Persistence**: All policy data persists in PostgreSQL with automatic backups. Pod restarts, redeployments, and rolling updates preserve policies.
+- **Metadata**: MongoDB stores audit trail (createdBy, timestamps, annotations). Authoritative policy content stays in Cerbos/PostgreSQL.
+- **Admin API**: Requires Basic Auth credentials. Configured via Secret as `cerbos:conqrseCerbos`.
+- **Database Connection**: PostgreSQL connection string stored securely in Kubernetes Secret, injected at runtime.
 
 ---
 

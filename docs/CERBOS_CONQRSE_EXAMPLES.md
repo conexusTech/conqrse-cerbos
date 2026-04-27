@@ -1,6 +1,6 @@
 # Cerbos Conqrse - Validation Examples
 
-This document contains real-world Cerbos validation payload examples for the "Act AS" delegation model, grouped by expected result.
+This document contains real-world Cerbos validation payload examples, grouped by expected result.
 
 ## Allow - Examples
 
@@ -36,40 +36,9 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
 
 ---
 
-### Scenario 2: SU Admin Acting AS Retailer Admin Creating a User
+### Scenario 2: Agency Admin Creating QR Campaign for Child Retailer
 
-**Context**: Super user with admin type delegating to act as a retailer admin to create a new retailer user.
-
-```json
-{
-  "principal": {
-    "id": "su-user-001",
-    "userLevel": "su",
-    "userType": "admin",
-    "name": "admin@platform.com",
-    "products": ["footprints", "signage", "qr"],
-    "actingAs": {
-      "level": "retailer",
-      "retailerId": "retail-789"
-    }
-  },
-  "resource": {
-    "name": "settings:admin:users",
-    "product": "settings",
-    "retailerId": "retail-789"
-  },
-  "action": "settings:create"
-}
-```
-
-**Expected**: ALLOW
-**Reason**: When acting AS, SU Admin becomes Retailer Admin with full settings access.
-
----
-
-### Scenario 3: Agency Admin Acting AS Retailer Creating QR Campaign
-
-**Context**: Agency-level admin delegating to act as retailer admin to create a campaign.
+**Context**: Agency-level admin creating a campaign for a child retailer.
 
 ```json
 {
@@ -79,12 +48,7 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
     "userType": "admin",
     "name": "manager@agency.com",
     "products": ["footprints", "qr"],
-    "agencyId": "agency-456",
-    "actingAs": {
-      "level": "retailer",
-      "retailerId": "retail-789",
-      "agencyId": "agency-456"
-    }
+    "agencyId": "agency-456"
   },
   "resource": {
     "name": "qr:campaigns",
@@ -97,11 +61,11 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
 ```
 
 **Expected**: ALLOW
-**Reason**: Agency Admin acting AS becomes Retailer Admin, can create resources in child retailers.
+**Reason**: Agency Admin can create resources in child retailers.
 
 ---
 
-### Scenario 4: Agency Owner Creating a User for Child Retailer
+### Scenario 3: Agency Owner Creating a User for Child Retailer
 
 **Context**: Agency owner creating a new user account within a child retailer.
 
@@ -112,7 +76,7 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
     "userLevel": "agency",
     "userType": "owner",
     "name": "owner@agency.com",
-    "products": ["footprints", "signage", "qr"],
+    "products": ["footprints", "signages", "qr"],
     "agencyId": "agency-456"
   },
   "resource": {
@@ -126,11 +90,11 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
 ```
 
 **Expected**: ALLOW
-**Reason**: Agency Owner can create users for child retailers directly, no "Act AS" needed.
+**Reason**: Agency Owner can create users for child retailers.
 
 ---
 
-### Scenario 7: SU Owner Managing Agency Configuration
+### Scenario 4: SU Owner Managing Platform Configuration
 
 **Context**: Super user with owner type accessing SU-level settings (system configuration).
 
@@ -141,7 +105,7 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
     "userLevel": "su",
     "userType": "owner",
     "name": "owner@platform.com",
-    "products": ["footprints", "signage", "qr"]
+    "products": ["footprints", "signages", "qr"]
   },
   "resource": {
     "name": "settings:admin:general",
@@ -156,7 +120,7 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
 
 ---
 
-### Scenario 8: SU Lead Viewing System Data
+### Scenario 5: SU Lead Viewing System Reports
 
 **Context**: SU lead user viewing system-level reports (read-mostly access).
 
@@ -167,74 +131,68 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
     "userLevel": "su",
     "userType": "lead",
     "name": "lead@platform.com",
-    "products": ["footprints", "signage", "qr"]
+    "products": ["footprints", "signages", "qr"]
   },
   "resource": {
-    "name": "dashboards:su-dashboard",
-    "product": "dashboards"
+    "name": "reports:qr-performance",
+    "product": "reports"
   },
   "action": "resource:view"
 }
 ```
 
 **Expected**: ALLOW
-**Reason**: SU Lead can view resources at the SU level.
+**Reason**: SU Lead can view reports at the SU level.
 
 ---
 
-### Scenario 9: SU Collaborator Acting AS Retailer Member
+### Scenario 6: Retailer Member Accessing Contents Templates
 
-**Context**: SU collaborator (read-only) delegating to act as retailer member (still read-only).
+**Context**: Retailer member accessing templates from the Contents product.
 
 ```json
 {
   "principal": {
-    "id": "su-user-004",
-    "userLevel": "su",
-    "userType": "collaborator",
-    "name": "viewer@platform.com",
-    "products": ["qr"],
-    "actingAs": {
-      "level": "retailer",
-      "retailerId": "retail-789"
-    }
-  },
-  "resource": {
-    "name": "qr:campaigns",
-    "product": "qr",
+    "id": "user-206",
+    "userLevel": "retailer",
+    "userType": "member",
+    "name": "staff@retailer.com",
+    "products": ["contents", "qr"],
+    "agencyId": "agency-456",
     "retailerId": "retail-789"
   },
-  "action": "resource:view"
+  "resource": {
+    "name": "contents:templates",
+    "product": "contents",
+    "retailerId": "retail-789",
+    "agencyId": "agency-456"
+  },
+  "action": "resource:list"
 }
 ```
 
 **Expected**: ALLOW
-**Reason**: SU Collaborator acting AS becomes Retailer Collaborator (read-only), can view but not create.
+**Reason**: Member can list resources in their retailer, and contents product is in their products list.
 
 ---
 
-### Scenario 10: Agency Lead Acting AS Retailer Creating Resources
+### Scenario 7: Agency Manager Accessing Signages People for Child Retailer
 
-**Context**: Agency lead (supervisory) acting as retailer to create a campaign.
+**Context**: Agency manager accessing signages people for a child retailer.
 
 ```json
 {
   "principal": {
     "id": "agency-user-003",
     "userLevel": "agency",
-    "userType": "lead",
-    "name": "lead@agency.com",
-    "products": ["qr"],
-    "agencyId": "agency-456",
-    "actingAs": {
-      "level": "retailer",
-      "retailerId": "retail-789",
-      "agencyId": "agency-456"
-    }
+    "userType": "admin",
+    "name": "manager@agency.com",
+    "products": ["signages", "qr"],
+    "agencyId": "agency-456"
   },
   "resource": {
-    "name": "qr:campaigns",
-    "product": "qr",
+    "name": "signages:people",
+    "product": "signages",
     "retailerId": "retail-789",
     "agencyId": "agency-456"
   },
@@ -243,11 +201,11 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
 ```
 
 **Expected**: ALLOW
-**Reason**: Agency Lead acting AS becomes Retailer Lead with full resource permissions (no settings).
+**Reason**: Agency Admin can create resources in child retailers.
 
 ---
 
-### Scenario 11: Agency Member Viewing Child Retailer Resources
+### Scenario 8: Agency Member Viewing Child Retailer Resources
 
 **Context**: Agency member viewing resources from a child retailer.
 
@@ -272,38 +230,11 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
 ```
 
 **Expected**: ALLOW
-**Reason**: Agency Member can list resources for child retailers (bypasses product check at agency level).
+**Reason**: Agency Member can list resources for child retailers.
 
 ---
 
-### Scenario 12: Agency Collaborator Viewing Agency Dashboard
-
-**Context**: Agency collaborator accessing read-only agency-level dashboard.
-
-```json
-{
-  "principal": {
-    "id": "agency-user-005",
-    "userLevel": "agency",
-    "userType": "collaborator",
-    "name": "viewer@agency.com",
-    "products": ["qr"],
-    "agencyId": "agency-456"
-  },
-  "resource": {
-    "name": "dashboards:agency-dashboard",
-    "product": "dashboards"
-  },
-  "action": "resource:view"
-}
-```
-
-**Expected**: ALLOW
-**Reason**: Agency Collaborator can view resources at agency level (read-only).
-
----
-
-### Scenario 13: Retailer Owner Managing Store Settings
+### Scenario 9: Retailer Owner Managing Store Settings
 
 **Context**: Retailer owner updating store-level configuration.
 
@@ -332,7 +263,7 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
 
 ---
 
-### Scenario 14: Retailer Admin Creating QR Codes
+### Scenario 10: Retailer Admin Creating QR Codes
 
 **Context**: Retailer manager (admin) creating new QR campaigns.
 
@@ -362,7 +293,7 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
 
 ---
 
-### Scenario 15: Retailer Lead Exporting Campaign Data
+### Scenario 11: Retailer Lead Exporting Campaign Data
 
 **Context**: Team lead exporting campaign performance data.
 
@@ -392,7 +323,7 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
 
 ---
 
-### Scenario 16: Retailer Collaborator Viewing Campaigns
+### Scenario 12: Retailer Collaborator Viewing Campaigns
 
 **Context**: Guest/external collaborator viewing campaign information (read-only).
 
@@ -422,11 +353,41 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
 
 ---
 
+### Scenario 13: Retailer Member Accessing Signages Places
+
+**Context**: Retailer member accessing signages places.
+
+```json
+{
+  "principal": {
+    "id": "user-207",
+    "userLevel": "retailer",
+    "userType": "member",
+    "name": "staff@retailer.com",
+    "products": ["signages", "qr"],
+    "agencyId": "agency-456",
+    "retailerId": "retail-789"
+  },
+  "resource": {
+    "name": "signages:places",
+    "product": "signages",
+    "retailerId": "retail-789",
+    "agencyId": "agency-456"
+  },
+  "action": "resource:view"
+}
+```
+
+**Expected**: ALLOW
+**Reason**: Member can view resources in their retailer, and signages product is in their products list.
+
+---
+
 ## Deny - Examples
 
 These scenarios demonstrate cases where Cerbos should return **DENY**.
 
-### Scenario 5: Retailer Collaborator Attempting to Create
+### Scenario 14: Retailer Collaborator Attempting to Create
 
 **Context**: Retail-level collaborator trying to create a resource (collaborators are read-only).
 
@@ -456,7 +417,7 @@ These scenarios demonstrate cases where Cerbos should return **DENY**.
 
 ---
 
-### Scenario 6: Retailer Member Accessing Product Not in Subscription
+### Scenario 15: Retailer Member Accessing Product Not in Subscription
 
 **Context**: Retailer user trying to access a product they're not subscribed to.
 
@@ -472,8 +433,8 @@ These scenarios demonstrate cases where Cerbos should return **DENY**.
     "retailerId": "retail-789"
   },
   "resource": {
-    "name": "signage:content:templates",
-    "product": "signage",
+    "name": "contents:templates",
+    "product": "contents",
     "retailerId": "retail-789",
     "agencyId": "agency-456"
   },
@@ -482,11 +443,11 @@ These scenarios demonstrate cases where Cerbos should return **DENY**.
 ```
 
 **Expected**: DENY
-**Reason**: Signage product is not in the user's products array. Product subscription validation failed.
+**Reason**: Contents product is not in the user's products array. Product subscription validation failed.
 
 ---
 
-### Scenario 17: SU Collaborator Attempting to Create Settings
+### Scenario 16: SU Collaborator Attempting to Create Settings
 
 **Context**: SU collaborator (read-only) trying to create a system setting (not permitted).
 
@@ -512,7 +473,7 @@ These scenarios demonstrate cases where Cerbos should return **DENY**.
 
 ---
 
-### Scenario 18: Agency Lead Attempting to Modify Settings
+### Scenario 17: Agency Lead Attempting to Modify Settings
 
 **Context**: Agency lead trying to update agency settings (leads cannot modify settings).
 
@@ -540,7 +501,7 @@ These scenarios demonstrate cases where Cerbos should return **DENY**.
 
 ---
 
-### Scenario 19: Agency Collaborator Attempting to Create Resource
+### Scenario 18: Agency Collaborator Attempting to Create Resource
 
 **Context**: Agency collaborator trying to create a resource (collaborators are read-only).
 
@@ -568,7 +529,7 @@ These scenarios demonstrate cases where Cerbos should return **DENY**.
 
 ---
 
-### Scenario 20: Retailer Lead Attempting to Modify Settings
+### Scenario 19: Retailer Lead Attempting to Modify Settings
 
 **Context**: Retailer team lead trying to update store settings (leads cannot modify settings).
 
@@ -597,9 +558,9 @@ These scenarios demonstrate cases where Cerbos should return **DENY**.
 
 ---
 
-### Scenario 21: Agency User Acting AS Unrelated Retailer
+### Scenario 20: Agency User Accessing Unrelated Retailer Resources
 
-**Context**: Agency admin attempting to act as a retailer that is not a child of their agency.
+**Context**: Agency admin attempting to access a retailer that is not a child of their agency.
 
 ```json
 {
@@ -609,12 +570,7 @@ These scenarios demonstrate cases where Cerbos should return **DENY**.
     "userType": "admin",
     "name": "manager@agency-a.com",
     "products": ["qr"],
-    "agencyId": "agency-456",
-    "actingAs": {
-      "level": "retailer",
-      "retailerId": "retail-999",
-      "agencyId": "agency-999"
-    }
+    "agencyId": "agency-456"
   },
   "resource": {
     "name": "qr:campaigns",
@@ -627,13 +583,13 @@ These scenarios demonstrate cases where Cerbos should return **DENY**.
 ```
 
 **Expected**: DENY
-**Reason**: Agency user can only act as retailers that are children of their agency. This retailer belongs to a different agency.
+**Reason**: Agency user can only access resources for retailers that are children of their agency. This retailer belongs to a different agency.
 
 ---
 
-### Scenario 22: Retailer User Attempting to Act AS Another Retailer
+### Scenario 21: Retailer User Attempting to Access Another Retailer
 
-**Context**: Retailer staff attempting to act as another retailer (retailer users cannot delegate).
+**Context**: Retailer staff attempting to access another retailer's resources.
 
 ```json
 {
@@ -644,22 +600,19 @@ These scenarios demonstrate cases where Cerbos should return **DENY**.
     "name": "staff@retailer-a.com",
     "products": ["qr"],
     "agencyId": "agency-456",
-    "retailerId": "retail-789",
-    "actingAs": {
-      "level": "retailer",
-      "retailerId": "retail-999"
-    }
+    "retailerId": "retail-789"
   },
   "resource": {
     "name": "qr:campaigns",
     "product": "qr",
-    "retailerId": "retail-999"
+    "retailerId": "retail-999",
+    "agencyId": "agency-456"
   },
   "action": "resource:list"
 }
 ```
 
 **Expected**: DENY
-**Reason**: Retailer-level users cannot use Act AS delegation. Only SU and Agency can delegate.
+**Reason**: Retailer-level users can only access resources scoped to their own retailer.
 
 ---
