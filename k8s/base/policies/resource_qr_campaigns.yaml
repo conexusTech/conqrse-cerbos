@@ -13,7 +13,7 @@ resourcePolicy:
         match:
           all:
             of:
-              - expr: '["qr", "priceTags", "compliance", "product", "signage", "landing", "connect", "ppt"].exists(p, p in P.attr.products)'
+              - expr: '["compliance", "connect", "landing", "ppt", "priceTags", "product", "qr", "signage"].exists(p, p in P.attr.products)'
               - expr: 'P.attr.retailerId == R.attr.retailerId'
       derivedRoles:
         - retailer_owner
@@ -28,7 +28,7 @@ resourcePolicy:
         match:
           all:
             of:
-              - expr: '["qr", "priceTags", "compliance", "product", "signage", "landing", "connect", "ppt"].exists(p, p in P.attr.products)'
+              - expr: '["compliance", "connect", "landing", "ppt", "priceTags", "product", "qr", "signage"].exists(p, p in P.attr.products)'
               - expr: 'P.attr.retailerId == R.attr.retailerId'
       derivedRoles:
         - guest_collaborator
