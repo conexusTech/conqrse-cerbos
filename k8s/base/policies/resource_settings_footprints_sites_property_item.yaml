@@ -7,11 +7,12 @@ resourcePolicy:
     - conqrse_roles
   rules:
     # Retailer access with product subscription check
-    - actions: ["resource:view", "resource:list"]
+    - actions: ["resource:view", "resource:update", "resource:delete"]
       effect: EFFECT_ALLOW
       condition:
-        match:
-          expr: '"footprints" in P.attr.products && P.attr.retailerId == R.attr.retailerId'
+        all:
+          - expr: '["qr", "priceTags", "compliance"].exists(p, p in P.attr.products)'
+          - expr: 'P.attr.retailerId == R.attr.retailerId'
       derivedRoles:
         - retailer_owner
         - retailer_manager
@@ -19,10 +20,11 @@ resourcePolicy:
         - staff_operator
 
     # Collaborators with product subscription check
-    - actions: ["resource:view", "resource:list"]
+    - actions: ["resource:view"]
       effect: EFFECT_ALLOW
       condition:
-        match:
-          expr: '"footprints" in P.attr.products && P.attr.retailerId == R.attr.retailerId'
+        all:
+          - expr: '["qr", "priceTags", "compliance"].exists(p, p in P.attr.products)'
+          - expr: 'P.attr.retailerId == R.attr.retailerId'
       derivedRoles:
         - guest_collaborator

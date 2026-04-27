@@ -65,7 +65,7 @@ These are the resources that doesn't need product and retailer validation.
 | `reports:media-performance-maps` | Collection | list, view, export |
 | `reports:campaign-performance-maps` | Collection | list, view, export |
 | `reports:content-proof-of-play` | Collection | list, view, export |
-| `reports:export` | Collection | export |
+| `reports:export` | Collection | list, export |
 
 ### Footprints Resource
 
@@ -284,7 +284,7 @@ Example #2: `connect:contacts:item`
 - `contents:*`
    
 3. **Retailer-scoped** - A resource requires a retailer data. It is scoped to retailer-only resources.
-4. **Product Validation** - A retailer-scoped resource also requires product validation. It means, the subject retailer must have the required products (listed in the Resource payload) to have access to it. See "Product x Resource Matrix".
+4. **Product Validation** - A retailer-scoped resource also requires product validation. It means, the subject retailer must have the required products (listed in the Resource payload) to have access to it. See "Product x Resource Matrix" section.
 
 5. **Cerbos Payload**
 

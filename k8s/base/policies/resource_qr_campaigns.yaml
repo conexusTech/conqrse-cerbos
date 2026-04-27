@@ -10,19 +10,21 @@ resourcePolicy:
     - actions: ["resource:list", "resource:view", "resource:create", "resource:update", "resource:delete", "resource:export", "resource:import"]
       effect: EFFECT_ALLOW
       condition:
-        match:
-          expr: '"qr" in P.attr.products && P.attr.retailerId == R.attr.retailerId'
+        all:
+          - expr: '["qr", "priceTags", "compliance", "product", "signage", "landing", "connect", "ppt"].exists(p, p in P.attr.products)'
+          - expr: 'P.attr.retailerId == R.attr.retailerId'
       derivedRoles:
         - retailer_owner
         - retailer_manager
         - team_lead
-        - staff_operator    
+        - staff_operator
 
     # Collaborators with product subscription check
     - actions: ["resource:list", "resource:view", "resource:export"]
       effect: EFFECT_ALLOW
       condition:
-        match:
-          expr: '"qr" in P.attr.products && P.attr.retailerId == R.attr.retailerId'
+        all:
+          - expr: '["qr", "priceTags", "compliance", "product", "signage", "landing", "connect", "ppt"].exists(p, p in P.attr.products)'
+          - expr: 'P.attr.retailerId == R.attr.retailerId'
       derivedRoles:
         - guest_collaborator

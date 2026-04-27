@@ -6,7 +6,7 @@ resourcePolicy:
   importDerivedRoles:
     - conqrse_roles
   rules:
-    - actions: ["resource:view", "resource:update"]
+    - actions: ["resource:list", "resource:view", "resource:create", "resource:update", "resource:delete"]
       effect: EFFECT_ALLOW
       derivedRoles:
         - root_user
