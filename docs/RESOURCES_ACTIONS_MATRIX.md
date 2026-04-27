@@ -1,6 +1,17 @@
-# Resources × Actions Matrix
+# Resources × Product × Actions Matrix
 
 This document provides a comprehensive matrix of all Cerbos resources and their supported actions.
+
+## Products
+
+- **qr** - QR Code
+- **priceTags** - Pricing
+- **compliance** - Compliance
+- **product** - Product 
+- **signage** - Signages
+- **landing** - Landing
+- **connect** - Connect
+- **ppt** - People, Places, and Things
 
 ## Action Definitions
 
@@ -42,7 +53,7 @@ These are the resources that doesn't need product and retailer validation.
 
 ## Product Related Resources
 
-### Reports Product
+### Reports Resource
 
 | Resource | Type | Actions |
 |----------|------|---------|
@@ -56,7 +67,7 @@ These are the resources that doesn't need product and retailer validation.
 | `reports:content-proof-of-play` | Collection | list, view, export |
 | `reports:export` | Collection | export |
 
-### Footprints Product
+### Footprints Resource
 
 | Resource | Type | Actions |
 |----------|------|---------|
@@ -68,7 +79,7 @@ These are the resources that doesn't need product and retailer validation.
 | `footprints:products:item` | Item | view, update, delete |
 | `footprints:pricing` | Collection | list, view, create, update, delete, export, import |
 
-### Content Management Product
+### Content Management Resource
 
 | Resource | Type | Actions |
 |----------|------|---------|
@@ -90,7 +101,7 @@ These are the resources that doesn't need product and retailer validation.
 | `contents:content-groups` | Collection | list, view, create, update, delete, export, import |
 | `contents:content-groups:item` | Item | view, update, delete |
 
-### Signage Product
+### Signage Resource
 
 | Resource | Type | Actions |
 |----------|------|---------|
@@ -101,14 +112,14 @@ These are the resources that doesn't need product and retailer validation.
 | `signages:things` | Collection | list, view, create, update, delete, export, import |
 | `signages:things:item` | Item | view, update, delete |
 
-### Connect Product
+### Connect Resource
 
 | Resource | Type | Actions |
 |----------|------|---------|
 | `connect:contacts` | Collection | list, view, create, update, delete, export, import |
 | `connect:contacts:item` | Item | view, update, delete |
 
-### QR Product
+### QR Resource
 
 | Resource | Type | Actions |
 |----------|------|---------|
@@ -169,27 +180,125 @@ These are the resources that doesn't need product and retailer validation.
 
 ---
 
+## Product × Resource Matrix
+
+| Resource | default | qr | priceTags | compliance | product | signage | landing | connect | ppt |
+|--------|---------|----|-----------|-----------|---------|---------|---------|---------|----|
+| connect:contacts:list | | | | | | | | required | |
+| connect:contacts:item | | | | | | | | required | |
+| contents:assets:list | | | | | | | required | | |
+| contents:assets:item | | | | | | | required | | |
+| contents:backgrounds:list | | | | | | | required | | |
+| contents:backgrounds:item | | | | | | | required | | |
+| contents:backgrounds:transistion:list | | | | | | | required | | |
+| contents:backgrounds:transistion:item | | | | | | | required | | |
+| contents:channels:list | | | | | | | required | | |
+| contents:channels:item | | | | | | | required | | |
+| contents:content-groups:list | | | | | | | required | | |
+| contents:content-groups:item | | | | | | | required | | |
+| contents:playlists:list | | | | | | | required | | |
+| contents:playlists:item | | | | | | | required | | |
+| contents:tags:list | | required | required | required | required | required | | | |
+| contents:tags:assignments | | required | required | required | required | required | | | |
+| contents:tags:item | | required | required | required | required | required | | | |
+| contents:templates:list | | | required | | | required | | | |
+| contents:templates:item | | | required | | | required | | | |
+| footprints:endpoints:list | | | required | | | required | | | |
+| footprints:endpoints:item | | | required | | | required | | | |
+| footprints:pricing:list | | | required | | required | required | | | |
+| footprints:products:list | | | required | required | required | required | | | |
+| footprints:products:item | | | required | required | required | required | | | |
+| footprints:sites:list | | required | required | required | required | required | | | |
+| footprints:sites:item | | required | required | required | required | required | | | |
+| qr:campaigns:list | | required | required | required | required | required | required | required | required |
+| qr:campaigns:item | | required | required | required | required | required | required | required | required |
+| qr:media:list | | required | | | | | | | |
+| qr:media:item | | required | | | | | | | |
+| qr:site:list | | required | | | | | | | |
+| qr:site:item | | required | | | | | | | |
+| qr:templates:list | | required | | | | | | | |
+| qr:templates:item | | required | | | | | | | |
+| reports:campaign-compliance-details:list | | required | | required | | required | | | |
+| reports:campaign-compliance:list | | required | | required | | required | | | |
+| reports:campaign-performance-maps:list | | required | | required | | required | | | |
+| reports:content-proof-of-play:list | | | | | | | required | | |
+| reports:media-performance-maps:list | | required | | | | | | | |
+| reports:qr-performance-site-to-site:list | | required | | | | | | | |
+| reports:qr-performance:list | | required | | | | | | | |
+| reports:site-performance-maps:list | | required | | | | | | | |
+| reports:erequiredport | | required | | required | required | required | | required | |
+| settings:admin:cerbos:list | required | | | | | | | | |
+| settings:admin:general:list | required | | | | | | | | |
+| settings:admin:teams:list | required | | | | | | | | |
+| settings:admin:users:list | required | | | | | | | | |
+| settings:footprints_products_pricing_group:list | | | required | | required | | | | |
+| settings:footprints_products_pricing_group:item | | | required | | required | | | | |
+| settings:footprints_products_property:list | | | required | required | required | | | | |
+| settings:footprints_products_property:item | | | required | required | required | | | | |
+| settings:footprints_sites_property:list | | required | required | required | | | | | |
+| settings:footprints_sites_property:item | | required | required | required | | | | | |
+| settings:qr_default-redirect:list | | required | | | | | | | |
+| settings:qr_design:list | | required | | | | | | | |
+| settings:qr_design:item | | required | | | | | | | |
+| settings:qr_domain:list | | required | | | | | | | |
+| settings:qr_domain:item | | required | | | | | | | |
+| settings:qr_power-tag:list | | required | | | | | | | |
+| settings:qr_power-tag:item | | required | | | | | | | |
+| settings:signage_layout:list | | | | | | required | | | |
+| settings:signage_layout:item | | | | | | required | | | |
+| settings:signage_people_property:list | | | | | | | | | required |
+| settings:signage_people_property:item | | | | | | | | | required |
+| settings:signage_places_property:list | | | | | | | | | required |
+| settings:signage_places_property:item | | | | | | | | | required |
+| settings:signage_things_property:list | | | | | | | | | required |
+| settings:signage_things_property:item | | | | | | | | | required |
+| settings:user:profile:list | required | | | | | | | | |
+| signages:people:list | | | | | | required | | | required |
+| signages:people:item | | | | | | required | | | required |
+| signages:places:list | | | | | | required | | | required |
+| signages:places:item | | | | | | required | | | required |
+| signages:things:list | | | | | | required | | | required |
+| signages:things:item | | | | | | required | | | required |
+
+---
+
 ## Access Control Notes
 
-1. **Resource Segment** Product in a resource is the first segment. Example, `settings:signage_layout`, the product is `settings`. Another example, `qr:templates:item`, the product is `qr`. The second and third segments are the features of the given product. Example, `connect:contacts:item`, `contacts` is a feature in product `connect`, where the `item` indicates that the resource is pertaining to a resource item, otherwise resource collection.
+1. **Resource Segment** The first segment is called group, each features has its own groupings.
 
-2. **Product Resources** (`footprints:*`, `signages:*`, `qr:*`, `reports:*`, `connect:*`, `settings:*`, `contents:*`):
-   - Retailer-scoped and require product subscription validation
-   - Require proper `retailerId` in request
+Example #1: `settings:signage_layout`
+- `settings` is the group where `signage_layout` feature belongs to.
 
-3. **Cerbos Payload**
+Example #2: `connect:contacts:item`
+- `contacts` is a feature under the grouping `connect`
+- `item` indicates that the resource is pertaining to a resource item, otherwise resource collection.
+
+2. **Main Groupings**
+
+- `footprints:*`
+- `signages:*`
+- `qr:*`
+- `reports:*`
+- `connect:*`
+- `settings:*`
+- `contents:*`
+   
+3. **Retailer-scoped** - A resource requires a retailer data. It is scoped to retailer-only resources.
+4. **Product Validation** - A retailer-scoped resource also requires product validation. It means, the subject retailer must have the required products (listed in the Resource payload) to have access to it. See "Product x Resource Matrix".
+
+5. **Cerbos Payload**
 
 Principal
 
-```text
+```json
 {
    "id": string - the ID of the logged in user,
    "roles": string[] - derived roles, see "k8s/base/policies/_derived_roles.yaml",
    "attr": {
       "userLevel": 'retailer', 'su', 'agency' or 'user',
-      "userType": 'admin', 'collaborator', 'owner', 'lead', and 'member',
+      "userType": 'admin', 'collaborator', 'owner', 'lead', or 'member',
       "name": string,
-      "products": list of known products (footprints, signages, qr, reports, connect, settings, contents),
+      "products": string[] - list of known products (qr, priceTags, compliance, product, signage, landing, connect, ppt),
       "agencyId": string - retailer's agency ID,
       "retailerId": string - the retailer in subject,
    }
@@ -203,7 +312,7 @@ Resource
    "kind": string - the resource in subject,
    "attr": {
       "retailerId": string - the retailer of the resource,
-      "product": string,
+      "products": string[] - required products the retailer must have to have access to the resource,
    },
 }
 ```
