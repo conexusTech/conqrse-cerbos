@@ -1,0 +1,33 @@
+{
+  "name": "@conqrse/permission-types",
+  "version": "1.0.0",
+  "description": "Enums and types for Conqrse permission integration with Cerbos",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./enums": "./enums/index.ts",
+    "./enums/*": "./enums/*.ts",
+    "./types": "./types/index.ts",
+    "./types/*": "./types/*.ts"
+  },
+  "files": [
+    "README.md",
+    "**/*.ts",
+    "**/*.js",
+    "**/*.d.ts"
+  ],
+  "keywords": [
+    "conqrse",
+    "cerbos",
+    "permissions",
+    "rbac",
+    "enums",
+    "types"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/conqrse/conqrse-cerbos"
+  },
+  "license": "UNLICENSED"
+}

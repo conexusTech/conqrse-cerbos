@@ -1,4 +1,4 @@
-.PHONY: help test test-js test-bash test-watch test-verbose test-ci results clean
+.PHONY: help generate-types generate-policies test test-js test-bash test-watch test-verbose test-ci results clean
 
 # Configuration
 CERBOS_URL ?= http://localhost:3592
@@ -9,6 +9,8 @@ help:
 	@echo "Cerbos Policy Test Suite"
 	@echo ""
 	@echo "Usage:"
+	@echo "  make generate-types    Generate TypeScript enums from matrix"
+	@echo "  make generate-policies Generate Cerbos policies from matrix"
 	@echo "  make test              Run tests (Node.js runner)"
 	@echo "  make test-js           Run tests with Node.js"
 	@echo "  make test-bash         Run tests with Bash"
@@ -26,6 +28,16 @@ help:
 	@echo "  make test"
 	@echo "  CERBOS_URL=http://cerbos.example.com:3592 make test"
 	@echo "  make test-watch"
+
+# Generate TypeScript enums and types from resource matrix
+generate-types:
+	@echo "Generating TypeScript enums and types..."
+	@python3 scripts/generate_types.py
+
+# Generate Cerbos policies from resource matrix
+generate-policies:
+	@echo "Generating Cerbos policy files..."
+	@python3 scripts/generate_policies.py
 
 # Run tests with Node.js (default)
 test: test-js
