@@ -1,0 +1,34 @@
+---
+apiVersion: "api.cerbos.dev/v1"
+resourcePolicy:
+  version: "default"
+  resource: "contents:templates"
+  importDerivedRoles:
+    - conqrse_roles
+  rules:
+    # Retailer access with product subscription check
+    - actions: ["resource:list", "resource:view", "resource:create", "resource:update", "resource:delete", "resource:export", "resource:import"]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          all:
+            of:
+              - expr: '["priceTags", "signage"].exists(p, p in P.attr.products)'
+              - expr: 'P.attr.retailerId == R.attr.retailerId'
+      derivedRoles:
+        - retailer_owner
+        - retailer_manager
+        - team_lead
+        - staff_operator
+
+    # Collaborators with product subscription check
+    - actions: ["resource:list", "resource:view", "resource:export"]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          all:
+            of:
+              - expr: '["priceTags", "signage"].exists(p, p in P.attr.products)'
+              - expr: 'P.attr.retailerId == R.attr.retailerId'
+      derivedRoles:
+        - guest_collaborator
