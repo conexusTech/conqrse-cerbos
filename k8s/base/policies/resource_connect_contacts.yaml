@@ -14,7 +14,6 @@ resourcePolicy:
           all:
             of:
               - expr: '["connect"].exists(p, p in P.attr.products)'
-              - expr: 'P.attr.retailerId == R.attr.retailerId'
       derivedRoles:
         - root_user
         - platform_administrator
@@ -39,7 +38,6 @@ resourcePolicy:
           all:
             of:
               - expr: '["connect"].exists(p, p in P.attr.products)'
-              - expr: 'P.attr.retailerId == R.attr.retailerId'
       derivedRoles:
         - root_user
         - platform_administrator

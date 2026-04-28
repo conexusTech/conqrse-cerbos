@@ -331,7 +331,6 @@ resourcePolicy:
           all:
             of:
               - expr: '["connect"].exists(p, p in P.attr.products)'
-              - expr: 'P.attr.retailerId == R.attr.retailerId'
       derivedRoles:
         - retailer_owner
         - retailer_manager
