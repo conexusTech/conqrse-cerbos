@@ -27,3 +27,5 @@ node_modules/
 .cq
 
 test-results/results.json
+
+packages/permission-types/dist
