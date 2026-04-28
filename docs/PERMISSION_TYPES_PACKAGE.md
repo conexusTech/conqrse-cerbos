@@ -259,7 +259,7 @@ npm install @conqrse/permission-types
 ### With Specific Version
 
 ```bash
-npm install @conqrse/permission-types@1.0.1
+npm install @conqrse/permission-types@1.0.3
 ```
 
 ### In Package.json
@@ -267,9 +267,29 @@ npm install @conqrse/permission-types@1.0.1
 ```json
 {
   "dependencies": {
-    "@conqrse/permission-types": "^1.0.1"
+    "@conqrse/permission-types": "^1.0.3"
   }
 }
+```
+
+### Next.js / Turbopack Compatibility
+
+If you encounter build errors in Next.js 16+ with Turbopack:
+
+```
+Missing module type - The module type effect must be applied before adding Ecmascript transforms
+```
+
+**Solution:** Update to version 1.0.3 or later, which includes proper TypeScript module type declarations in package.json.
+
+```bash
+npm update @conqrse/permission-types
+```
+
+Then rebuild your Next.js app:
+
+```bash
+npm run build
 ```
 
 ---
@@ -500,6 +520,8 @@ When updating the matrix (`docs/RESOURCES_ACTIONS_MATRIX.md`):
 
 ## Version History
 
+- **1.0.3** — Fixed Next.js/Turbopack compatibility with proper module type declarations in package.json
+- **1.0.2** — (skipped)
 - **1.0.1** — Fixed repository URL metadata
 - **1.0.0** — Initial release with 83 resources, 7 actions, 15 roles
 
