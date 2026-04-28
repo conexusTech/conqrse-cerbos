@@ -1,6 +1,6 @@
 {
   "name": "@conqrse/permission-types",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Enums and types for Conqrse permission integration with Cerbos",
   "main": "index.js",
   "types": "index.d.ts",
