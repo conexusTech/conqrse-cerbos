@@ -318,7 +318,7 @@ class TypeScriptGenerator:
             key = self.to_enum_key(resource.name)
             actions_list = ", ".join([f"Action.{self.to_enum_key(a)}" for a in resource.actions])
             products_list = ", ".join([f"Product.{self.to_enum_key(p)}" for p in resource.products]) if resource.products else ""
-            lines.append(f"  Resource.{key}: {{ type: '{resource.res_type}', actions: [{actions_list}], products: [{products_list}] }},")
+            lines.append(f"  [Resource.{key}]: {{ type: '{resource.res_type}', actions: [{actions_list}], products: [{products_list}] }},")
 
         lines.append("};")
         return "\n".join(lines) + "\n"
