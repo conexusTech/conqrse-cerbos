@@ -230,8 +230,8 @@ These are the resources that doesn't need product and retailer validation.
 | reports:campaign_performance_maps               | resource_reports_campaign_performance_maps.yaml              |          | required |           | required   |          | required |          |          |          |
 | reports:content_proof_of_play                   | resource_reports_content_proof_of_play.yaml                  |          |          |           |            |          | required |          |          |          |
 | reports:media_performance_maps                  | resource_reports_media_performance_maps.yaml                 |          | required |           |            |          |          |          |          |          |
-| reports:qr_performance_site_to_site             | resource_reports_qrperformance_sitetosite.yaml               |          | required |           |            |          |          |          |          |          |
-| reports:qr_performance                          | resource_reports_qrperformance.yaml                          |          | required |           |            |          |          |          |          |          |
+| reports:qr_performance_site_to_site             | resource_reports_qr_performance_site_to_site.yaml             |          | required |           |            |          |          |          |          |          |
+| reports:qr_performance                          | resource_reports_qr_performance.yaml                          |          | required |           |            |          |          |          |          |          |
 | reports:site_performance_maps                   | resource_reports_site_performance_maps.yaml                  |          | required |           |            |          |          |          |          |          |
 | reports:export                                  | resource_reports_export.yaml                                 |          | required |           | required   | required | required |          | required |          |
 | settings:admin_cerbos                           | resource_settings_admin_cerbos.yaml                          | required |          |           |            |          |          |          |          |          |
@@ -244,20 +244,20 @@ These are the resources that doesn't need product and retailer validation.
 | settings:admin_teams:item                       | resource_settings_admin_teams_item.yaml                      | required |          |           |            |          |          |          |          |          |
 | settings:admin_users                            | resource_settings_admin_users.yaml                           | required |          |           |            |          |          |          |          |          |
 | settings:admin_users:item                       | resource_settings_admin_users_item.yaml                      | required |          |           |            |          |          |          |          |          |
-| settings:footprints_products_pricing_group      | resource_settings_footprints_products_pricinggroup.yaml      |          |          | required  |            | required |          |          |          |          |
-| settings:footprints_products_pricing_group:item | resource_settings_footprints_products_pricinggroup_item.yaml |          |          | required  |            | required |          |          |          |          |
+| settings:footprints_products_pricing_group      | resource_settings_footprints_products_pricing_group.yaml      |          |          | required  |            | required |          |          |          |          |
+| settings:footprints_products_pricing_group:item | resource_settings_footprints_products_pricing_group_item.yaml |          |          | required  |            | required |          |          |          |          |
 | settings:footprints_products_property           | resource_settings_footprints_products_property.yaml          |          |          | required  | required   | required |          |          |          |          |
 | settings:footprints_products_property:item      | resource_settings_footprints_products_property_item.yaml     |          |          | required  | required   | required |          |          |          |          |
 | settings:footprints_sites_property              | resource_settings_footprints_sites_property.yaml             |          | required | required  | required   |          |          |          |          |          |
 | settings:footprints_sites_property:item         | resource_settings_footprints_sites_property_item.yaml        |          | required | required  | required   |          |          |          |          |          |
-| settings:qr_default_redirect                    | resource_settings_qr_defaultredirect.yaml                    |          | required |           |            |          |          |          |          |          |
-| settings:qr_default_redirect:item               | resource_settings_qr_defaultredirect_item.yaml               |          | required |           |            |          |          |          |          |          |
+| settings:qr_default_redirect                    | resource_settings_qr_default_redirect.yaml                    |          | required |           |            |          |          |          |          |          |
+| settings:qr_default_redirect:item               | resource_settings_qr_default_redirect_item.yaml               |          | required |           |            |          |          |          |          |          |
 | settings:qr_design                              | resource_settings_qr_design.yaml                             |          | required |           |            |          |          |          |          |          |
 | settings:qr_design:item                         | resource_settings_qr_design_item.yaml                        |          | required |           |            |          |          |          |          |          |
 | settings:qr_domain                              | resource_settings_qr_domain.yaml                             |          | required |           |            |          |          |          |          |          |
 | settings:qr_domain:item                         | resource_settings_qr_domain_item.yaml                        |          | required |           |            |          |          |          |          |          |
-| settings:qr_power_tag                           | resource_settings_qr_powertag.yaml                           |          | required |           |            |          |          |          |          |          |
-| settings:qr_power_tag:item                      | resource_settings_qr_powertag_item.yaml                      |          | required |           |            |          |          |          |          |          |
+| settings:qr_power_tag                           | resource_settings_qr_power_tag.yaml                           |          | required |           |            |          |          |          |          |          |
+| settings:qr_power_tag:item                      | resource_settings_qr_power_tag_item.yaml                      |          | required |           |            |          |          |          |          |          |
 | settings:signage_layout                         | resource_settings_signage_layout.yaml                        |          |          |           |            |          | required |          |          |          |
 | settings:signage_layout:item                    | resource_settings_signage_layout_item.yaml                   |          |          |           |            |          | required |          |          |          |
 | settings:signage_people_property                | resource_settings_signage_people_property.yaml               |          |          |           |            |          |          |          |          | required |
@@ -324,7 +324,7 @@ resourcePolicy:
     - conqrse_roles
   rules:
     # Retailer access with product subscription check
-    - actions: ["resource:list", "resource:view", "resource:create", "resource:update", "resource:delete", "resource:export", "resource:import"]
+    - actions: ["list", "view", "create", "update", "delete", "export", "import"]
       effect: EFFECT_ALLOW
       condition:
         match:
@@ -350,7 +350,7 @@ resourcePolicy:
     - conqrse_roles
   rules:
     # Retailer access with product subscription check
-    - actions: ["resource:view", "resource:update", "resource:delete"]
+    - actions: ["view", "update", "delete"]
       effect: EFFECT_ALLOW
       condition:
         match:

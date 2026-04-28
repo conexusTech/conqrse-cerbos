@@ -27,7 +27,7 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
     "retailerId": "retail-789",
     "agencyId": "agency-456"
   },
-  "action": "resource:list"
+  "action": "list"
 }
 ```
 
@@ -56,7 +56,7 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
     "retailerId": "retail-789",
     "agencyId": "agency-456"
   },
-  "action": "resource:create"
+  "action": "create"
 }
 ```
 
@@ -85,7 +85,7 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
     "retailerId": "retail-789",
     "agencyId": "agency-456"
   },
-  "action": "settings:create"
+  "action": "create"
 }
 ```
 
@@ -111,7 +111,7 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
     "name": "settings:admin:general",
     "product": "settings"
   },
-  "action": "settings:update"
+  "action": "update"
 }
 ```
 
@@ -137,7 +137,7 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
     "name": "reports:qr-performance",
     "product": "reports"
   },
-  "action": "resource:view"
+  "action": "view"
 }
 ```
 
@@ -167,7 +167,7 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
     "retailerId": "retail-789",
     "agencyId": "agency-456"
   },
-  "action": "resource:list"
+  "action": "list"
 }
 ```
 
@@ -196,7 +196,7 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
     "retailerId": "retail-789",
     "agencyId": "agency-456"
   },
-  "action": "resource:create"
+  "action": "create"
 }
 ```
 
@@ -225,7 +225,7 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
     "retailerId": "retail-789",
     "agencyId": "agency-456"
   },
-  "action": "resource:list"
+  "action": "list"
 }
 ```
 
@@ -254,7 +254,7 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
     "product": "settings",
     "retailerId": "retail-789"
   },
-  "action": "settings:update"
+  "action": "update"
 }
 ```
 
@@ -284,7 +284,7 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
     "retailerId": "retail-789",
     "agencyId": "agency-456"
   },
-  "action": "resource:create"
+  "action": "create"
 }
 ```
 
@@ -314,7 +314,7 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
     "retailerId": "retail-789",
     "agencyId": "agency-456"
   },
-  "action": "resource:export"
+  "action": "export"
 }
 ```
 
@@ -344,7 +344,7 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
     "retailerId": "retail-789",
     "agencyId": "agency-456"
   },
-  "action": "resource:view"
+  "action": "view"
 }
 ```
 
@@ -374,7 +374,7 @@ These scenarios demonstrate cases where Cerbos should return **ALLOW**.
     "retailerId": "retail-789",
     "agencyId": "agency-456"
   },
-  "action": "resource:view"
+  "action": "view"
 }
 ```
 
@@ -408,7 +408,7 @@ These scenarios demonstrate cases where Cerbos should return **DENY**.
     "retailerId": "retail-789",
     "agencyId": "agency-456"
   },
-  "action": "resource:create"
+  "action": "create"
 }
 ```
 
@@ -438,7 +438,7 @@ These scenarios demonstrate cases where Cerbos should return **DENY**.
     "retailerId": "retail-789",
     "agencyId": "agency-456"
   },
-  "action": "resource:list"
+  "action": "list"
 }
 ```
 
@@ -464,7 +464,7 @@ These scenarios demonstrate cases where Cerbos should return **DENY**.
     "name": "settings:admin:general",
     "product": "settings"
   },
-  "action": "settings:create"
+  "action": "create"
 }
 ```
 
@@ -492,7 +492,7 @@ These scenarios demonstrate cases where Cerbos should return **DENY**.
     "product": "settings",
     "agencyId": "agency-456"
   },
-  "action": "settings:create"
+  "action": "create"
 }
 ```
 
@@ -520,7 +520,7 @@ These scenarios demonstrate cases where Cerbos should return **DENY**.
     "product": "qr",
     "agencyId": "agency-456"
   },
-  "action": "resource:create"
+  "action": "create"
 }
 ```
 
@@ -549,7 +549,7 @@ These scenarios demonstrate cases where Cerbos should return **DENY**.
     "product": "settings",
     "retailerId": "retail-789"
   },
-  "action": "settings:update"
+  "action": "update"
 }
 ```
 
@@ -578,7 +578,7 @@ These scenarios demonstrate cases where Cerbos should return **DENY**.
     "retailerId": "retail-999",
     "agencyId": "agency-999"
   },
-  "action": "resource:list"
+  "action": "list"
 }
 ```
 
@@ -608,7 +608,7 @@ These scenarios demonstrate cases where Cerbos should return **DENY**.
     "retailerId": "retail-999",
     "agencyId": "agency-456"
   },
-  "action": "resource:list"
+  "action": "list"
 }
 ```
 

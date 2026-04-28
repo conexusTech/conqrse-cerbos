@@ -98,10 +98,10 @@ class YAMLUpdater:
 
     # Special mappings for resources where the filename doesn't follow the standard pattern
     SPECIAL_MAPPINGS = {
-        "reports:qr-performance": "resource_reports_qrperformance.yaml",
-        "reports:qr-performance-site-to-site": "resource_reports_qrperformance_sitetosite.yaml",
-        "settings:qr_power-tag": "resource_settings_qr_powertag.yaml",
-        "settings:qr_default-redirect": "resource_settings_qr_defaultredirect.yaml",
+        "reports:qr-performance": "resource_reports_qr_performance.yaml",
+        "reports:qr-performance-site-to-site": "resource_reports_qr_performance_site_to_site.yaml",
+        "settings:qr_power-tag": "resource_settings_qr_power_tag.yaml",
+        "settings:qr_default-redirect": "resource_settings_qr_default_redirect.yaml",
         "settings:footprints_products_pricing_group": None,  # No corresponding file
         "reports:export": "resource_reports_export.yaml",
     }

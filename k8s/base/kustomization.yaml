@@ -61,8 +61,8 @@ configMapGenerator:
       - policies/resource_reports_content_proof_of_play.yaml
       - policies/resource_reports_export.yaml
       - policies/resource_reports_media_performance_maps.yaml
-      - policies/resource_reports_qrperformance_sitetosite.yaml
-      - policies/resource_reports_qrperformance.yaml
+      - policies/resource_reports_qr_performance_site_to_site.yaml
+      - policies/resource_reports_qr_performance.yaml
       - policies/resource_reports_site_performance_maps.yaml
       - policies/resource_settings_admin_cerbos_item.yaml
       - policies/resource_settings_admin_cerbos.yaml
@@ -70,20 +70,20 @@ configMapGenerator:
       - policies/resource_settings_admin_teams.yaml
       - policies/resource_settings_admin_users_item.yaml
       - policies/resource_settings_admin_users.yaml
-      - policies/resource_settings_footprints_products_pricinggroup_item.yaml
-      - policies/resource_settings_footprints_products_pricinggroup.yaml
+      - policies/resource_settings_footprints_products_pricing_group_item.yaml
+      - policies/resource_settings_footprints_products_pricing_group.yaml
       - policies/resource_settings_footprints_products_property_item.yaml
       - policies/resource_settings_footprints_products_property.yaml
       - policies/resource_settings_footprints_sites_property_item.yaml
       - policies/resource_settings_footprints_sites_property.yaml
-      - policies/resource_settings_qr_defaultredirect_item.yaml
-      - policies/resource_settings_qr_defaultredirect.yaml
+      - policies/resource_settings_qr_default_redirect_item.yaml
+      - policies/resource_settings_qr_default_redirect.yaml
       - policies/resource_settings_qr_design_item.yaml
       - policies/resource_settings_qr_design.yaml
       - policies/resource_settings_qr_domain_item.yaml
       - policies/resource_settings_qr_domain.yaml
-      - policies/resource_settings_qr_powertag_item.yaml
-      - policies/resource_settings_qr_powertag.yaml
+      - policies/resource_settings_qr_power_tag_item.yaml
+      - policies/resource_settings_qr_power_tag.yaml
       - policies/resource_settings_signage_layout_item.yaml
       - policies/resource_settings_signage_layout.yaml
       - policies/resource_settings_signage_people_property_item.yaml
