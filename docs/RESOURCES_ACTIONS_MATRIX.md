@@ -15,20 +15,16 @@ This document provides a comprehensive matrix of all Cerbos resources and their 
 
 ## Action Definitions
 
-### Resource Actions (scope: `resource:`)
-- `resource:list` — View collection of resources with filters and pagination
-- `resource:view` — View individual resource details
-- `resource:create` — Create new resources
-- `resource:update` — Modify existing resources
-- `resource:delete` — Remove resources
-- `resource:export` — Download/export resource data
-- `resource:import` — Upload/import data
+### Resource Actions
+- `list` — View collection of resources with filters and pagination
+- `view` — View individual resource details
+- `create` — Create new resources
+- `update` — Modify existing resources
+- `delete` — Remove resources
+- `export` — Download/export resource data
+- `import` — Upload/import data
 
-### Settings Actions (scope: `settings:`)
-- `settings:list` — View collection of settings
-- `settings:create` — Create new settings
-- `settings:update` — Modify existing settings
-- `settings:delete` — Remove settings
+**Note on Action Naming:** Actions are defined here without prefixes for clarity and maintainability. When policies are generated, the `resource:` prefix is automatically added by the policy generator (e.g., `list` becomes `resource:list` in the generated YAML). All resource types and categories use this unified prefix in the generated policies.
 
 ---
 

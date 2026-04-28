@@ -97,6 +97,8 @@ rules:
     derivedRoles: [guest_collaborator]
 ```
 
+**Note:** Actions in the matrix are defined without prefixes (e.g., `list`, `view`, `create`). The generator automatically adds the `resource:` prefix when rendering policies.
+
 ### Product Resources (Item)
 
 Same conditions as collections, but:
@@ -109,6 +111,7 @@ Only owner/admin access:
 - Conditions: product check + retailer ID check
 - Roles: `retailer_owner`, `retailer_manager` only
 - Collaborators: NOT included (settings: NONE for non-owners)
+- Actions: Generated with `resource:` prefix (same as product resources)
 
 ### Admin Settings
 

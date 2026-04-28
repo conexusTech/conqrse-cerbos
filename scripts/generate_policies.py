@@ -386,7 +386,14 @@ class PolicyRenderer:
 
     @staticmethod
     def _action_prefix(action: str) -> str:
-        """Get the action prefix (resource: or settings:)."""
+        """
+        Get the action prefix for Cerbos policy rules.
+
+        All actions (whether for resources, settings, or other types) use the
+        'resource:' prefix in generated policy rules. The matrix defines actions
+        without prefixes (e.g., 'list', 'view', 'create'), and this function adds
+        the prefix during policy generation.
+        """
         return "resource:"
 
 
