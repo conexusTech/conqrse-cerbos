@@ -232,35 +232,43 @@ The system defines 15 base roles (5 per user level):
 | member       | **Staff / Operator**     | resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import                                                                   | Yes: `retailer.products[]` | Day-to-day operational user                 |
 | collaborator | **Guest / Collaborator** | resource:list, resource:view, resource:export                                                                                                                                       | Yes: `retailer.products[]` | Limited access, viewer/collaborator         |
 
-## Cerbos Validation Payload
+## Cerbos Payload
 
 The following data structure must be sent to Cerbos for permission evaluation.
 
-### Principal Attributes
+### Principal
 
 User or service principal making the request:
 
-| Attribute    | Type     | Required    | Description                                                                                 |
-| ------------ | -------- | ----------- | ------------------------------------------------------------------------------------------- |
-| `id`         | string   | Yes         | Unique user identifier                                                                      |
-| `userLevel`  | string   | Yes         | `su`, `agency`, or `retailer`                                                               |
-| `userType`   | string   | Yes         | `owner`, `admin`, `lead`, `member`, `collaborator`                                          |
-| `name`       | string   | Yes         | Human-readable identifier (username, email)                                                 |
-| `products`   | string[] | Yes         | Product codes where user has subscription access (e.g., `["footprints", "signages", "qr"]`) |
-| `agencyId`   | string   | Conditional | Agency ID if userLevel is `agency` or `retailer`                                            |
-| `retailerId` | string   | Conditional | Retailer ID if userLevel is `retailer`                                                      |
+```json
+{
+   "id": "string - the ID of the logged in user",
+   "roles": ["string - derived roles, see k8s/base/policies/_derived_roles.yaml"],
+   "attr": {
+      "userLevel": "retailer, su, agency or user",
+      "userType": "admin, collaborator, owner, lead, or member",
+      "name": "string",
+      "products": ["string - list of known products (qr, priceTags, compliance, product, signage, landing, connect, ppt)"],
+      "agencyId": "string - retailer's agency ID",
+      "retailerId": "string - the retailer in subject"
+   }
+}
+```
 
-### Resource Attributes
+### Resource
 
 Resource being accessed and validated:
 
-| Attribute    | Type   | Required    | Description                                                                            |
-| ------------ | ------ | ----------- | -------------------------------------------------------------------------------------- |
-| `name`       | string | Yes         | Resource identifier (e.g., `footprints:sites`, `settings:admin:users`, `qr:campaigns`) |
-| `product`    | string | Yes         | Product code (e.g., `footprints`, `signage`, `qr`, `settings`, `dashboards`)           |
-| `resourceId` | string | Conditional | Resource record ID — **only for resources with `:item` suffix**                        |
-| `agencyId`   | string | Conditional | Agency ID if resource is scoped to agency                                              |
-| `retailerId` | string | Conditional | Retailer ID if resource is scoped to retailer                                          |
+```json
+{
+   "id": "string - the resource in subject",
+   "kind": "string - the resource in subject",
+   "attr": {
+      "retailerId": "string - the retailer of the resource",
+      "products": ["string - required products the retailer must have to have access to the resource"]
+   }
+}
+```
 
 ### Action
 
@@ -270,29 +278,6 @@ Namespaced action string in format: `{scope}:{action}`
 | ----------- | ---------------------------------------------------------------- |
 | `resource:` | `list`, `view`, `create`, `update`, `delete`, `export`, `import` |
 | `settings:` | `list`, `create`, `update`, `delete`                             |
-
-### Validation Request Format
-
-```json
-{
-  "principal": {
-    "id": "user-123",
-    "userLevel": "retailer",
-    "userType": "member",
-    "name": "john.doe",
-    "products": ["footprints", "qr"],
-    "agencyId": "agency-456",
-    "retailerId": "retail-789"
-  },
-  "resource": {
-    "name": "qr:campaigns",
-    "product": "qr",
-    "retailerId": "retail-789",
-    "agencyId": "agency-456"
-  },
-  "action": "resource:list"
-}
-```
 
 ### Notes
 
