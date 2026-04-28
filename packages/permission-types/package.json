@@ -1,37 +1,37 @@
 {
   "name": "@conqrse/permission-types",
-  "version": "1.0.3",
+  "version": "1.0.6",
   "description": "Enums and types for Conqrse permission integration with Cerbos",
-  "type": "module",
-  "main": "./index.ts",
-  "types": "./index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./index.ts",
-      "default": "./index.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     },
     "./enums": {
-      "types": "./enums/index.ts",
-      "default": "./enums/index.ts"
+      "types": "./dist/enums/index.d.ts",
+      "import": "./dist/enums/index.js"
     },
     "./enums/*": {
-      "types": "./enums/*.ts",
-      "default": "./enums/*.ts"
+      "types": "./dist/enums/*.d.ts",
+      "import": "./dist/enums/*.js"
     },
     "./types": {
-      "types": "./types/index.ts",
-      "default": "./types/index.ts"
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/types/index.js"
     },
     "./types/*": {
-      "types": "./types/*.ts",
-      "default": "./types/*.ts"
+      "types": "./dist/types/*.d.ts",
+      "import": "./dist/types/*.js"
     }
+  },
+  "scripts": {
+    "build": "tsc"
   },
   "files": [
     "README.md",
-    "**/*.ts",
-    "**/*.js",
-    "**/*.d.ts"
+    "dist"
   ],
   "keywords": [
     "conqrse",
