@@ -22,7 +22,10 @@
 ### Types (Auto-Generated & Static)
 
 - **Principal** (static) — Shape of a principal/user: `{ userId, userLevel, userType, retailerId?, products? }`
-- **ResourceMeta** (auto-generated) — Mapping of each resource to its type (`collection` | `item`) and allowed actions
+- **ResourceMeta** (auto-generated) — Mapping of each resource to:
+  - `type`: `'collection'` or `'item'`
+  - `actions`: Array of allowed `Action` enums
+  - `products`: Array of required `Product` enums (from Product × Resource Matrix)
 
 ## Single Source of Truth
 
@@ -330,14 +333,19 @@ import { RESOURCE_META } from '@conqrse/permission-types/types/resource-action.t
 
 ### Common Usage Examples
 
-#### Check Resource Type
+#### Check Resource Metadata
 
 ```typescript
 import { RESOURCE_META, Resource } from '@conqrse/permission-types';
 
 const meta = RESOURCE_META[Resource.QR_CAMPAIGNS];
-console.log(meta.type);    // 'collection'
-console.log(meta.actions); // [Action.LIST, Action.VIEW, ...]
+console.log(meta.type);     // 'collection'
+console.log(meta.actions);  // [Action.LIST, Action.VIEW, Action.CREATE, ...]
+console.log(meta.products); // [Product.QR]
+
+// Admin resources have no product requirements
+const adminMeta = RESOURCE_META[Resource.SETTINGS_ADMIN_USERS];
+console.log(adminMeta.products); // []
 ```
 
 #### Define a Principal
@@ -384,6 +392,16 @@ const result = await cerbos.checkResource({
 ---
 
 ## Architecture
+
+### Product × Resource Matrix
+
+The matrix defines which products (QR, Signage, Compliance, etc.) are required to access each resource:
+
+- **Default resources** (admin settings) — `products: []` (always available)
+- **Product resources** (QR campaigns, signage, etc.) — `products: [Product.QR]` or multiple products
+- **Multi-product resources** (some content/tags) — `products: [Product.QR, Product.SIGNAGE, ...]`
+
+This information is embedded in `ResourceMeta.products` for runtime checks.
 
 ### Generator Script
 
@@ -520,6 +538,7 @@ When updating the matrix (`docs/RESOURCES_ACTIONS_MATRIX.md`):
 
 ## Version History
 
+- **1.1.0** — Added `products` array to `ResourceMeta` (matches Product × Resource Matrix)
 - **1.0.3** — Fixed Next.js/Turbopack compatibility with proper module type declarations in package.json
 - **1.0.2** — (skipped)
 - **1.0.1** — Fixed repository URL metadata
