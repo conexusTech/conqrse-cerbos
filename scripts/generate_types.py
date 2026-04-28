@@ -301,12 +301,14 @@ class TypeScriptGenerator:
             "// Auto-generated type from docs/RESOURCES_ACTIONS_MATRIX.md",
             "import { Resource } from '../enums/resource.enum';",
             "import { Action } from '../enums/action.enum';",
+            "import { Product } from '../enums/product.enum';",
             "",
             "export type ResourceType = 'collection' | 'item';",
             "",
             "export type ResourceMeta = {",
             "  type: ResourceType;",
             "  actions: Action[];",
+            "  products: Product[];",
             "};",
             "",
             "export const RESOURCE_META: Record<Resource, ResourceMeta> = {",
@@ -315,7 +317,8 @@ class TypeScriptGenerator:
         for resource in resources:
             key = self.to_enum_key(resource.name)
             actions_list = ", ".join([f"Action.{self.to_enum_key(a)}" for a in resource.actions])
-            lines.append(f"  Resource.{key}: {{ type: '{resource.res_type}', actions: [{actions_list}] }},")
+            products_list = ", ".join([f"Product.{self.to_enum_key(p)}" for p in resource.products]) if resource.products else ""
+            lines.append(f"  Resource.{key}: {{ type: '{resource.res_type}', actions: [{actions_list}], products: [{products_list}] }},")
 
         lines.append("};")
         return "\n".join(lines) + "\n"
