@@ -38,34 +38,36 @@ These are the resources that doesn't need product and retailer validation.
 
 ### Settings - Admin
 
-| Resource                 | Type     | Actions                                            |
-| ------------------------ | -------- | -------------------------------------------------- |
-| `settings:admin:general` | Settings | list, view, create, update, delete                 |
-| `settings:admin:users`   | Settings | list, view, create, update, delete, export, import |
-| `settings:admin:teams`   | Settings | list, view, create, update, delete, export, import |
-| `settings:admin:cerbos`  | Settings | list, view, update, export, import                 |
+| Resource                     | Type       | Actions                                            |
+| ---------------------------- | ---------- | -------------------------------------------------- |
+| `settings:admin_users`       | Collection | list, view, create, update, delete, export, import |
+| `settings:admin_users:item`  | Item       | view, update, delete                               |
+| `settings:admin_teams`       | Collection | list, view, create, update, delete, export, import |
+| `settings:admin_teams:item`  | Item       | view, update, delete                               |
+| `settings:admin_cerbos`      | Collection | list, view, create, update, delete, export, import |
+| `settings:admin_cerbos:item` | Item       | view, update, delete                               |
 
 ### Settings - User
 
-| Resource                | Type     | Actions            |
-| ----------------------- | -------- | ------------------ |
-| `settings:user:profile` | Settings | list, view, update |
+| Resource                     | Type | Actions      |
+| ---------------------------- | ---- | ------------ |
+| `settings:user_profile:item` | Item | view, update |
 
 ## Product Related Resources
 
 ### Reports Resource
 
-| Resource                              | Type       | Actions            |
-| ------------------------------------- | ---------- | ------------------ |
-| `reports:qr-performance`              | Collection | list, view, export |
-| `reports:qr-performance-site-to-site` | Collection | list, view, export |
-| `reports:campaign-compliance`         | Collection | list, view, export |
-| `reports:campaign-compliance-details` | Collection | list, view, export |
-| `reports:site-performance-maps`       | Collection | list, view, export |
-| `reports:media-performance-maps`      | Collection | list, view, export |
-| `reports:campaign-performance-maps`   | Collection | list, view, export |
-| `reports:content-proof-of-play`       | Collection | list, view, export |
-| `reports:export`                      | Collection | list, export       |
+| Resource                              | Type       | Actions              |
+| ------------------------------------- | ---------- | -------------------- |
+| `reports:qr_performance`              | Collection | list, view, export   |
+| `reports:qr_performance_site_to_site` | Collection | list, view, export   |
+| `reports:campaign_compliance`         | Collection | list, view, export   |
+| `reports:campaign_compliance_details` | Collection | list, view, export   |
+| `reports:site_performance_maps`       | Collection | list, view, export   |
+| `reports:media_performance_maps`      | Collection | list, view, export   |
+| `reports:campaign_performance_maps`   | Collection | list, view, export   |
+| `reports:content_proof_of_play`       | Collection | list, view, export   |
+| `reports:export`                      | Collection | list, export, delete |
 
 ### Footprints Resource
 
@@ -81,25 +83,26 @@ These are the resources that doesn't need product and retailer validation.
 
 ### Content Management Resource
 
-| Resource                                | Type       | Actions                                            |
-| --------------------------------------- | ---------- | -------------------------------------------------- |
-| `contents:templates`                    | Collection | list, view, create, update, delete, export, import |
-| `contents:templates:item`               | Item       | view, update, delete                               |
-| `contents:assets`                       | Collection | list, view, create, update, delete, export, import |
-| `contents:assets:item`                  | Item       | view, update, delete                               |
-| `contents:playlists`                    | Collection | list, view, create, update, delete, export, import |
-| `contents:playlists:item`               | Item       | view, update, delete                               |
-| `contents:backgrounds`                  | Collection | list, view, create, update, delete, export, import |
-| `contents:backgrounds:item`             | Item       | view, update, delete                               |
-| `contents:backgrounds:transistion`      | Collection | list, view, create, update, delete, export, import |
-| `contents:backgrounds:transistion:item` | Item       | view, update, delete                               |
-| `contents:channels`                     | Collection | list, view, create, update, delete, export, import |
-| `contents:channels:item`                | Item       | view, update, delete                               |
-| `contents:tags`                         | Collection | list, view, create, update, delete, export, import |
-| `contents:tags:item`                    | Item       | view, update, delete                               |
-| `contents:tags:assignments`             | Item       | view, update, delete                               |
-| `contents:content-groups`               | Collection | list, view, create, update, delete, export, import |
-| `contents:content-groups:item`          | Item       | view, update, delete                               |
+| Resource                               | Type       | Actions                                            |
+| -------------------------------------- | ---------- | -------------------------------------------------- |
+| `contents:templates`                   | Collection | list, view, create, update, delete, export, import |
+| `contents:templates:item`              | Item       | view, update, delete                               |
+| `contents:assets`                      | Collection | list, view, create, update, delete, export, import |
+| `contents:assets:item`                 | Item       | view, update, delete                               |
+| `contents:playlists`                   | Collection | list, view, create, update, delete, export, import |
+| `contents:playlists:item`              | Item       | view, update, delete                               |
+| `contents:backgrounds`                 | Collection | list, view, create, update, delete, export, import |
+| `contents:backgrounds:item`            | Item       | view, update, delete                               |
+| `contents:backgrounds_transition`      | Collection | list, view, create, update, delete, export, import |
+| `contents:backgrounds_transition:item` | Item       | view, update, delete                               |
+| `contents:channels`                    | Collection | list, view, create, update, delete, export, import |
+| `contents:channels:item`               | Item       | view, update, delete                               |
+| `contents:tags`                        | Collection | list, view, create, update, delete, export, import |
+| `contents:tags:item`                   | Item       | view, update, delete                               |
+| `contents:tags_assignments`            | Collection | list, view, create, update, delete, export, import |
+| `contents:tags_assignments:item`       | Item       | view, update, delete                               |
+| `contents:content_groups`              | Collection | list, view, create, update, delete, export, import |
+| `contents:content_groups:item`         | Item       | view, update, delete                               |
 
 ### Signage Resource
 
@@ -134,6 +137,14 @@ These are the resources that doesn't need product and retailer validation.
 
 ## Product Settings Related Resources
 
+### Settings - General
+| Resource                               | Type | Actions              |
+| -------------------------------------- | ---- | -------------------- |
+| `settings:admin_general_agency:item`   | Item | view, update, delete |
+| `settings:admin_general_retailer:item` | Item | view, update, delete |
+| `settings:admin_general_brand:item`    | Item | view, update, delete |
+| `settings:admin_general_ambient:item`  | Item | view, update, delete |
+
 ### Settings - Footprints
 
 | Resource                                          | Type       | Actions                                            |
@@ -147,15 +158,16 @@ These are the resources that doesn't need product and retailer validation.
 
 ### Settings - QR
 
-| Resource                       | Type       | Actions                                            |
-| ------------------------------ | ---------- | -------------------------------------------------- |
-| `settings:qr_design`           | Collection | list, view, create, update, delete, export, import |
-| `settings:qr_design:item`      | Item       | view, update, delete                               |
-| `settings:qr_power-tag`        | Collection | list, view, create, update, delete, export, import |
-| `settings:qr_power-tag:item`   | Item       | view, update, delete                               |
-| `settings:qr_default-redirect` | Collection | list, view, create, update, delete                 |
-| `settings:qr_domain`           | Collection | list, view, create, update, delete, export, import |
-| `settings:qr_domain:item`      | Item       | view, update, delete                               |
+| Resource                            | Type       | Actions                                             |
+| ----------------------------------- | ---------- | --------------------------------------------------- |
+| `settings:qr_design`                | Collection | list, view, create, update, delete, export, import  |
+| `settings:qr_design:item`           | Item       | view, update, delete                                |
+| `settings:qr_power_tag`             | Collection | list, view, create, update, delete, export, import  |
+| `settings:qr_power_tag:item`        | Item       | view, update, delete                                |
+| `settings:qr_default_redirect`      | Collection | list, view, create, update, delete,  export, import |
+| `settings:qr_default_redirect:item` | Item       | view, update, delete                                |
+| `settings:qr_domain`                | Collection | list, view, create, update, delete, export, import  |
+| `settings:qr_domain:item`           | Item       | view, update, delete                                |
 
 ### Settings - Signage
 
@@ -190,16 +202,17 @@ These are the resources that doesn't need product and retailer validation.
 | contents:assets:item (k8s/base/policies/resource_contents_assets_item.yaml)                                                      |          |          |           |            |          | required |          |          |          |
 | contents:backgrounds (k8s/base/policies/resource_contents_backgrounds.yaml)                                                      |          |          |           |            |          | required |          |          |          |
 | contents:backgrounds:item (k8s/base/policies/resource_contents_backgrounds_item.yaml)                                            |          |          |           |            |          | required |          |          |          |
-| contents:backgrounds:transistion (k8s/base/policies/resource_contents_backgrounds_transistion.yaml)                              |          |          |           |            |          | required |          |          |          |
-| contents:backgrounds:transistion:item (k8s/base/policies/resource_contents_backgrounds_transistion_item.yaml)                    |          |          |           |            |          | required |          |          |          |
+| contents:backgrounds_transistion (k8s/base/policies/resource_contents_backgrounds_transistion.yaml)                              |          |          |           |            |          | required |          |          |          |
+| contents:backgrounds_transistion:item (k8s/base/policies/resource_contents_backgrounds_transistion_item.yaml)                    |          |          |           |            |          | required |          |          |          |
 | contents:channels (k8s/base/policies/resource_contents_channels.yaml)                                                            |          |          |           |            |          | required |          |          |          |
 | contents:channels:item (k8s/base/policies/resource_contents_channels_item.yaml)                                                  |          |          |           |            |          | required |          |          |          |
-| contents:content-groups (k8s/base/policies/resource_contents_content_groups.yaml)                                                |          |          |           |            |          | required |          |          |          |
-| contents:content-groups:item (k8s/base/policies/resource_contents_content_groups_item.yaml)                                      |          |          |           |            |          | required |          |          |          |
+| contents:content_groups (k8s/base/policies/resource_contents_content_groups.yaml)                                                |          |          |           |            |          | required |          |          |          |
+| contents:content_groups:item (k8s/base/policies/resource_contents_content_groups_item.yaml)                                      |          |          |           |            |          | required |          |          |          |
 | contents:playlists (k8s/base/policies/resource_contents_playlists.yaml)                                                          |          |          |           |            |          | required |          |          |          |
 | contents:playlists:item (k8s/base/policies/resource_contents_playlists_item.yaml)                                                |          |          |           |            |          | required |          |          |          |
 | contents:tags (k8s/base/policies/resource_contents_tags.yaml)                                                                    |          | required | required  | required   | required | required |          |          |          |
-| contents:tags:assignments (k8s/base/policies/resource_contents_tags_assignments.yaml)                                            |          | required | required  | required   | required | required |          |          |          |
+| contents:tags_assignments (k8s/base/policies/resource_contents_tags_assignments.yaml)                                            |          | required | required  | required   | required | required |          |          |          |
+| contents:tags_assignments:item (k8s/base/policies/resource_contents_tags_assignments_item.yaml)                                  |          | required | required  | required   | required | required |          |          |          |
 | contents:tags:item (k8s/base/policies/resource_contents_tags_item.yaml)                                                          |          | required | required  | required   | required | required |          |          |          |
 | contents:templates (k8s/base/policies/resource_contents_templates.yaml)                                                          |          |          | required  |            |          | required |          |          |          |
 | contents:templates:item (k8s/base/policies/resource_contents_templates_item.yaml)                                                |          |          | required  |            |          | required |          |          |          |
@@ -218,32 +231,39 @@ These are the resources that doesn't need product and retailer validation.
 | qr:site:item (k8s/base/policies/resource_qr_site_item.yaml)                                                                      |          | required |           |            |          |          |          |          |          |
 | qr:templates (k8s/base/policies/resource_qr_templates.yaml)                                                                      |          | required |           |            |          |          |          |          |          |
 | qr:templates:item (k8s/base/policies/resource_qr_templates_item.yaml)                                                            |          | required |           |            |          |          |          |          |          |
-| reports:campaign-compliance-details (k8s/base/policies/resource_reports_campaign_compliance_details.yaml)                        |          | required |           | required   |          | required |          |          |          |
-| reports:campaign-compliance (k8s/base/policies/resource_reports_campaign_compliance.yaml)                                        |          | required |           | required   |          | required |          |          |          |
-| reports:campaign-performance-maps (k8s/base/policies/resource_reports_campaign_performance_maps.yaml)                            |          | required |           | required   |          | required |          |          |          |
-| reports:content-proof-of-play (k8s/base/policies/resource_reports_content_proof_of_play.yaml)                                    |          |          |           |            |          | required |          |          |          |
-| reports:media-performance-maps (k8s/base/policies/resource_reports_media_performance_maps.yaml)                                  |          | required |           |            |          |          |          |          |          |
-| reports:qr-performance-site-to-site (k8s/base/policies/resource_reports_qrperformance_sitetosite.yaml)                           |          | required |           |            |          |          |          |          |          |
-| reports:qr-performance (k8s/base/policies/resource_reports_qrperformance.yaml)                                                   |          | required |           |            |          |          |          |          |          |
-| reports:site-performance-maps (k8s/base/policies/resource_reports_site_performance_maps.yaml)                                    |          | required |           |            |          |          |          |          |          |
+| reports:campaign_compliance_details (k8s/base/policies/resource_reports_campaign_compliance_details.yaml)                        |          | required |           | required   |          | required |          |          |          |
+| reports:campaign_compliance (k8s/base/policies/resource_reports_campaign_compliance.yaml)                                        |          | required |           | required   |          | required |          |          |          |
+| reports:campaign_performance_maps (k8s/base/policies/resource_reports_campaign_performance_maps.yaml)                            |          | required |           | required   |          | required |          |          |          |
+| reports:content_proof_of_play (k8s/base/policies/resource_reports_content_proof_of_play.yaml)                                    |          |          |           |            |          | required |          |          |          |
+| reports:media_performance_maps (k8s/base/policies/resource_reports_media_performance_maps.yaml)                                  |          | required |           |            |          |          |          |          |          |
+| reports:qr_performance_site_to_site (k8s/base/policies/resource_reports_qrperformance_sitetosite.yaml)                           |          | required |           |            |          |          |          |          |          |
+| reports:qr_performance (k8s/base/policies/resource_reports_qrperformance.yaml)                                                   |          | required |           |            |          |          |          |          |          |
+| reports:site_performance_maps (k8s/base/policies/resource_reports_site_performance_maps.yaml)                                    |          | required |           |            |          |          |          |          |          |
 | reports:export (k8s/base/policies/resource_reports_export.yaml)                                                                  |          | required |           | required   | required | required |          | required |          |
-| settings:admin:cerbos (k8s/base/policies/resource_settings_admin_cerbos.yaml)                                                    | required |          |           |            |          |          |          |          |          |
-| settings:admin:general (k8s/base/policies/resource_settings_admin_general.yaml)                                                  | required |          |           |            |          |          |          |          |          |
-| settings:admin:teams (k8s/base/policies/resource_settings_admin_teams.yaml)                                                      | required |          |           |            |          |          |          |          |          |
-| settings:admin:users (k8s/base/policies/resource_settings_admin_users.yaml)                                                      | required |          |           |            |          |          |          |          |          |
+| settings:admin_cerbos (k8s/base/policies/resource_settings_admin_cerbos.yaml)                                                    | required |          |           |            |          |          |          |          |          |
+| settings:admin_cerbos:item (k8s/base/policies/resource_settings_admin_cerbos_item.yaml)                                          | required |          |           |            |          |          |          |          |          |
+| settings:admin_general_agency:item (k8s/base/policies/resource_admin_settings_general_agency_item.yaml)                          | required |          |           |            |          |          |          |          |          |
+| settings:admin_general_retailer:item (k8s/base/policies/resource_admin_settings_general_retailer_item.yaml)                      | required |          |           |            |          |          |          |          |          |
+| settings:admin_general_brand:item (k8s/base/policies/resource_admin_settings_general_brand_item.yaml)                            | required |          |           |            |          |          |          |          |          |
+| settings:admin_general_ambient:item (k8s/base/policies/resource_admin_settings_general_ambient_item.yaml)                        | required |          |           |            |          |          |          |          |          |
+| settings:admin_teams (k8s/base/policies/resource_settings_admin_teams.yaml)                                                      | required |          |           |            |          |          |          |          |          |
+| settings:admin_teams:item (k8s/base/policies/resource_settings_admin_teams_item.yaml)                                            | required |          |           |            |          |          |          |          |          |
+| settings:admin_users (k8s/base/policies/resource_settings_admin_users.yaml)                                                      | required |          |           |            |          |          |          |          |          |
+| settings:admin_users:item (k8s/base/policies/resource_settings_admin_users_item.yaml)                                            | required |          |           |            |          |          |          |          |          |
 | settings:footprints_products_pricing_group (k8s/base/policies/resource_settings_footprints_products_pricinggroup.yaml)           |          |          | required  |            | required |          |          |          |          |
 | settings:footprints_products_pricing_group:item (k8s/base/policies/resource_settings_footprints_products_pricinggroup_item.yaml) |          |          | required  |            | required |          |          |          |          |
 | settings:footprints_products_property (k8s/base/policies/resource_settings_footprints_products_property.yaml)                    |          |          | required  | required   | required |          |          |          |          |
 | settings:footprints_products_property:item (k8s/base/policies/resource_settings_footprints_products_property_item.yaml)          |          |          | required  | required   | required |          |          |          |          |
 | settings:footprints_sites_property (k8s/base/policies/resource_settings_footprints_sites_property.yaml)                          |          | required | required  | required   |          |          |          |          |          |
 | settings:footprints_sites_property:item (k8s/base/policies/resource_settings_footprints_sites_property_item.yaml)                |          | required | required  | required   |          |          |          |          |          |
-| settings:qr_default-redirect (k8s/base/policies/resource_settings_qr_defaultredirect.yaml)                                       |          | required |           |            |          |          |          |          |          |
+| settings:qr_default_redirect (k8s/base/policies/resource_settings_qr_defaultredirect.yaml)                                       |          | required |           |            |          |          |          |          |          |
+| settings:qr_default_redirect:item (k8s/base/policies/resource_settings_qr_defaultredirect_item.yaml)                             |          | required |           |            |          |          |          |          |          |
 | settings:qr_design (k8s/base/policies/resource_settings_qr_design.yaml)                                                          |          | required |           |            |          |          |          |          |          |
 | settings:qr_design:item (k8s/base/policies/resource_settings_qr_design_item.yaml)                                                |          | required |           |            |          |          |          |          |          |
 | settings:qr_domain (k8s/base/policies/resource_settings_qr_domain.yaml)                                                          |          | required |           |            |          |          |          |          |          |
 | settings:qr_domain:item (k8s/base/policies/resource_settings_qr_domain_item.yaml)                                                |          | required |           |            |          |          |          |          |          |
-| settings:qr_power-tag (k8s/base/policies/resource_settings_qr_powertag.yaml)                                                     |          | required |           |            |          |          |          |          |          |
-| settings:qr_power-tag:item (k8s/base/policies/resource_settings_qr_powertag_item.yaml)                                           |          | required |           |            |          |          |          |          |          |
+| settings:qr_power_tag (k8s/base/policies/resource_settings_qr_powertag.yaml)                                                     |          | required |           |            |          |          |          |          |          |
+| settings:qr_power_tag:item (k8s/base/policies/resource_settings_qr_powertag_item.yaml)                                           |          | required |           |            |          |          |          |          |          |
 | settings:signage_layout (k8s/base/policies/resource_settings_signage_layout.yaml)                                                |          |          |           |            |          | required |          |          |          |
 | settings:signage_layout:item (k8s/base/policies/resource_settings_signage_layout_item.yaml)                                      |          |          |           |            |          | required |          |          |          |
 | settings:signage_people_property (k8s/base/policies/resource_settings_signage_people_property.yaml)                              |          |          |           |            |          |          |          |          | required |
@@ -252,7 +272,7 @@ These are the resources that doesn't need product and retailer validation.
 | settings:signage_places_property:item (k8s/base/policies/resource_settings_signage_places_property_item.yaml)                    |          |          |           |            |          |          |          |          | required |
 | settings:signage_things_property (k8s/base/policies/resource_settings_signage_things_property.yaml)                              |          |          |           |            |          |          |          |          | required |
 | settings:signage_things_property:item (k8s/base/policies/resource_settings_signage_things_property_item.yaml)                    |          |          |           |            |          |          |          |          | required |
-| settings:user:profile (k8s/base/policies/resource_settings_user_profile.yaml)                                                    | required |          |           |            |          |          |          |          |          |
+| settings:user_profile:item (k8s/base/policies/resource_settings_user_profile_item.yaml)                                          | required |          |           |            |          |          |          |          |          |
 | signages:people (k8s/base/policies/resource_signages_people.yaml)                                                                |          |          |           |            |          | required |          |          | required |
 | signages:people:item (k8s/base/policies/resource_signages_people_item.yaml)                                                      |          |          |           |            |          | required |          |          | required |
 | signages:places (k8s/base/policies/resource_signages_places.yaml)                                                                |          |          |           |            |          | required |          |          | required |
@@ -287,6 +307,65 @@ Example #2: `connect:contacts:item`
 4. **Product Validation** - A retailer-scoped resource also requires product validation. It means, the subject retailer must have the required products (listed in the Resource payload) to have access to it. See "Product x Resource Matrix" section.
 
 5. **Cerbos Payload**
+
+### Conditions
+
+1. All product related resources must have product check/validation.
+
+Example (see line 15):
+
+```yaml
+apiVersion: "api.cerbos.dev/v1"
+resourcePolicy:
+  version: "default"
+  resource: "connect:contacts"
+  importDerivedRoles:
+    - conqrse_roles
+  rules:
+    # Retailer access with product subscription check
+    - actions: ["resource:list", "resource:view", "resource:create", "resource:update", "resource:delete", "resource:export", "resource:import"]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          all:
+            of:
+              - expr: '["connect"].exists(p, p in P.attr.products)'
+              - expr: 'P.attr.retailerId == R.attr.retailerId'
+      derivedRoles:
+        - retailer_owner
+        - retailer_manager
+        - team_lead
+        - staff_operator
+```
+2. All product related resources and type "Item" must have retailer ID check.
+
+Example (see line 17):
+```yaml
+---
+apiVersion: "api.cerbos.dev/v1"
+resourcePolicy:
+  version: "default"
+  resource: "connect:contacts:item"
+  importDerivedRoles:
+    - conqrse_roles
+  rules:
+    # Retailer access with product subscription check
+    - actions: ["resource:view", "resource:update", "resource:delete"]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          all:
+            of:
+              - expr: '["connect"].exists(p, p in P.attr.products)'
+              - expr: 'P.attr.retailerId == R.attr.retailerId'
+      derivedRoles:
+        - retailer_owner
+        - retailer_manager
+        - team_lead
+        - staff_operator
+```
+
+## Cerbos Payload
 
 Principal
 
