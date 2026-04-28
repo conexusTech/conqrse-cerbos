@@ -24,8 +24,6 @@ This document provides a comprehensive matrix of all Cerbos resources and their 
 - `export` — Download/export resource data
 - `import` — Upload/import data
 
-**Note on Action Naming:** Actions are defined here without prefixes for clarity and maintainability. When policies are generated, the `resource:` prefix is automatically added by the policy generator (e.g., `list` becomes `resource:list` in the generated YAML). All resource types and categories use this unified prefix in the generated policies.
-
 ---
 
 ## Non-Product Related Resources

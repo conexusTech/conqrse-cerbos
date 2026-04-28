@@ -85,19 +85,17 @@ For each resource, the appropriate YAML template is rendered with:
 ```yaml
 rules:
   # Operators: full CRUD access
-  - actions: ["resource:list", "resource:view", "resource:create", "resource:update", "resource:delete", "resource:export", "resource:import"]
+  - actions: ["list", "view", "create", "update", "delete", "export", "import"]
     condition:
       - product subscription check
       - retailer ID check
     derivedRoles: [retailer_owner, retailer_manager, team_lead, staff_operator]
   
   # Collaborators: read-only access
-  - actions: ["resource:list", "resource:view", "resource:export"]
+  - actions: ["list", "view", "export"]
     condition: (same)
     derivedRoles: [guest_collaborator]
 ```
-
-**Note:** Actions in the matrix are defined without prefixes (e.g., `list`, `view`, `create`). The generator automatically adds the `resource:` prefix when rendering policies.
 
 ### Product Resources (Item)
 
@@ -111,7 +109,7 @@ Only owner/admin access:
 - Conditions: product check + retailer ID check
 - Roles: `retailer_owner`, `retailer_manager` only
 - Collaborators: NOT included (settings: NONE for non-owners)
-- Actions: Generated with `resource:` prefix (same as product resources)
+- Actions: `list, view, create, update, delete, export, import` (no prefix)
 
 ### Admin Settings
 
