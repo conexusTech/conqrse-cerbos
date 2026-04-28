@@ -7,14 +7,14 @@ This document defines the Conqrse Role-Based Permission Access logic.
 
 The following products are supported by Cerbos authorization, identified by the first segment in resource names:
 
-| Product        | Resource Prefix | Key Resources                                                             |
-| -------------- | --------------- | ------------------------------------------------------------------------- |
-| **Footprints** | `footprints:`   | sites, endpoints, products, pricing                                       |
-| **Signages**   | `signages:`     | people, places, things                                                    |
-| **Contents**   | `contents:`     | templates, assets, playlists, channels, tags, content-groups, backgrounds |
-| **QR**         | `qr:`           | site, media, templates, campaigns                                         |
-| **Reports**    | `reports:`      | qr-performance, campaign-compliance, site-performance-maps, export        |
-| **Connect**    | `connect:`      | contacts                                                                  |
+| Product        | Resource Prefix | Key Resources                                                                       |
+| -------------- | --------------- | ------------------------------------------------------------------------------------|
+| **Footprints** | `footprints:`   | sites, endpoints, products, pricing                                                |
+| **Signages**   | `signages:`     | people, places, things                                                             |
+| **Contents**   | `contents:`     | templates, assets, playlists, channels, tags, tags_assignments, content_groups, backgrounds, backgrounds_transition |
+| **QR**         | `qr:`           | site, media, templates, campaigns                                                  |
+| **Reports**    | `reports:`      | qr_performance, campaign_compliance, site_performance_maps, export                 |
+| **Connect**    | `connect:`      | contacts                                                                           |
 
 **Administrative & Configuration Features** (not products):
 - `settings:` — Configuration and settings management (cross-cutting concern, see [Resource Naming Patterns](#resource-naming-patterns))
@@ -31,22 +31,25 @@ Settings resources use the `settings:{context}_{resource}` pattern (underscore-s
 4. **Maintainability** — Settings logic is not duplicated across product namespaces
 
 **Pattern:**
-- `settings:admin:*` — Platform/system-level settings (owners/admins only)
-- `settings:user:*` — User-specific settings (personal profile, preferences)
+- `settings:admin_*` — Platform/system-level settings (owners/admins only)
+- `settings:user_*` — User-specific settings (personal profile, preferences)
 - `settings:{product}_{feature}` — Product-specific configuration (e.g., `settings:qr_design`, `settings:signage_layout`)
 - `settings:{product}_{feature}_{category}` — Sub-categories within product settings
 
 **Example:**
 ```
-settings:admin:general              ← Platform-wide configuration
-settings:admin:users                ← User management
-settings:admin:teams                ← Team management
+settings:admin_general_agency       ← Agency-level settings
+settings:admin_general_retailer     ← Retailer-level settings
+settings:admin_general_brand        ← Brand-level settings
+settings:admin_general_ambient      ← Ambient-level settings
+settings:admin_users                ← User management
+settings:admin_teams                ← Team management
 settings:qr_design                  ← QR design settings
-settings:qr_power-tag               ← QR power-tag settings
+settings:qr_power_tag               ← QR power-tag settings
 settings:signage_layout             ← Signage layout settings
 settings:signage_people_property    ← Signage people property settings
 settings:footprints_sites_property  ← Footprints site property settings
-settings:user:profile               ← User profile/preferences
+settings:user_profile               ← User profile/preferences
 ```
 
 **Why NOT `product:settings`?**
@@ -74,12 +77,16 @@ settings:user:profile               ← User profile/preferences
 | contents:playlists:item                         | `/content/playlists/[playlistConfigId]` | `ManagePlaylistConfigClient.tsx`      | view, update, delete                               |
 | contents:backgrounds                            | `/content/backgrounds`                  | `BackgroundsClient.tsx`               | list, view, create, update, delete, export, import |
 | contents:backgrounds:item                       | `/content/backgrounds`                  | `BackgroundsClient.tsx`               | view, update, delete                               |
+| contents:backgrounds_transition                 | `/content/backgrounds`                  | `BackgroundsClient.tsx`               | list, view, create, update, delete, export, import |
+| contents:backgrounds_transition:item            | `/content/backgrounds`                  | `BackgroundsClient.tsx`               | view, update, delete                               |
 | contents:channels                               | `/content/channels`                     | `MediaPlayerChannelsClient.tsx`       | list, view, create, update, delete, export, import |
 | contents:channels:item                          | `/content/channels/[id]`                | `MediaPlayerChannelDetailClient.tsx`  | view, update, delete                               |
 | contents:tags                                   | `/content/tags`                         | `TagManagerClient.tsx`                | list, view, create, update, delete, export, import |
 | contents:tags:item                              | `/content/tags`                         | `TagManagerClient.tsx`                | view, update, delete                               |
-| contents:content-groups                         | `/content/content-groups`               | `ContentGroupsClient.tsx`             | list, view, create, update, delete, export, import |
-| contents:content-groups:item                    | `/content/content-groups/[id]`          | `ManageContentGroupClient.tsx`        | view, update, delete                               |
+| contents:tags_assignments                       | `/content/tags`                         | `TagManagerClient.tsx`                | list, view, create, update, delete, export, import |
+| contents:tags_assignments:item                  | `/content/tags`                         | `TagManagerClient.tsx`                | view, update, delete                               |
+| contents:content_groups                         | `/content/content-groups`               | `ContentGroupsClient.tsx`             | list, view, create, update, delete, export, import |
+| contents:content_groups:item                    | `/content/content-groups/[id]`          | `ManageContentGroupClient.tsx`        | view, update, delete                               |
 | signages:people                                 | `/signages/people`                      | `SignagePeopleClient.tsx`             | list, view, create, update, delete, export, import |
 | signages:people:item                            | `/signages/people`                      | `SignagePeopleClient.tsx`             | view, update, delete                               |
 | signages:places                                 | `/signages/places`                      | `SignagePlacesClient.tsx`             | list, view, create, update, delete, export, import |
@@ -94,22 +101,28 @@ settings:user:profile               ← User profile/preferences
 | qr:templates:item                               | `/qr/templates/[id]`                    | `QrTemplateDetailClient.tsx`          | view, update, delete                               |
 | qr:campaigns                                    | `/qr/campaigns`                         | `CampaignsClient.tsx`                 | list, view, create, update, delete, export, import |
 | qr:campaigns:item                               | `/qr/campaigns/[id]`                    | `CampaignsClient.tsx`                 | view, update, delete                               |
-| reports:qr-performance                          | `/reports/qr-performance`               | `QRPerformanceAnalysisClient.tsx`     | list, view, export                                 |
-| reports:qr-performance-site-to-site             | `/reports/qr-performance-site-to-site`  | `QRSiteAnalysisClient.tsx`            | list, view, export                                 |
-| reports:campaign-compliance                     | `/reports/campaign-compliance`          | `CampaignComplianceClient.tsx`        | list, view, export                                 |
-| reports:campaign-compliance-details             | `/reports/campaign-compliance-details`  | `CampaignComplianceDetailsClient.tsx` | list, view, export                                 |
-| reports:site-performance-maps                   | `/reports/site-performance-maps`        | `SitePerformanceMapsClient.tsx`       | list, view, export                                 |
-| reports:media-performance-maps                  | `/reports/media-performance-maps`       | `MediaPerformanceClient.tsx`          | list, view, export                                 |
-| reports:campaign-performance-maps               | `/reports/campaign-performance-maps`    | `CampaignPerformanceMapsClient.tsx`   | list, view, export                                 |
-| reports:content-proof-of-play                   | `/reports/content-proof-of-play`        | `ContentProofOfPlayClient.tsx`        | list, view, export                                 |
+| reports:qr_performance                          | `/reports/qr_performance`               | `QRPerformanceAnalysisClient.tsx`     | list, view, export                                 |
+| reports:qr_performance_site_to_site             | `/reports/qr_performance_site_to_site`  | `QRSiteAnalysisClient.tsx`            | list, view, export                                 |
+| reports:campaign_compliance                     | `/reports/campaign_compliance`          | `CampaignComplianceClient.tsx`        | list, view, export                                 |
+| reports:campaign_compliance_details             | `/reports/campaign_compliance_details`  | `CampaignComplianceDetailsClient.tsx` | list, view, export                                 |
+| reports:site_performance_maps                   | `/reports/site_performance_maps`        | `SitePerformanceMapsClient.tsx`       | list, view, export                                 |
+| reports:media_performance_maps                  | `/reports/media_performance_maps`       | `MediaPerformanceClient.tsx`          | list, view, export                                 |
+| reports:campaign_performance_maps               | `/reports/campaign_performance_maps`    | `CampaignPerformanceMapsClient.tsx`   | list, view, export                                 |
+| reports:content_proof_of_play                   | `/reports/content_proof_of_play`        | `ContentProofOfPlayClient.tsx`        | list, view, export                                 |
 | reports:export                                  | `/export`                               | `BatchClient.tsx`                     | export                                             |
 | connect:contacts                                | `/connect/contacts`                     | `ContactsClient.tsx`                  | list, view, create, update, delete, export, import |
 | connect:contacts:item                           | `/connect/contacts/[id]`                | `ContactsClient.tsx`                  | view, update, delete                               |
-| settings:admin:general                          | `/settings/general`                     | `GeneralSettingsClient.tsx`           | list, view, create, update, delete                 |
-| settings:admin:users                            | `/settings/users`                       | `UserSettingsClient.tsx`              | list, view, create, update, delete, export, import |
-| settings:admin:teams                            | `/settings/teams`                       | `TeamSettingsClient.tsx`              | list, view, create, update, delete, export, import |
-| settings:admin:cerbos                           | `/settings/cerbos`                      | `CerbosSettingsClient.tsx`            | list, view, update, export, import                 |
-| settings:user:profile                           | `/profile`                              | `ProfileClient.tsx`                   | list, view, update                                 |
+| settings:admin_general_agency:item              | `/settings/general`                     | `GeneralSettingsClient.tsx`           | view, update, delete                               |
+| settings:admin_general_retailer:item            | `/settings/general`                     | `GeneralSettingsClient.tsx`           | view, update, delete                               |
+| settings:admin_general_brand:item               | `/settings/general`                     | `GeneralSettingsClient.tsx`           | view, update, delete                               |
+| settings:admin_general_ambient:item             | `/settings/general`                     | `GeneralSettingsClient.tsx`           | view, update, delete                               |
+| settings:admin_users                            | `/settings/users`                       | `UserSettingsClient.tsx`              | list, view, create, update, delete, export, import |
+| settings:admin_users:item                       | `/settings/users`                       | `UserSettingsClient.tsx`              | view, update, delete                               |
+| settings:admin_teams                            | `/settings/teams`                       | `TeamSettingsClient.tsx`              | list, view, create, update, delete, export, import |
+| settings:admin_teams:item                       | `/settings/teams`                       | `TeamSettingsClient.tsx`              | view, update, delete                               |
+| settings:admin_cerbos                           | `/settings/cerbos`                      | `CerbosSettingsClient.tsx`            | list, view, create, update, delete, export, import |
+| settings:admin_cerbos:item                      | `/settings/cerbos`                      | `CerbosSettingsClient.tsx`            | view, update, delete                               |
+| settings:user_profile:item                      | `/profile`                              | `ProfileClient.tsx`                   | view, update                                       |
 | settings:footprints_sites_property              | `/settings/footprint`                   | `FootprintSettingsClient.tsx`         | list, view, create, update, delete, export, import |
 | settings:footprints_sites_property:item         | `/settings/footprint`                   | `FootprintSettingsClient.tsx`         | view, update, delete                               |
 | settings:footprints_products_property           | `/settings/product`                     | `ProductSettingsClient.tsx`           | list, view, create, update, delete, export, import |
@@ -118,9 +131,10 @@ settings:user:profile               ← User profile/preferences
 | settings:footprints_products_pricing_group:item | `/settings/price-tag`                   | `PriceTagSettingsClient.tsx`          | view, update, delete                               |
 | settings:qr_design                              | `/settings/qr`                          | `QrSettingsClient.tsx`                | list, view, create, update, delete, export, import |
 | settings:qr_design:item                         | `/settings/qr`                          | `QrSettingsClient.tsx`                | view, update, delete                               |
-| settings:qr_power-tag                           | `/settings/qr`                          | `QrSettingsClient.tsx`                | list, view, create, update, delete, export, import |
-| settings:qr_power-tag:item                      | `/settings/qr`                          | `QrSettingsClient.tsx`                | view, update, delete                               |
-| settings:qr_default-redirect                    | `/settings/qr`                          | `QrSettingsClient.tsx`                | list, view, create, update, delete                 |
+| settings:qr_power_tag                           | `/settings/qr`                          | `QrSettingsClient.tsx`                | list, view, create, update, delete, export, import |
+| settings:qr_power_tag:item                      | `/settings/qr`                          | `QrSettingsClient.tsx`                | view, update, delete                               |
+| settings:qr_default_redirect                    | `/settings/qr`                          | `QrSettingsClient.tsx`                | list, view, create, update, delete                 |
+| settings:qr_default_redirect:item               | `/settings/qr`                          | `QrSettingsClient.tsx`                | view, update, delete                               |
 | settings:qr_domain                              | `/settings/qr`                          | `QrSettingsClient.tsx`                | list, view, create, update, delete, export, import |
 | settings:qr_domain:item                         | `/settings/qr`                          | `QrSettingsClient.tsx`                | view, update, delete                               |
 | settings:signage_layout                         | `/settings/signage`                     | `SignageSettingsClient.tsx`           | list, view, create, update, delete, export, import |
