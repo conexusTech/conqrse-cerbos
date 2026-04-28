@@ -27,7 +27,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/conqrse/conqrse-cerbos"
+    "url": "git+https://github.com/conqrse/conqrse-cerbos.git",
+    "directory": "packages/permission-types"
   },
   "license": "UNLICENSED"
 }
