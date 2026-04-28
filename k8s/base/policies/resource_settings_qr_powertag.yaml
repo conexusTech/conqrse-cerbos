@@ -7,7 +7,7 @@ resourcePolicy:
     - conqrse_roles
   rules:
     # Settings access with product subscription check (owner/admin only)
-    - actions: ["resource:list", "resource:view", "resource:create", "resource:update", "resource:delete", "resource:export", "resource:import"]
+    - actions: ["list", "view", "create", "update", "delete", "export", "import"]
       effect: EFFECT_ALLOW
       condition:
         match:

@@ -7,7 +7,7 @@ resourcePolicy:
     - conqrse_roles
   rules:
     # Admin settings access (all owner/admin at all levels)
-    - actions: ["resource:view", "resource:update", "resource:delete"]
+    - actions: ["view", "update", "delete"]
       effect: EFFECT_ALLOW
       derivedRoles:
         - root_user

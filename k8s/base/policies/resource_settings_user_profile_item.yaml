@@ -7,7 +7,7 @@ resourcePolicy:
     - conqrse_roles
   rules:
     # User profile access (all users can view/update own profile)
-    - actions: ["resource:view", "resource:update"]
+    - actions: ["view", "update"]
       effect: EFFECT_ALLOW
       derivedRoles:
         - root_user
