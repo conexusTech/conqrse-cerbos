@@ -204,23 +204,23 @@ The system defines 15 base roles (5 per user level):
 
 #### SU Level Roles (5 roles)
 
-| User Type    | **Derived Role**           | **Actions**                                                                                                                                                                         | Description                                                  |
-| ------------ | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| owner        | **Root User**              | settings:list, settings:create, settings:update, settings:delete, resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Owner of the overall system with unrestricted access         |
-| admin        | **Platform Administrator** | settings:list, settings:create, settings:update, settings:delete, resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Manages system configuration, users, and integrations        |
-| lead         | **Platform Lead**          | resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import                                                                   | Supervises platform operations, limited system modifications |
-| member       | **Platform Member**        | resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import                                                                   | System support and operations                                |
-| collaborator | **Platform Collaborator**  | resource:list, resource:view, resource:export                                                                                                                                       | System viewer, read-only access                              |
+| User Type    | **Derived Role**           | **Actions**                                                                                                                                                                         | Product Access | Description                                                  |
+| ------------ | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------------------------------------------------------ |
+| owner        | **Root User**              | settings:list, settings:create, settings:update, settings:delete, resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Yes* | Owner of the overall system with unrestricted access         |
+| admin        | **Platform Administrator** | settings:list, settings:create, settings:update, settings:delete, resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Yes* | Manages system configuration, users, and integrations        |
+| lead         | **Platform Lead**          | resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import                                                                   | Yes* | Supervises platform operations, limited system modifications |
+| member       | **Platform Member**        | resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import                                                                   | Yes* | System support and operations                                |
+| collaborator | **Platform Collaborator**  | resource:list, resource:view, resource:export                                                                                                                                       | Yes* | System viewer, read-only access                              |
 
 #### Agency Level Roles (5 roles)
 
-| User Type    | **Derived Role**        | **Actions**                                                                                                                                                                         | Description                                              |
-| ------------ | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| owner        | **Agency Owner**        | settings:list, settings:create, settings:update, settings:delete, resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Owner/principal of the agency/subscriber                 |
-| admin        | **Agency Manager**      | settings:list, settings:create, settings:update, settings:delete, resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Trusted employee managing agency resources and retailers |
-| lead         | **Agency Lead**         | resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import                                                                   | Senior operator, supervises agency operations            |
-| member       | **Agency Member**       | resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import                                                                   | Operator, day-to-day agency operations                   |
-| collaborator | **Agency Collaborator** | resource:list, resource:view, resource:export                                                                                                                                       | Viewer, limited agency visibility                        |
+| User Type    | **Derived Role**        | **Actions**                                                                                                                                                                         | Product Access | Description                                              |
+| ------------ | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | -------------------------------------------------------- |
+| owner        | **Agency Owner**        | settings:list, settings:create, settings:update, settings:delete, resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Yes* | Owner/principal of the agency/subscriber                 |
+| admin        | **Agency Manager**      | settings:list, settings:create, settings:update, settings:delete, resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import | Yes* | Trusted employee managing agency resources and retailers |
+| lead         | **Agency Lead**         | resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import                                                                   | Yes* | Senior operator, supervises agency operations            |
+| member       | **Agency Member**       | resource:list, resource:view, resource:create, resource:update, resource:delete, resource:export, resource:import                                                                   | Yes* | Operator, day-to-day agency operations                   |
+| collaborator | **Agency Collaborator** | resource:list, resource:view, resource:export                                                                                                                                       | Yes* | Viewer, limited agency visibility                        |
 
 #### Retailer Level Roles (5 roles)
 
@@ -283,8 +283,9 @@ Namespaced action string in format: `{scope}:{action}`
 
 - Principal `products` array must include the resource's product to pass product subscription validation
 - Retailer-level users are scoped to their own retailer; all product resources require a valid `retailerId`
-- Agency-level users can access resources across their child retailers
-- SU-level users have system-wide access but still require proper resource scoping
+- Agency-level users can access product resources across their child retailers (when `retailerId` matches)
+- SU-level users have system-wide product resource access (when `retailerId` matches and required products are present)
+- *Product Access: SU and Agency-level roles have full access to product-scoped resources with the same permissions as Retailer-level owners/managers, subject to product subscription validation
 
 ## Validation Examples
 

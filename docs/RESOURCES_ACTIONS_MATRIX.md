@@ -300,7 +300,14 @@ Example #2: `connect:contacts:item`
 3. **Retailer-scoped** - A resource requires a retailer data. It is scoped to retailer-only resources.
 4. **Product Validation** - A retailer-scoped resource also requires product validation. It means, the subject retailer must have the required products (listed in the Resource payload) to have access to it. See "Product x Resource Matrix" section.
 
-5. **Cerbos Payload**
+5. **Role Hierarchy** - Product-related resources support hierarchical role access:
+   - **SU Level (Super User)**: root_user, platform_administrator, platform_lead, platform_member, platform_collaborator
+   - **Agency Level**: agency_owner, agency_manager, agency_lead, agency_member, agency_collaborator
+   - **Retailer Level**: retailer_owner, retailer_manager, team_lead, staff_operator, guest_collaborator
+   
+   SU and Agency-level roles have access to all product-scoped resources (when retailerId matches and required products are present) with the same permissions as Retailer-level owners/managers.
+
+6. **Cerbos Payload**
 
 ### Conditions
 
