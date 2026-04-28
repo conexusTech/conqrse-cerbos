@@ -53,14 +53,14 @@
               "name": "admin@platform.com",
               "products": [
                 "footprints",
-                "signages",
+                "signage",
                 "qr"
               ]
             }
           },
           "resource": {
-            "kind": "settings:admin_users",
-            "id": "settings:admin_users",
+            "kind": "settings:admin:users",
+            "id": "settings:admin:users",
             "attr": {
               "product": "settings"
             }
@@ -118,15 +118,15 @@
               "name": "owner@agency.com",
               "products": [
                 "footprints",
-                "signages",
+                "signage",
                 "qr"
               ],
               "agencyId": "agency-456"
             }
           },
           "resource": {
-            "kind": "settings:admin_users",
-            "id": "settings:admin_users",
+            "kind": "settings:admin:users",
+            "id": "settings:admin:users",
             "attr": {
               "product": "settings",
               "retailerId": "retail-789",
@@ -153,14 +153,14 @@
               "name": "owner@platform.com",
               "products": [
                 "footprints",
-                "signages",
+                "signage",
                 "qr"
               ]
             }
           },
           "resource": {
-            "kind": "settings:admin_general",
-            "id": "settings:admin_general",
+            "kind": "settings:admin:general",
+            "id": "settings:admin:general",
             "attr": {
               "product": "settings"
             }
@@ -172,8 +172,8 @@
         },
         {
           "id": "allow_6",
-          "name": "SU Lead Viewing System Data",
-          "description": "SU lead user viewing system-level reports",
+          "name": "SU Lead Viewing Own User Profile",
+          "description": "SU lead user viewing and updating their own user profile",
           "principal": {
             "id": "su-user-003",
             "roles": [
@@ -185,17 +185,16 @@
               "name": "lead@platform.com",
               "products": [
                 "footprints",
-                "signages",
-                "qr",
-                "reports"
+                "signage",
+                "qr"
               ]
             }
           },
           "resource": {
-            "kind": "reports:system",
-            "id": "reports:system",
+            "kind": "settings:user:profile",
+            "id": "settings:user:profile",
             "attr": {
-              "product": "reports"
+              "product": "settings"
             }
           },
           "expectedResult": "ALLOW",
@@ -259,8 +258,8 @@
             }
           },
           "resource": {
-            "kind": "settings:admin_general",
-            "id": "settings:admin_general",
+            "kind": "settings:admin:general",
+            "id": "settings:admin:general",
             "attr": {
               "product": "settings",
               "retailerId": "retail-789"
@@ -319,7 +318,7 @@
               "userType": "owner",
               "name": "owner@retailer-789.com",
               "products": [
-                "contents",
+                "signage",
                 "qr"
               ],
               "agencyId": "agency-456",
@@ -354,7 +353,7 @@
               "userType": "member",
               "name": "member@retailer-789.com",
               "products": [
-                "contents"
+                "signage"
               ],
               "agencyId": "agency-456",
               "retailerId": "retail-789"
@@ -377,7 +376,7 @@
         {
           "id": "allow_12",
           "name": "Retailer Owner Accessing Signages People",
-          "description": "Retailer user accessing signages product (renamed from signage)",
+          "description": "Retailer user accessing signage product",
           "principal": {
             "id": "user-700",
             "roles": [
@@ -388,7 +387,7 @@
               "userType": "owner",
               "name": "owner@retailer-789.com",
               "products": [
-                "signages"
+                "signage"
               ],
               "agencyId": "agency-456",
               "retailerId": "retail-789"
@@ -398,7 +397,7 @@
             "kind": "signages:people",
             "id": "signages:people",
             "attr": {
-              "product": "signages",
+              "product": "signage",
               "retailerId": "retail-789",
               "agencyId": "agency-456"
             }
@@ -411,7 +410,7 @@
         {
           "id": "allow_13",
           "name": "Retailer Member Accessing Signages Places Items",
-          "description": "Retailer member accessing signages places item resources",
+          "description": "Retailer member accessing signage places item resources",
           "principal": {
             "id": "user-710",
             "roles": [
@@ -422,7 +421,7 @@
               "userType": "member",
               "name": "member@retailer-789.com",
               "products": [
-                "signages"
+                "signage"
               ],
               "agencyId": "agency-456",
               "retailerId": "retail-789"
@@ -432,7 +431,7 @@
             "kind": "signages:places:item",
             "id": "signages:places:item:123",
             "attr": {
-              "product": "signages",
+              "product": "signage",
               "retailerId": "retail-789",
               "agencyId": "agency-456"
             }
@@ -507,6 +506,105 @@
           "expectedResult": "ALLOW",
           "actions": [
             "resource:update"
+          ]
+        },
+        {
+          "id": "allow_16",
+          "name": "Retailer Owner Viewing QR Performance Report",
+          "description": "Retailer owner can view QR-related reports",
+          "principal": {
+            "id": "user-950",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "owner@retailer-789.com",
+              "products": [
+                "qr"
+              ],
+              "agencyId": "agency-456",
+              "retailerId": "retail-789"
+            }
+          },
+          "resource": {
+            "kind": "reports:qr-performance",
+            "id": "reports:qr-performance",
+            "attr": {
+              "product": "qr",
+              "retailerId": "retail-789"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "resource:view"
+          ]
+        },
+        {
+          "id": "allow_17",
+          "name": "SU Admin Accessing Cerbos Policy Settings",
+          "description": "SU admin can access Cerbos policy configuration settings",
+          "principal": {
+            "id": "su-user-010",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "su",
+              "userType": "admin",
+              "name": "admin@platform.com",
+              "products": [
+                "footprints",
+                "signage",
+                "qr"
+              ]
+            }
+          },
+          "resource": {
+            "kind": "settings:admin:cerbos",
+            "id": "settings:admin:cerbos",
+            "attr": {
+              "product": "settings"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "resource:view"
+          ]
+        },
+        {
+          "id": "allow_18",
+          "name": "Retailer Owner Listing Content Channels",
+          "description": "Retailer owner can list content channels from the signage product",
+          "principal": {
+            "id": "user-980",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "owner@retailer-789.com",
+              "products": [
+                "signage"
+              ],
+              "agencyId": "agency-456",
+              "retailerId": "retail-789"
+            }
+          },
+          "resource": {
+            "kind": "contents:channels",
+            "id": "contents:channels",
+            "attr": {
+              "product": "signage",
+              "retailerId": "retail-789",
+              "agencyId": "agency-456"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "resource:list"
           ]
         }
       ]
@@ -602,8 +700,8 @@
             }
           },
           "resource": {
-            "kind": "settings:admin_general",
-            "id": "settings:admin_general",
+            "kind": "settings:admin:general",
+            "id": "settings:admin:general",
             "attr": {
               "product": "settings"
             }
@@ -633,8 +731,8 @@
             }
           },
           "resource": {
-            "kind": "settings:admin_users",
-            "id": "settings:admin_users",
+            "kind": "settings:admin:users",
+            "id": "settings:admin:users",
             "attr": {
               "product": "settings",
               "agencyId": "agency-456"
@@ -698,8 +796,8 @@
             }
           },
           "resource": {
-            "kind": "settings:admin_general",
-            "id": "settings:admin_general",
+            "kind": "settings:admin:general",
+            "id": "settings:admin:general",
             "attr": {
               "product": "settings",
               "retailerId": "retail-789"
@@ -814,7 +912,7 @@
         {
           "id": "deny_10",
           "name": "Retailer Member Attempting to Modify Signages People",
-          "description": "Retailer collaborator cannot modify signages resources",
+          "description": "Retailer collaborator cannot modify signage resources",
           "principal": {
             "id": "user-720",
             "roles": [
@@ -825,7 +923,7 @@
               "userType": "collaborator",
               "name": "collaborator@retailer-789.com",
               "products": [
-                "signages"
+                "signage"
               ],
               "agencyId": "agency-456",
               "retailerId": "retail-789"
@@ -835,7 +933,7 @@
             "kind": "signages:people",
             "id": "signages:people",
             "attr": {
-              "product": "signages",
+              "product": "signage",
               "retailerId": "retail-789",
               "agencyId": "agency-456"
             }
@@ -843,6 +941,72 @@
           "expectedResult": "DENY",
           "actions": [
             "resource:create"
+          ]
+        },
+        {
+          "id": "deny_11",
+          "name": "Retailer Collaborator Attempting to Create Content Channel",
+          "description": "Retailer collaborator cannot create resources, only view/list/export",
+          "principal": {
+            "id": "user-730",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "collaborator",
+              "name": "collaborator@retailer-789.com",
+              "products": [
+                "signage"
+              ],
+              "agencyId": "agency-456",
+              "retailerId": "retail-789"
+            }
+          },
+          "resource": {
+            "kind": "contents:channels",
+            "id": "contents:channels",
+            "attr": {
+              "product": "signage",
+              "retailerId": "retail-789",
+              "agencyId": "agency-456"
+            }
+          },
+          "expectedResult": "DENY",
+          "actions": [
+            "resource:create"
+          ]
+        },
+        {
+          "id": "deny_12",
+          "name": "Agency Owner Attempting to Access Cerbos Settings",
+          "description": "Agency owner cannot access SU-only cerbos policy settings",
+          "principal": {
+            "id": "agency-user-100",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "agency",
+              "userType": "owner",
+              "name": "owner@agency.com",
+              "products": [
+                "footprints",
+                "qr"
+              ],
+              "agencyId": "agency-456"
+            }
+          },
+          "resource": {
+            "kind": "settings:admin:cerbos",
+            "id": "settings:admin:cerbos",
+            "attr": {
+              "product": "settings"
+            }
+          },
+          "expectedResult": "DENY",
+          "actions": [
+            "resource:view"
           ]
         }
       ]
