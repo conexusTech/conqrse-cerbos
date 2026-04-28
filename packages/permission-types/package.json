@@ -2,14 +2,30 @@
   "name": "@conqrse/permission-types",
   "version": "1.0.2",
   "description": "Enums and types for Conqrse permission integration with Cerbos",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "type": "module",
+  "main": "./index.ts",
+  "types": "./index.ts",
   "exports": {
-    ".": "./index.ts",
-    "./enums": "./enums/index.ts",
-    "./enums/*": "./enums/*.ts",
-    "./types": "./types/index.ts",
-    "./types/*": "./types/*.ts"
+    ".": {
+      "types": "./index.ts",
+      "default": "./index.ts"
+    },
+    "./enums": {
+      "types": "./enums/index.ts",
+      "default": "./enums/index.ts"
+    },
+    "./enums/*": {
+      "types": "./enums/*.ts",
+      "default": "./enums/*.ts"
+    },
+    "./types": {
+      "types": "./types/index.ts",
+      "default": "./types/index.ts"
+    },
+    "./types/*": {
+      "types": "./types/*.ts",
+      "default": "./types/*.ts"
+    }
   },
   "files": [
     "README.md",
