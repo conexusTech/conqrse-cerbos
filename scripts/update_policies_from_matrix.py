@@ -21,7 +21,7 @@ class MatrixParser:
     def __init__(self, markdown_path: str):
         self.markdown_path = markdown_path
         self.products = [
-            "qr", "priceTags", "compliance", "product", "signage", "landing", "connect", "ppt"
+            "qr", "priceTags", "compliance", "product", "signage", "landing", "connect", "ppt", "cms"
         ]
 
     def parse(self) -> Dict[str, Set[str]]:

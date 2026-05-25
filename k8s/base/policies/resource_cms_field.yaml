@@ -1,0 +1,52 @@
+---
+apiVersion: "api.cerbos.dev/v1"
+resourcePolicy:
+  version: "default"
+  resource: "cms:field"
+  importDerivedRoles:
+    - conqrse_roles
+  rules:
+    # Retailer access with product subscription check
+    - actions: ["list", "view", "create", "update", "delete", "export", "import"]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          all:
+            of:
+              - expr: '["cms"].exists(p, p in P.attr.products)'
+      derivedRoles:
+        - root_user
+        - platform_administrator
+        - platform_lead
+        - platform_member
+        - platform_collaborator
+        - agency_owner
+        - agency_manager
+        - agency_lead
+        - agency_member
+        - agency_collaborator
+        - retailer_owner
+        - retailer_manager
+        - team_lead
+        - staff_operator
+
+    # Collaborators with product subscription check
+    - actions: ["list", "view", "export"]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          all:
+            of:
+              - expr: '["cms"].exists(p, p in P.attr.products)'
+      derivedRoles:
+        - root_user
+        - platform_administrator
+        - platform_lead
+        - platform_member
+        - platform_collaborator
+        - agency_owner
+        - agency_manager
+        - agency_lead
+        - agency_member
+        - agency_collaborator
+        - guest_collaborator

@@ -12,6 +12,7 @@ This document provides a comprehensive matrix of all Cerbos resources and their 
 - **landing** - Landing
 - **connect** - Connect
 - **ppt** - People, Places, and Things
+- **cms** - Content Management System
 
 ## Action Definitions
 
@@ -129,6 +130,29 @@ These are the resources that doesn't need product and retailer validation.
 | `qr:campaigns`      | Collection | list, view, create, update, delete, export, import |
 | `qr:campaigns:item` | Item       | view, update, delete                               |
 
+### CMS Resource
+
+| Resource              | Type       | Actions                                            |
+| --------------------- | ---------- | -------------------------------------------------- |
+| `cms:collection`      | Collection | list, view, create, update, delete, export, import |
+| `cms:collection:item` | Item       | view, update, delete                               |
+| `cms:entry`           | Collection | list, view, create, update, delete, export, import |
+| `cms:entry:item`      | Item       | view, update, delete                               |
+| `cms:field`           | Collection | list, view, create, update, delete, export, import |
+| `cms:field:item`      | Item       | view, update, delete                               |
+| `cms:invitation`      | Collection | list, view, create, update, delete, export, import |
+| `cms:invitation:item` | Item       | view, update, delete                               |
+| `cms:website`         | Collection | list, view, create, update, delete, export, import |
+| `cms:website:item`    | Item       | view, update, delete                               |
+| `cms:page`            | Collection | list, view, create, update, delete, export, import |
+| `cms:page:item`       | Item       | view, update, delete                               |
+| `cms:section`         | Collection | list, view, create, update, delete, export, import |
+| `cms:section:item`    | Item       | view, update, delete                               |
+| `cms:block`           | Collection | list, view, create, update, delete, export, import |
+| `cms:block:item`      | Item       | view, update, delete                               |
+| `cms:api_key`         | Collection | list, view, create, update, delete, export, import |
+| `cms:api_key:item`    | Item       | view, update, delete                               |
+
 ## Product Settings Related Resources
 
 ### Settings - General
@@ -188,91 +212,109 @@ These are the resources that doesn't need product and retailer validation.
 
 ## Product × Resource Matrix
 
-| Resource                                        | File Name                                                    | default  | qr       | priceTags | compliance | product  | signage  | landing  | connect  | ppt      |
-| ----------------------------------------------- | ------------------------------------------------------------ | -------- | -------- | --------- | ---------- | -------- | -------- | -------- | -------- | -------- |
-| connect:contacts                                | resource_connect_contacts.yaml                               |          |          |           |            |          |          |          | required |          |
-| connect:contacts:item                           | resource_connect_contacts_item.yaml                          |          |          |           |            |          |          |          | required |          |
-| contents:assets                                 | resource_contents_assets.yaml                                |          |          |           |            |          | required |          |          |          |
-| contents:assets:item                            | resource_contents_assets_item.yaml                           |          |          |           |            |          | required |          |          |          |
-| contents:backgrounds                            | resource_contents_backgrounds.yaml                           |          |          |           |            |          | required |          |          |          |
-| contents:backgrounds:item                       | resource_contents_backgrounds_item.yaml                      |          |          |           |            |          | required |          |          |          |
-| contents:backgrounds_transition                 | resource_contents_backgrounds_transition.yaml                |          |          |           |            |          | required |          |          |          |
-| contents:backgrounds_transition:item            | resource_contents_backgrounds_transition_item.yaml           |          |          |           |            |          | required |          |          |          |
-| contents:channels                               | resource_contents_channels.yaml                              |          |          |           |            |          | required |          |          |          |
-| contents:channels:item                          | resource_contents_channels_item.yaml                         |          |          |           |            |          | required |          |          |          |
-| contents:content_groups                         | resource_contents_content_groups.yaml                        |          |          |           |            |          | required |          |          |          |
-| contents:content_groups:item                    | resource_contents_content_groups_item.yaml                   |          |          |           |            |          | required |          |          |          |
-| contents:playlists                              | resource_contents_playlists.yaml                             |          |          |           |            |          | required |          |          |          |
-| contents:playlists:item                         | resource_contents_playlists_item.yaml                        |          |          |           |            |          | required |          |          |          |
-| contents:tags                                   | resource_contents_tags.yaml                                  |          | required | required  | required   | required | required |          |          |          |
-| contents:tags_assignments                       | resource_contents_tags_assignments.yaml                      |          | required | required  | required   | required | required |          |          |          |
-| contents:tags_assignments:item                  | resource_contents_tags_assignments_item.yaml                 |          | required | required  | required   | required | required |          |          |          |
-| contents:tags:item                              | resource_contents_tags_item.yaml                             |          | required | required  | required   | required | required |          |          |          |
-| contents:templates                              | resource_contents_templates.yaml                             |          |          | required  |            |          | required |          |          |          |
-| contents:templates:item                         | resource_contents_templates_item.yaml                        |          |          | required  |            |          | required |          |          |          |
-| footprints:endpoints                            | resource_footprints_endpoints.yaml                           |          |          | required  |            |          | required |          |          |          |
-| footprints:endpoints:item                       | resource_footprints_endpoints_item.yaml                      |          |          | required  |            |          | required |          |          |          |
-| footprints:pricing                              | resource_footprints_pricing.yaml                             |          |          | required  |            | required | required |          |          |          |
-| footprints:products                             | resource_footprints_products.yaml                            |          |          | required  | required   | required | required |          |          |          |
-| footprints:products:item                        | resource_footprints_products_item.yaml                       |          |          | required  | required   | required | required |          |          |          |
-| footprints:sites                                | resource_footprints_sites.yaml                               |          | required | required  | required   | required | required |          |          |          |
-| footprints:sites:item                           | resource_footprints_sites_item.yaml                          |          | required | required  | required   | required | required |          |          |          |
-| qr:campaigns                                    | resource_qr_campaigns.yaml                                   |          | required | required  | required   | required | required | required | required | required |
-| qr:campaigns:item                               | resource_qr_campaigns_item.yaml                              |          | required | required  | required   | required | required | required | required | required |
-| qr:media                                        | resource_qr_media.yaml                                       |          | required |           |            |          |          |          |          |          |
-| qr:media:item                                   | resource_qr_media_item.yaml                                  |          | required |           |            |          |          |          |          |          |
-| qr:site                                         | resource_qr_site.yaml                                        |          | required |           |            |          |          |          |          |          |
-| qr:site:item                                    | resource_qr_site_item.yaml                                   |          | required |           |            |          |          |          |          |          |
-| qr:templates                                    | resource_qr_templates.yaml                                   |          | required |           |            |          |          |          |          |          |
-| qr:templates:item                               | resource_qr_templates_item.yaml                              |          | required |           |            |          |          |          |          |          |
-| reports:campaign_compliance_details             | resource_reports_campaign_compliance_details.yaml            |          | required |           | required   |          | required |          |          |          |
-| reports:campaign_compliance                     | resource_reports_campaign_compliance.yaml                    |          | required |           | required   |          | required |          |          |          |
-| reports:campaign_performance_maps               | resource_reports_campaign_performance_maps.yaml              |          | required |           | required   |          | required |          |          |          |
-| reports:content_proof_of_play                   | resource_reports_content_proof_of_play.yaml                  |          |          |           |            |          | required |          |          |          |
-| reports:media_performance_maps                  | resource_reports_media_performance_maps.yaml                 |          | required |           |            |          |          |          |          |          |
-| reports:qr_performance_site_to_site             | resource_reports_qr_performance_site_to_site.yaml             |          | required |           |            |          |          |          |          |          |
-| reports:qr_performance                          | resource_reports_qr_performance.yaml                          |          | required |           |            |          |          |          |          |          |
-| reports:site_performance_maps                   | resource_reports_site_performance_maps.yaml                  |          | required |           |            |          |          |          |          |          |
-| reports:export                                  | resource_reports_export.yaml                                 |          | required |           | required   | required | required |          | required |          |
-| settings:admin_cerbos                           | resource_settings_admin_cerbos.yaml                          | required |          |           |            |          |          |          |          |          |
-| settings:admin_cerbos:item                      | resource_settings_admin_cerbos_item.yaml                     | required |          |           |            |          |          |          |          |          |
-| settings:admin_general_agency:item              | resource_admin_settings_general_agency_item.yaml             | required |          |           |            |          |          |          |          |          |
-| settings:admin_general_retailer:item            | resource_admin_settings_general_retailer_item.yaml           | required |          |           |            |          |          |          |          |          |
-| settings:admin_general_brand:item               | resource_admin_settings_general_brand_item.yaml              | required |          |           |            |          |          |          |          |          |
-| settings:admin_general_ambient:item             | resource_admin_settings_general_ambient_item.yaml            | required |          |           |            |          |          |          |          |          |
-| settings:admin_teams                            | resource_settings_admin_teams.yaml                           | required |          |           |            |          |          |          |          |          |
-| settings:admin_teams:item                       | resource_settings_admin_teams_item.yaml                      | required |          |           |            |          |          |          |          |          |
-| settings:admin_users                            | resource_settings_admin_users.yaml                           | required |          |           |            |          |          |          |          |          |
-| settings:admin_users:item                       | resource_settings_admin_users_item.yaml                      | required |          |           |            |          |          |          |          |          |
-| settings:footprints_products_pricing_group      | resource_settings_footprints_products_pricing_group.yaml      |          |          | required  |            | required |          |          |          |          |
-| settings:footprints_products_pricing_group:item | resource_settings_footprints_products_pricing_group_item.yaml |          |          | required  |            | required |          |          |          |          |
-| settings:footprints_products_property           | resource_settings_footprints_products_property.yaml          |          |          | required  | required   | required |          |          |          |          |
-| settings:footprints_products_property:item      | resource_settings_footprints_products_property_item.yaml     |          |          | required  | required   | required |          |          |          |          |
-| settings:footprints_sites_property              | resource_settings_footprints_sites_property.yaml             |          | required | required  | required   |          |          |          |          |          |
-| settings:footprints_sites_property:item         | resource_settings_footprints_sites_property_item.yaml        |          | required | required  | required   |          |          |          |          |          |
-| settings:qr_default_redirect                    | resource_settings_qr_default_redirect.yaml                    |          | required |           |            |          |          |          |          |          |
-| settings:qr_default_redirect:item               | resource_settings_qr_default_redirect_item.yaml               |          | required |           |            |          |          |          |          |          |
-| settings:qr_design                              | resource_settings_qr_design.yaml                             |          | required |           |            |          |          |          |          |          |
-| settings:qr_design:item                         | resource_settings_qr_design_item.yaml                        |          | required |           |            |          |          |          |          |          |
-| settings:qr_domain                              | resource_settings_qr_domain.yaml                             |          | required |           |            |          |          |          |          |          |
-| settings:qr_domain:item                         | resource_settings_qr_domain_item.yaml                        |          | required |           |            |          |          |          |          |          |
-| settings:qr_power_tag                           | resource_settings_qr_power_tag.yaml                           |          | required |           |            |          |          |          |          |          |
-| settings:qr_power_tag:item                      | resource_settings_qr_power_tag_item.yaml                      |          | required |           |            |          |          |          |          |          |
-| settings:signage_layout                         | resource_settings_signage_layout.yaml                        |          |          |           |            |          | required |          |          |          |
-| settings:signage_layout:item                    | resource_settings_signage_layout_item.yaml                   |          |          |           |            |          | required |          |          |          |
-| settings:signage_people_property                | resource_settings_signage_people_property.yaml               |          |          |           |            |          |          |          |          | required |
-| settings:signage_people_property:item           | resource_settings_signage_people_property_item.yaml          |          |          |           |            |          |          |          |          | required |
-| settings:signage_places_property                | resource_settings_signage_places_property.yaml               |          |          |           |            |          |          |          |          | required |
-| settings:signage_places_property:item           | resource_settings_signage_places_property_item.yaml          |          |          |           |            |          |          |          |          | required |
-| settings:signage_things_property                | resource_settings_signage_things_property.yaml               |          |          |           |            |          |          |          |          | required |
-| settings:signage_things_property:item           | resource_settings_signage_things_property_item.yaml          |          |          |           |            |          |          |          |          | required |
-| settings:user_profile:item                      | resource_settings_user_profile_item.yaml                     | required |          |           |            |          |          |          |          |          |
-| signages:people                                 | resource_signages_people.yaml                                |          |          |           |            |          | required |          |          | required |
-| signages:people:item                            | resource_signages_people_item.yaml                           |          |          |           |            |          | required |          |          | required |
-| signages:places                                 | resource_signages_places.yaml                                |          |          |           |            |          | required |          |          | required |
-| signages:places:item                            | resource_signages_places_item.yaml                           |          |          |           |            |          | required |          |          | required |
-| signages:things                                 | resource_signages_things.yaml                                |          |          |           |            |          | required |          |          | required |
-| signages:things:item                            | resource_signages_things_item.yaml                           |          |          |           |            |          | required |          |          | required |
+| Resource                                        | File Name                                                    | default  | qr       | priceTags | compliance | product  | signage  | landing  | connect  | ppt      | cms      |
+| ----------------------------------------------- | ------------------------------------------------------------ | -------- | -------- | --------- | ---------- | -------- | -------- | -------- | -------- | -------- | -------- |
+| cms:api_key                                     | resource_cms_api_key.yaml                                    |          |          |           |            |          |          |          |          |          | required |
+| cms:api_key:item                                | resource_cms_api_key_item.yaml                               |          |          |           |            |          |          |          |          |          | required |
+| cms:block                                       | resource_cms_block.yaml                                      |          |          |           |            |          |          |          |          |          | required |
+| cms:block:item                                  | resource_cms_block_item.yaml                                 |          |          |           |            |          |          |          |          |          | required |
+| cms:collection                                  | resource_cms_collection.yaml                                 |          |          |           |            |          |          |          |          |          | required |
+| cms:collection:item                             | resource_cms_collection_item.yaml                            |          |          |           |            |          |          |          |          |          | required |
+| cms:entry                                       | resource_cms_entry.yaml                                      |          |          |           |            |          |          |          |          |          | required |
+| cms:entry:item                                  | resource_cms_entry_item.yaml                                 |          |          |           |            |          |          |          |          |          | required |
+| cms:field                                       | resource_cms_field.yaml                                      |          |          |           |            |          |          |          |          |          | required |
+| cms:field:item                                  | resource_cms_field_item.yaml                                 |          |          |           |            |          |          |          |          |          | required |
+| cms:invitation                                  | resource_cms_invitation.yaml                                 |          |          |           |            |          |          |          |          |          | required |
+| cms:invitation:item                             | resource_cms_invitation_item.yaml                            |          |          |           |            |          |          |          |          |          | required |
+| cms:page                                        | resource_cms_page.yaml                                       |          |          |           |            |          |          |          |          |          | required |
+| cms:page:item                                   | resource_cms_page_item.yaml                                  |          |          |           |            |          |          |          |          |          | required |
+| cms:section                                     | resource_cms_section.yaml                                    |          |          |           |            |          |          |          |          |          | required |
+| cms:section:item                                | resource_cms_section_item.yaml                               |          |          |           |            |          |          |          |          |          | required |
+| cms:website                                     | resource_cms_website.yaml                                    |          |          |           |            |          |          |          |          |          | required |
+| cms:website:item                                | resource_cms_website_item.yaml                               |          |          |           |            |          |          |          |          |          | required |
+| connect:contacts                                | resource_connect_contacts.yaml                               |          |          |           |            |          |          |          | required |          |          |
+| connect:contacts:item                           | resource_connect_contacts_item.yaml                          |          |          |           |            |          |          |          | required |          |          |
+| contents:assets                                 | resource_contents_assets.yaml                                |          |          |           |            |          | required |          |          |          |          |
+| contents:assets:item                            | resource_contents_assets_item.yaml                           |          |          |           |            |          | required |          |          |          |          |
+| contents:backgrounds                            | resource_contents_backgrounds.yaml                           |          |          |           |            |          | required |          |          |          |          |
+| contents:backgrounds:item                       | resource_contents_backgrounds_item.yaml                      |          |          |           |            |          | required |          |          |          |          |
+| contents:backgrounds_transition                 | resource_contents_backgrounds_transition.yaml                |          |          |           |            |          | required |          |          |          |          |
+| contents:backgrounds_transition:item            | resource_contents_backgrounds_transition_item.yaml           |          |          |           |            |          | required |          |          |          |          |
+| contents:channels                               | resource_contents_channels.yaml                              |          |          |           |            |          | required |          |          |          |          |
+| contents:channels:item                          | resource_contents_channels_item.yaml                         |          |          |           |            |          | required |          |          |          |          |
+| contents:content_groups                         | resource_contents_content_groups.yaml                        |          |          |           |            |          | required |          |          |          |          |
+| contents:content_groups:item                    | resource_contents_content_groups_item.yaml                   |          |          |           |            |          | required |          |          |          |          |
+| contents:playlists                              | resource_contents_playlists.yaml                             |          |          |           |            |          | required |          |          |          |          |
+| contents:playlists:item                         | resource_contents_playlists_item.yaml                        |          |          |           |            |          | required |          |          |          |          |
+| contents:tags                                   | resource_contents_tags.yaml                                  |          | required | required  | required   | required | required |          |          |          |          |
+| contents:tags:item                              | resource_contents_tags_item.yaml                             |          | required | required  | required   | required | required |          |          |          |          |
+| contents:tags_assignments                       | resource_contents_tags_assignments.yaml                      |          | required | required  | required   | required | required |          |          |          |          |
+| contents:tags_assignments:item                  | resource_contents_tags_assignments_item.yaml                 |          | required | required  | required   | required | required |          |          |          |          |
+| contents:templates                              | resource_contents_templates.yaml                             |          |          | required  |            |          | required |          |          |          |          |
+| contents:templates:item                         | resource_contents_templates_item.yaml                        |          |          | required  |            |          | required |          |          |          |          |
+| footprints:endpoints                            | resource_footprints_endpoints.yaml                           |          |          | required  |            |          | required |          |          |          |          |
+| footprints:endpoints:item                       | resource_footprints_endpoints_item.yaml                      |          |          | required  |            |          | required |          |          |          |          |
+| footprints:pricing                              | resource_footprints_pricing.yaml                             |          |          | required  |            | required | required |          |          |          |          |
+| footprints:products                             | resource_footprints_products.yaml                            |          |          | required  | required   | required | required |          |          |          |          |
+| footprints:products:item                        | resource_footprints_products_item.yaml                       |          |          | required  | required   | required | required |          |          |          |          |
+| footprints:sites                                | resource_footprints_sites.yaml                               |          | required | required  | required   | required | required |          |          |          |          |
+| footprints:sites:item                           | resource_footprints_sites_item.yaml                          |          | required | required  | required   | required | required |          |          |          |          |
+| qr:campaigns                                    | resource_qr_campaigns.yaml                                   |          | required | required  | required   | required | required | required | required | required |          |
+| qr:campaigns:item                               | resource_qr_campaigns_item.yaml                              |          | required | required  | required   | required | required | required | required | required |          |
+| qr:media                                        | resource_qr_media.yaml                                       |          | required |           |            |          |          |          |          |          |          |
+| qr:media:item                                   | resource_qr_media_item.yaml                                  |          | required |           |            |          |          |          |          |          |          |
+| qr:site                                         | resource_qr_site.yaml                                        |          | required |           |            |          |          |          |          |          |          |
+| qr:site:item                                    | resource_qr_site_item.yaml                                   |          | required |           |            |          |          |          |          |          |          |
+| qr:templates                                    | resource_qr_templates.yaml                                   |          | required |           |            |          |          |          |          |          |          |
+| qr:templates:item                               | resource_qr_templates_item.yaml                              |          | required |           |            |          |          |          |          |          |          |
+| reports:campaign_compliance                     | resource_reports_campaign_compliance.yaml                    |          | required |           | required   |          | required |          |          |          |          |
+| reports:campaign_compliance_details             | resource_reports_campaign_compliance_details.yaml            |          | required |           | required   |          | required |          |          |          |          |
+| reports:campaign_performance_maps               | resource_reports_campaign_performance_maps.yaml              |          | required |           | required   |          | required |          |          |          |          |
+| reports:content_proof_of_play                   | resource_reports_content_proof_of_play.yaml                  |          |          |           |            |          | required |          |          |          |          |
+| reports:export                                  | resource_reports_export.yaml                                 |          | required |           | required   | required | required |          | required |          |          |
+| reports:media_performance_maps                  | resource_reports_media_performance_maps.yaml                 |          | required |           |            |          |          |          |          |          |          |
+| reports:qr_performance                          | resource_reports_qr_performance.yaml                          |          | required |           |            |          |          |          |          |          |          |
+| reports:qr_performance_site_to_site             | resource_reports_qr_performance_site_to_site.yaml             |          | required |           |            |          |          |          |          |          |          |
+| reports:site_performance_maps                   | resource_reports_site_performance_maps.yaml                  |          | required |           |            |          |          |          |          |          |          |
+| settings:admin_cerbos                           | resource_settings_admin_cerbos.yaml                          | required |          |           |            |          |          |          |          |          |          |
+| settings:admin_cerbos:item                      | resource_settings_admin_cerbos_item.yaml                     | required |          |           |            |          |          |          |          |          |          |
+| settings:admin_general_agency:item              | resource_admin_settings_general_agency_item.yaml             | required |          |           |            |          |          |          |          |          |          |
+| settings:admin_general_ambient:item             | resource_admin_settings_general_ambient_item.yaml            | required |          |           |            |          |          |          |          |          |          |
+| settings:admin_general_brand:item               | resource_admin_settings_general_brand_item.yaml              | required |          |           |            |          |          |          |          |          |          |
+| settings:admin_general_retailer:item            | resource_admin_settings_general_retailer_item.yaml           | required |          |           |            |          |          |          |          |          |          |
+| settings:admin_teams                            | resource_settings_admin_teams.yaml                           | required |          |           |            |          |          |          |          |          |          |
+| settings:admin_teams:item                       | resource_settings_admin_teams_item.yaml                      | required |          |           |            |          |          |          |          |          |          |
+| settings:admin_users                            | resource_settings_admin_users.yaml                           | required |          |           |            |          |          |          |          |          |          |
+| settings:admin_users:item                       | resource_settings_admin_users_item.yaml                      | required |          |           |            |          |          |          |          |          |          |
+| settings:footprints_products_pricing_group      | resource_settings_footprints_products_pricing_group.yaml      |          |          | required  |            | required |          |          |          |          |          |
+| settings:footprints_products_pricing_group:item | resource_settings_footprints_products_pricing_group_item.yaml |          |          | required  |            | required |          |          |          |          |          |
+| settings:footprints_products_property           | resource_settings_footprints_products_property.yaml          |          |          | required  | required   | required |          |          |          |          |          |
+| settings:footprints_products_property:item      | resource_settings_footprints_products_property_item.yaml     |          |          | required  | required   | required |          |          |          |          |          |
+| settings:footprints_sites_property              | resource_settings_footprints_sites_property.yaml             |          | required | required  | required   |          |          |          |          |          |          |
+| settings:footprints_sites_property:item         | resource_settings_footprints_sites_property_item.yaml        |          | required | required  | required   |          |          |          |          |          |          |
+| settings:qr_default_redirect                    | resource_settings_qr_default_redirect.yaml                    |          | required |           |            |          |          |          |          |          |          |
+| settings:qr_default_redirect:item               | resource_settings_qr_default_redirect_item.yaml               |          | required |           |            |          |          |          |          |          |          |
+| settings:qr_design                              | resource_settings_qr_design.yaml                             |          | required |           |            |          |          |          |          |          |          |
+| settings:qr_design:item                         | resource_settings_qr_design_item.yaml                        |          | required |           |            |          |          |          |          |          |          |
+| settings:qr_domain                              | resource_settings_qr_domain.yaml                             |          | required |           |            |          |          |          |          |          |          |
+| settings:qr_domain:item                         | resource_settings_qr_domain_item.yaml                        |          | required |           |            |          |          |          |          |          |          |
+| settings:qr_power_tag                           | resource_settings_qr_power_tag.yaml                           |          | required |           |            |          |          |          |          |          |          |
+| settings:qr_power_tag:item                      | resource_settings_qr_power_tag_item.yaml                      |          | required |           |            |          |          |          |          |          |          |
+| settings:signage_layout                         | resource_settings_signage_layout.yaml                        |          |          |           |            |          | required |          |          |          |          |
+| settings:signage_layout:item                    | resource_settings_signage_layout_item.yaml                   |          |          |           |            |          | required |          |          |          |          |
+| settings:signage_people_property                | resource_settings_signage_people_property.yaml               |          |          |           |            |          |          |          |          | required |          |
+| settings:signage_people_property:item           | resource_settings_signage_people_property_item.yaml          |          |          |           |            |          |          |          |          | required |          |
+| settings:signage_places_property                | resource_settings_signage_places_property.yaml               |          |          |           |            |          |          |          |          | required |          |
+| settings:signage_places_property:item           | resource_settings_signage_places_property_item.yaml          |          |          |           |            |          |          |          |          | required |          |
+| settings:signage_things_property                | resource_settings_signage_things_property.yaml               |          |          |           |            |          |          |          |          | required |          |
+| settings:signage_things_property:item           | resource_settings_signage_things_property_item.yaml          |          |          |           |            |          |          |          |          | required |          |
+| settings:user_profile:item                      | resource_settings_user_profile_item.yaml                     | required |          |           |            |          |          |          |          |          |          |
+| signages:people                                 | resource_signages_people.yaml                                |          |          |           |            |          | required |          |          | required |          |
+| signages:people:item                            | resource_signages_people_item.yaml                           |          |          |           |            |          | required |          |          | required |          |
+| signages:places                                 | resource_signages_places.yaml                                |          |          |           |            |          | required |          |          | required |          |
+| signages:places:item                            | resource_signages_places_item.yaml                           |          |          |           |            |          | required |          |          | required |          |
+| signages:things                                 | resource_signages_things.yaml                                |          |          |           |            |          | required |          |          | required |          |
+| signages:things:item                            | resource_signages_things_item.yaml                           |          |          |           |            |          | required |          |          | required |          |
 
 ---
 

@@ -97,7 +97,7 @@ class MatrixParser:
             Dict mapping resource names to (products_list, is_default)
         """
         products = [
-            "qr", "priceTags", "compliance", "product", "signage", "landing", "connect", "ppt"
+            "qr", "priceTags", "compliance", "product", "signage", "landing", "connect", "ppt", "cms"
         ]
 
         # Find the "Product × Resource Matrix" section
@@ -285,7 +285,7 @@ class TypeScriptGenerator:
 
     def generate_product_enum(self) -> str:
         """Generate the Product enum."""
-        products = ["qr", "priceTags", "compliance", "product", "signage", "landing", "connect", "ppt"]
+        products = ["qr", "priceTags", "compliance", "product", "signage", "landing", "connect", "ppt", "cms"]
         lines = ["// Auto-generated enum from docs/RESOURCES_ACTIONS_MATRIX.md", "export enum Product {"]
 
         for product in products:

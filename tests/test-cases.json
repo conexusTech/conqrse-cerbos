@@ -606,6 +606,108 @@
           "actions": [
             "resource:list"
           ]
+        },
+        {
+          "id": "allow_19",
+          "name": "Retailer Owner Listing CMS Collections",
+          "description": "Retailer owner can list collections from the cms product",
+          "principal": {
+            "id": "user-1001",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "owner@retailer-789.com",
+              "products": [
+                "cms"
+              ],
+              "agencyId": "agency-456",
+              "retailerId": "retail-789"
+            }
+          },
+          "resource": {
+            "kind": "cms:collection",
+            "id": "cms:collection",
+            "attr": {
+              "product": "cms",
+              "retailerId": "retail-789",
+              "agencyId": "agency-456"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "resource:list"
+          ]
+        },
+        {
+          "id": "allow_20",
+          "name": "Retailer Member Viewing CMS Website Item",
+          "description": "Retailer member can view a cms website item within their own retailer scope",
+          "principal": {
+            "id": "user-1002",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "member",
+              "name": "member@retailer-789.com",
+              "products": [
+                "cms"
+              ],
+              "agencyId": "agency-456",
+              "retailerId": "retail-789"
+            }
+          },
+          "resource": {
+            "kind": "cms:website:item",
+            "id": "cms:website:item",
+            "attr": {
+              "product": "cms",
+              "retailerId": "retail-789",
+              "agencyId": "agency-456"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "resource:view"
+          ]
+        },
+        {
+          "id": "allow_21",
+          "name": "Agency Manager Creating CMS Page",
+          "description": "Agency manager can create a cms page for a child retailer with cms subscription",
+          "principal": {
+            "id": "agency-user-200",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "agency",
+              "userType": "admin",
+              "name": "manager@agency.com",
+              "products": [
+                "cms"
+              ],
+              "agencyId": "agency-456",
+              "retailerId": "retail-789"
+            }
+          },
+          "resource": {
+            "kind": "cms:page",
+            "id": "cms:page",
+            "attr": {
+              "product": "cms",
+              "retailerId": "retail-789",
+              "agencyId": "agency-456"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "resource:create"
+          ]
         }
       ]
     },
@@ -1002,6 +1104,108 @@
             "id": "settings:admin:cerbos",
             "attr": {
               "product": "settings"
+            }
+          },
+          "expectedResult": "DENY",
+          "actions": [
+            "resource:view"
+          ]
+        },
+        {
+          "id": "deny_13",
+          "name": "Retailer Without CMS Subscription Accessing CMS Collection",
+          "description": "Retailer owner without cms in their products list is blocked by product validation",
+          "principal": {
+            "id": "user-2001",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "owner@retailer-789.com",
+              "products": [
+                "qr"
+              ],
+              "agencyId": "agency-456",
+              "retailerId": "retail-789"
+            }
+          },
+          "resource": {
+            "kind": "cms:collection",
+            "id": "cms:collection",
+            "attr": {
+              "product": "cms",
+              "retailerId": "retail-789",
+              "agencyId": "agency-456"
+            }
+          },
+          "expectedResult": "DENY",
+          "actions": [
+            "resource:list"
+          ]
+        },
+        {
+          "id": "deny_14",
+          "name": "Retailer Collaborator Attempting to Create CMS Entry",
+          "description": "Retailer collaborator is read-only and cannot create cms entries",
+          "principal": {
+            "id": "user-2002",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "collaborator",
+              "name": "guest@retailer-789.com",
+              "products": [
+                "cms"
+              ],
+              "agencyId": "agency-456",
+              "retailerId": "retail-789"
+            }
+          },
+          "resource": {
+            "kind": "cms:entry",
+            "id": "cms:entry",
+            "attr": {
+              "product": "cms",
+              "retailerId": "retail-789",
+              "agencyId": "agency-456"
+            }
+          },
+          "expectedResult": "DENY",
+          "actions": [
+            "resource:create"
+          ]
+        },
+        {
+          "id": "deny_15",
+          "name": "Cross-Retailer Access to CMS Website Item",
+          "description": "Retailer user cannot access a cms website item belonging to a different retailer",
+          "principal": {
+            "id": "user-2003",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "owner@retailer-789.com",
+              "products": [
+                "cms"
+              ],
+              "agencyId": "agency-456",
+              "retailerId": "retail-789"
+            }
+          },
+          "resource": {
+            "kind": "cms:website:item",
+            "id": "cms:website:item",
+            "attr": {
+              "product": "cms",
+              "retailerId": "retail-OTHER",
+              "agencyId": "agency-OTHER"
             }
           },
           "expectedResult": "DENY",

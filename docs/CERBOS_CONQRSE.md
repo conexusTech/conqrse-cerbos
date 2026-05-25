@@ -15,6 +15,7 @@ The following products are supported by Cerbos authorization, identified by the 
 | **QR**         | `qr:`           | site, media, templates, campaigns                                                  |
 | **Reports**    | `reports:`      | qr_performance, campaign_compliance, site_performance_maps, export                 |
 | **Connect**    | `connect:`      | contacts                                                                           |
+| **CMS**        | `cms:`          | collection, entry, field, invitation, website, page, section, block, api_key       |
 
 **Administrative & Configuration Features** (not products):
 - `settings:` — Configuration and settings management (cross-cutting concern, see [Resource Naming Patterns](#resource-naming-patterns))
@@ -112,6 +113,24 @@ settings:user_profile               ← User profile/preferences
 | reports:export                                  | `/export`                               | `BatchClient.tsx`                     | export                                             |
 | connect:contacts                                | `/connect/contacts`                     | `ContactsClient.tsx`                  | list, view, create, update, delete, export, import |
 | connect:contacts:item                           | `/connect/contacts/[id]`                | `ContactsClient.tsx`                  | view, update, delete                               |
+| cms:collection                                  | `/cms/collections`                      | `CollectionsClient.tsx`               | list, view, create, update, delete, export, import |
+| cms:collection:item                             | `/cms/collections/[id]`                 | `CollectionDetailClient.tsx`          | view, update, delete                               |
+| cms:entry                                       | `/cms/entries`                          | `EntriesClient.tsx`                   | list, view, create, update, delete, export, import |
+| cms:entry:item                                  | `/cms/entries/[id]`                     | `EntryDetailClient.tsx`               | view, update, delete                               |
+| cms:field                                       | `/cms/fields`                           | `FieldsClient.tsx`                    | list, view, create, update, delete, export, import |
+| cms:field:item                                  | `/cms/fields/[id]`                      | `FieldDetailClient.tsx`               | view, update, delete                               |
+| cms:invitation                                  | `/cms/invitations`                      | `InvitationsClient.tsx`               | list, view, create, update, delete, export, import |
+| cms:invitation:item                             | `/cms/invitations/[id]`                 | `InvitationDetailClient.tsx`          | view, update, delete                               |
+| cms:website                                     | `/cms/websites`                         | `WebsitesClient.tsx`                  | list, view, create, update, delete, export, import |
+| cms:website:item                                | `/cms/websites/[id]`                    | `WebsiteDetailClient.tsx`             | view, update, delete                               |
+| cms:page                                        | `/cms/pages`                            | `PagesClient.tsx`                     | list, view, create, update, delete, export, import |
+| cms:page:item                                   | `/cms/pages/[id]`                       | `PageDetailClient.tsx`                | view, update, delete                               |
+| cms:section                                     | `/cms/sections`                         | `SectionsClient.tsx`                  | list, view, create, update, delete, export, import |
+| cms:section:item                                | `/cms/sections/[id]`                    | `SectionDetailClient.tsx`             | view, update, delete                               |
+| cms:block                                       | `/cms/blocks`                           | `BlocksClient.tsx`                    | list, view, create, update, delete, export, import |
+| cms:block:item                                  | `/cms/blocks/[id]`                      | `BlockDetailClient.tsx`               | view, update, delete                               |
+| cms:api_key                                     | `/cms/api-keys`                         | `ApiKeysClient.tsx`                   | list, view, create, update, delete, export, import |
+| cms:api_key:item                                | `/cms/api-keys/[id]`                    | `ApiKeyDetailClient.tsx`              | view, update, delete                               |
 | settings:admin_general_agency:item              | `/settings/general`                     | `GeneralSettingsClient.tsx`           | view, update, delete                               |
 | settings:admin_general_retailer:item            | `/settings/general`                     | `GeneralSettingsClient.tsx`           | view, update, delete                               |
 | settings:admin_general_brand:item               | `/settings/general`                     | `GeneralSettingsClient.tsx`           | view, update, delete                               |
@@ -248,7 +267,7 @@ User or service principal making the request:
       "userLevel": "retailer, su, agency or user",
       "userType": "admin, collaborator, owner, lead, or member",
       "name": "string",
-      "products": ["string - list of known products (qr, priceTags, compliance, product, signage, landing, connect, ppt)"],
+      "products": ["string - list of known products (qr, priceTags, compliance, product, signage, landing, connect, ppt, cms)"],
       "agencyId": "string - retailer's agency ID",
       "retailerId": "string - the retailer in subject"
    }

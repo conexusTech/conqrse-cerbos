@@ -117,7 +117,7 @@ class MatrixParser:
             Dict mapping resource names to (filename, products_list, is_default)
         """
         products = [
-            "qr", "priceTags", "compliance", "product", "signage", "landing", "connect", "ppt"
+            "qr", "priceTags", "compliance", "product", "signage", "landing", "connect", "ppt", "cms"
         ]
 
         # Find the "Product × Resource Matrix" section

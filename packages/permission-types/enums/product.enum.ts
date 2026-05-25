@@ -8,4 +8,5 @@ export enum Product {
   LANDING = 'landing',
   CONNECT = 'connect',
   PPT = 'ppt',
+  CMS = 'cms',
 }
