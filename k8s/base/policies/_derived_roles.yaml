@@ -140,3 +140,15 @@ derivedRoles:
             of:
               - expr: (P.attr.userLevel == "retailer")
               - expr: (P.attr.userType == "collaborator")
+
+    # Deal Desk Brand Portal — added 2026-06-14 for dealdesk_brand:* policies.
+    # Brand-portal users live in the same Cognito pool as retailer users,
+    # differentiated by userLevel === "brand" + a BrandUser document on
+    # the conqrse-api3 side that supplies brandId + per-permission flags.
+    - name: brand_user
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: (P.attr.userLevel == "brand")

@@ -1,0 +1,42 @@
+---
+apiVersion: "api.cerbos.dev/v1"
+resourcePolicy:
+  version: "default"
+  resource: "dealdesk:rate-cards"
+  importDerivedRoles:
+    - conqrse_roles
+  rules:
+    # Rate cards are retailer-configured pricing — admins-and-above only
+    # for writes; lead/staff/collaborator can view.
+    - actions: ["list", "view", "update"]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          all:
+            of:
+              - expr: '["dealdesk"].exists(p, p in P.attr.products)'
+      derivedRoles:
+        - root_user
+        - platform_administrator
+        - platform_lead
+        - platform_member
+        - platform_collaborator
+        - agency_owner
+        - agency_manager
+        - retailer_owner
+        - retailer_manager
+
+    - actions: ["list", "view"]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          all:
+            of:
+              - expr: '["dealdesk"].exists(p, p in P.attr.products)'
+      derivedRoles:
+        - agency_lead
+        - agency_member
+        - agency_collaborator
+        - team_lead
+        - staff_operator
+        - guest_collaborator

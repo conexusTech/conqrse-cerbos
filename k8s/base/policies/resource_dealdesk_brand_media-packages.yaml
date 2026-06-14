@@ -1,0 +1,28 @@
+---
+apiVersion: "api.cerbos.dev/v1"
+resourcePolicy:
+  version: "default"
+  resource: "dealdesk_brand:media-packages"
+  importDerivedRoles:
+    - conqrse_roles
+  rules:
+    # Brand-portal users browse media packages within their own retailer.
+    # The controller filters to status='active' before returning; this
+    # policy enforces (a) the brand_user role, (b) per-retailer tenancy.
+    # Super users get a parallel ops grant.
+    - actions: ["list", "view"]
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - root_user
+        - platform_administrator
+
+    - actions: ["list", "view"]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          all:
+            of:
+              # Tenancy: brand user must be visiting their own retailer's portal.
+              - expr: 'P.attr.retailerId == R.attr.retailerId'
+      derivedRoles:
+        - brand_user
