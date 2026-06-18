@@ -56,6 +56,12 @@ deploy() {
   fi
 
   echo "Deploying Cerbos to $ENVIRONMENT environment..."
+
+  if kubectl get job/cerbos-seed-policies -n "$ENVIRONMENT" &>/dev/null; then
+    echo "Deleting existing cerbos-seed-policies job..."
+    kubectl delete job/cerbos-seed-policies -n "$ENVIRONMENT" --wait=true
+  fi
+
   kubectl apply -k "$overlay"
 
   echo "✓ Deployment complete"

@@ -32,6 +32,8 @@ configMapGenerator:
       - policies/resource_contents_channels.yaml
       - policies/resource_contents_content_groups_item.yaml
       - policies/resource_contents_content_groups.yaml
+      - policies/resource_contents_landing_pages_item.yaml
+      - policies/resource_contents_landing_pages.yaml
       - policies/resource_contents_playlists_item.yaml
       - policies/resource_contents_playlists.yaml
       - policies/resource_contents_tags_assignments_item.yaml
