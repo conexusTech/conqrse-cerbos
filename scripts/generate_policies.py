@@ -254,9 +254,50 @@ class PolicyRenderer:
 
         return yaml
 
+    # Role hierarchies (kept in declaration order to match hand-curated policies).
+    _PRODUCT_OPERATOR_ROLES = [
+        "root_user",
+        "platform_administrator",
+        "platform_lead",
+        "platform_member",
+        "platform_collaborator",
+        "agency_owner",
+        "agency_manager",
+        "agency_lead",
+        "agency_member",
+        "agency_collaborator",
+        "retailer_owner",
+        "retailer_manager",
+        "team_lead",
+        "staff_operator",
+    ]
+    _PRODUCT_COLLABORATOR_ROLES = [
+        "root_user",
+        "platform_administrator",
+        "platform_lead",
+        "platform_member",
+        "platform_collaborator",
+        "agency_owner",
+        "agency_manager",
+        "agency_lead",
+        "agency_member",
+        "agency_collaborator",
+        "guest_collaborator",
+    ]
+    _PRODUCT_SETTINGS_ROLES = [
+        "root_user",
+        "platform_administrator",
+        "platform_lead",
+        "agency_owner",
+        "agency_manager",
+        "agency_lead",
+        "retailer_owner",
+        "retailer_manager",
+    ]
+
     @staticmethod
     def _render_product_resource(resource: ResourceDef) -> str:
-        """Render product resource rules (product check + retailer scope)."""
+        """Render product resource rules (product check + retailer scope on items)."""
         yaml = ""
 
         # Build the product condition
@@ -266,8 +307,10 @@ class PolicyRenderer:
         else:
             product_condition = 'true'
 
+        is_item = resource.res_type == "item"
+
         # Determine operator actions based on type
-        if resource.res_type == "item":
+        if is_item:
             operator_actions = ["view", "update", "delete"]
             collaborator_actions = ["view"]
         else:
@@ -283,12 +326,11 @@ class PolicyRenderer:
         yaml += "          all:\n"
         yaml += "            of:\n"
         yaml += f"              - expr: '{product_condition}'\n"
-        yaml += "              - expr: 'P.attr.retailerId == R.attr.retailerId'\n"
+        if is_item:
+            yaml += "              - expr: 'P.attr.retailerId == R.attr.retailerId'\n"
         yaml += "      derivedRoles:\n"
-        yaml += "        - retailer_owner\n"
-        yaml += "        - retailer_manager\n"
-        yaml += "        - team_lead\n"
-        yaml += "        - staff_operator\n"
+        for role in PolicyRenderer._PRODUCT_OPERATOR_ROLES:
+            yaml += f"        - {role}\n"
 
         # Collaborator rule (if different actions)
         if collaborator_actions and collaborator_actions != operator_actions:
@@ -300,20 +342,24 @@ class PolicyRenderer:
             yaml += "          all:\n"
             yaml += "            of:\n"
             yaml += f"              - expr: '{product_condition}'\n"
-            yaml += "              - expr: 'P.attr.retailerId == R.attr.retailerId'\n"
+            if is_item:
+                yaml += "              - expr: 'P.attr.retailerId == R.attr.retailerId'\n"
             yaml += "      derivedRoles:\n"
-            yaml += "        - guest_collaborator\n"
+            for role in PolicyRenderer._PRODUCT_COLLABORATOR_ROLES:
+                yaml += f"        - {role}\n"
 
         return yaml
 
     @staticmethod
     def _render_product_settings(resource: ResourceDef) -> str:
-        """Render product settings rules (settings owner/admin only, with product check)."""
+        """Render product settings rules (owner/admin/lead tiers, retailer scope on items)."""
         yaml = ""
 
         # Build the product condition
         products_str = ', '.join(f'"{p}"' for p in sorted(resource.products))
         product_condition = f'[{products_str}].exists(p, p in P.attr.products)'
+
+        is_item = resource.res_type == "item"
 
         # Settings actions (all defined actions)
         actions = resource.actions
@@ -326,10 +372,11 @@ class PolicyRenderer:
         yaml += "          all:\n"
         yaml += "            of:\n"
         yaml += f"              - expr: '{product_condition}'\n"
-        yaml += "              - expr: 'P.attr.retailerId == R.attr.retailerId'\n"
+        if is_item:
+            yaml += "              - expr: 'P.attr.retailerId == R.attr.retailerId'\n"
         yaml += "      derivedRoles:\n"
-        yaml += "        - retailer_owner\n"
-        yaml += "        - retailer_manager\n"
+        for role in PolicyRenderer._PRODUCT_SETTINGS_ROLES:
+            yaml += f"        - {role}\n"
 
         return yaml
 

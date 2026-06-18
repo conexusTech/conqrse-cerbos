@@ -98,6 +98,8 @@ These are the resources that doesn't need product and retailer validation.
 | `contents:tags_assignments:item`       | Item       | view, update, delete                               |
 | `contents:content_groups`              | Collection | list, view, create, update, delete, export, import |
 | `contents:content_groups:item`         | Item       | view, update, delete                               |
+| `contents:landing_pages`               | Collection | list, view, create, update, delete, export, import |
+| `contents:landing_pages:item`          | Item       | view, update, delete                               |
 
 ### Signage Resource
 
@@ -244,6 +246,8 @@ These are the resources that doesn't need product and retailer validation.
 | contents:channels:item                          | resource_contents_channels_item.yaml                         |          |          |           |            |          | required |          |          |          |          |
 | contents:content_groups                         | resource_contents_content_groups.yaml                        |          |          |           |            |          | required |          |          |          |          |
 | contents:content_groups:item                    | resource_contents_content_groups_item.yaml                   |          |          |           |            |          | required |          |          |          |          |
+| contents:landing_pages                          | resource_contents_landing_pages.yaml                         |          |          |           |            |          |          | required |          |          |          |
+| contents:landing_pages:item                     | resource_contents_landing_pages_item.yaml                    |          |          |           |            |          |          | required |          |          |          |
 | contents:playlists                              | resource_contents_playlists.yaml                             |          |          |           |            |          | required |          |          |          |          |
 | contents:playlists:item                         | resource_contents_playlists_item.yaml                        |          |          |           |            |          | required |          |          |          |          |
 | contents:tags                                   | resource_contents_tags.yaml                                  |          | required | required  | required   | required | required |          |          |          |          |
