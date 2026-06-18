@@ -42,6 +42,8 @@ export const RESOURCE_META: Record<Resource, ResourceMeta> = {
   [Resource.CONTENTS_CHANNELS_ITEM]: { type: 'item', actions: [Action.VIEW, Action.UPDATE, Action.DELETE], products: [Product.SIGNAGE] },
   [Resource.CONTENTS_CONTENT_GROUPS]: { type: 'collection', actions: [Action.LIST, Action.VIEW, Action.CREATE, Action.UPDATE, Action.DELETE, Action.EXPORT, Action.IMPORT], products: [Product.SIGNAGE] },
   [Resource.CONTENTS_CONTENT_GROUPS_ITEM]: { type: 'item', actions: [Action.VIEW, Action.UPDATE, Action.DELETE], products: [Product.SIGNAGE] },
+  [Resource.CONTENTS_LANDING_PAGES]: { type: 'collection', actions: [Action.LIST, Action.VIEW, Action.CREATE, Action.UPDATE, Action.DELETE, Action.EXPORT, Action.IMPORT], products: [Product.LANDING] },
+  [Resource.CONTENTS_LANDING_PAGES_ITEM]: { type: 'item', actions: [Action.VIEW, Action.UPDATE, Action.DELETE], products: [Product.LANDING] },
   [Resource.CONTENTS_PLAYLISTS]: { type: 'collection', actions: [Action.LIST, Action.VIEW, Action.CREATE, Action.UPDATE, Action.DELETE, Action.EXPORT, Action.IMPORT], products: [Product.SIGNAGE] },
   [Resource.CONTENTS_PLAYLISTS_ITEM]: { type: 'item', actions: [Action.VIEW, Action.UPDATE, Action.DELETE], products: [Product.SIGNAGE] },
   [Resource.CONTENTS_TAGS]: { type: 'collection', actions: [Action.LIST, Action.VIEW, Action.CREATE, Action.UPDATE, Action.DELETE, Action.EXPORT, Action.IMPORT], products: [Product.QR, Product.PRICE_TAGS, Product.COMPLIANCE, Product.PRODUCT, Product.SIGNAGE] },
