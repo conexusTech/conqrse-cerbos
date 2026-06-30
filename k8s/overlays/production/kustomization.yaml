@@ -23,6 +23,18 @@ patches:
       - op: replace
         path: /spec/rules/0/host
         value: cerbos.conqrse.com
+  # base hardcodes the env toleration to staging; production must tolerate
+  # env=production so cerbos lands on the production-heavy nodegroup.
+  # tolerations[1] is the env taint (tolerations[0] is workload=heavy).
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: cerbos
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/tolerations/1/value
+        value: production
 
 labels:
   - includeSelectors: true
