@@ -24,7 +24,8 @@ class ResourceDef:
     actions: List[str]           # ["list", "view", "create", ...]
     products: List[str]          # ["connect"] or [] for default
     is_default: bool             # True if default=required
-    category: str                # "product_resource", "product_settings", etc.
+    is_all_required: bool = False  # True if any product marker was "required-all" (AND semantics)
+    category: str = "unknown"    # "product_resource", "product_settings", "dealdesk_resource", etc.
 
     def __post_init__(self):
         """Determine category based on properties."""
@@ -33,6 +34,8 @@ class ResourceDef:
                 self.category = "user_settings"
             else:
                 self.category = "admin_settings"
+        elif self.is_all_required:
+            self.category = "dealdesk_resource"
         elif self.name.startswith("settings:"):
             self.category = "product_settings"
         else:
@@ -114,10 +117,11 @@ class MatrixParser:
         Parse the Product × Resource Matrix.
 
         Returns:
-            Dict mapping resource names to (filename, products_list, is_default)
+            Dict mapping resource names to (filename, products_list, is_default, is_all_required)
         """
         products = [
-            "qr", "priceTags", "compliance", "product", "signage", "landing", "connect", "ppt", "cms"
+            "qr", "priceTags", "compliance", "product", "signage", "landing", "connect", "ppt", "cms",
+            "ssp", "trade", "brand_center"
         ]
 
         # Find the "Product × Resource Matrix" section
@@ -171,17 +175,24 @@ class MatrixParser:
             default_col = parts[2].strip().lower() if len(parts) > 2 else ""
             is_default = default_col == "required"
 
-            # Extract required products
+            # Extract required products; track whether any use required-all (AND semantics)
             required_products = []
+            is_all_required = False
             if not is_default:
                 # product values start at column 3 (after default)
                 for i, product in enumerate(products):
                     col_index = 3 + i
-                    if col_index < len(parts) and parts[col_index].strip().lower() == "required":
+                    if col_index >= len(parts):
+                        continue
+                    val = parts[col_index].strip().lower()
+                    if val == "required":
                         required_products.append(product)
+                    elif val == "required-all":
+                        required_products.append(product)
+                        is_all_required = True
 
             if resource_name and filename:
-                resource_matrix[resource_name] = (filename, required_products, is_default)
+                resource_matrix[resource_name] = (filename, required_products, is_default, is_all_required)
 
         return resource_matrix
 
@@ -197,7 +208,7 @@ class MatrixParser:
 
         resources = []
 
-        for resource_name, (filename, products, is_default) in product_matrix.items():
+        for resource_name, (filename, products, is_default, is_all_required) in product_matrix.items():
             if resource_name not in resource_actions:
                 print(f"Warning: No action definition found for {resource_name}", file=sys.stderr)
                 continue
@@ -211,7 +222,7 @@ class MatrixParser:
                 actions=actions,
                 products=products,
                 is_default=is_default,
-                category="unknown"  # Will be set in __post_init__
+                is_all_required=is_all_required,
             )
             resources.append(resource)
 
@@ -243,6 +254,8 @@ class PolicyRenderer:
 
         if resource.category == "product_resource":
             yaml += PolicyRenderer._render_product_resource(resource)
+        elif resource.category == "dealdesk_resource":
+            yaml += PolicyRenderer._render_dealdesk_resource(resource)
         elif resource.category == "product_settings":
             yaml += PolicyRenderer._render_product_settings(resource)
         elif resource.category == "admin_settings":
@@ -293,6 +306,32 @@ class PolicyRenderer:
         "agency_lead",
         "retailer_owner",
         "retailer_manager",
+    ]
+    # DealDesk retailer path: SU + Agency + Retailer tiers gated by
+    # ["ssp","trade","brand_center"].all(...) product check.
+    _DEALDESK_RETAILER_ROLES = [
+        "root_user",
+        "platform_administrator",
+        "platform_lead",
+        "platform_member",
+        "platform_collaborator",
+        "agency_owner",
+        "agency_manager",
+        "agency_lead",
+        "agency_member",
+        "agency_collaborator",
+        "retailer_owner",
+        "retailer_manager",
+        "team_lead",
+        "staff_operator",
+    ]
+    # DealDesk brand path: Brand tier only, gated by brand_center product
+    # and R.attr.retailerId in P.attr.retailerIds.
+    _DEALDESK_BRAND_ROLES = [
+        "brand_owner",
+        "brand_manager",
+        "brand_lead",
+        "brand_member",
     ]
 
     @staticmethod
@@ -347,6 +386,79 @@ class PolicyRenderer:
             yaml += "      derivedRoles:\n"
             for role in PolicyRenderer._PRODUCT_COLLABORATOR_ROLES:
                 yaml += f"        - {role}\n"
+
+        return yaml
+
+    @staticmethod
+    def _render_dealdesk_resource(resource: ResourceDef) -> str:
+        """Render DealDesk resource rules — three rule blocks.
+
+        1. Retailer operators: full actions, gated by `.all()` product check + retailerId==.
+        2. Retailer collaborators (guest_collaborator only): read-only subset, same gates.
+        3. Brand path: full actions, gated by brand_center + retailerId in retailerIds.
+        """
+        yaml = ""
+
+        products_str = ', '.join(f'"{p}"' for p in sorted(resource.products))
+        retailer_product_condition = f'[{products_str}].all(p, p in P.attr.products)'
+        brand_product_condition = '["brand_center"].exists(p, p in P.attr.products)'
+
+        is_item = resource.res_type == "item"
+
+        # Determine actions per tier (mirrors _render_product_resource split)
+        if is_item:
+            operator_actions = ["view", "update", "delete"]
+            collaborator_actions = ["view"]
+        else:
+            operator_actions = resource.actions
+            collaborator_actions = [a for a in resource.actions if a in ["list", "view", "export"]]
+
+        # Filter to declared actions only (some collections omit update/delete etc.)
+        operator_actions = [a for a in operator_actions if a in resource.actions]
+
+        # Rule 1 — Retailer operators (SU / Agency / Retailer full tier)
+        yaml += "    # DealDesk retailer path — requires ssp AND trade AND brand_center\n"
+        yaml += "    - actions: [" + ", ".join(f'"{a}"' for a in operator_actions) + "]\n"
+        yaml += "      effect: EFFECT_ALLOW\n"
+        yaml += "      condition:\n"
+        yaml += "        match:\n"
+        yaml += "          all:\n"
+        yaml += "            of:\n"
+        yaml += f"              - expr: '{retailer_product_condition}'\n"
+        if is_item:
+            yaml += "              - expr: 'P.attr.retailerId == R.attr.retailerId'\n"
+        yaml += "      derivedRoles:\n"
+        for role in PolicyRenderer._DEALDESK_RETAILER_ROLES:
+            yaml += f"        - {role}\n"
+
+        # Rule 2 — Retailer collaborators (guest_collaborator, read-only subset)
+        if collaborator_actions:
+            yaml += "\n    # DealDesk retailer collaborator path — read-only\n"
+            yaml += "    - actions: [" + ", ".join(f'"{a}"' for a in collaborator_actions) + "]\n"
+            yaml += "      effect: EFFECT_ALLOW\n"
+            yaml += "      condition:\n"
+            yaml += "        match:\n"
+            yaml += "          all:\n"
+            yaml += "            of:\n"
+            yaml += f"              - expr: '{retailer_product_condition}'\n"
+            if is_item:
+                yaml += "              - expr: 'P.attr.retailerId == R.attr.retailerId'\n"
+            yaml += "      derivedRoles:\n"
+            yaml += "        - guest_collaborator\n"
+
+        # Rule 3 — Brand path (Brand tier only, cross-retailer via retailerIds[])
+        yaml += "\n    # DealDesk brand path — brand_center product + cross-retailer scoping via P.attr.retailerIds\n"
+        yaml += "    - actions: [" + ", ".join(f'"{a}"' for a in operator_actions) + "]\n"
+        yaml += "      effect: EFFECT_ALLOW\n"
+        yaml += "      condition:\n"
+        yaml += "        match:\n"
+        yaml += "          all:\n"
+        yaml += "            of:\n"
+        yaml += f"              - expr: '{brand_product_condition}'\n"
+        yaml += "              - expr: 'R.attr.retailerId in P.attr.retailerIds'\n"
+        yaml += "      derivedRoles:\n"
+        for role in PolicyRenderer._DEALDESK_BRAND_ROLES:
+            yaml += f"        - {role}\n"
 
         return yaml
 

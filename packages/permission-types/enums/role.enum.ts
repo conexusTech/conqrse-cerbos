@@ -15,4 +15,8 @@ export enum DerivedRole {
   TEAM_LEAD = 'team_lead',
   STAFF_OPERATOR = 'staff_operator',
   GUEST_COLLABORATOR = 'guest_collaborator',
+  BRAND_OWNER = 'brand_owner',
+  BRAND_MANAGER = 'brand_manager',
+  BRAND_LEAD = 'brand_lead',
+  BRAND_MEMBER = 'brand_member',
 }

@@ -3,4 +3,5 @@ export enum UserLevel {
   SU = 'su',
   AGENCY = 'agency',
   RETAILER = 'retailer',
+  BRAND = 'brand',
 }

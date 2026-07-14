@@ -21,12 +21,18 @@ class MatrixParser:
     def __init__(self, markdown_path: str):
         self.markdown_path = markdown_path
         self.products = [
-            "qr", "priceTags", "compliance", "product", "signage", "landing", "connect", "ppt", "cms"
+            "qr", "priceTags", "compliance", "product", "signage", "landing", "connect", "ppt", "cms",
+            "ssp", "trade", "brand_center"
         ]
 
     def parse(self) -> Dict[str, Set[str]]:
         """
         Parse the matrix and return a mapping of resource names to required products.
+
+        Resources whose product markers use `required-all` (AND semantics) are
+        SKIPPED here — they require full regeneration via generate_policies.py --force
+        because their policies have a two-rule structure that this simple regex
+        updater cannot express.
 
         Returns:
             Dict mapping resource names (e.g., "qr:campaigns") to set of required products.
@@ -62,18 +68,28 @@ class MatrixParser:
             resource = parts[0]
             values = parts[1:]
 
-            # Need at least resource + 1 default column + 8 product columns = 10 total
-            if len(parts) < 10:
+            # Need at least resource + 1 default column + 12 product columns = 14 total
+            if len(parts) < 14:
                 continue
 
-            # Find which products are marked as "required"
+            # Find which products are marked as "required" or "required-all"
             required = set()
+            skip_due_to_required_all = False
             # Skip the first value (default column) and iterate through product columns
             for i, product in enumerate(self.products):
                 # Product values start at index 1 (after default column)
                 col_index = i + 1
-                if col_index < len(values) and values[col_index].strip().lower() == "required":
-                    required.add(product)
+                if col_index < len(values):
+                    val = values[col_index].strip().lower()
+                    if val == "required":
+                        required.add(product)
+                    elif val == "required-all":
+                        skip_due_to_required_all = True
+
+            # Skip resources with required-all markers — they need full regeneration
+            # via generate_policies.py --force (two-rule structure with .all() semantics).
+            if skip_due_to_required_all:
+                continue
 
             # Special handling: if default column is "required", skip product check
             if values[0].strip().lower() == "required":

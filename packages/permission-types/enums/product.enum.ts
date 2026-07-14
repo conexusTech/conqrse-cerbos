@@ -9,4 +9,7 @@ export enum Product {
   CONNECT = 'connect',
   PPT = 'ppt',
   CMS = 'cms',
+  SSP = 'ssp',
+  TRADE = 'trade',
+  BRAND_CENTER = 'brand_center',
 }

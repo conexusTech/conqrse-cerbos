@@ -141,10 +141,49 @@ derivedRoles:
               - expr: (P.attr.userLevel == "retailer")
               - expr: (P.attr.userType == "collaborator")
 
-    # Deal Desk Brand Portal — added 2026-06-14 for dealdesk_brand:* policies.
-    # Brand-portal users live in the same Cognito pool as retailer users,
-    # differentiated by userLevel === "brand" + a BrandUser document on
-    # the conqrse-api3 side that supplies brandId + per-permission flags.
+    # Brand Level Roles (4)
+    # Brand users belong to a Brand entity (P.attr.brandId) and access
+    # dealdesk resources across the retailers linked to that brand
+    # (P.attr.retailerIds[]). Product gating: brand_center on P.attr.products.
+    - name: brand_owner
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: (P.attr.userLevel == "brand")
+              - expr: (P.attr.userType == "owner")
+
+    - name: brand_manager
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: (P.attr.userLevel == "brand")
+              - expr: (P.attr.userType == "admin")
+
+    - name: brand_lead
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: (P.attr.userLevel == "brand")
+              - expr: (P.attr.userType == "lead")
+
+    - name: brand_member
+      parentRoles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: (P.attr.userLevel == "brand")
+              - expr: (P.attr.userType == "member")
+
+    # Legacy: generic brand_user role — kept for backward compatibility
+    # with resource_dealdesk_brand_media-packages.yaml. Slated for removal
+    # once that policy is migrated to the tiered brand_* roles above.
     - name: brand_user
       parentRoles: ["*"]
       condition:

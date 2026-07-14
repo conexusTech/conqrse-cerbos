@@ -6,13 +6,14 @@ resourcePolicy:
   importDerivedRoles:
     - conqrse_roles
   rules:
-    - actions: ["list", "view", "create", "update", "delete"]
+    # DealDesk retailer path — requires ssp AND trade AND brand_center
+    - actions: ["list", "view", "create", "update", "delete", "export", "import"]
       effect: EFFECT_ALLOW
       condition:
         match:
           all:
             of:
-              - expr: '["dealdesk"].exists(p, p in P.attr.products)'
+              - expr: '["brand_center", "ssp", "trade"].all(p, p in P.attr.products)'
       derivedRoles:
         - root_user
         - platform_administrator
@@ -29,12 +30,28 @@ resourcePolicy:
         - team_lead
         - staff_operator
 
-    - actions: ["list", "view"]
+    # DealDesk retailer collaborator path — read-only
+    - actions: ["list", "view", "export"]
       effect: EFFECT_ALLOW
       condition:
         match:
           all:
             of:
-              - expr: '["dealdesk"].exists(p, p in P.attr.products)'
+              - expr: '["brand_center", "ssp", "trade"].all(p, p in P.attr.products)'
       derivedRoles:
         - guest_collaborator
+
+    # DealDesk brand path — brand_center product + cross-retailer scoping via P.attr.retailerIds
+    - actions: ["list", "view", "create", "update", "delete", "export", "import"]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          all:
+            of:
+              - expr: '["brand_center"].exists(p, p in P.attr.products)'
+              - expr: 'R.attr.retailerId in P.attr.retailerIds'
+      derivedRoles:
+        - brand_owner
+        - brand_manager
+        - brand_lead
+        - brand_member

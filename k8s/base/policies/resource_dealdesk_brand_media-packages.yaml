@@ -6,23 +6,52 @@ resourcePolicy:
   importDerivedRoles:
     - conqrse_roles
   rules:
-    # Brand-portal users browse media packages within their own retailer.
-    # The controller filters to status='active' before returning; this
-    # policy enforces (a) the brand_user role, (b) per-retailer tenancy.
-    # Super users get a parallel ops grant.
-    - actions: ["list", "view"]
-      effect: EFFECT_ALLOW
-      derivedRoles:
-        - root_user
-        - platform_administrator
-
+    # DealDesk retailer path — requires ssp AND trade AND brand_center
     - actions: ["list", "view"]
       effect: EFFECT_ALLOW
       condition:
         match:
           all:
             of:
-              # Tenancy: brand user must be visiting their own retailer's portal.
-              - expr: 'P.attr.retailerId == R.attr.retailerId'
+              - expr: '["brand_center", "ssp", "trade"].all(p, p in P.attr.products)'
       derivedRoles:
-        - brand_user
+        - root_user
+        - platform_administrator
+        - platform_lead
+        - platform_member
+        - platform_collaborator
+        - agency_owner
+        - agency_manager
+        - agency_lead
+        - agency_member
+        - agency_collaborator
+        - retailer_owner
+        - retailer_manager
+        - team_lead
+        - staff_operator
+
+    # DealDesk retailer collaborator path — read-only
+    - actions: ["list", "view"]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          all:
+            of:
+              - expr: '["brand_center", "ssp", "trade"].all(p, p in P.attr.products)'
+      derivedRoles:
+        - guest_collaborator
+
+    # DealDesk brand path — brand_center product + cross-retailer scoping via P.attr.retailerIds
+    - actions: ["list", "view"]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          all:
+            of:
+              - expr: '["brand_center"].exists(p, p in P.attr.products)'
+              - expr: 'R.attr.retailerId in P.attr.retailerIds'
+      derivedRoles:
+        - brand_owner
+        - brand_manager
+        - brand_lead
+        - brand_member

@@ -6,17 +6,14 @@ resourcePolicy:
   importDerivedRoles:
     - conqrse_roles
   rules:
-    # SSP decisioning + bid-request endpoints are Phase 2 stubs today.
-    # POP append (`create`) will be moved to DeviceAuthGuard in Phase 2 per
-    # docs/DEAL_DESK_CERBOS_POLICIES.md §5.7 — at that point the `create`
-    # action on this policy can be removed.
+    # DealDesk retailer path — requires ssp AND trade AND brand_center
     - actions: ["list", "view", "create"]
       effect: EFFECT_ALLOW
       condition:
         match:
           all:
             of:
-              - expr: '["dealdesk"].exists(p, p in P.attr.products)'
+              - expr: '["brand_center", "ssp", "trade"].all(p, p in P.attr.products)'
       derivedRoles:
         - root_user
         - platform_administrator
@@ -25,20 +22,36 @@ resourcePolicy:
         - platform_collaborator
         - agency_owner
         - agency_manager
+        - agency_lead
+        - agency_member
+        - agency_collaborator
         - retailer_owner
         - retailer_manager
         - team_lead
         - staff_operator
 
+    # DealDesk retailer collaborator path — read-only
     - actions: ["list", "view"]
       effect: EFFECT_ALLOW
       condition:
         match:
           all:
             of:
-              - expr: '["dealdesk"].exists(p, p in P.attr.products)'
+              - expr: '["brand_center", "ssp", "trade"].all(p, p in P.attr.products)'
       derivedRoles:
-        - agency_lead
-        - agency_member
-        - agency_collaborator
         - guest_collaborator
+
+    # DealDesk brand path — brand_center product + cross-retailer scoping via P.attr.retailerIds
+    - actions: ["list", "view", "create"]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          all:
+            of:
+              - expr: '["brand_center"].exists(p, p in P.attr.products)'
+              - expr: 'R.attr.retailerId in P.attr.retailerIds'
+      derivedRoles:
+        - brand_owner
+        - brand_manager
+        - brand_lead
+        - brand_member

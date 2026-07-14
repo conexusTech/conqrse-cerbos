@@ -97,7 +97,8 @@ class MatrixParser:
             Dict mapping resource names to (products_list, is_default)
         """
         products = [
-            "qr", "priceTags", "compliance", "product", "signage", "landing", "connect", "ppt", "cms"
+            "qr", "priceTags", "compliance", "product", "signage", "landing", "connect", "ppt", "cms",
+            "ssp", "trade", "brand_center"
         ]
 
         # Find the "Product × Resource Matrix" section
@@ -148,14 +149,16 @@ class MatrixParser:
             default_col = parts[2].strip().lower() if len(parts) > 2 else ""
             is_default = default_col == "required"
 
-            # Extract required products
+            # Extract required products (both `required` and `required-all` markers)
             required_products = []
             if not is_default:
                 # product values start at column 3 (after default)
                 for i, product in enumerate(products):
                     col_index = 3 + i
-                    if col_index < len(parts) and parts[col_index].strip().lower() == "required":
-                        required_products.append(product)
+                    if col_index < len(parts):
+                        val = parts[col_index].strip().lower()
+                        if val in ("required", "required-all"):
+                            required_products.append(product)
 
             if resource_name:
                 resource_matrix[resource_name] = (required_products, is_default)
@@ -232,7 +235,7 @@ class TypeScriptGenerator:
         return "\n".join(lines) + "\n"
 
     def generate_role_enum(self) -> str:
-        """Generate the DerivedRole enum with all 15 roles."""
+        """Generate the DerivedRole enum with all 19 roles (15 legacy + 4 brand)."""
         roles = [
             "root_user",
             "platform_administrator",
@@ -249,6 +252,10 @@ class TypeScriptGenerator:
             "team_lead",
             "staff_operator",
             "guest_collaborator",
+            "brand_owner",
+            "brand_manager",
+            "brand_lead",
+            "brand_member",
         ]
         lines = ["// Auto-generated enum from docs/RESOURCES_ACTIONS_MATRIX.md", "export enum DerivedRole {"]
 
@@ -261,7 +268,7 @@ class TypeScriptGenerator:
 
     def generate_user_level_enum(self) -> str:
         """Generate the UserLevel enum."""
-        levels = ["su", "agency", "retailer"]
+        levels = ["su", "agency", "retailer", "brand"]
         lines = ["// Auto-generated enum from docs/RESOURCES_ACTIONS_MATRIX.md", "export enum UserLevel {"]
 
         for level in levels:
@@ -285,7 +292,10 @@ class TypeScriptGenerator:
 
     def generate_product_enum(self) -> str:
         """Generate the Product enum."""
-        products = ["qr", "priceTags", "compliance", "product", "signage", "landing", "connect", "ppt", "cms"]
+        products = [
+            "qr", "priceTags", "compliance", "product", "signage", "landing", "connect", "ppt", "cms",
+            "ssp", "trade", "brand_center",
+        ]
         lines = ["// Auto-generated enum from docs/RESOURCES_ACTIONS_MATRIX.md", "export enum Product {"]
 
         for product in products:
