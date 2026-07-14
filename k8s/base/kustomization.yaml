@@ -42,6 +42,34 @@ configMapGenerator:
       - policies/resource_contents_tags.yaml
       - policies/resource_contents_templates_item.yaml
       - policies/resource_contents_templates.yaml
+      - policies/resource_dealdesk_blueprints.yaml
+      - policies/resource_dealdesk_brand-users_item.yaml
+      - policies/resource_dealdesk_brand-users.yaml
+      - policies/resource_dealdesk_brand_media-packages.yaml
+      - policies/resource_dealdesk_brands_item.yaml
+      - policies/resource_dealdesk_brands.yaml
+      - policies/resource_dealdesk_campaigns_item.yaml
+      - policies/resource_dealdesk_campaigns.yaml
+      - policies/resource_dealdesk_dsp-blocks_item.yaml
+      - policies/resource_dealdesk_dsp-blocks.yaml
+      - policies/resource_dealdesk_inventory.yaml
+      - policies/resource_dealdesk_line-items_item.yaml
+      - policies/resource_dealdesk_line-items.yaml
+      - policies/resource_dealdesk_media-packages_item.yaml
+      - policies/resource_dealdesk_media-packages.yaml
+      - policies/resource_dealdesk_photo-verifications_item.yaml
+      - policies/resource_dealdesk_photo-verifications.yaml
+      - policies/resource_dealdesk_placement-rules_item.yaml
+      - policies/resource_dealdesk_placement-rules.yaml
+      - policies/resource_dealdesk_placement-types_item.yaml
+      - policies/resource_dealdesk_placement-types.yaml
+      - policies/resource_dealdesk_rate-cards.yaml
+      - policies/resource_dealdesk_reports.yaml
+      - policies/resource_dealdesk_sites.yaml
+      - policies/resource_dealdesk_ssp.yaml
+      - policies/resource_dealdesk_store-traffic.yaml
+      - policies/resource_dealdesk_trade-ledgers_item.yaml
+      - policies/resource_dealdesk_trade-ledgers.yaml
       - policies/resource_footprints_endpoints_item.yaml
       - policies/resource_footprints_endpoints.yaml
       - policies/resource_footprints_pricing.yaml
