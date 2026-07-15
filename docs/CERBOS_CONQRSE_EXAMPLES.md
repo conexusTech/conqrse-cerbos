@@ -616,3 +616,131 @@ These scenarios demonstrate cases where Cerbos should return **DENY**.
 **Reason**: Retailer-level users can only access resources scoped to their own retailer.
 
 ---
+
+## DealDesk — Examples
+
+Every `dealdesk:*` policy has two rule blocks that OR together at the policy level: a **Retailer path** (requires `ssp` AND `trade` AND `brand_center` on the retailer, plus `retailerId ==` for `:item` resources) and a **Brand path** (requires `brand_center` on the brand-user principal, plus `R.attr.retailerId in P.attr.retailerIds`). See [`RESOURCES_ACTIONS_MATRIX.md`](./RESOURCES_ACTIONS_MATRIX.md) §DealDesk Access Model.
+
+### Scenario 22: Retailer Owner Accessing DealDesk (Retailer Path — Allow)
+
+**Context**: A retailer with all three DealDesk products subscribed accesses their own campaign.
+
+```json
+{
+  "principal": {
+    "id": "user-301",
+    "userLevel": "retailer",
+    "userType": "owner",
+    "name": "owner@retailer-a.com",
+    "products": ["ssp", "trade", "brand_center"],
+    "agencyId": "agency-456",
+    "retailerId": "retail-789"
+  },
+  "resource": {
+    "kind": "dealdesk:campaigns:item",
+    "id": "campaign-abc",
+    "attr": {
+      "retailerId": "retail-789"
+    }
+  },
+  "action": "view"
+}
+```
+
+**Expected**: ALLOW
+**Reason**: Retailer path: `["brand_center","ssp","trade"].all(...)` ✓; `P.attr.retailerId == R.attr.retailerId` ✓. Role `retailer_owner` is in the retailer-operator rule.
+
+---
+
+### Scenario 23: Brand Owner Accessing Linked Retailer's DealDesk (Brand Path — Allow)
+
+**Context**: A brand user viewing a media package on a retailer that is linked to the brand via `Brand.Retailers[]`.
+
+```json
+{
+  "principal": {
+    "id": "user-401",
+    "userLevel": "brand",
+    "userType": "owner",
+    "name": "owner@brand-a.com",
+    "products": ["brand_center"],
+    "brandId": "brand-alpha",
+    "retailerIds": ["retail-789", "retail-800"]
+  },
+  "resource": {
+    "kind": "dealdesk:media-packages",
+    "id": "pkg-xyz",
+    "attr": {
+      "retailerId": "retail-789"
+    }
+  },
+  "action": "list"
+}
+```
+
+**Expected**: ALLOW
+**Reason**: Brand path: `["brand_center"].exists(...)` ✓; `R.attr.retailerId in P.attr.retailerIds` (`retail-789` is in `[retail-789, retail-800]`) ✓. Role `brand_owner` is in the brand rule.
+
+---
+
+### Scenario 24: Retailer Missing One DealDesk Product (Retailer Path — Deny)
+
+**Context**: Retailer has `ssp` and `trade` but is not subscribed to `brand_center` — the AND product check fails.
+
+```json
+{
+  "principal": {
+    "id": "user-302",
+    "userLevel": "retailer",
+    "userType": "owner",
+    "name": "owner@retailer-b.com",
+    "products": ["ssp", "trade"],
+    "agencyId": "agency-456",
+    "retailerId": "retail-800"
+  },
+  "resource": {
+    "kind": "dealdesk:campaigns:item",
+    "id": "campaign-def",
+    "attr": {
+      "retailerId": "retail-800"
+    }
+  },
+  "action": "view"
+}
+```
+
+**Expected**: DENY
+**Reason**: Retailer path: `["brand_center","ssp","trade"].all(...)` fails because `brand_center` is missing. Brand path is not evaluated for a retailer-level principal (roles don't match).
+
+---
+
+### Scenario 25: Brand User Accessing Unlinked Retailer (Brand Path — Deny)
+
+**Context**: Brand user attempting to view a media package on a retailer that is NOT in the brand's linked retailers list.
+
+```json
+{
+  "principal": {
+    "id": "user-402",
+    "userLevel": "brand",
+    "userType": "admin",
+    "name": "manager@brand-a.com",
+    "products": ["brand_center"],
+    "brandId": "brand-alpha",
+    "retailerIds": ["retail-789", "retail-800"]
+  },
+  "resource": {
+    "kind": "dealdesk:media-packages",
+    "id": "pkg-orphan",
+    "attr": {
+      "retailerId": "retail-999"
+    }
+  },
+  "action": "list"
+}
+```
+
+**Expected**: DENY
+**Reason**: Brand path: `R.attr.retailerId in P.attr.retailerIds` fails (`retail-999` is NOT in `[retail-789, retail-800]`). Retailer path is not evaluated for a brand-level principal.
+
+---

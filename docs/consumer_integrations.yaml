@@ -1,0 +1,36 @@
+# Consumer × Resource integration mapping.
+#
+# Hand-maintained. When a consumer starts calling Cerbos for a new resource,
+# add the resource kind under that consumer's `integrated` list.
+#
+# Consumed by scripts/generate_status.py to render the Consumer Coverage
+# section of docs/CERBOS_STATUS.md.
+#
+# Statuses per resource:
+#   integrated  — consumer calls Cerbos for this resource today
+#   planned     — integration committed for this resource, not shipped yet
+#   (omit)      — consumer does not authorize against this resource
+#
+# Example:
+#   consumers:
+#     conqrse-api3:
+#       integrated:
+#         - qr:campaigns
+#         - qr:campaigns:item
+#       planned:
+#         - dealdesk:campaigns
+
+consumers:
+  conqrse-api3:
+    description: >-
+      Main API. Serves retailer, agency, and SU users. Expected to eventually
+      cover every product-related resource kind.
+    integrated: []
+    planned: []
+
+  admin:
+    description: >-
+      Internal admin/back-office UI. Focuses on SU and Agency operations,
+      admin_users/admin_teams/admin_cerbos, and platform-wide settings.
+    integrated: []
+    planned: []

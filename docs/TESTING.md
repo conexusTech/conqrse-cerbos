@@ -35,13 +35,16 @@ make results
 
 ## Test Suite Overview
 
-**18 test scenarios** covering:
-- All user levels: SU (Super User), Agency, Retailer
+**18 test scenarios** (Allow: 10, Deny: 8) covering:
+- All user levels: SU (Super User), Agency, Retailer, **Brand** (DealDesk only)
 - All user types: Owner, Admin, Lead, Member, Collaborator
 - Direct access patterns
 - "Act AS" delegation patterns
-- Product subscription validation
+- Product subscription validation (both `.exists()` OR-semantics and `.all()` AND-semantics for DealDesk)
 - Settings access restrictions
+- **DealDesk two-rule structure**: Retailer path (all of ssp/trade/brand_center + retailerId match) vs Brand path (brand_center + retailerId in retailerIds)
+
+> Note: as of the DealDesk model rollout, dealdesk-specific scenarios should be added to `tests/test-cases.json` and `docs/CERBOS_CONQRSE_EXAMPLES.md`. Existing 18 scenarios predate that rollout.
 
 ### Allow Scenarios (10)
 
@@ -392,10 +395,11 @@ Typical metrics:
 
 ## References
 
-- [Test Cases](tests/README.md) — Detailed test documentation
-- [Test Configuration](tests/test-cases.json) — All test scenarios
-- [RBAC Model](docs/CERBOS_CONQRSE.md) — Authorization model
-- [Example Scenarios](docs/CERBOS_CONQRSE_EXAMPLES.md) — Real-world examples
+- [Test Cases](../tests/README.md) — Detailed test documentation
+- [Test Configuration](../tests/test-cases.json) — All test scenarios
+- [Authorization Model & Matrix](./RESOURCES_ACTIONS_MATRIX.md) — Resources, roles, DealDesk two-rule structure
+- [Example Scenarios](./CERBOS_CONQRSE_EXAMPLES.md) — Real-world validation payloads
+- [Cerbos Status](./CERBOS_STATUS.md) — What's actually deployed per env
 - [Cerbos Documentation](https://docs.cerbos.dev/)
 
 ## Support
@@ -406,4 +410,4 @@ For issues or questions:
 2. Review test logs: `test-results/results.json`
 3. Check Cerbos logs
 4. Verify policy definitions
-5. Review [RBAC model](docs/CERBOS_CONQRSE.md)
+5. Review the [Authorization Model & Matrix](./RESOURCES_ACTIONS_MATRIX.md)

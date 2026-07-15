@@ -401,6 +401,13 @@ Example #2: `connect:contacts:item`
 - `contacts` is a feature under the grouping `connect`
 - `item` indicates that the resource is pertaining to a resource item, otherwise resource collection.
 
+**Settings as a cross-cutting concern.** Settings resources use the `settings:{context}_{feature}` pattern (underscore-separated) — deliberately separate from product-namespaced resources. Adding a new product doesn't require adding new settings policies; every product/admin setting follows the same semantic structure. Patterns in use:
+
+- `settings:admin_*` — Platform/system-level settings (owners/admins only)
+- `settings:user_*` — User-specific settings (personal profile, preferences)
+- `settings:{product}_{feature}` — Product-specific configuration (e.g., `settings:qr_design`, `settings:signage_layout`)
+- `settings:{product}_{feature}_{category}` — Sub-categories within product settings
+
 2. **Main Groupings**
 
 - `footprints:*`

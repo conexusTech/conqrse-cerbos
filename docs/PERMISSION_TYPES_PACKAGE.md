@@ -1,316 +1,162 @@
 # @conqrse/permission-types Package
 
-## Overview
+TypeScript enums and types for Conqrse consumers (`conqrse-admin`, `conqrse-api3`) that integrate with Cerbos.
 
-`@conqrse/permission-types` is an npm package that provides TypeScript enums and types for Conqrse permission integration with Cerbos. It contains strongly-typed definitions for all resources, actions, roles, and principals used in your authorization policies.
+- **Package location:** `packages/permission-types/`
+- **Registry:** `https://npm.conqrse.com/`
+- **Scope:** `@conqrse`
+- **Current version:** see `packages/permission-types/package.json` (as of writing: **1.5.0**)
 
-**Package Location:** `packages/permission-types/`  
-**Registry:** `https://npm.conqrse.com/`  
-**Scope:** `@conqrse`
+## What's Inside
 
-## What's Included
+### Enums (auto-generated from the matrix)
 
-### Enums (Auto-Generated)
+| Enum | Count | Notes |
+|---|---|---|
+| `Resource` | 131 | All resource kinds — e.g., `SETTINGS_ADMIN_USERS`, `QR_CAMPAIGNS`, `DEALDESK_CAMPAIGNS_ITEM` |
+| `Action` | 7 | `LIST`, `VIEW`, `CREATE`, `UPDATE`, `DELETE`, `EXPORT`, `IMPORT` |
+| `DerivedRole` | 19 | SU tier (5) + Agency tier (5) + Retailer tier (5) + Brand tier (4) |
+| `UserLevel` | 4 | `SU`, `AGENCY`, `RETAILER`, `BRAND` |
+| `UserType` | 5 | `OWNER`, `ADMIN`, `LEAD`, `MEMBER`, `COLLABORATOR` |
+| `Product` | 12 | `QR`, `PRICE_TAGS`, `COMPLIANCE`, `PRODUCT`, `SIGNAGE`, `LANDING`, `CONNECT`, `PPT`, `CMS`, `SSP`, `TRADE`, `BRAND_CENTER` |
 
-- **Resource** — 83 resource types from the matrix (e.g., `SETTINGS_ADMIN_USERS`, `QR_CAMPAIGNS`, `CONTENTS_PLAYLISTS`)
-- **Action** — 7 standard actions (`LIST`, `VIEW`, `CREATE`, `UPDATE`, `DELETE`, `EXPORT`, `IMPORT`)
-- **DerivedRole** — 15 derived roles (`ROOT_USER`, `PLATFORM_ADMINISTRATOR`, `AGENCY_OWNER`, `RETAILER_OWNER`, `TEAM_LEAD`, `STAFF_OPERATOR`, `GUEST_COLLABORATOR`, etc.)
-- **UserLevel** — User authorization levels (`SU`, `AGENCY`, `RETAILER`)
-- **UserType** — User role types within a level (`OWNER`, `ADMIN`, `LEAD`, `MEMBER`, `COLLABORATOR`)
-- **Product** — Available products (`QR`, `PRICE_TAGS`, `COMPLIANCE`, `PRODUCT`, `SIGNAGE`, `LANDING`, `CONNECT`, `PPT`)
+### Types
 
-### Types (Auto-Generated & Static)
+- `Principal` (static) — shape of the principal payload sent to Cerbos: `{ userId, userLevel, userType, retailerId?, brandId?, retailerIds?, products? }`
+- `ResourceMeta` (auto-generated) — per-resource metadata:
+  ```ts
+  { type: 'collection' | 'item'; actions: Action[]; products: Product[] }
+  ```
+- `RESOURCE_META: Record<Resource, ResourceMeta>` — the full lookup map.
 
-- **Principal** (static) — Shape of a principal/user: `{ userId, userLevel, userType, retailerId?, products? }`
-- **ResourceMeta** (auto-generated) — Mapping of each resource to:
-  - `type`: `'collection'` or `'item'`
-  - `actions`: Array of allowed `Action` enums
-  - `products`: Array of required `Product` enums (from Product × Resource Matrix)
+### Single source of truth
 
-## Single Source of Truth
-
-All enums are generated from `docs/RESOURCES_ACTIONS_MATRIX.md`, which is the single source of truth for all permissions, resources, and actions.
-
-When the matrix is updated, the enums must be regenerated to stay in sync.
+All enums are derived from [`docs/RESOURCES_ACTIONS_MATRIX.md`](./RESOURCES_ACTIONS_MATRIX.md). When the matrix changes, regenerate. **Never hand-edit the generated files** — they'll be blown away on the next regeneration.
 
 ---
 
-## Generating Enums
-
-### Quick Start
-
-Generate enums from the current matrix:
+## Generating the Package
 
 ```bash
-make generate-types
+python3 scripts/generate_types.py           # skip existing files
+python3 scripts/generate_types.py --dry-run # preview
+python3 scripts/generate_types.py --force   # overwrite everything
 ```
 
-### Manual Generation
-
-Generate using the Python script directly:
-
-```bash
-python3 scripts/generate_types.py
-```
-
-### Options
-
-**Preview without writing files:**
-```bash
-python3 scripts/generate_types.py --dry-run
-```
-
-**Force regenerate (overwrite existing):**
-```bash
-python3 scripts/generate_types.py --force
-```
-
-### What Gets Generated
-
-The generator creates 7 TypeScript files in `packages/permission-types/`:
+Generated files land in `packages/permission-types/`:
 
 ```
 enums/
-├── resource.enum.ts       # All resources from matrix
-├── action.enum.ts         # Standard actions
-├── role.enum.ts           # 15 derived roles
-├── user-level.enum.ts     # 3 user levels
-├── user-type.enum.ts      # 5 user type names
-├── product.enum.ts        # 8 products
-└── index.ts               # Re-exports all enums
+├── resource.enum.ts       # generated — 131 Resource entries
+├── action.enum.ts         # generated — 7 Action entries
+├── role.enum.ts           # generated — 19 DerivedRole entries
+├── user-level.enum.ts     # generated — 4 UserLevel entries
+├── user-type.enum.ts      # generated — 5 UserType entries
+├── product.enum.ts        # generated — 12 Product entries
+└── index.ts               # hand-maintained re-exports
 
 types/
-├── principal.type.ts       # Principal shape (static, pre-existing)
-├── resource-action.type.ts # ResourceMeta mapping (auto-generated)
-└── index.ts               # Re-exports all types
+├── principal.type.ts       # static — Principal shape
+├── resource-action.type.ts # generated — RESOURCE_META
+└── index.ts                # hand-maintained re-exports
 ```
 
-### Generator Behavior
+After regenerating, always build the package to verify the emitted TypeScript compiles:
 
-- **Skips existing files** unless `--force` is used (safe by default)
-- **Parses** `docs/RESOURCES_ACTIONS_MATRIX.md` to extract resources, actions, and roles
-- **Generates** SCREAMING_SNAKE_CASE enum keys with string values
-- **Creates** TypeScript files with proper imports and exports
-- **Reports** progress with summary (Generated/Skipped counts)
+```bash
+cd packages/permission-types && npm run build
+```
 
 ---
 
-## Updating the Package
+## Update & Publish Workflow
 
-### When to Update
+**Every change to policy files must be paired with a version bump of this package.** Consumers depend on the enums; if the enums drift from the deployed policies, they will type-check successfully but fail at runtime when Cerbos rejects the (missing) resource or role.
 
-Update the package when:
-
-1. **Matrix Changes** — New resources, actions, or roles are added to `docs/RESOURCES_ACTIONS_MATRIX.md`
-2. **Enum Structure Changes** — The generator script is modified
-3. **Type Definitions Change** — New types or Principal shape changes
-
-### Update Workflow
-
-#### 1. Regenerate Enums
-
-After modifying the matrix:
-
-```bash
-make generate-types --force
-```
-
-or
+### 1. Regenerate
 
 ```bash
 python3 scripts/generate_types.py --force
 ```
 
-#### 2. Verify Changes
+### 2. Bump the version
 
-Check what changed:
+Edit `packages/permission-types/package.json`. Semver guidance:
 
-```bash
-git status
-git diff packages/permission-types/
-```
+| Change | Version bump |
+|---|---|
+| New resource / product / role / user-level added, no removals | **minor** (`1.5.0` → `1.6.0`) |
+| Resource / product / role removed, or a value string changed | **major** (`1.5.0` → `2.0.0`) — breaking |
+| Package-only fix (types file layout, build config), no enum values changed | **patch** (`1.5.0` → `1.5.1`) |
 
-#### 3. Review Generated Files
-
-Spot-check the generated enums to ensure they're correct:
-
-```bash
-# Check resource count
-grep -c "= '" packages/permission-types/enums/resource.enum.ts
-
-# Check a specific enum
-head -20 packages/permission-types/enums/resource.enum.ts
-```
-
-#### 4. Test Imports (Optional)
-
-Create a quick test file to verify TypeScript imports work:
-
-```typescript
-// test-imports.ts
-import { 
-  Resource, 
-  Action, 
-  DerivedRole, 
-  RESOURCE_META 
-} from './packages/permission-types';
-
-const r: Resource = Resource.SETTINGS_ADMIN_USERS;
-const a: Action = Action.LIST;
-const role: DerivedRole = DerivedRole.ROOT_USER;
-
-console.log(RESOURCE_META[Resource.QR_CAMPAIGNS]);
-// Output: { type: 'collection', actions: [...] }
-```
-
-#### 5. Commit Changes
+### 3. Build
 
 ```bash
-git add packages/permission-types/enums/
-git commit -m "chore: Regenerate permission types from updated matrix"
+cd packages/permission-types && npm run build
 ```
 
----
+Fail fast: the build must be clean before publishing.
 
-## Publishing
+### 4. Commit
 
-### Prerequisites
+```bash
+git add packages/permission-types/
+git commit -m "chore(permission-types): bump version to v1.6.0"
+```
 
-- You have write access to the `https://npm.conqrse.com/` registry
-- Your `.npmrc` is configured with the registry token (typically stored in `~/.npmrc` at user level)
-- The `.npmrc` in the repo root has `@conqrse:registry=https://npm.conqrse.com/` (already configured)
+Do this in the same PR / commit chain as the matrix + policy changes so consumers see a consistent view.
 
-### Publishing Steps
-
-#### 1. Bump Version
-
-Use npm's built-in version management:
+### 5. Publish
 
 ```bash
 cd packages/permission-types
-
-# Patch version (1.0.0 → 1.0.1)
-npm version patch
-
-# Minor version (1.0.0 → 1.1.0)
-npm version minor
-
-# Major version (1.0.0 → 2.0.0)
-npm version major
-```
-
-This automatically:
-- Updates `package.json` version
-- Creates a git tag (optional, you can use `--no-git-tag-version` to skip)
-- Commits the version change
-
-#### 2. Publish to Registry
-
-```bash
 npm publish --registry https://npm.conqrse.com/
 ```
 
-Or from the root directory:
-
-```bash
-cd packages/permission-types && npm publish --registry https://npm.conqrse.com/
-```
-
-#### 3. Verify Publication
-
-Check that the package appeared in the registry:
+Verify:
 
 ```bash
 npm view @conqrse/permission-types@latest --registry https://npm.conqrse.com/
 ```
 
-#### 4. Commit Version Bump
+### 6. Update consumers
 
-If the version bump wasn't auto-committed (or you used `--no-git-tag-version`):
-
-```bash
-git add packages/permission-types/package.json
-git commit -m "chore: Bump @conqrse/permission-types to v1.X.X"
-```
-
-### Publishing Errors
-
-**Error: `409 Conflict - this package is already present`**
-
-→ The version already exists. Bump the version again using `npm version`.
-
-**Error: `401 Unauthorized`**
-
-→ Your npm registry token is missing or expired. Configure via:
+In `conqrse-api3` and `conqrse-admin`:
 
 ```bash
-npm login --registry https://npm.conqrse.com/
+npm install @conqrse/permission-types@latest
 ```
 
-Then try publishing again.
+Then rebuild each consumer and deploy. If a consumer keeps referencing an old enum value that was removed, TypeScript will fail — that's the point of the coupled version bump.
 
 ---
 
-## Installation
-
-### In Your Project
+## Installation (in a consumer)
 
 ```bash
 npm install @conqrse/permission-types
 ```
 
-### With Specific Version
-
-```bash
-npm install @conqrse/permission-types@1.0.3
-```
-
-### In Package.json
-
-```json
-{
-  "dependencies": {
-    "@conqrse/permission-types": "^1.0.3"
-  }
-}
-```
-
-### Next.js / Turbopack Compatibility
-
-If you encounter build errors in Next.js 16+ with Turbopack:
+Ensure `.npmrc` in the consumer repo has:
 
 ```
-Missing module type - The module type effect must be applied before adding Ecmascript transforms
-```
-
-**Solution:** Update to version 1.0.3 or later, which includes proper TypeScript module type declarations in package.json.
-
-```bash
-npm update @conqrse/permission-types
-```
-
-Then rebuild your Next.js app:
-
-```bash
-npm run build
+@conqrse:registry=https://npm.conqrse.com/
 ```
 
 ---
 
 ## Usage
 
-### Import All Types
+### Import
 
 ```typescript
 import {
-  // Enums
   Resource,
   Action,
   DerivedRole,
   UserLevel,
   UserType,
   Product,
-  // Types
   Principal,
   RESOURCE_META,
   ResourceMeta,
@@ -318,41 +164,18 @@ import {
 } from '@conqrse/permission-types';
 ```
 
-### Import Specific Exports
+### Look up a resource
 
 ```typescript
-// By enum
-import { Resource, Action } from '@conqrse/permission-types/enums';
-
-// By type
-import { Principal } from '@conqrse/permission-types/types';
-
-// Specific files
-import { RESOURCE_META } from '@conqrse/permission-types/types/resource-action.type';
-```
-
-### Common Usage Examples
-
-#### Check Resource Metadata
-
-```typescript
-import { RESOURCE_META, Resource } from '@conqrse/permission-types';
-
 const meta = RESOURCE_META[Resource.QR_CAMPAIGNS];
 console.log(meta.type);     // 'collection'
-console.log(meta.actions);  // [Action.LIST, Action.VIEW, Action.CREATE, ...]
-console.log(meta.products); // [Product.QR]
-
-// Admin resources have no product requirements
-const adminMeta = RESOURCE_META[Resource.SETTINGS_ADMIN_USERS];
-console.log(adminMeta.products); // []
+console.log(meta.actions);  // [Action.LIST, Action.VIEW, ...]
+console.log(meta.products); // [Product.QR, ...]
 ```
 
-#### Define a Principal
+### Construct a principal (Retailer user)
 
 ```typescript
-import { Principal, UserLevel, UserType } from '@conqrse/permission-types';
-
 const principal: Principal = {
   userId: 'user-123',
   userLevel: UserLevel.RETAILER,
@@ -362,28 +185,44 @@ const principal: Principal = {
 };
 ```
 
-#### Check Permissions with Cerbos
+### Construct a principal (Brand user — DealDesk)
 
 ```typescript
-import { Resource, Action } from '@conqrse/permission-types';
+const brandPrincipal: Principal = {
+  userId: 'user-789',
+  userLevel: UserLevel.BRAND,
+  userType: UserType.OWNER,
+  brandId: 'brand-abc',
+  retailerIds: ['retailer-456', 'retailer-789'],  // populated from Brand.Retailers[]
+  products: [Product.BRAND_CENTER],
+};
+```
+
+### Check permissions with Cerbos
+
+```typescript
 import { grpc } from '@cerbos/grpc';
 
-const cerbos = new grpc.CerbosClient('localhost:3593');
+const cerbos = new grpc.CerbosClient('cerbos:3593');
 
 const result = await cerbos.checkResource({
   resource: {
-    kind: Resource.QR_CAMPAIGNS,
+    kind: Resource.DEALDESK_CAMPAIGNS,
     id: 'campaign-123',
+    attributes: {
+      retailerId: 'retailer-456',
+    },
   },
   actions: [Action.VIEW, Action.UPDATE],
   principal: {
-    id: principal.userId,
-    roles: [DerivedRole.RETAILER_OWNER],
+    id: brandPrincipal.userId,
+    roles: [DerivedRole.BRAND_OWNER],
     attributes: {
-      userLevel: principal.userLevel,
-      userType: principal.userType,
-      retailerId: principal.retailerId,
-      products: principal.products,
+      userLevel: brandPrincipal.userLevel,
+      userType: brandPrincipal.userType,
+      brandId: brandPrincipal.brandId,
+      retailerIds: brandPrincipal.retailerIds,
+      products: brandPrincipal.products,
     },
   },
 });
@@ -391,166 +230,43 @@ const result = await cerbos.checkResource({
 
 ---
 
-## Architecture
-
-### Product × Resource Matrix
-
-The matrix defines which products (QR, Signage, Compliance, etc.) are required to access each resource:
-
-- **Default resources** (admin settings) — `products: []` (always available)
-- **Product resources** (QR campaigns, signage, etc.) — `products: [Product.QR]` or multiple products
-- **Multi-product resources** (some content/tags) — `products: [Product.QR, Product.SIGNAGE, ...]`
-
-This information is embedded in `ResourceMeta.products` for runtime checks.
-
-### Generator Script
-
-**File:** `scripts/generate_types.py`
-
-The generator:
-
-1. **Parses** `docs/RESOURCES_ACTIONS_MATRIX.md` markdown
-   - Extracts resource definitions (name, type, actions)
-   - Reads the Product × Resource Matrix section
-   - Maps resources to their required products
-
-2. **Generates** TypeScript enums
-   - Converts resource names to SCREAMING_SNAKE_CASE keys
-   - Creates string-valued enums matching the matrix
-
-3. **Outputs** to `packages/permission-types/`
-   - 6 enum files (resource, action, role, user-level, user-type, product)
-   - 1 type file (resource-action mapping)
-
-### Package Structure
-
-```
-packages/permission-types/
-├── package.json          # NPM package metadata
-├── index.ts              # Main export barrel
-├── enums/
-│   ├── *.enum.ts         # Generated enum files
-│   └── index.ts          # Enum re-exports
-└── types/
-    ├── principal.type.ts           # Static Principal type
-    ├── resource-action.type.ts     # Generated ResourceMeta
-    └── index.ts                    # Type re-exports
-```
-
-### Publishing Configuration
-
-**File:** `.npmrc`
-
-```
-@conqrse:registry=https://npm.conqrse.com/
-```
-
-Routes all `@conqrse` scoped packages to the private registry.
-
----
-
 ## Troubleshooting
 
-### Enums Don't Match Matrix
+**Enums don't match the matrix**
+Regenerate: `python3 scripts/generate_types.py --force`. Verify the matrix has the row(s) you expect. If a resource is in the matrix's resource-actions table but missing from the Product × Resource Matrix table (or vice versa), it will be silently skipped.
 
-**Symptom:** New resources in matrix don't appear in enums.
+**Import errors — `Cannot find module '@conqrse/permission-types'`**
+1. Verify install: `npm list @conqrse/permission-types`.
+2. Check the consumer's `.npmrc` has `@conqrse:registry=https://npm.conqrse.com/`.
+3. Check the package was published: `npm view @conqrse/permission-types --registry https://npm.conqrse.com/`.
 
-**Solution:** Regenerate enums:
+**`409 Conflict — package already present`**
+Bump the version and republish. Never overwrite a published version.
 
-```bash
-python3 scripts/generate_types.py --force
-```
+**`401 Unauthorized`**
+Registry token missing/expired. Re-authenticate: `npm login --registry https://npm.conqrse.com/`.
 
-Ensure `docs/RESOURCES_ACTIONS_MATRIX.md` is up-to-date before regenerating.
-
-### Import Errors in TypeScript
-
-**Symptom:** `Cannot find module '@conqrse/permission-types'`
-
-**Solution:**
-
-1. Ensure package is installed: `npm list @conqrse/permission-types`
-2. Check `.npmrc` has the correct registry for `@conqrse` scope
-3. Verify package.json exports are correct: `npm view @conqrse/permission-types`
-
-### Version Already Exists
-
-**Symptom:** Publishing fails with `409 Conflict - this package is already present`
-
-**Solution:** Bump the version before publishing:
-
-```bash
-cd packages/permission-types
-npm version patch
-npm publish --registry https://npm.conqrse.com/
-```
-
-### Stale Enums After Matrix Update
-
-**Symptom:** Using old enum values that no longer exist.
-
-**Solution:**
-
-1. Regenerate enums: `make generate-types --force`
-2. Commit and publish new package version
-3. Update consuming projects to new package version: `npm update @conqrse/permission-types`
-
----
-
-## Makefile Targets
-
-| Command | Purpose |
-|---------|---------|
-| `make generate-types` | Regenerate TypeScript enums from matrix (skips if files exist) |
-| `make generate-policies` | Regenerate Cerbos policies from matrix |
-| `make help` | Show all available targets |
-
----
-
-## Related Documentation
-
-- **[RESOURCES_ACTIONS_MATRIX.md](./RESOURCES_ACTIONS_MATRIX.md)** — Matrix definition (source of truth)
-- **[POLICY_GENERATION.md](./POLICY_GENERATION.md)** — Cerbos policy generation (parallel to this package)
-- **[API Documentation](https://docs.cerbos.dev/)** — Cerbos official docs
-
----
-
-## Contributing
-
-When updating the matrix (`docs/RESOURCES_ACTIONS_MATRIX.md`):
-
-1. **Update the matrix** with new resources, actions, or roles
-2. **Regenerate enums**: `make generate-types --force`
-3. **Regenerate policies** (if applicable): `make generate-policies --force`
-4. **Commit both** in a single commit:
-   ```bash
-   git add packages/permission-types/ k8s/base/policies/
-   git commit -m "feat: Add new resources to permission matrix"
-   ```
-5. **Publish package** if enums changed:
-   ```bash
-   cd packages/permission-types
-   npm version patch
-   npm publish --registry https://npm.conqrse.com/
-   ```
+**Consumer breaks at runtime after upgrade**
+The enum value(s) the consumer used were removed or renamed. Update the consumer's code to use the new values, or roll back the package version. This is why removals warrant a major bump.
 
 ---
 
 ## Version History
 
-- **1.1.0** — Added `products` array to `ResourceMeta` (matches Product × Resource Matrix)
-- **1.0.3** — Fixed Next.js/Turbopack compatibility with proper module type declarations in package.json
-- **1.0.2** — (skipped)
-- **1.0.1** — Fixed repository URL metadata
-- **1.0.0** — Initial release with 83 resources, 7 actions, 15 roles
+- **1.5.0** — Added `ssp`, `trade`, `brand_center` products; `brand` UserLevel; 4 brand-tier roles (`brand_owner`, `brand_manager`, `brand_lead`, `brand_member`); 28 `dealdesk:*` resources + 1 legacy `dealdesk_brand:media-packages`.
+- **1.4.0** — Version bump alongside CMS resource growth.
+- **1.3.0** — Added `contents:landing_pages` resources.
+- **1.2.0** — CMS product with 9 features.
+- **1.1.0** — Added `products` array to `ResourceMeta` (aligns with Product × Resource Matrix).
+- **1.0.3** — Fixed Next.js / Turbopack compatibility (added TypeScript module type declarations).
+- **1.0.1** — Repository URL metadata fix.
+- **1.0.0** — Initial release: 83 resources, 7 actions, 15 roles.
 
 ---
 
-## Questions?
+## Related Docs
 
-For issues or questions:
-
-1. Check the [Troubleshooting](#troubleshooting) section
-2. Review the matrix definition in `docs/RESOURCES_ACTIONS_MATRIX.md`
-3. Examine the generator script: `scripts/generate_types.py`
-4. Check npm registry metadata: `npm view @conqrse/permission-types --registry https://npm.conqrse.com/`
+- [`RESOURCES_ACTIONS_MATRIX.md`](./RESOURCES_ACTIONS_MATRIX.md) — Matrix source of truth
+- [`POLICY_GENERATION.md`](./POLICY_GENERATION.md) — Cerbos policy generation (parallel to this package)
+- [`CERBOS_STATUS.md`](./CERBOS_STATUS.md) — Deployment/coverage status
+- [Cerbos Docs](https://docs.cerbos.dev/) — Upstream Cerbos documentation

@@ -1,276 +1,171 @@
 # Cerbos Policy Generation Automation
 
-This guide explains how to use the policy generation script to create and maintain Cerbos policy files from the authoritative resource matrix.
+This guide explains how to generate and maintain Cerbos policy files from the authoritative resource matrix.
 
 ## Overview
 
-The `scripts/generate_policies.py` script automatically generates all 81 Cerbos resource policy YAML files by parsing:
-- `docs/RESOURCES_ACTIONS_MATRIX.md` — resource definitions and product requirements
-- `docs/CERBOS_CONQRSE.md` — user roles and permissions
+`scripts/generate_policies.py` reads [`docs/RESOURCES_ACTIONS_MATRIX.md`](./RESOURCES_ACTIONS_MATRIX.md) and emits one Cerbos policy YAML per resource under `k8s/base/policies/`.
 
-This eliminates manual YAML editing and ensures policies stay in sync with your documentation.
+- **Source of truth**: the matrix doc — resource definitions, actions, required products.
+- **Output**: `k8s/base/policies/resource_*.yaml` (currently **132** files).
+- **Companion generator**: `scripts/generate_types.py` regenerates the `@conqrse/permission-types` npm package (enums for Resource/Action/Product/DerivedRole/UserLevel/UserType and the `RESOURCE_META` map).
+
+The related updater `scripts/update_policies_from_matrix.py` does a lighter-weight in-place patch of the product list in existing YAMLs; it skips any resource marked `required-all` because those need the full two-rule structure (regenerate them via `generate_policies.py --force`).
 
 ## Quick Start
 
-### Generate All Policies (Safe Mode)
+### Generate all policies (safe — skip existing)
 
 ```bash
-python scripts/generate_policies.py
+python3 scripts/generate_policies.py
 ```
 
-This skips any existing files. Use when adding new resources or on a fresh clone.
+Use on a fresh clone or when adding new resources.
 
-### Generate All Policies (Force Overwrite)
+### Regenerate all (force overwrite)
 
 ```bash
-python scripts/generate_policies.py --force
+python3 scripts/generate_policies.py --force
 ```
 
-Overwrites all existing files. Use when the matrix changes and you need to regenerate everything.
+Use when the matrix changes and you need every YAML rebuilt. **Note:** overwrites hand-edited comments/annotations — reserve for when policies should match the generator output exactly.
 
-### Preview Without Writing
+### Preview without writing
 
 ```bash
-python scripts/generate_policies.py --dry-run
+python3 scripts/generate_policies.py --dry-run
 ```
 
-Shows which files would be generated without actually writing them. Useful for validation before committing.
+Shows which files would be generated. Useful to confirm the parser sees your new matrix rows.
 
-### Generate a Single Resource
+### Generate a single resource
 
 ```bash
-python scripts/generate_policies.py --resource "connect:contacts"
+python3 scripts/generate_policies.py --resource "connect:contacts" --force
 ```
 
-Generates only the specified resource policy. Useful for testing or debugging.
+Useful for targeted regeneration — e.g., we used this to regenerate all 28 dealdesk YAMLs without touching non-dealdesk hand-edited policies.
 
 ## How It Works
 
-### 1. Parsing Phase
+### 1. Parse
 
-The script reads two markdown files and extracts:
+The parser reads two kinds of tables from `RESOURCES_ACTIONS_MATRIX.md`:
 
-**From Resource Tables** (Footprints, Content, Signage, QR, Reports, Connect, Settings):
-- Resource name (e.g., `qr:campaigns`)
-- Resource type: `collection` or `item`
-- Available actions (list, view, create, update, delete, export, import)
+**Resource-actions tables** (grouped by namespace — QR, Content, Signage, DealDesk, Reports, etc.):
 
-**From Product × Resource Matrix**:
-- File name mapping
-- Required products per resource
-- Whether resource is "default" (no product validation)
+- Resource name (e.g., `dealdesk:campaigns`)
+- Type: `collection` or `item`
+- Actions: any of `list, view, create, update, delete, export, import`
 
-### 2. Classification Phase
+**Product × Resource Matrix** — the giant table:
 
-Resources are categorized into 4 policy patterns:
+- Filename mapping
+- Required products, per column
+- Marker semantics per cell:
+  - `required` → OR semantics (`.exists()` CEL)
+  - `required-all` → AND semantics (`.all()` CEL) — introduced for DealDesk
+  - `default` column → skip product check entirely (admin-tier resources)
 
-| Category | Characteristics | Example |
-|----------|---|---|
-| **product_resource** | Has required products, not a settings resource | `connect:contacts`, `reports:campaign_compliance` |
-| **product_settings** | Has required products, is a settings resource | `settings:footprints_sites_property` |
-| **admin_settings** | No products (default), is an admin settings resource | `settings:admin_users`, `settings:admin_teams` |
-| **user_settings** | Special universal resource for user profile | `settings:user_profile:item` |
+### 2. Classify
 
-### 3. Generation Phase
+Each parsed resource is placed into one of 5 categories:
 
-For each resource, the appropriate YAML template is rendered with:
-- Correct conditions (product check, retailer ID check)
-- Appropriate derived roles (operators vs collaborators)
-- Valid actions from the matrix
+| Category | Trigger | Example |
+|---|---|---|
+| `admin_settings` | `default = required` on a non-user-profile resource | `settings:admin_users`, `settings:admin_teams` |
+| `user_settings` | `default = required` AND `user_profile` in name | `settings:user_profile:item` |
+| `dealdesk_resource` | Any cell in the row is `required-all` | `dealdesk:campaigns`, `dealdesk:brands:item` |
+| `product_settings` | Resource name starts with `settings:` AND has product markers | `settings:footprints_sites_property` |
+| `product_resource` | Everything else | `connect:contacts`, `qr:campaigns` |
 
-## Authorization Patterns Generated
+### 3. Render
 
-### Product Resources (Collection)
+Each category is emitted by a dedicated renderer inside `PolicyRenderer`:
 
-```yaml
-rules:
-  # Operators: full CRUD access
-  - actions: ["list", "view", "create", "update", "delete", "export", "import"]
-    condition:
-      - product subscription check
-      - retailer ID check
-    derivedRoles: [retailer_owner, retailer_manager, team_lead, staff_operator]
-  
-  # Collaborators: read-only access
-  - actions: ["list", "view", "export"]
-    condition: (same)
-    derivedRoles: [guest_collaborator]
-```
+#### `product_resource` (Collection / Item)
 
-### Product Resources (Item)
+Two rule blocks:
+1. **Operator rule** — full CRUD (or `view`/`update`/`delete` for items). Product check `.exists()` + retailerId check (`:item` only). Roles: SU tier + Agency owner/manager + Retailer operator tier.
+2. **Collaborator rule** — read-only subset (`list`/`view`/`export` for collections, `view` for items). Same conditions. Roles: SU tier + Agency owner/manager + Agency lead/member/collaborator + `guest_collaborator`.
 
-Same conditions as collections, but:
-- Operators: `view`, `update`, `delete` (no list, create, export, import)
-- Collaborators: `view` only
+#### `dealdesk_resource` (introduced with the DealDesk model)
 
-### Product Settings
+Three rule blocks that OR together at the policy level:
 
-Only owner/admin access:
-- Conditions: product check + retailer ID check
-- Roles: `retailer_owner`, `retailer_manager` only
-- Collaborators: NOT included (settings: NONE for non-owners)
-- Actions: `list, view, create, update, delete, export, import` (no prefix)
+1. **Retailer operator rule** — full actions. Product check: `["ssp","trade","brand_center"].all(p, p in P.attr.products)`. Item resources also check `P.attr.retailerId == R.attr.retailerId`. Roles: SU tier + Agency (all 5) + Retailer operator tier.
+2. **Retailer collaborator rule** — read-only subset (`list`/`view`/`export` or just `view`). Same conditions. Role: `guest_collaborator`.
+3. **Brand rule** — full actions. Product check: `["brand_center"].exists(p, p in P.attr.products)`. Cross-retailer scoping: `R.attr.retailerId in P.attr.retailerIds`. Roles: `brand_owner`, `brand_manager`, `brand_lead`, `brand_member`.
 
-### Admin Settings
+See the "DealDesk Access Model" section of the matrix doc for the semantic rationale.
 
-Cross-level admin access:
-- No conditions (cross-cutting concern)
-- Roles: all owner/admin at all levels
-  - `root_user`, `platform_administrator` (SU)
-  - `agency_owner`, `agency_manager` (Agency)
-  - `retailer_owner`, `retailer_manager` (Retailer)
+#### `product_settings`
 
-### User Profile
+Owner/admin-only settings — no collaborator rule. Roles: `root_user`, `platform_administrator`, `platform_lead`, `agency_owner`, `agency_manager`, `agency_lead`, `retailer_owner`, `retailer_manager`.
 
-Universal access:
-- No conditions
-- All 15 derived roles
-- Actions: `view`, `update` only
+#### `admin_settings`
 
-## Workflow: When Matrix Changes
+Cross-level admin access with no product condition. Roles: all owner/admin/lead across SU/Agency/Retailer.
 
-When you update `docs/RESOURCES_ACTIONS_MATRIX.md`:
+#### `user_settings`
 
-### 1. Verify Changes
+Universal — no product/tenancy conditions. Actions: `view`, `update`. Roles: all 15 legacy roles (excludes brand tier).
 
-```bash
-# Check what would be generated
-python scripts/generate_policies.py --dry-run
-```
+## Workflow: When the Matrix Changes
 
-### 2. Review Output
-
-Look for:
-- New resources being generated ✅
-- Existing resources being updated ✅
-- Any warnings about missing action definitions ⚠️
-
-### 3. Generate
-
-```bash
-# If satisfied, generate all files
-python scripts/generate_policies.py --force
-```
-
-### 4. Test
-
-Run the Cerbos test suite:
-```bash
-bash tests/run-tests.sh
-```
-
-### 5. Commit
-
-```bash
-git add k8s/base/policies/ scripts/generate_policies.py
-git commit -m "chore: Regenerate policies from updated matrix"
-```
-
-## File Structure
-
-```
-conqrse-cerbos/
-├── scripts/
-│   └── generate_policies.py          ← The generator script
-├── docs/
-│   ├── RESOURCES_ACTIONS_MATRIX.md   ← Source of truth
-│   ├── CERBOS_CONQRSE.md             ← Role definitions
-│   └── POLICY_GENERATION.md          ← This file
-└── k8s/base/policies/
-    ├── _derived_roles.yaml           ← Role definitions (unchanged)
-    ├── resource_connect_contacts.yaml  ← Generated files...
-    ├── resource_qr_campaigns.yaml
-    └── ... (81 total resource policies)
-```
+1. Edit `docs/RESOURCES_ACTIONS_MATRIX.md` — add rows to the resource-actions section AND the Product × Resource Matrix.
+2. Add new files to `k8s/base/kustomization.yaml` `configMapGenerator.files:` allowlist. **This is easy to forget** — a policy not in the allowlist never reaches any cluster. The status generator (`scripts/generate_status.py`) flags this explicitly.
+3. Dry-run:
+   ```bash
+   python3 scripts/generate_policies.py --dry-run
+   ```
+4. Generate:
+   ```bash
+   python3 scripts/generate_policies.py --resource "<new:resource>" --force
+   # or, to rebuild everything:
+   python3 scripts/generate_policies.py --force
+   ```
+5. Regenerate the types package:
+   ```bash
+   python3 scripts/generate_types.py --force
+   ```
+6. Bump `packages/permission-types/package.json` version and rebuild:
+   ```bash
+   cd packages/permission-types && npm run build
+   ```
+7. Validate:
+   ```bash
+   cerbos compile k8s/base/policies/
+   ```
+8. Commit and deploy per the workflow in the top-level [`README`](../README.md).
 
 ## Troubleshooting
 
-### "Warning: No action definition found for X"
+**"Warning: No action definition found for X"**
+The resource appears in the Product × Resource Matrix but is missing from the resource-actions table for its grouping. Add a row to the appropriate `### <Namespace> Resource` section of the matrix doc.
 
-The resource exists in the matrix but not in the resource action tables. 
+**Script runs but generates 0 files**
+Parser found no rows. Check:
+- The `## Product × Resource Matrix` heading is intact.
+- Table rows use pipe delimiters and don't have stray blank lines mid-table.
+- Resource names are not wrapped in backticks in the matrix table (backticks are only used in the resource-actions tables).
 
-**Solution**: Add the resource to the appropriate resource table section in `docs/RESOURCES_ACTIONS_MATRIX.md` with its actions.
+**Generated policy doesn't match the matrix**
+For non-dealdesk resources, re-run the generator with `--resource <name> --force`. If the policy still looks wrong, the classifier probably picked the wrong category — check whether the row uses `required-all` (which would push it to `dealdesk_resource`).
 
-### Script runs but generates 0 files
-
-Parsing failed. Check that:
-- `docs/RESOURCES_ACTIONS_MATRIX.md` exists and is readable
-- Matrix has the "## Product × Resource Matrix" section header
-- Resource action tables are properly formatted (pipes, backticks, etc.)
-
-### Generated file missing actions
-
-The resource table might list wrong actions. Check `docs/RESOURCES_ACTIONS_MATRIX.md`:
-- Collection resources should have: `list, view, create, update, delete, export, import`
-- Item resources should have: `view, update, delete`
-- Reports typically have: `list, view, export`
-- Exception: `reports:export` has `list, export, delete`
-
-## Advanced Usage
-
-### Generate with Logging
-
-```bash
-# Standard output is sufficient for most cases
-python scripts/generate_policies.py 2>&1 | tee generation.log
-```
-
-### Batch Process Multiple Resources
-
-```bash
-# Generate specific resources
-for resource in "qr:campaigns" "connect:contacts" "settings:admin_users"; do
-  python scripts/generate_policies.py --resource "$resource"
-done
-```
-
-### Integration with CI/CD
-
-Add to your pipeline to validate policies:
-
-```bash
-#!/bin/bash
-# Verify matrix is consistent
-python scripts/generate_policies.py --dry-run || exit 1
-
-# Generate in temp directory
-mkdir -p /tmp/generated-policies
-python scripts/generate_policies.py --force
-# ^ Could also validate with Cerbos schema checker
-```
-
-## Reference: Policy Categories
-
-### Determining Category Automatically
-
-The script determines category from:
-
-1. **Is it settings?** Check if resource name starts with `settings:`
-2. **Is it user_profile?** Check if `user_profile` in resource name
-3. **Has products?** Check Product × Resource Matrix
-
-Logic:
-```
-if is_settings and is_default and not is_user_profile:
-    category = "admin_settings"
-elif is_settings and is_user_profile:
-    category = "user_settings"
-elif is_settings and has_products:
-    category = "product_settings"
-else:
-    category = "product_resource"
-```
+**Policy generates but doesn't reach the cluster**
+The file is missing from `k8s/base/kustomization.yaml`'s `configMapGenerator.files:` allowlist. Add it and re-deploy.
 
 ## Key Principles
 
-✅ **Single Source of Truth**: Matrix docs are authoritative  
-✅ **Idempotent**: Safe to run multiple times  
-✅ **Audit Trail**: All policies in git with generation history  
-✅ **Maintainable**: Changes in one place (the matrix)  
-✅ **Testable**: Run tests after generation  
+- **Single source of truth**: the matrix doc.
+- **Idempotent**: safe to run multiple times.
+- **Selective**: prefer `--resource <name>` over global `--force` when you don't want to disturb hand-edited comments in other files.
+- **Coupled with kustomize allowlist**: generating a file is not enough; it must also be listed in `kustomization.yaml`.
 
 ## See Also
 
-- [RESOURCES_ACTIONS_MATRIX.md](./RESOURCES_ACTIONS_MATRIX.md) — Matrix source data
-- [CERBOS_CONQRSE.md](./CERBOS_CONQRSE.md) — Authorization rules
-- [scripts/generate_policies.py](../scripts/generate_policies.py) — Generator implementation
+- [`RESOURCES_ACTIONS_MATRIX.md`](./RESOURCES_ACTIONS_MATRIX.md) — matrix source data
+- [`CERBOS_STATUS.md`](./CERBOS_STATUS.md) — deployment/coverage/drift status
+- [`PERMISSION_TYPES_PACKAGE.md`](./PERMISSION_TYPES_PACKAGE.md) — companion npm package
+- [`scripts/generate_policies.py`](../scripts/generate_policies.py) — generator implementation

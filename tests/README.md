@@ -328,5 +328,6 @@ Typical test execution:
 
 - [Cerbos Policy Language](https://docs.cerbos.dev/cerbos/latest/policies.html)
 - [Cerbos API](https://docs.cerbos.dev/cerbos/latest/api.html)
-- [Conqrse RBAC Model](../docs/CERBOS_CONQRSE.md)
+- [Conqrse Authorization Model & Resource Matrix](../docs/RESOURCES_ACTIONS_MATRIX.md)
 - [Example Scenarios](../docs/CERBOS_CONQRSE_EXAMPLES.md)
+- [Cerbos Status (deployment + coverage)](../docs/CERBOS_STATUS.md)
