@@ -6,16 +6,16 @@
 
 > **See drift below?** Follow the [HOW TO — Update seeded policies](../README.md#how-to--update-seeded-policies-new--modified--removed) workflow in the README to bring an environment back in sync. Any policy change also requires bumping [`@conqrse/permission-types`](../README.md#how-to--update-conqrsepermission-types).
 
-- **Last regenerated:** 2026-07-15T07:46:06+00:00
-- **Repo HEAD:** `7a9099ff31ab` — fix(cerbos): include dealdesk policies in cerbos-policies ConfigMap
-- **HEAD author / date:** Joe Lacerna · 2026-07-15T02:40:47+08:00
-- **Unpushed commits on HEAD branch:** 1
+- **Last regenerated:** 2026-07-15T10:38:16+00:00
+- **Repo HEAD:** `dacf3760ff98` — docs: consolidate cerbos docs and add CERBOS_STATUS SSoT
+- **HEAD author / date:** Joe Lacerna · 2026-07-15T17:01:35+08:00
+- **Unpushed commits on HEAD branch:** 2
 - **kubectl context:** `arn:aws:eks:us-east-1:082585646836:cluster/conqrse`
 
 | Environment | Cerbos ready | Deployment last updated | Policies in ConfigMap |
 | --- | --- | --- | --- |
 | staging | ✅ 1/1 | 2026-07-11T06:30:07Z | 114 |
-| production | ✅ 1/1 | 2026-07-11T06:30:22Z | 86 |
+| production | ✅ 1/1 | 2026-07-11T06:30:22Z | 114 |
 
 ## 1. Status by Consumer
 
@@ -434,68 +434,12 @@ For a resource with multiple product marks, refer to the source doc `docs/RESOUR
 
 ### production
 
-- Policies loaded in ConfigMap: **86**
-- ⚠️ Missing on production (in repo/kustomization but not deployed): **28**
-    - `resource_dealdesk_blueprints.yaml`
-    - `resource_dealdesk_brand-users.yaml`
-    - `resource_dealdesk_brand-users_item.yaml`
-    - `resource_dealdesk_brand_media-packages.yaml`
-    - `resource_dealdesk_brands.yaml`
-    - `resource_dealdesk_brands_item.yaml`
-    - `resource_dealdesk_campaigns.yaml`
-    - `resource_dealdesk_campaigns_item.yaml`
-    - `resource_dealdesk_dsp-blocks.yaml`
-    - `resource_dealdesk_dsp-blocks_item.yaml`
-    - `resource_dealdesk_inventory.yaml`
-    - `resource_dealdesk_line-items.yaml`
-    - `resource_dealdesk_line-items_item.yaml`
-    - `resource_dealdesk_media-packages.yaml`
-    - `resource_dealdesk_media-packages_item.yaml`
-    - `resource_dealdesk_photo-verifications.yaml`
-    - `resource_dealdesk_photo-verifications_item.yaml`
-    - `resource_dealdesk_placement-rules.yaml`
-    - `resource_dealdesk_placement-rules_item.yaml`
-    - `resource_dealdesk_placement-types.yaml`
-    - `resource_dealdesk_placement-types_item.yaml`
-    - `resource_dealdesk_rate-cards.yaml`
-    - `resource_dealdesk_reports.yaml`
-    - `resource_dealdesk_sites.yaml`
-    - `resource_dealdesk_ssp.yaml`
-    - `resource_dealdesk_store-traffic.yaml`
-    - `resource_dealdesk_trade-ledgers.yaml`
-    - `resource_dealdesk_trade-ledgers_item.yaml`
+- Policies loaded in ConfigMap: **114**
+- ✅ **In sync with repo** — production ConfigMap matches the kustomization allowlist.
 
 ### staging ↔ production drift
 
-- Only on **staging** (28):
-    - `resource_dealdesk_blueprints.yaml`
-    - `resource_dealdesk_brand-users.yaml`
-    - `resource_dealdesk_brand-users_item.yaml`
-    - `resource_dealdesk_brand_media-packages.yaml`
-    - `resource_dealdesk_brands.yaml`
-    - `resource_dealdesk_brands_item.yaml`
-    - `resource_dealdesk_campaigns.yaml`
-    - `resource_dealdesk_campaigns_item.yaml`
-    - `resource_dealdesk_dsp-blocks.yaml`
-    - `resource_dealdesk_dsp-blocks_item.yaml`
-    - `resource_dealdesk_inventory.yaml`
-    - `resource_dealdesk_line-items.yaml`
-    - `resource_dealdesk_line-items_item.yaml`
-    - `resource_dealdesk_media-packages.yaml`
-    - `resource_dealdesk_media-packages_item.yaml`
-    - `resource_dealdesk_photo-verifications.yaml`
-    - `resource_dealdesk_photo-verifications_item.yaml`
-    - `resource_dealdesk_placement-rules.yaml`
-    - `resource_dealdesk_placement-rules_item.yaml`
-    - `resource_dealdesk_placement-types.yaml`
-    - `resource_dealdesk_placement-types_item.yaml`
-    - `resource_dealdesk_rate-cards.yaml`
-    - `resource_dealdesk_reports.yaml`
-    - `resource_dealdesk_sites.yaml`
-    - `resource_dealdesk_ssp.yaml`
-    - `resource_dealdesk_store-traffic.yaml`
-    - `resource_dealdesk_trade-ledgers.yaml`
-    - `resource_dealdesk_trade-ledgers_item.yaml`
+- ✅ **staging and production are in sync** (114 policies each).
 
 ## 6. Special Cases & Notes
 
