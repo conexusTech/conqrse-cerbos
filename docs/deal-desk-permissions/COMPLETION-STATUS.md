@@ -17,7 +17,7 @@ product-gating model against the spec in this folder (`README.md`,
 | B — conqrse-cerbos per-surface policies | ✅ Done & deployed (114/114, prod=staging) |
 | A — `@conqrse/permission-types` | ✅ Done — published `1.6.0` (per-surface `RESOURCE_META`) |
 | A — `@conqrse/api-types` | ✅ 3 products added & published (`5.15.0`); `DEAL_DESK` kept (deprecated) until api3 migrates (D) |
-| C — conqrse-admin wiring | 🟡 C2 done (design decision); C5 in progress (foundation + dashboard); C1 deferred to D |
+| C — conqrse-admin wiring | 🟢 C2 + C5 done; C1 partial — per-surface products provisionable, DEAL_DESK removal deferred to D |
 | D — conqrse-api3 | ❌ Not aligned — enforces the deprecated umbrella `dealdesk` product |
 
 > **Root blocker:** `@conqrse/api-types` lacks `ssp/trade/brand_center` and still ships
@@ -63,11 +63,13 @@ product-gating model against the spec in this folder (`README.md`,
   - [x] **Deal Desk dashboard**: Digital/Share-of-Play + Loop → `hasProduct(SSP)`; Physical/Placement → `hasProduct(TRADE)` (`DealDeskDashboardClient.tsx`)
   - [x] Brand Portal inventory tabs gate on real host capabilities (`BrowseInventoryClient.tsx`)
   - [x] **Demo-toggle pages** converted to `hasProduct` (localStorage toggle removed): `InventoryCatalog` (Digital→SSP, Physical→TRADE) + `CampaignScheduler` (digital media→SSP, physical→TRADE, floor-plan/conflicts→TRADE). Decision applied: **`digital` folded into SSP, `playlist`/audio no longer product-gated**.
-  - [~] **Campaign builder** (`campaigns/new/*`) — **In progress**
+  - [x] **Campaign builder** (`campaigns/new/*`) — **Done** (gate at the source; downstream cascades)
     - [x] Details step: **Trade Fund** → `hasProduct(TRADE)` (`CampaignFlightBudget.showTradeFund`); **Brand link** → `hasProduct(BRAND_CENTER)` (`CampaignIdentity.showBrandLink`) — owner decision (2026-07-16) to gate the brand field
-    - [ ] Inventory step (`InventorySearchClient`): ⚠️ **data-model finding** — this step is SSP/digital-only (endpoint types Screen/Stream/Audio + KVP targeting); there is **no physical-placement picker here**, so there's no clean digital-vs-physical split to gate, and gating the whole step behind SSP would break trade campaigns. Needs runtime tracing of how physical/Trade line items enter the builder before gating. **Recommend `/verify` or `/run`.**
-    - [ ] Creative step (`CreativeUploadClient`): rule-triggered creative → SSP — pending (recommend runtime verification)
-    - [ ] Review step (`CampaignReviewClient`): `DigitalLineItems`→SSP, `PhysicalLineItems`/`TradeFundImpact`→TRADE — pending; mind draft data-consistency (recommend runtime verification)
+    - [x] Inventory step: line-item **mode/endpoint** options gated in `AddLineItemForm` (SSP→digital Screen/Stream, Trade→Physical; Playlist/Audio ungated) with a safe default. This is the true SSP/Trade discriminator (`DraftLineItem.mode`), not the digital-only inventory list.
+    - [x] Creative step: rule-triggered creative is already data-driven (`isSSP = currentLI?.mode === 'SSP'`) → cascades from the mode gate; no redundant product gate added.
+    - [x] Review step: `DigitalLineItems`/`PhysicalLineItems`/`TradeFundImpact` already render off `li.mode` + `draft.tradeFund` → cascades from the mode gate.
+  - [x] **Retailer provisioning + build fix** (`retailer/types.ts`): added ssp/trade/brand_center to the product picker + label map (`Record<RetailerProduct>` was incomplete after api-types 5.15.0 — build-breaker caught by `tsc`). Enables SU/agency to provision per-surface products. DEAL_DESK umbrella retained (deferred to D).
+  - _Verification: full-project `tsc --noEmit` clean + eslint clean. Live per-surface driving not run — the app is auth/backend-gated and the `PERMISSION_ENABLED=false` bypass returns empty `userProducts`, so runtime show-behavior needs a seeded retailer/backend._
   - [ ] **Campaign report**: SSP/Trade panels currently **data-gated** (`composition.hasSSP`), arguably correct; decide whether to also product-gate — pending
   - [ ] **Inventory dashboard**: no clean ssp/trade sub-section split in current layout; would need `InventoryBreakdown` restructure — left any-of-three for now
 - [~] **C6** Menu `permissionKey`s resolve to real resources — **Partial**
