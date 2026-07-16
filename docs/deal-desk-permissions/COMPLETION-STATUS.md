@@ -18,7 +18,7 @@ product-gating model against the spec in this folder (`README.md`,
 | A — `@conqrse/permission-types` | ✅ Done — published `1.6.0` (per-surface `RESOURCE_META`) |
 | A — `@conqrse/api-types` | ✅ 3 products added & published (`5.15.0`); `DEAL_DESK` kept (deprecated) until api3 migrates (D) |
 | C — conqrse-admin wiring | 🟢 C2 + C5 done; C1 partial — per-surface products provisionable, DEAL_DESK removal deferred to D |
-| D — conqrse-api3 | 🟢 **Staging migrated + verified per-surface** (D1–D4 done). Remaining: prod backfill + D5 umbrella removal (destructive) |
+| D — conqrse-api3 | 🟢 **Staging migrated + verified per-surface** (D1–D4 done). No prod backfill — Deal Desk not rolled out to prod. Remaining: D5 umbrella removal (cleanup) |
 
 > **Root blocker:** `@conqrse/api-types` lacks `ssp/trade/brand_center` and still ships
 > `DEAL_DESK='dealdesk'`. This blocks admin **C1** and the whole api3 migration (**D**).
