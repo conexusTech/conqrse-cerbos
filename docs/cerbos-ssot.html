@@ -1,0 +1,906 @@
+<title>Conqrse Cerbos — Policy SSoT</title>
+<style>
+  /* ============ TOKENS ============ */
+  :root {
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --surface-2: #eef1f6;
+    --border: #dde3ec;
+    --border-strong: #c6cfdd;
+    --text: #182031;
+    --text-muted: #586178;
+    --text-faint: #8892a6;
+    --accent: #0d7d8c;
+    --accent-soft: #e0f0f2;
+    --accent-ink: #095963;
+    --good: #2f9e6d;   --good-soft: #e2f4ec;
+    --warn: #b6811a;   --warn-soft: #f8efd8;
+    --crit: #d1495b;   --crit-soft: #fbe4e7;
+    --shadow: 0 1px 2px rgba(24,32,49,.06), 0 4px 16px rgba(24,32,49,.05);
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    --maxw: 1160px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0d131e;
+      --surface: #151d2b;
+      --surface-2: #1c2636;
+      --border: #273246;
+      --border-strong: #37455e;
+      --text: #e7ecf5;
+      --text-muted: #9aa6bd;
+      --text-faint: #6b7791;
+      --accent: #34bccb;
+      --accent-soft: #123037;
+      --accent-ink: #7fe0eb;
+      --good: #46c088;   --good-soft: #113526;
+      --warn: #e0ac48;   --warn-soft: #3a2e12;
+      --crit: #ef6b7c;   --crit-soft: #3a1a20;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.28);
+    }
+  }
+  :root[data-theme="light"] {
+    --bg:#f5f7fa; --surface:#fff; --surface-2:#eef1f6; --border:#dde3ec; --border-strong:#c6cfdd;
+    --text:#182031; --text-muted:#586178; --text-faint:#8892a6;
+    --accent:#0d7d8c; --accent-soft:#e0f0f2; --accent-ink:#095963;
+    --good:#2f9e6d; --good-soft:#e2f4ec; --warn:#b6811a; --warn-soft:#f8efd8; --crit:#d1495b; --crit-soft:#fbe4e7;
+    --shadow:0 1px 2px rgba(24,32,49,.06),0 4px 16px rgba(24,32,49,.05);
+  }
+  :root[data-theme="dark"] {
+    --bg:#0d131e; --surface:#151d2b; --surface-2:#1c2636; --border:#273246; --border-strong:#37455e;
+    --text:#e7ecf5; --text-muted:#9aa6bd; --text-faint:#6b7791;
+    --accent:#34bccb; --accent-soft:#123037; --accent-ink:#7fe0eb;
+    --good:#46c088; --good-soft:#113526; --warn:#e0ac48; --warn-soft:#3a2e12; --crit:#ef6b7c; --crit-soft:#3a1a20;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.28);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--sans); line-height: 1.6; font-size: 16px;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  /* ============ HEADER ============ */
+  header.site {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    backdrop-filter: saturate(1.4) blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .site .wrap { display: flex; align-items: center; gap: 20px; height: 60px; }
+  .brand { display: flex; align-items: center; gap: 11px; font-weight: 680; letter-spacing: -.01em; }
+  .brand .glyph {
+    width: 26px; height: 26px; border-radius: 7px; flex: none;
+    background: linear-gradient(140deg, var(--accent), var(--accent-ink));
+    display: grid; place-items: center; color: #fff; font-family: var(--mono);
+    font-size: 13px; font-weight: 700; box-shadow: inset 0 0 0 1px rgba(255,255,255,.14);
+  }
+  nav.top { margin-left: auto; display: flex; gap: 4px; flex-wrap: wrap; }
+  nav.top a {
+    color: var(--text-muted); text-decoration: none; font-size: 13.5px; font-weight: 550;
+    padding: 6px 11px; border-radius: 7px; white-space: nowrap;
+  }
+  nav.top a:hover { color: var(--text); background: var(--surface-2); }
+  .theme-btn {
+    border: 1px solid var(--border-strong); background: var(--surface); color: var(--text-muted);
+    width: 34px; height: 34px; border-radius: 8px; cursor: pointer; font-size: 15px; flex: none;
+  }
+  .theme-btn:hover { color: var(--text); border-color: var(--accent); }
+
+  /* ============ HERO ============ */
+  .hero { padding: 54px 0 30px; border-bottom: 1px solid var(--border); }
+  .eyebrow {
+    font-family: var(--mono); font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600; margin: 0 0 14px;
+  }
+  .hero h1 {
+    font-size: clamp(30px, 4.6vw, 46px); line-height: 1.08; letter-spacing: -.025em;
+    margin: 0 0 16px; font-weight: 720; text-wrap: balance; max-width: 20ch;
+  }
+  .hero p.lede { font-size: 18px; color: var(--text-muted); margin: 0; max-width: 62ch; }
+  .meta-row {
+    display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 26px;
+    font-size: 13px; color: var(--text-faint); font-family: var(--mono);
+  }
+  .meta-row b { color: var(--text-muted); font-weight: 600; }
+
+  /* ============ STATUS TILES ============ */
+  section { padding: 46px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: 0; }
+  .sec-head { margin-bottom: 26px; }
+  .sec-num {
+    font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: .1em; font-weight: 600;
+  }
+  .sec-head h2 {
+    font-size: clamp(22px, 3vw, 30px); letter-spacing: -.02em; margin: 6px 0 8px; font-weight: 680;
+    text-wrap: balance;
+  }
+  .sec-head p { color: var(--text-muted); margin: 0; max-width: 68ch; }
+
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+  .tile {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 18px 18px 16px; box-shadow: var(--shadow); position: relative; overflow: hidden;
+  }
+  .tile::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); }
+  .tile.good::before { background: var(--good); } .tile.warn::before { background: var(--warn); } .tile.crit::before { background: var(--crit); }
+  .tile .k { font-size: 12.5px; color: var(--text-muted); font-weight: 550; margin: 0 0 8px; }
+  .tile .v { font-size: 30px; font-weight: 720; letter-spacing: -.02em; font-variant-numeric: tabular-nums; line-height: 1; }
+  .tile .v small { font-size: 15px; color: var(--text-faint); font-weight: 500; letter-spacing: 0; }
+  .tile .sub { font-size: 12.5px; color: var(--text-faint); margin-top: 8px; }
+
+  /* ============ PILLS / CHIPS ============ */
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 600;
+    padding: 2px 9px; border-radius: 999px; font-family: var(--mono); letter-spacing: .01em;
+    border: 1px solid transparent; white-space: nowrap;
+  }
+  .pill.good { background: var(--good-soft); color: var(--good); }
+  .pill.warn { background: var(--warn-soft); color: var(--warn); }
+  .pill.crit { background: var(--crit-soft); color: var(--crit); }
+  .pill.neutral { background: var(--surface-2); color: var(--text-muted); }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+
+  .chip {
+    display: inline-block; font-family: var(--mono); font-size: 11.5px; padding: 1.5px 7px;
+    border-radius: 6px; background: var(--accent-soft); color: var(--accent-ink);
+    border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent); margin: 2px 3px 2px 0;
+    white-space: nowrap;
+  }
+  .chip.and { background: var(--warn-soft); color: var(--warn); border-color: color-mix(in srgb, var(--warn) 30%, transparent); }
+  .chip.none { background: var(--surface-2); color: var(--text-faint); border-color: var(--border); }
+
+  code {
+    font-family: var(--mono); font-size: .88em; background: var(--surface-2);
+    padding: 1px 6px; border-radius: 5px; color: var(--accent-ink); border: 1px solid var(--border);
+  }
+  :root[data-theme="dark"] code, @media (prefers-color-scheme: dark) { }
+
+  /* ============ CARDS / GRID ============ */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 20px; box-shadow: var(--shadow);
+  }
+  .card h3 { margin: 0 0 4px; font-size: 16px; letter-spacing: -.01em; display: flex; align-items: center; gap: 9px; }
+  .card h3 .tag { font-family: var(--mono); font-size: 11px; padding: 2px 7px; border-radius: 6px; background: var(--accent-soft); color: var(--accent-ink); font-weight: 600; }
+  .card .desc { color: var(--text-muted); font-size: 14px; margin: 0; }
+  .card ul { margin: 12px 0 0; padding-left: 18px; color: var(--text-muted); font-size: 14px; }
+  .card ul li { margin: 4px 0; }
+  .card ul li b { color: var(--text); font-weight: 600; }
+
+  /* ============ TABLES ============ */
+  .table-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  thead th {
+    text-align: left; font-weight: 620; color: var(--text-muted); background: var(--surface-2);
+    padding: 11px 14px; border-bottom: 1px solid var(--border); position: sticky; top: 0; white-space: nowrap;
+    font-size: 12px; letter-spacing: .03em; text-transform: uppercase;
+  }
+  tbody td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr:hover { background: var(--surface-2); }
+  td.res { font-family: var(--mono); font-size: 12.5px; color: var(--text); white-space: nowrap; }
+  td.type { color: var(--text-faint); font-size: 12px; font-family: var(--mono); }
+  .group-row td {
+    background: var(--surface-2); font-weight: 660; font-size: 12px; letter-spacing: .05em;
+    text-transform: uppercase; color: var(--accent-ink); padding: 9px 14px;
+  }
+  .actions-mini { font-family: var(--mono); font-size: 11.5px; color: var(--text-muted); }
+
+  /* ============ MATRIX CONTROLS ============ */
+  .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 16px; }
+  .search {
+    flex: 1 1 240px; min-width: 200px; padding: 9px 13px; border-radius: 9px; border: 1px solid var(--border-strong);
+    background: var(--surface); color: var(--text); font-size: 14px; font-family: var(--sans);
+  }
+  .search:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+  .filters { display: flex; flex-wrap: wrap; gap: 6px; }
+  .fbtn {
+    font-family: var(--mono); font-size: 12px; padding: 6px 11px; border-radius: 8px; cursor: pointer;
+    border: 1px solid var(--border-strong); background: var(--surface); color: var(--text-muted); font-weight: 550;
+  }
+  .fbtn:hover { border-color: var(--accent); color: var(--text); }
+  .fbtn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .count-note { font-size: 12.5px; color: var(--text-faint); font-family: var(--mono); margin: 10px 2px 0; }
+
+  /* ============ CODE BLOCKS ============ */
+  .code-block {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+    box-shadow: var(--shadow); margin: 12px 0;
+  }
+  .code-block .cb-head {
+    display: flex; align-items: center; gap: 8px; padding: 8px 14px; background: var(--surface-2);
+    border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text-muted); font-family: var(--mono);
+  }
+  .code-block .cb-head .dotset { display: flex; gap: 5px; }
+  .code-block .cb-head .dotset i { width: 9px; height: 9px; border-radius: 50%; background: var(--border-strong); }
+  .code-block pre { margin: 0; padding: 14px 16px; overflow-x: auto; }
+  .code-block pre code {
+    background: none; border: 0; padding: 0; font-size: 12.5px; color: var(--text); line-height: 1.7; display: block;
+  }
+  .cmt { color: var(--text-faint); }
+  .kw { color: var(--accent); font-weight: 600; }
+
+  .steps { counter-reset: step; list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .steps li { counter-increment: step; position: relative; padding-left: 42px; color: var(--text-muted); font-size: 14.5px; }
+  .steps li::before {
+    content: counter(step); position: absolute; left: 0; top: -1px; width: 27px; height: 27px;
+    border-radius: 8px; background: var(--accent-soft); color: var(--accent-ink); font-family: var(--mono);
+    font-weight: 700; font-size: 13px; display: grid; place-items: center; border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+  .steps li b { color: var(--text); font-weight: 620; }
+
+  /* ============ CALLOUTS ============ */
+  .callout {
+    display: flex; gap: 13px; padding: 15px 17px; border-radius: 11px; margin: 14px 0;
+    border: 1px solid var(--border); background: var(--surface); box-shadow: var(--shadow);
+  }
+  .callout .ico { flex: none; width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; font-size: 14px; font-weight: 700; }
+  .callout .body { font-size: 14px; color: var(--text-muted); }
+  .callout .body b { color: var(--text); }
+  .callout.warn { border-color: color-mix(in srgb, var(--warn) 40%, var(--border)); background: color-mix(in srgb, var(--warn-soft) 55%, var(--surface)); }
+  .callout.warn .ico { background: var(--warn-soft); color: var(--warn); }
+  .callout.crit { border-color: color-mix(in srgb, var(--crit) 40%, var(--border)); background: color-mix(in srgb, var(--crit-soft) 55%, var(--surface)); }
+  .callout.crit .ico { background: var(--crit-soft); color: var(--crit); }
+  .callout.info .ico { background: var(--accent-soft); color: var(--accent-ink); }
+  .callout.good { border-color: color-mix(in srgb, var(--good) 40%, var(--border)); background: color-mix(in srgb, var(--good-soft) 55%, var(--surface)); }
+  .callout.good .ico { background: var(--good-soft); color: var(--good); }
+
+  /* ============ COMPARE (sync) ============ */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px) { .compare { grid-template-columns: 1fr; } }
+  .env-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; box-shadow: var(--shadow); }
+  .env-card .env-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+  .env-card .env-name { font-weight: 680; font-size: 17px; display: flex; align-items: center; gap: 9px; }
+  .env-card .env-url { font-family: var(--mono); font-size: 12px; color: var(--text-faint); }
+  .env-card dl { display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; margin: 0; font-size: 13.5px; }
+  .env-card dt { color: var(--text-muted); }
+  .env-card dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono); font-size: 12.5px; }
+  .bignum { font-size: 40px; font-weight: 730; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+
+  /* legend */
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 14px; font-size: 13px; color: var(--text-muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; }
+
+  footer.site { padding: 34px 0 60px; color: var(--text-faint); font-size: 13px; }
+  footer.site .wrap { display: flex; flex-wrap: wrap; gap: 10px 24px; align-items: center; justify-content: space-between; }
+  footer.site code { font-size: 11.5px; }
+  .hr-space { height: 8px; }
+  a.inline { color: var(--accent); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); }
+  a.inline:hover { border-bottom-color: var(--accent); }
+  .hidden { display: none !important; }
+</style>
+
+<header class="site">
+  <div class="wrap">
+    <div class="brand"><span class="glyph">C</span> Conqrse&nbsp;·&nbsp;Cerbos SSoT</div>
+    <nav class="top">
+      <a href="#status">Status</a>
+      <a href="#taxonomy">Taxonomy</a>
+      <a href="#matrix">Matrix</a>
+      <a href="#howto">How-To</a>
+      <a href="#sync">Prod vs Staging</a>
+      <a href="#notes">Special Cases</a>
+    </nav>
+    <button class="theme-btn" id="themeToggle" title="Toggle light / dark" aria-label="Toggle theme">◐</button>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Authorization · Single Source of Truth</p>
+    <h1>What Cerbos protects in Conqrse Admin</h1>
+    <p class="lede">A plain-language reference to every authorization policy live in <b>conqrse-cerbos</b> — the products, user levels, and resources it governs, how it's deployed, and where production and staging stand today.</p>
+    <div class="meta-row">
+      <span><b>Source of truth:</b> docs/RESOURCES_ACTIONS_MATRIX.md</span>
+      <span><b>Cerbos:</b> v0.51.0</span>
+      <span><b>@conqrse/permission-types:</b> v1.5.0</span>
+      <span><b>Snapshot:</b> repo HEAD, 2026-07-16</span>
+    </div>
+  </div>
+</div>
+
+<!-- ================= STATUS SUMMARY ================= -->
+<section id="status">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">01 — At a glance</span>
+      <h2>Where things stand right now</h2>
+      <p>Scan this first. Both Cerbos servers are healthy and now <b>in sync</b> — production was re-seeded with the DealDesk policies on 2026-07-15 and matches staging at 114 policies.</p>
+    </div>
+    <div class="tiles">
+      <div class="tile good">
+        <p class="k">Staging server</p>
+        <div class="v">1/1 <small>ready</small></div>
+        <div class="sub">114 policies loaded · in sync with repo</div>
+      </div>
+      <div class="tile good">
+        <p class="k">Production server</p>
+        <div class="v">1/1 <small>ready</small></div>
+        <div class="sub">114 policies loaded · in sync with staging</div>
+      </div>
+      <div class="tile good">
+        <p class="k">Prod vs Staging drift</p>
+        <div class="v">0 <small>in sync</small></div>
+        <div class="sub">DealDesk re-seeded to prod 2026-07-15</div>
+      </div>
+      <div class="tile warn">
+        <p class="k">CMS policies</p>
+        <div class="v">18 <small>undeployed</small></div>
+        <div class="sub">Exist in repo, not in the deploy allowlist</div>
+      </div>
+      <div class="tile crit">
+        <p class="k">Consumer integration</p>
+        <div class="v">0% <small>0 / 131</small></div>
+        <div class="sub">admin &amp; api3 not yet wired to policies</div>
+      </div>
+    </div>
+    <div class="callout info" style="margin-top:20px">
+      <div class="ico">i</div>
+      <div class="body">Policies being <b>deployed</b> is not the same as being <b>enforced</b>. Cerbos holds the rules, but the applications (<code>conqrse-admin</code>, <code>conqrse-api3</code>) must call Cerbos for each request. Integration coverage is currently 0% — the rulebook is written but not yet consulted at runtime.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TAXONOMY ================= -->
+<section id="taxonomy">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">02 — The building blocks</span>
+      <h2>Products, user levels, user types &amp; resources</h2>
+      <p>Every access decision combines four things: <b>who</b> the user is (level × type → a role), <b>what</b> products they've subscribed to, <b>which</b> resource they're touching, and <b>which</b> retailer they belong to.</p>
+    </div>
+
+    <h3 style="font-size:15px;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted);margin:0 0 12px">Products <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-faint)">— a subscription gate; a resource is invisible unless its product is on the account</span></h3>
+    <div class="table-scroll" style="margin-bottom:14px">
+      <table>
+        <thead><tr><th>Key</th><th>Name</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="res">qr</td><td>QR Code</td><td>—</td></tr>
+          <tr><td class="res">priceTags</td><td>Pricing</td><td>—</td></tr>
+          <tr><td class="res">compliance</td><td>Compliance</td><td>—</td></tr>
+          <tr><td class="res">product</td><td>Product</td><td>—</td></tr>
+          <tr><td class="res">signage</td><td>Signages</td><td>—</td></tr>
+          <tr><td class="res">landing</td><td>Landing</td><td>—</td></tr>
+          <tr><td class="res">connect</td><td>Connect</td><td>—</td></tr>
+          <tr><td class="res">ppt</td><td>People, Places &amp; Things</td><td>—</td></tr>
+          <tr><td class="res">cms</td><td>Content Management System</td><td>Policies exist but are not deployed — see Special Cases</td></tr>
+          <tr><td class="res">ssp</td><td>Supply-Side Platform</td><td>DealDesk gate — unlocks ssp, dsp-blocks (per-surface)</td></tr>
+          <tr><td class="res">trade</td><td>Trade</td><td>DealDesk gate — unlocks trade-ledgers, media-packages, line-items, photo-verifications (per-surface)</td></tr>
+          <tr><td class="res">brand_center</td><td>Brand Center</td><td>DealDesk gate — unlocks brands, brand-users (per-surface); also the brand path</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout warn">
+      <div class="ico">!</div>
+      <div class="body"><b>“dealdesk” is not a product.</b> It's a resource group, gated <b>per-surface</b> (retailer path): each resource requires the specific product for its surface — <code>ssp</code>, <code>trade</code>, or <code>brand_center</code> — while cross-cutting resources accept <b>any one</b> of the three and <code>sites</code>/<code>blueprints</code> are ungated (base). See Special Cases for the full breakdown and the brand-user exception.</div>
+    </div>
+
+    <div class="card-grid" style="margin-top:24px">
+      <div class="card">
+        <h3>User Levels <span class="tag">userLevel</span></h3>
+        <p class="desc">The organizational tier — decides scope. Higher tiers reach into lower ones.</p>
+        <ul>
+          <li><b>su</b> — Super User / platform. Reaches everything; not bound to one retailer.</li>
+          <li><b>agency</b> — Manages its own child retailers only.</li>
+          <li><b>retailer</b> — The operating store level. The scope floor — cannot delegate.</li>
+          <li><b>brand</b> — DealDesk-only, cross-retailer (scoped to linked retailers).</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>User Types <span class="tag">userType</span></h3>
+        <p class="desc">The seniority within a level. Level × Type computes the actual role.</p>
+        <ul>
+          <li><b>owner</b> — Full control.</li>
+          <li><b>admin</b> — Manage users/resources &amp; settings.</li>
+          <li><b>lead</b> — Operate resources; <b>no settings access</b>.</li>
+          <li><b>member</b> — Standard operator.</li>
+          <li><b>collaborator</b> — <b>Read-only</b> (list / view / export).</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Roles are derived <span class="tag">4 × 5</span></h3>
+        <p class="desc">Roles aren't assigned directly — Cerbos computes them from level × type. Naming isn't always parallel:</p>
+        <ul>
+          <li>retailer + admin → <b>retailer_manager</b></li>
+          <li>retailer + lead → <b>team_lead</b></li>
+          <li>retailer + member → <b>staff_operator</b></li>
+          <li>retailer + collaborator → <b>guest_collaborator</b></li>
+          <li>Brand level has <b>no collaborator</b> (4 types only).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout info" style="margin-top:20px">
+      <div class="ico">#</div>
+      <div class="body"><b>Resources</b> are the things being protected — named <code>group:resource</code> (e.g. <code>qr:campaigns</code>) with an optional <code>:item</code> suffix for a single record. There are <b>114 deployed</b> policies across 10 groups: <code>settings</code>, <code>reports</code>, <code>footprints</code>, <code>contents</code>, <code>signages</code>, <code>connect</code>, <code>qr</code>, <code>dealdesk</code> (+ legacy <code>dealdesk_brand</code>), and <code>cms</code> (undeployed). Browse them all in the matrix below.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MATRIX ================= -->
+<section id="matrix">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">03 — Product × Resource matrix</span>
+      <h2>Which products unlock which resources</h2>
+      <p>Filter by product or search a resource. A resource is only reachable if the account holds one of its required products (DealDesk gates <b>per-surface</b> — most rows need a single product; a few accept any one of <code>ssp</code>/<code>trade</code>/<code>brand_center</code>). <code>:item</code> resources additionally require the user's retailer to match the record's retailer.</p>
+    </div>
+
+    <div class="controls">
+      <input class="search" id="matrixSearch" type="text" placeholder="Search resources, e.g. campaigns, settings, brand…" aria-label="Search resources">
+    </div>
+    <div class="filters" id="prodFilters"></div>
+    <div class="legend">
+      <span><span class="chip">product</span> requires any one (OR)</span>
+      <span><span class="chip none">none</span> no product gate (base)</span>
+    </div>
+    <p class="count-note" id="countNote"></p>
+
+    <div class="table-scroll" style="margin-top:6px">
+      <table>
+        <thead><tr><th style="min-width:220px">Resource</th><th>Type</th><th style="min-width:220px">Required products</th><th>Actions</th></tr></thead>
+        <tbody id="matrixBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HOW-TO ================= -->
+<section id="howto">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">04 — Operating guide</span>
+      <h2>How-to: permission-types &amp; seeding</h2>
+      <p>Two recurring jobs: consuming the shared <code>@conqrse/permission-types</code> package, and pushing policies to the Cerbos servers. The matrix doc is the source — policies and types are both generated from it.</p>
+    </div>
+
+    <div class="card-grid" style="margin-bottom:26px">
+      <div class="card">
+        <h3>@conqrse/permission-types <span class="tag">v1.5.0</span></h3>
+        <p class="desc">Auto-generated TypeScript enums &amp; types shared by <code>conqrse-admin</code> and <code>conqrse-api3</code>. Never hand-edit — it's generated from the matrix.</p>
+        <div class="code-block">
+          <div class="cb-head"><span class="dotset"><i></i><i></i><i></i></span> install in a consumer</div>
+          <pre><code><span class="cmt"># consumer .npmrc must point the scope at the private registry</span>
+@conqrse:registry=https://npm.conqrse.com/
+
+npm install @conqrse/permission-types@latest</code></pre>
+        </div>
+        <div class="code-block">
+          <div class="cb-head"><span class="dotset"><i></i><i></i><i></i></span> use it</div>
+          <pre><code><span class="kw">import</span> { Resource, Action, RESOURCE_META } <span class="kw">from</span> '@conqrse/permission-types';
+
+<span class="kw">const</span> meta = RESOURCE_META[Resource.QR_CAMPAIGNS];
+meta.type;      <span class="cmt">// 'collection'</span>
+meta.actions;   <span class="cmt">// [Action.LIST, Action.VIEW, ...]</span>
+meta.products;  <span class="cmt">// [Product.QR, ...]</span></code></pre>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Regenerate &amp; publish <span class="tag">on policy change</span></h3>
+        <p class="desc">After the matrix changes, regenerate the package, bump the version, and publish. A version bump is <b>mandatory</b> — if enums drift from deployed policies, runtime auth breaks.</p>
+        <div class="code-block">
+          <div class="cb-head"><span class="dotset"><i></i><i></i><i></i></span> regenerate → build → publish</div>
+          <pre><code><span class="cmt"># 1. regenerate enums from the matrix</span>
+python3 scripts/generate_types.py --force
+
+<span class="cmt"># 2. build</span>
+cd packages/permission-types &amp;&amp; npm run build
+
+<span class="cmt"># 3. bump version in package.json (semver):</span>
+<span class="cmt">#    added value = minor · removed/renamed = major · fix = patch</span>
+
+<span class="cmt"># 4. publish + verify</span>
+npm publish --registry https://npm.conqrse.com/
+npm view @conqrse/permission-types@latest \
+  --registry https://npm.conqrse.com/</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-size:15px;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted);margin:8px 0 14px">Seeding Cerbos policies — staging then production</h3>
+    <p style="color:var(--text-muted);margin:0 0 16px;max-width:70ch;font-size:14.5px">Seeding is a Kubernetes Job (<code>cerbos-seed-policies</code>) driven by <code>k8s/deploy.sh</code>. The script compiles the policies, re-applies the kustomize overlay, and re-runs the seed job — which POSTs every file in the <code>cerbos-policies</code> ConfigMap to the Cerbos admin API. <b>Same script, same job — the only difference is the environment argument.</b></p>
+
+    <div class="compare" style="margin-bottom:8px">
+      <div class="env-card">
+        <div class="env-top"><span class="env-name"><span class="pill neutral"><span class="dot" style="color:var(--warn)"></span>staging</span></span><span class="env-url">staging-cerbos.conqrse.com</span></div>
+        <div class="code-block" style="margin-top:0">
+          <div class="cb-head"><span class="dotset"><i></i><i></i><i></i></span> deploy + verify (namespace: staging)</div>
+          <pre><code>./k8s/deploy.sh staging
+
+kubectl get job -n staging cerbos-seed-policies
+kubectl logs -n staging job/cerbos-seed-policies | tail -20</code></pre>
+        </div>
+      </div>
+      <div class="env-card">
+        <div class="env-top"><span class="env-name"><span class="pill neutral"><span class="dot" style="color:var(--crit)"></span>production</span></span><span class="env-url">cerbos.conqrse.com</span></div>
+        <div class="code-block" style="margin-top:0">
+          <div class="cb-head"><span class="dotset"><i></i><i></i><i></i></span> only after staging is verified (namespace: production)</div>
+          <pre><code>./k8s/deploy.sh production
+
+kubectl get job -n production cerbos-seed-policies
+kubectl logs -n production job/cerbos-seed-policies | tail -20</code></pre>
+        </div>
+      </div>
+    </div>
+    <div class="callout good">
+      <div class="ico">✓</div>
+      <div class="body"><b>A healthy seed</b> ends with <code>Successfully seeded &lt;N&gt; policies</code> where N matches the ConfigMap file count, no <code>ERROR:</code> lines, and your files listed as <code>Seeded: resource_&lt;name&gt;.yaml</code>.</div>
+    </div>
+
+    <h3 style="font-size:15px;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted);margin:26px 0 14px">When the matrix changes — end-to-end</h3>
+    <ol class="steps">
+      <li>Edit <b>docs/RESOURCES_ACTIONS_MATRIX.md</b> (resource-actions table + Product × Resource matrix; <code>required</code> = OR. DealDesk is gated per-surface by namespace; <code>required-all</code> = AND is deprecated).</li>
+      <li>Add the new policy filename to <b>k8s/base/kustomization.yaml</b> under <code>configMapGenerator.files</code>. <b>A file not in this allowlist never reaches any cluster.</b></li>
+      <li>Preview, then generate: <code>python3 scripts/generate_policies.py --dry-run</code> → <code>--force</code> (or <code>--resource "&lt;name&gt;" --force</code>).</li>
+      <li>Regenerate types: <code>python3 scripts/generate_types.py --force</code>, then build &amp; bump the package.</li>
+      <li>Validate locally: <code>cerbos compile k8s/base/policies/</code>.</li>
+      <li>Commit, then deploy <b>staging → production</b> using the commands above.</li>
+      <li>Refresh the status doc: <code>python3 scripts/generate_status.py</code>.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= SYNC ================= -->
+<section id="sync">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">05 — Deployment status</span>
+      <h2>Production vs Staging: are they in sync?</h2>
+      <p>Both environments inherit one shared base (overlays never touch the policy list), so the manifests always define an identical set. As of <b>2026-07-15</b> the runtime matches too — production was re-seeded with the DealDesk policies and now runs the full 114-policy set, same as staging.</p>
+    </div>
+
+    <div class="compare">
+      <div class="env-card">
+        <div class="env-top">
+          <span class="env-name"><span class="dot" style="width:9px;height:9px;color:var(--warn)"></span>Staging</span>
+          <span class="pill good"><span class="dot"></span>1/1 ready</span>
+        </div>
+        <div class="bignum" style="color:var(--good)">114</div>
+        <p style="color:var(--text-faint);font-size:12.5px;margin:2px 0 14px">policies loaded · in sync with repo</p>
+        <dl>
+          <dt>Ingress host</dt><dd>staging-cerbos.conqrse.com</dd>
+          <dt>Last updated</dt><dd>2026-07-11</dd>
+          <dt>API Explorer</dt><dd>enabled</dd>
+          <dt>Storage</dt><dd>sqlite3 / EBS</dd>
+        </dl>
+      </div>
+      <div class="env-card">
+        <div class="env-top">
+          <span class="env-name"><span class="dot" style="width:9px;height:9px;color:var(--good)"></span>Production</span>
+          <span class="pill good"><span class="dot"></span>1/1 ready</span>
+        </div>
+        <div class="bignum" style="color:var(--good)">114</div>
+        <p style="color:var(--text-faint);font-size:12.5px;margin:2px 0 14px">policies loaded · <b style="color:var(--good)">in sync with staging</b></p>
+        <dl>
+          <dt>Ingress host</dt><dd>cerbos.conqrse.com</dd>
+          <dt>Last updated</dt><dd>2026-07-15 (re-seeded)</dd>
+          <dt>API Explorer</dt><dd>disabled</dd>
+          <dt>Storage</dt><dd>sqlite3 / EBS</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="callout good" style="margin-top:18px">
+      <div class="ico">✓</div>
+      <div class="body"><b>Resolved 2026-07-15.</b> The DealDesk group (28 policies: all <code>dealdesk:*</code> plus <code>dealdesk_brand:media-packages</code>) was re-seeded to production via <code>./k8s/deploy.sh production</code>. The seed job confirmed <code>Successfully seeded 114 policies</code> and the pod stayed healthy (1/1). <b>DealDesk authorization now exists in production.</b></div>
+    </div>
+
+    <div class="table-scroll" style="margin-top:20px">
+      <table>
+        <thead><tr><th>Aspect</th><th>Staging</th><th>Production</th><th>Same?</th></tr></thead>
+        <tbody>
+          <tr><td>Policies loaded (runtime)</td><td class="res">114</td><td class="res">114</td><td><span class="pill good"><span class="dot"></span>in sync</span></td></tr>
+          <tr><td>Policy set (manifests)</td><td class="res">114</td><td class="res">114</td><td><span class="pill good"><span class="dot"></span>identical</span></td></tr>
+          <tr><td>Server health</td><td class="res">1/1</td><td class="res">1/1</td><td><span class="pill good"><span class="dot"></span>both up</span></td></tr>
+          <tr><td>Cerbos image</td><td class="res">0.51.0</td><td class="res">0.51.0</td><td><span class="pill good"><span class="dot"></span>same</span></td></tr>
+          <tr><td>Storage backend</td><td class="res">sqlite3/EBS</td><td class="res">sqlite3/EBS</td><td><span class="pill good"><span class="dot"></span>same</span></td></tr>
+          <tr><td>Deploy strategy</td><td class="res">Recreate</td><td class="res">Recreate</td><td><span class="pill good"><span class="dot"></span>same</span></td></tr>
+          <tr><td>Replicas</td><td class="res">1</td><td class="res">1</td><td><span class="pill good"><span class="dot"></span>same</span></td></tr>
+          <tr><td>API Explorer</td><td class="res">enabled</td><td class="res">disabled</td><td><span class="pill neutral">by design</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="count-note">Basis: repo manifests + <code>docs/CERBOS_STATUS.md</code> (generated 2026-07-15). Config differences other than policy count are operational (namespace, ingress, API Explorer, CORS) and intentional.</p>
+  </div>
+</section>
+
+<!-- ================= NOTES ================= -->
+<section id="notes">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">06 — Read before you rely on it</span>
+      <h2>Special cases &amp; gotchas</h2>
+      <p>The rules below are not obvious from the resource names. They shape who really gets access.</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>🔐 Retailer isolation</h3>
+        <p class="desc">Every <code>:item</code> (single-record) product resource enforces <code>P.attr.retailerId == R.attr.retailerId</code> — the user's retailer must equal the record's retailer. This blocks cross-retailer data access. SU is the only level not bound to a single retailer; agencies are bound to their own child retailers. List endpoints don't always carry a retailerId, so the consuming API must filter lists to the caller's retailer.</p>
+      </div>
+      <div class="card">
+        <h3>🪪 Delegation / “act-as”</h3>
+        <p class="desc">SU and Agency levels reach into Retailer resources with the same permissions as retailer owners/managers — delegation is achieved <b>implicitly through userLevel scope</b>, not a separate mechanism. <b>Retailer level cannot delegate</b> — it cannot act as another retailer. Agencies are bounded to their own child retailers. <i>Note: the two test docs disagree on whether “Act-As” is still a distinct pattern — treat it as scope-based.</i></p>
+      </div>
+      <div class="card">
+        <h3>🤝 DealDesk gates per-surface</h3>
+        <p class="desc"><code>dealdesk</code> is a resource group, not a product. As of <b>2026-07-16</b> the retailer path gates <b>per-surface</b> (the old all-three AND is deprecated): <code>ssp</code> → <code>ssp</code>, <code>dsp-blocks</code>; <code>trade</code> → <code>trade-ledgers</code>, <code>media-packages</code>, <code>line-items</code>, <code>photo-verifications</code>; <code>brand_center</code> → <code>brands</code>, <code>brand-users</code>. Cross-cutting resources (<code>campaigns</code>, <code>inventory</code>, <code>reports</code>, <code>placement-rules</code>, <code>placement-types</code>, <code>rate-cards</code>) accept <b>any one</b> of the three; <code>store-traffic</code> needs <code>ssp</code> <b>or</b> <code>trade</code>; <code>sites</code> and <code>blueprints</code> are <b>base</b> (no product gate). Each policy also keeps a separate <b>brand path</b> (<code>userLevel == "brand"</code>) that only needs <code>brand_center</code> and is scoped cross-retailer via <code>R.attr.retailerId in P.attr.retailerIds</code> (the brand's linked retailers).</p>
+      </div>
+      <div class="card">
+        <h3>👁️ Collaborators are read-only</h3>
+        <p class="desc">At every level, <code>collaborator</code> users may only list / view / export. Any create / update / delete is denied. Separately, <b>lead-type users have no settings access</b> — only owner/admin can change settings.</p>
+      </div>
+      <div class="card">
+        <h3>🧩 The allowlist is the shipping gate</h3>
+        <p class="desc">A <code>resource_*.yaml</code> file only ships if it's listed in <code>k8s/base/kustomization.yaml</code>. This is the single most common cause of “I deployed but nothing changed.” <b>18 CMS policies</b> exist in the repo but are absent from the allowlist — so CMS authorization is defined but will never reach any cluster.</p>
+      </div>
+      <div class="card">
+        <h3>🗂️ Settings are non-product</h3>
+        <p class="desc"><code>settings:admin_*</code> and <code>settings:user_*</code> do not require product or retailer checks — they're cross-cutting. Note the naming: settings use underscores (<code>settings:admin_users</code>), deliberately distinct from product-namespaced resources.</p>
+      </div>
+      <div class="card">
+        <h3>🧬 Legacy brand_user role</h3>
+        <p class="desc">A generic <code>brand_user</code> role (matches any <code>userLevel == "brand"</code>) is kept only for backward compatibility with <code>dealdesk_brand:media-packages</code>, and is slated for removal. The legacy <code>dealdesk_brand:*</code> grouping behaves differently from the newer tiered <code>dealdesk:*</code> policies.</p>
+      </div>
+      <div class="card">
+        <h3>📦 Version bump is mandatory</h3>
+        <p class="desc">Every policy change must bump <code>@conqrse/permission-types</code>. Consumers rely on the generated enums; if deployed policies and enums diverge, runtime authorization breaks. Never overwrite a published version — always bump.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">
+    <span>Generated from the <code>conqrse-cerbos</code> repository · source of truth: <code>docs/RESOURCES_ACTIONS_MATRIX.md</code></span>
+    <span>Snapshot: repo HEAD · 2026-07-15 · basis: repo files</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // ---------- theme ----------
+  var root = document.documentElement;
+  var btn = document.getElementById('themeToggle');
+  btn.addEventListener('click', function () {
+    var cur = root.getAttribute('data-theme');
+    if (!cur) cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    root.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+  });
+
+  // ---------- matrix data ----------
+  // products marked on each resource; mode 'or' = any one grants, 'and' = all required, 'none' = no gate
+  var PRODUCTS = ['qr','priceTags','compliance','product','signage','landing','connect','ppt','cms','ssp','trade','brand_center'];
+  var G = function (name, rows) { return { group: name, rows: rows }; };
+  var R = function (name, type, products, mode, actions) {
+    return { name: name, type: type, products: products, mode: mode || 'or', actions: actions };
+  };
+  var CRUD = 'list · view · create · update · delete · export · import';
+  var ITEM = 'view · update · delete';
+  var RPT  = 'list · view · export';
+
+  var DATA = [
+    G('Settings — Admin & User (no product gate)', [
+      R('settings:admin_users','collection',[],'none',CRUD),
+      R('settings:admin_users:item','item',[],'none',ITEM),
+      R('settings:admin_teams','collection',[],'none',CRUD),
+      R('settings:admin_teams:item','item',[],'none',ITEM),
+      R('settings:admin_cerbos','collection',[],'none',CRUD),
+      R('settings:admin_cerbos:item','item',[],'none',ITEM),
+      R('settings:user_profile:item','item',[],'none','view · update'),
+      R('settings:admin_general_agency:item','item',[],'none','view · update · delete'),
+      R('settings:admin_general_retailer:item','item',[],'none','view · update · delete'),
+      R('settings:admin_general_brand:item','item',[],'none','view · update · delete'),
+      R('settings:admin_general_ambient:item','item',[],'none','view · update · delete'),
+    ]),
+    G('Reports', [
+      R('reports:qr_performance','collection',['qr'],'or',RPT),
+      R('reports:qr_performance_site_to_site','collection',['qr'],'or',RPT),
+      R('reports:site_performance_maps','collection',['qr'],'or',RPT),
+      R('reports:media_performance_maps','collection',['qr'],'or',RPT),
+      R('reports:campaign_compliance','collection',['qr','compliance','signage'],'or',RPT),
+      R('reports:campaign_compliance_details','collection',['qr','compliance','signage'],'or',RPT),
+      R('reports:campaign_performance_maps','collection',['qr','compliance','signage'],'or',RPT),
+      R('reports:content_proof_of_play','collection',['signage'],'or',RPT),
+      R('reports:export','collection',['qr','compliance','product','signage','connect'],'or','list · export · delete'),
+    ]),
+    G('Footprints', [
+      R('footprints:sites','collection',['qr','priceTags','compliance','product','signage'],'or',CRUD),
+      R('footprints:sites:item','item',['qr','priceTags','compliance','product','signage'],'or',ITEM),
+      R('footprints:endpoints','collection',['priceTags','signage'],'or',CRUD),
+      R('footprints:endpoints:item','item',['priceTags','signage'],'or',ITEM),
+      R('footprints:products','collection',['priceTags','compliance','product','signage'],'or',CRUD),
+      R('footprints:products:item','item',['priceTags','compliance','product','signage'],'or',ITEM),
+      R('footprints:pricing','collection',['priceTags','product','signage'],'or',CRUD),
+    ]),
+    G('Content Management (contents:)', [
+      R('contents:templates','collection',['priceTags','signage'],'or',CRUD),
+      R('contents:templates:item','item',['priceTags','signage'],'or',ITEM),
+      R('contents:assets','collection',['signage'],'or',CRUD),
+      R('contents:assets:item','item',['signage'],'or',ITEM),
+      R('contents:playlists','collection',['signage'],'or',CRUD),
+      R('contents:playlists:item','item',['signage'],'or',ITEM),
+      R('contents:backgrounds','collection',['signage'],'or',CRUD),
+      R('contents:backgrounds:item','item',['signage'],'or',ITEM),
+      R('contents:backgrounds_transition','collection',['signage'],'or',CRUD),
+      R('contents:backgrounds_transition:item','item',['signage'],'or',ITEM),
+      R('contents:channels','collection',['signage'],'or',CRUD),
+      R('contents:channels:item','item',['signage'],'or',ITEM),
+      R('contents:content_groups','collection',['signage'],'or',CRUD),
+      R('contents:content_groups:item','item',['signage'],'or',ITEM),
+      R('contents:tags','collection',['qr','priceTags','compliance','product','signage'],'or',CRUD),
+      R('contents:tags:item','item',['qr','priceTags','compliance','product','signage'],'or',ITEM),
+      R('contents:tags_assignments','collection',['qr','priceTags','compliance','product','signage'],'or',CRUD),
+      R('contents:tags_assignments:item','item',['qr','priceTags','compliance','product','signage'],'or',ITEM),
+      R('contents:landing_pages','collection',['landing'],'or',CRUD),
+      R('contents:landing_pages:item','item',['landing'],'or',ITEM),
+    ]),
+    G('Signage (signages:)', [
+      R('signages:people','collection',['signage','ppt'],'or',CRUD),
+      R('signages:people:item','item',['signage','ppt'],'or',ITEM),
+      R('signages:places','collection',['signage','ppt'],'or',CRUD),
+      R('signages:places:item','item',['signage','ppt'],'or',ITEM),
+      R('signages:things','collection',['signage','ppt'],'or',CRUD),
+      R('signages:things:item','item',['signage','ppt'],'or',ITEM),
+    ]),
+    G('Connect', [
+      R('connect:contacts','collection',['connect'],'or',CRUD),
+      R('connect:contacts:item','item',['connect'],'or',ITEM),
+    ]),
+    G('QR (qr:)', [
+      R('qr:site','collection',['qr'],'or',CRUD),
+      R('qr:site:item','item',['qr'],'or',ITEM),
+      R('qr:media','collection',['qr'],'or',CRUD),
+      R('qr:media:item','item',['qr'],'or',ITEM),
+      R('qr:templates','collection',['qr'],'or',CRUD),
+      R('qr:templates:item','item',['qr'],'or',ITEM),
+      R('qr:campaigns','collection',['qr','priceTags','compliance','product','signage','landing','connect','ppt'],'or',CRUD),
+      R('qr:campaigns:item','item',['qr','priceTags','compliance','product','signage','landing','connect','ppt'],'or',ITEM),
+    ]),
+    G('Product Settings (settings:)', [
+      R('settings:footprints_sites_property','collection',['qr','priceTags','compliance'],'or',CRUD),
+      R('settings:footprints_sites_property:item','item',['qr','priceTags','compliance'],'or',ITEM),
+      R('settings:footprints_products_property','collection',['priceTags','compliance','product'],'or',CRUD),
+      R('settings:footprints_products_property:item','item',['priceTags','compliance','product'],'or',ITEM),
+      R('settings:footprints_products_pricing_group','collection',['priceTags','product'],'or',CRUD),
+      R('settings:footprints_products_pricing_group:item','item',['priceTags','product'],'or',ITEM),
+      R('settings:qr_design','collection',['qr'],'or',CRUD),
+      R('settings:qr_design:item','item',['qr'],'or',ITEM),
+      R('settings:qr_power_tag','collection',['qr'],'or',CRUD),
+      R('settings:qr_power_tag:item','item',['qr'],'or',ITEM),
+      R('settings:qr_default_redirect','collection',['qr'],'or',CRUD),
+      R('settings:qr_default_redirect:item','item',['qr'],'or',ITEM),
+      R('settings:qr_domain','collection',['qr'],'or',CRUD),
+      R('settings:qr_domain:item','item',['qr'],'or',ITEM),
+      R('settings:signage_layout','collection',['signage'],'or',CRUD),
+      R('settings:signage_layout:item','item',['signage'],'or',ITEM),
+      R('settings:signage_people_property','collection',['ppt'],'or',CRUD),
+      R('settings:signage_people_property:item','item',['ppt'],'or',ITEM),
+      R('settings:signage_places_property','collection',['ppt'],'or',CRUD),
+      R('settings:signage_places_property:item','item',['ppt'],'or',ITEM),
+      R('settings:signage_things_property','collection',['ppt'],'or',CRUD),
+      R('settings:signage_things_property:item','item',['ppt'],'or',ITEM),
+    ]),
+    G('DealDesk (dealdesk:) — per-surface gate (ssp / trade / brand_center)', [
+      R('dealdesk:blueprints','collection',[],'none',CRUD),
+      R('dealdesk:brands','collection',['brand_center'],'or',CRUD),
+      R('dealdesk:brands:item','item',['brand_center'],'or',ITEM),
+      R('dealdesk:brand-users','collection',['brand_center'],'or',CRUD),
+      R('dealdesk:brand-users:item','item',['brand_center'],'or',ITEM),
+      R('dealdesk:campaigns','collection',['ssp','trade','brand_center'],'or',CRUD),
+      R('dealdesk:campaigns:item','item',['ssp','trade','brand_center'],'or',ITEM),
+      R('dealdesk:dsp-blocks','collection',['ssp'],'or',CRUD),
+      R('dealdesk:dsp-blocks:item','item',['ssp'],'or',ITEM),
+      R('dealdesk:inventory','collection',['ssp','trade','brand_center'],'or',CRUD),
+      R('dealdesk:line-items','collection',['trade'],'or',CRUD),
+      R('dealdesk:line-items:item','item',['trade'],'or',ITEM),
+      R('dealdesk:media-packages','collection',['trade'],'or',CRUD),
+      R('dealdesk:media-packages:item','item',['trade'],'or',ITEM),
+      R('dealdesk:photo-verifications','collection',['trade'],'or',CRUD),
+      R('dealdesk:photo-verifications:item','item',['trade'],'or',ITEM),
+      R('dealdesk:placement-rules','collection',['ssp','trade','brand_center'],'or',CRUD),
+      R('dealdesk:placement-rules:item','item',['ssp','trade','brand_center'],'or',ITEM),
+      R('dealdesk:placement-types','collection',['ssp','trade','brand_center'],'or',CRUD),
+      R('dealdesk:placement-types:item','item',['ssp','trade','brand_center'],'or',ITEM),
+      R('dealdesk:rate-cards','collection',['ssp','trade','brand_center'],'or',CRUD),
+      R('dealdesk:reports','collection',['ssp','trade','brand_center'],'or',RPT),
+      R('dealdesk:sites','collection',[],'none',CRUD),
+      R('dealdesk:ssp','collection',['ssp'],'or','list · view · create'),
+      R('dealdesk:store-traffic','collection',['ssp','trade'],'or',CRUD),
+      R('dealdesk:trade-ledgers','collection',['trade'],'or',CRUD),
+      R('dealdesk:trade-ledgers:item','item',['trade'],'or',ITEM),
+      R('dealdesk_brand:media-packages','collection',['brand_center'],'or','list · view'),
+    ]),
+    G('CMS (cms:) — defined but NOT deployed (absent from allowlist)', [
+      R('cms:collection','collection',['cms'],'or',CRUD),
+      R('cms:collection:item','item',['cms'],'or',ITEM),
+      R('cms:entry','collection',['cms'],'or',CRUD),
+      R('cms:entry:item','item',['cms'],'or',ITEM),
+      R('cms:field','collection',['cms'],'or',CRUD),
+      R('cms:field:item','item',['cms'],'or',ITEM),
+      R('cms:invitation','collection',['cms'],'or',CRUD),
+      R('cms:invitation:item','item',['cms'],'or',ITEM),
+      R('cms:website','collection',['cms'],'or',CRUD),
+      R('cms:website:item','item',['cms'],'or',ITEM),
+      R('cms:page','collection',['cms'],'or',CRUD),
+      R('cms:page:item','item',['cms'],'or',ITEM),
+      R('cms:section','collection',['cms'],'or',CRUD),
+      R('cms:section:item','item',['cms'],'or',ITEM),
+      R('cms:block','collection',['cms'],'or',CRUD),
+      R('cms:block:item','item',['cms'],'or',ITEM),
+      R('cms:api_key','collection',['cms'],'or',CRUD),
+      R('cms:api_key:item','item',['cms'],'or',ITEM),
+    ]),
+  ];
+
+  // ---------- render filters ----------
+  var activeProduct = 'all';
+  var search = '';
+  var fWrap = document.getElementById('prodFilters');
+  var allBtn = mkBtn('all', 'All products');
+  fWrap.appendChild(allBtn);
+  PRODUCTS.forEach(function (p) { fWrap.appendChild(mkBtn(p, p)); });
+  function mkBtn(val, label) {
+    var b = document.createElement('button');
+    b.className = 'fbtn' + (val === 'all' ? ' active' : '');
+    b.textContent = label; b.setAttribute('data-p', val);
+    b.addEventListener('click', function () {
+      activeProduct = val;
+      Array.prototype.forEach.call(fWrap.children, function (c) { c.classList.toggle('active', c === b); });
+      render();
+    });
+    return b;
+  }
+
+  var body = document.getElementById('matrixBody');
+  var note = document.getElementById('countNote');
+  var si = document.getElementById('matrixSearch');
+  si.addEventListener('input', function () { search = si.value.trim().toLowerCase(); render(); });
+
+  function chipHtml(row) {
+    if (row.mode === 'none') return '<span class="chip none">none</span>';
+    var cls = row.mode === 'and' ? 'chip and' : 'chip';
+    return row.products.map(function (p) { return '<span class="' + cls + '">' + p + '</span>'; }).join('');
+  }
+
+  function matches(row) {
+    var okP = activeProduct === 'all' ||
+      (activeProduct !== 'all' && row.products.indexOf(activeProduct) !== -1);
+    var okS = !search || row.name.toLowerCase().indexOf(search) !== -1;
+    return okP && okS;
+  }
+
+  function render() {
+    var html = '';
+    var shown = 0;
+    DATA.forEach(function (grp) {
+      var visible = grp.rows.filter(matches);
+      if (!visible.length) return;
+      html += '<tr class="group-row"><td colspan="4">' + grp.group + '</td></tr>';
+      visible.forEach(function (r) {
+        shown++;
+        html += '<tr>' +
+          '<td class="res">' + r.name + '</td>' +
+          '<td class="type">' + r.type + '</td>' +
+          '<td>' + chipHtml(r) + '</td>' +
+          '<td class="actions-mini">' + r.actions + '</td>' +
+          '</tr>';
+      });
+    });
+    body.innerHTML = html || '<tr><td colspan="4" style="padding:24px;text-align:center;color:var(--text-faint)">No resources match.</td></tr>';
+    var total = DATA.reduce(function (n, g) { return n + g.rows.length; }, 0);
+    note.textContent = 'Showing ' + shown + ' of ' + total + ' resources' +
+      (activeProduct !== 'all' ? ' gated by “' + activeProduct + '”' : '') +
+      (search ? ' matching “' + search + '”' : '') + '.';
+  }
+  render();
+})();
+</script>
