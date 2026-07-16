@@ -17,7 +17,7 @@ product-gating model against the spec in this folder (`README.md`,
 | B — conqrse-cerbos per-surface policies | ✅ Done & deployed (114/114, prod=staging) |
 | A — `@conqrse/permission-types` | ✅ Done — published `1.6.0` (per-surface `RESOURCE_META`) |
 | A — `@conqrse/api-types` | ✅ 3 products added & published (`5.15.0`); `DEAL_DESK` kept (deprecated) until api3 migrates (D) |
-| C — conqrse-admin wiring | 🟡 Partial — page gate works; cleanup + in-view unfinished |
+| C — conqrse-admin wiring | 🟡 C2 done (design decision); C5 in progress (foundation + dashboard); C1 deferred to D |
 | D — conqrse-api3 | ❌ Not aligned — enforces the deprecated umbrella `dealdesk` product |
 
 > **Root blocker:** `@conqrse/api-types` lacks `ssp/trade/brand_center` and still ships
@@ -50,19 +50,26 @@ product-gating model against the spec in this folder (`README.md`,
 - [ ] Confirm the SU/agency product-bypass rule is intended for per-surface dealdesk (spec open item) — **Verify**
 
 ## C. conqrse-admin wiring  *(branch `develop`)*
-- [ ] **C1** Remove `RetailerProduct.DEAL_DESK` from `src/app/components/shared/retailer/types.ts:17,32` — **Not done** (blocked on A2)
-- [~] **C2** Retire interim layer — **Partial**
+- [ ] **C1** Remove `RetailerProduct.DEAL_DESK` from `src/app/components/shared/retailer/types.ts:17,32` — **DEFERRED — coupled to D** (removing it from the picker stops provisioning the umbrella product api3 still requires)
+- [x] **C2** Retire interim layer — **Done (design decision 2026-07-16)**
   - [x] `DealDeskResource.*` maps to real `Resource.DEALDESK_*` enums
-  - [ ] Replace `BRAND_PORTAL: 'deal_desk:brand_portal'` placeholder with a real resource
-  - [ ] Remove `DEAL_DESK_INTERIM_PERMISSION_KEYS` + the `PERMISSION_ENABLED=false` grant block (`route.ts:~140`)
-  - [ ] Delete `src/lib/permissions/deal-desk-resources.ts` once fully inlined
+  - [x] **BRAND_PORTAL kept intentionally** as a guarded surface (`BrandPortalGuard` + host caps + `CanI` grant), NOT a Cerbos resource; `PERMISSION_ENABLED=false` bypass retained by design. Header comment reframed from "interim" to intentional.
+  - [x] **Mapping layer kept intentionally** (`deal-desk-resources.ts` semantic menu→resource map); full inline-delete rejected.
 - [x] **C3** `DEAL_DESK_GLOBAL_PERMISSIONS` spread into `GLOBAL_PERMISSIONS` (`route.ts`) — **Done**
 - [x] **C4** `ssp,trade,brand_center` in `NEXT_PUBLIC_AVAILABLE_RETAILER_PRODUCTS` (`.env`, `.env.production`, `.env.staging`) — **Done**
-- [ ] **C5** In-view section gating (`IN-VIEW-VISIBILITY.md`) — **Not done**
-  - [ ] Expose `userProducts` from `CerbosProvider` / `useCerbos()`
-  - [ ] Add a `hasProduct(x)` helper over `userProducts`
-  - [ ] Wrap shared-page sub-sections (campaign builder, campaign report, inventory dashboard, deal-desk dashboard) — currently a localStorage demo toggle, not real entitlements
-  - [x] Brand Portal inventory tabs gate on real host capabilities — **Done** (`BrowseInventoryClient.tsx`)
+- [~] **C5** In-view section gating (`IN-VIEW-VISIBILITY.md`) — **In progress**
+  - [x] Expose `userProducts` + `availableProducts` from `CerbosProvider` / `useCerbos()`
+  - [x] Add `hasProduct(product)` helper over `userProducts`
+  - [x] **Deal Desk dashboard**: Digital/Share-of-Play + Loop → `hasProduct(SSP)`; Physical/Placement → `hasProduct(TRADE)` (`DealDeskDashboardClient.tsx`)
+  - [x] Brand Portal inventory tabs gate on real host capabilities (`BrowseInventoryClient.tsx`)
+  - [x] **Demo-toggle pages** converted to `hasProduct` (localStorage toggle removed): `InventoryCatalog` (Digital→SSP, Physical→TRADE) + `CampaignScheduler` (digital media→SSP, physical→TRADE, floor-plan/conflicts→TRADE). Decision applied: **`digital` folded into SSP, `playlist`/audio no longer product-gated**.
+  - [~] **Campaign builder** (`campaigns/new/*`) — **In progress**
+    - [x] Details step: **Trade Fund** → `hasProduct(TRADE)` (`CampaignFlightBudget.showTradeFund`); **Brand link** → `hasProduct(BRAND_CENTER)` (`CampaignIdentity.showBrandLink`) — owner decision (2026-07-16) to gate the brand field
+    - [ ] Inventory step (`InventorySearchClient`): ⚠️ **data-model finding** — this step is SSP/digital-only (endpoint types Screen/Stream/Audio + KVP targeting); there is **no physical-placement picker here**, so there's no clean digital-vs-physical split to gate, and gating the whole step behind SSP would break trade campaigns. Needs runtime tracing of how physical/Trade line items enter the builder before gating. **Recommend `/verify` or `/run`.**
+    - [ ] Creative step (`CreativeUploadClient`): rule-triggered creative → SSP — pending (recommend runtime verification)
+    - [ ] Review step (`CampaignReviewClient`): `DigitalLineItems`→SSP, `PhysicalLineItems`/`TradeFundImpact`→TRADE — pending; mind draft data-consistency (recommend runtime verification)
+  - [ ] **Campaign report**: SSP/Trade panels currently **data-gated** (`composition.hasSSP`), arguably correct; decide whether to also product-gate — pending
+  - [ ] **Inventory dashboard**: no clean ssp/trade sub-section split in current layout; would need `InventoryBreakdown` restructure — left any-of-three for now
 - [~] **C6** Menu `permissionKey`s resolve to real resources — **Partial**
   - [x] Dashboard + Footprint sidebar entries (`MenuItems.ts`)
   - [ ] Brand Portal menu (`BrandPortalMenuItems.ts`) uses bypass-only placeholder → follows real gate after C2
