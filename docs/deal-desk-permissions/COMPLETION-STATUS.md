@@ -18,7 +18,7 @@ product-gating model against the spec in this folder (`README.md`,
 | A — `@conqrse/permission-types` | ✅ Done — published `1.6.0` (per-surface `RESOURCE_META`) |
 | A — `@conqrse/api-types` | ✅ 3 products added & published (`5.15.0`); `DEAL_DESK` kept (deprecated) until api3 migrates (D) |
 | C — conqrse-admin wiring | 🟢 C2 + C5 done; C1 partial — per-surface products provisionable, DEAL_DESK removal deferred to D |
-| D — conqrse-api3 | 🟡 Gate already per-surface (shares deployed policies); needs a retailer **data migration** off umbrella `dealdesk` — not a code rewrite (scoped below) |
+| D — conqrse-api3 | 🟢 **Staging migrated + verified per-surface** (D1–D4 done). Remaining: prod backfill + D5 umbrella removal (destructive) |
 
 > **Root blocker:** `@conqrse/api-types` lacks `ssp/trade/brand_center` and still ships
 > `DEAL_DESK='dealdesk'`. This blocks admin **C1** and the whole api3 migration (**D**).
@@ -95,8 +95,12 @@ runner found — the retailer backfill is a one-off script/DB op.
 
 Steps (in order):
 - [x] **D1 — Audit umbrella dependencies** (2026-07-16). Nothing in api3 code references `RetailerProduct.DEAL_DESK` or the bare `'dealdesk'` product beyond the (policy-side, per-surface) Cerbos gate — the enum member is defined but unused. In admin it appears only in the retailer provisioning picker/label (`retailer/types.ts`); the `DEAL_DESK_ENABLED` flag is a feature-rollout flag, not a per-retailer product check. ⇒ removal is code-safe once retailers are migrated.
-- [~] **D2 — Backfill script written** (`api3/scripts/deal-desk-backfill-products.ts`) — adds `ssp`+`trade`+`brand_center` to retailers holding `dealdesk` (keeps `dealdesk`). **Dry-run by default; `--apply` to write; prints target DB.** Compiles/runs (`--help`). ⏳ **NOT yet run — must be applied against staging (D3).**
-- [ ] **D3 — Run + verify on STAGING** (needs staging DB creds + running api3): dry-run → `--apply` on staging → exercise SSP-only / Trade-only / Brand-Center-only / all-three retailers with `PERMISSION_BYPASS` OFF; confirm allow/deny matches the matrix + SU/agency bypass (B open item). **Owner: user (staging access).**
+- [x] **D2 — Backfill applied on STAGING** (2026-07-16) via `api3/scripts/deal-desk-backfill-products.ts --env .env --apply` (DB `conqrse-staging`). 1 retailer held `dealdesk` ("Video MP") → gained `ssp`+`trade`+`brand_center` (matched=1 modified=1). Dry-run default; prints target DB.
+- [x] **D3 — Verified on STAGING** (2026-07-16) against the deployed Cerbos (`svc/cerbos` ns `staging`, `/api/check/resources`):
+      - all-three principal → ALLOW ssp / trade-ledgers / brands / sites
+      - ssp-only → ALLOW ssp, DENY trade-ledgers, DENY brands, ALLOW sites (base)
+      - umbrella `dealdesk`-only → DENY ssp / trade-ledgers / brands, ALLOW sites (base)
+      ⇒ per-surface gating confirmed live; umbrella grants nothing (⇒ D5 removal is safe).
 - [x] **D4 — Docs updated** (2026-07-16): `api3/docs/DEAL_DESK_CERBOS_POLICIES.md` — superseded banner + conventions rows now per-surface; historical umbrella snippets flagged, pointing to the conqrse-cerbos SSoT.
 - [ ] **D5 — Remove the umbrella (A2b + C1), only after D3 green:** run the script with `--remove-umbrella` (pulls `dealdesk`), remove `RetailerProduct.DEAL_DESK` from `@conqrse/api-types` (both copies) + publish, remove the admin picker/label entries (`retailer/types.ts`), drop the `@deprecated` member. **Destructive — gated on D3.**
 - [ ] **D6 — (Optional hardening, separate)** replace api3's hard-coded `@RequirePermission('dealdesk:…')` strings with `@conqrse/permission-types` `Resource`/`Action` enums. Not required for correctness.
