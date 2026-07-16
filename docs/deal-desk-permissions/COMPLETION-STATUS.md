@@ -16,14 +16,14 @@ product-gating model against the spec in this folder (`README.md`,
 |---|---|
 | B — conqrse-cerbos per-surface policies | ✅ Done & deployed (114/114, prod=staging) |
 | A — `@conqrse/permission-types` | ✅ Done — published `1.6.0` (per-surface `RESOURCE_META`) |
-| A — `@conqrse/api-types` | ✅ 3 products added & published (`5.15.0`); `DEAL_DESK` kept (deprecated) until api3 migrates (D) |
-| C — conqrse-admin wiring | 🟢 C2 + C5 done; C1 partial — per-surface products provisionable, DEAL_DESK removal deferred to D |
-| D — conqrse-api3 | 🟢 **Staging migrated + verified per-surface** (D1–D4 done). No prod backfill — Deal Desk not rolled out to prod. Remaining: D5 umbrella removal (cleanup) |
+| A — `@conqrse/permission-types` | ✅ Done — `1.6.0` (per-surface `RESOURCE_META`) |
+| A — `@conqrse/api-types` | ✅ Done — `ssp/trade/brand_center` added; **umbrella `DEAL_DESK` removed** (`6.0.0`, breaking) |
+| C — conqrse-admin wiring | ✅ C1 + C2 + C5 done (picker/label dropped `DEAL_DESK`, on api-types 6.0.0) |
+| D — conqrse-api3 | ✅ Done — staging migrated + verified per-surface; umbrella removed (D1–D5). No prod backfill (Deal Desk not on prod) |
 
-> **Root blocker:** `@conqrse/api-types` lacks `ssp/trade/brand_center` and still ships
-> `DEAL_DESK='dealdesk'`. This blocks admin **C1** and the whole api3 migration (**D**).
-> **Live risk:** api3 sends retailers' `products` into the *deployed per-surface* policies but
-> retailers hold the umbrella `dealdesk` product → per-surface checks will DENY unless bypassed.
+> **✅ RESOLVED (2026-07-16).** api-types `6.0.0` carries `ssp/trade/brand_center` and no longer
+> ships `DEAL_DESK`. Staging's one umbrella retailer was migrated to per-surface and verified against
+> the deployed Cerbos. The umbrella is fully removed across api3 + admin.
 
 ---
 
@@ -41,7 +41,7 @@ product-gating model against the spec in this folder (`README.md`,
 - [x] **Publish** `@conqrse/api-types@5.15.0` — **Done** (registry latest = 5.15.0)
 - [x] Bump + install in conqrse-admin (`^5.15.0`, installed 5.15.0) **and** conqrse-api3 (`^5.15.0`, lockfile 5.15.0) — **Done**
 - [x] Retire admin interim shim in `src/lib/available-products.ts` — **Done** (uses native `Object.values(RetailerProduct)`; removed dead `DEAL_DESK_PRODUCTS`)
-- [ ] **Remove erroneous `DEAL_DESK='dealdesk'`** — **DEFERRED — blocked on D.** api3 still gates ~196 routes on the umbrella `["dealdesk"]`; removing now breaks it. Marked `@deprecated` in both copies; remove after api3 migrates off the umbrella.
+- [x] **Removed erroneous `DEAL_DESK='dealdesk'`** (2026-07-16) — deleted from both api-types copies, published `6.0.0` (breaking). Safe: audit showed only admin's picker referenced it; api3 gates via deployed per-surface policies, not the umbrella.
 
 ## B. conqrse-cerbos policies
 - [x] Per-surface `dealdesk:*` policies (single / any-of-three / ssp-or-trade / base) — **Done**
@@ -50,7 +50,7 @@ product-gating model against the spec in this folder (`README.md`,
 - [ ] Confirm the SU/agency product-bypass rule is intended for per-surface dealdesk (spec open item) — **Verify**
 
 ## C. conqrse-admin wiring  *(branch `develop`)*
-- [ ] **C1** Remove `RetailerProduct.DEAL_DESK` from `src/app/components/shared/retailer/types.ts:17,32` — **DEFERRED — coupled to D** (removing it from the picker stops provisioning the umbrella product api3 still requires)
+- [x] **C1** Removed `RetailerProduct.DEAL_DESK` from `retailer/types.ts` (picker + label) (2026-07-16), on api-types `6.0.0`. Per-surface products (`ssp/trade/brand_center`) remain provisionable.
 - [x] **C2** Retire interim layer — **Done (design decision 2026-07-16)**
   - [x] `DealDeskResource.*` maps to real `Resource.DEALDESK_*` enums
   - [x] **BRAND_PORTAL kept intentionally** as a guarded surface (`BrandPortalGuard` + host caps + `CanI` grant), NOT a Cerbos resource; `PERMISSION_ENABLED=false` bypass retained by design. Header comment reframed from "interim" to intentional.
@@ -102,7 +102,7 @@ Steps (in order):
       - umbrella `dealdesk`-only → DENY ssp / trade-ledgers / brands, ALLOW sites (base)
       ⇒ per-surface gating confirmed live; umbrella grants nothing (⇒ D5 removal is safe).
 - [x] **D4 — Docs updated** (2026-07-16): `api3/docs/DEAL_DESK_CERBOS_POLICIES.md` — superseded banner + conventions rows now per-surface; historical umbrella snippets flagged, pointing to the conqrse-cerbos SSoT.
-- [ ] **D5 — Remove the umbrella (A2b + C1), only after D3 green:** run the script with `--remove-umbrella` (pulls `dealdesk`), remove `RetailerProduct.DEAL_DESK` from `@conqrse/api-types` (both copies) + publish, remove the admin picker/label entries (`retailer/types.ts`), drop the `@deprecated` member. **Destructive — gated on D3.**
+- [x] **D5 — Umbrella removed** (2026-07-16): staging retailer `--remove-umbrella` (now per-surface only); `RetailerProduct.DEAL_DESK` removed from both api-types copies → published **`@conqrse/api-types@6.0.0`** (breaking); admin picker/label entries removed; admin + api3 on `^6.0.0`, `tsc` clean (admin) / prod build clean (api3, tests excluded). Completes **A2b + C1**.
 - [ ] **D6 — (Optional hardening, separate)** replace api3's hard-coded `@RequirePermission('dealdesk:…')` strings with `@conqrse/permission-types` `Resource`/`Action` enums. Not required for correctness.
 
 **Risk / ordering:** D2 is safe and reversible (additive). D5 is the only destructive step and must
@@ -110,10 +110,8 @@ follow a green D3. Keep `dealdesk` and the three products coexisting through the
 
 ---
 
-## Recommended order (updated 2026-07-16)
-1. ✅ **A2** (add products, publish 5.15.0) · ✅ **C2** · ✅ **C5** · ✅ admin provisioning + build fix — **done**
-2. **D1–D2** — audit umbrella deps, then backfill retailers with `ssp/trade/brand_center` (additive, safe). *This is the step that actually turns on per-surface for api3.*
-3. **D3** — end-to-end verification (bypass off) across SSP/Trade/Brand-Center/all-three retailers.
-4. **D4** — update api3 policy-map docs to per-surface.
-5. **D5** — remove the umbrella `DEAL_DESK` (api-types enum + admin picker + retailer docs) — the only destructive step; after D3 is green. Completes A2b + C1.
-6. **D6** (optional) — api3 adopts `@conqrse/permission-types` enums instead of hard-coded strings.
+## Status (updated 2026-07-16)
+1. ✅ **A** (permission-types 1.6.0; api-types 5.15.0→6.0.0) · **B** (per-surface policies) · **C1/C2/C5** · **D1–D5**
+2. ✅ Staging retailer migrated to per-surface + verified against deployed Cerbos; umbrella `DEAL_DESK` removed everywhere.
+3. ⬜ **D6** (optional, separate) — api3 adopts `@conqrse/permission-types` `Resource`/`Action` enums instead of hard-coded `@RequirePermission('dealdesk:…')` strings. Not required for correctness.
+4. ⬜ **Housekeeping (non-Deal-Desk):** 4 pre-existing `tsc` test-file drift errors in api3 (`MediaPlayerMonitoringDto`/`BrandInventoryItemDto`/arg counts) surfaced by the api-types bump — not in the prod build; for the respective feature owners.
