@@ -6,14 +6,14 @@ resourcePolicy:
   importDerivedRoles:
     - conqrse_roles
   rules:
-    # DealDesk retailer path — requires ssp AND trade AND brand_center
+    # DealDesk retailer path — requires trade product
     - actions: ["view", "update", "delete"]
       effect: EFFECT_ALLOW
       condition:
         match:
           all:
             of:
-              - expr: '["brand_center", "ssp", "trade"].all(p, p in P.attr.products)'
+              - expr: '"trade" in P.attr.products'
               - expr: 'P.attr.retailerId == R.attr.retailerId'
       derivedRoles:
         - root_user
@@ -38,7 +38,7 @@ resourcePolicy:
         match:
           all:
             of:
-              - expr: '["brand_center", "ssp", "trade"].all(p, p in P.attr.products)'
+              - expr: '"trade" in P.attr.products'
               - expr: 'P.attr.retailerId == R.attr.retailerId'
       derivedRoles:
         - guest_collaborator

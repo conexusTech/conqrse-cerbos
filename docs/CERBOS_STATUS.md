@@ -266,7 +266,7 @@ Total: **131** resources across all groupings.
 
 ## 4. Product × Resource Matrix
 
-For a resource with multiple product marks, refer to the source doc `docs/RESOURCES_ACTIONS_MATRIX.md` for whether the semantics are OR (`required`) or AND (`required-all`). Dealdesk rows use AND semantics across `ssp`, `trade`, `brand_center`.
+For a resource with multiple product marks, refer to the source doc `docs/RESOURCES_ACTIONS_MATRIX.md` for whether the semantics are OR (`required`) or AND (`required-all`). Dealdesk rows use **per-surface OR semantics**: each resource is marked with the product(s) its surface gates on — a single product (e.g. `dealdesk:ssp` → `ssp`; `dealdesk:trade-ledgers` → `trade`; `dealdesk:brands` → `brand_center`), any of the three for shared surfaces (`dealdesk:campaigns`, `:inventory`, `:reports`, `:placement-rules`, `:placement-types`, `:rate-cards`), `ssp`+`trade` for `dealdesk:store-traffic`, or **no mark** for base resources (`dealdesk:sites`, `dealdesk:blueprints` — all retailers). The former all-three (AND) gate has been removed.
 
 | Resource | brand_center | cms | compliance | connect | landing | ppt | priceTags | product | qr | signage | ssp | trade |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -310,34 +310,34 @@ For a resource with multiple product marks, refer to the source doc `docs/RESOUR
 | `contents:tags_assignments:item` |  |  | ✓ |  |  |  | ✓ | ✓ | ✓ | ✓ |  |  |
 | `contents:templates` |  |  |  |  |  |  | ✓ |  |  | ✓ |  |  |
 | `contents:templates:item` |  |  |  |  |  |  | ✓ |  |  | ✓ |  |  |
-| `dealdesk:blueprints` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
-| `dealdesk:brand-users` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
-| `dealdesk:brand-users:item` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
-| `dealdesk:brands` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
-| `dealdesk:brands:item` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
+| `dealdesk:blueprints` |  |  |  |  |  |  |  |  |  |  |  |  |
+| `dealdesk:brand-users` | ✓ |  |  |  |  |  |  |  |  |  |  |  |
+| `dealdesk:brand-users:item` | ✓ |  |  |  |  |  |  |  |  |  |  |  |
+| `dealdesk:brands` | ✓ |  |  |  |  |  |  |  |  |  |  |  |
+| `dealdesk:brands:item` | ✓ |  |  |  |  |  |  |  |  |  |  |  |
 | `dealdesk:campaigns` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
 | `dealdesk:campaigns:item` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
-| `dealdesk:dsp-blocks` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
-| `dealdesk:dsp-blocks:item` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
+| `dealdesk:dsp-blocks` |  |  |  |  |  |  |  |  |  |  | ✓ |  |
+| `dealdesk:dsp-blocks:item` |  |  |  |  |  |  |  |  |  |  | ✓ |  |
 | `dealdesk:inventory` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
-| `dealdesk:line-items` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
-| `dealdesk:line-items:item` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
-| `dealdesk:media-packages` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
-| `dealdesk:media-packages:item` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
-| `dealdesk:photo-verifications` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
-| `dealdesk:photo-verifications:item` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
+| `dealdesk:line-items` |  |  |  |  |  |  |  |  |  |  |  | ✓ |
+| `dealdesk:line-items:item` |  |  |  |  |  |  |  |  |  |  |  | ✓ |
+| `dealdesk:media-packages` |  |  |  |  |  |  |  |  |  |  |  | ✓ |
+| `dealdesk:media-packages:item` |  |  |  |  |  |  |  |  |  |  |  | ✓ |
+| `dealdesk:photo-verifications` |  |  |  |  |  |  |  |  |  |  |  | ✓ |
+| `dealdesk:photo-verifications:item` |  |  |  |  |  |  |  |  |  |  |  | ✓ |
 | `dealdesk:placement-rules` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
 | `dealdesk:placement-rules:item` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
 | `dealdesk:placement-types` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
 | `dealdesk:placement-types:item` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
 | `dealdesk:rate-cards` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
 | `dealdesk:reports` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
-| `dealdesk:sites` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
-| `dealdesk:ssp` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
-| `dealdesk:store-traffic` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
-| `dealdesk:trade-ledgers` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
-| `dealdesk:trade-ledgers:item` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
-| `dealdesk_brand:media-packages` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
+| `dealdesk:sites` |  |  |  |  |  |  |  |  |  |  |  |  |
+| `dealdesk:ssp` |  |  |  |  |  |  |  |  |  |  | ✓ |  |
+| `dealdesk:store-traffic` |  |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
+| `dealdesk:trade-ledgers` |  |  |  |  |  |  |  |  |  |  |  | ✓ |
+| `dealdesk:trade-ledgers:item` |  |  |  |  |  |  |  |  |  |  |  | ✓ |
+| `dealdesk_brand:media-packages` | ✓ |  |  |  |  |  |  |  |  |  |  |  |
 | `footprints:endpoints` |  |  |  |  |  |  | ✓ |  |  | ✓ |  |  |
 | `footprints:endpoints:item` |  |  |  |  |  |  | ✓ |  |  | ✓ |  |  |
 | `footprints:pricing` |  |  |  |  |  |  | ✓ | ✓ |  | ✓ |  |  |

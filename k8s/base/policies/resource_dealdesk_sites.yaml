@@ -6,14 +6,9 @@ resourcePolicy:
   importDerivedRoles:
     - conqrse_roles
   rules:
-    # DealDesk retailer path — requires ssp AND trade AND brand_center
+    # DealDesk retailer path — base (all retailers, no product gate)
     - actions: ["list", "view", "create", "update", "delete", "export", "import"]
       effect: EFFECT_ALLOW
-      condition:
-        match:
-          all:
-            of:
-              - expr: '["brand_center", "ssp", "trade"].all(p, p in P.attr.products)'
       derivedRoles:
         - root_user
         - platform_administrator
@@ -30,14 +25,9 @@ resourcePolicy:
         - team_lead
         - staff_operator
 
-    # DealDesk retailer collaborator path — read-only
+    # DealDesk retailer collaborator path — read-only (base, no product gate)
     - actions: ["list", "view", "export"]
       effect: EFFECT_ALLOW
-      condition:
-        match:
-          all:
-            of:
-              - expr: '["brand_center", "ssp", "trade"].all(p, p in P.attr.products)'
       derivedRoles:
         - guest_collaborator
 

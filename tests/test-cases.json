@@ -1214,6 +1214,615 @@
           ]
         }
       ]
+    },
+    {
+      "name": "DealDesk Product Gating - Allow",
+      "description": "Per-surface product gating grants access with the correct product(s)",
+      "tests": [
+        {
+          "id": "dd_allow_1",
+          "name": "SSP surface with ssp product",
+          "description": "Retailer with ssp can list dealdesk:ssp",
+          "principal": {
+            "id": "dd-ret-ssp",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "dd-ret-ssp",
+              "products": [
+                "ssp"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:ssp",
+            "id": "dealdesk:ssp",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "list"
+          ]
+        },
+        {
+          "id": "dd_allow_2",
+          "name": "DSP-blocks with ssp product",
+          "description": "Retailer with ssp can view dealdesk:dsp-blocks",
+          "principal": {
+            "id": "dd-ret-ssp",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "dd-ret-ssp",
+              "products": [
+                "ssp"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:dsp-blocks",
+            "id": "dealdesk:dsp-blocks",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "view"
+          ]
+        },
+        {
+          "id": "dd_allow_3",
+          "name": "Trade-ledgers with trade product",
+          "description": "Retailer with trade can view dealdesk:trade-ledgers",
+          "principal": {
+            "id": "dd-ret-trade",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "dd-ret-trade",
+              "products": [
+                "trade"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:trade-ledgers",
+            "id": "dealdesk:trade-ledgers",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "view"
+          ]
+        },
+        {
+          "id": "dd_allow_4",
+          "name": "Media-packages with trade product",
+          "description": "Retailer with trade can list dealdesk:media-packages (packages)",
+          "principal": {
+            "id": "dd-ret-trade",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "dd-ret-trade",
+              "products": [
+                "trade"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:media-packages",
+            "id": "dealdesk:media-packages",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "list"
+          ]
+        },
+        {
+          "id": "dd_allow_5",
+          "name": "Brands with brand_center product",
+          "description": "Retailer with brand_center can view dealdesk:brands",
+          "principal": {
+            "id": "dd-ret-brand",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "dd-ret-brand",
+              "products": [
+                "brand_center"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:brands",
+            "id": "dealdesk:brands",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "view"
+          ]
+        },
+        {
+          "id": "dd_allow_6",
+          "name": "Any-of-three campaigns via trade",
+          "description": "Shared campaigns surface visible with any single product (trade)",
+          "principal": {
+            "id": "dd-ret-trade",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "dd-ret-trade",
+              "products": [
+                "trade"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:campaigns",
+            "id": "dealdesk:campaigns",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "list"
+          ]
+        },
+        {
+          "id": "dd_allow_7",
+          "name": "Any-of-three campaigns via brand_center",
+          "description": "Shared campaigns surface visible with any single product (brand_center)",
+          "principal": {
+            "id": "dd-ret-brand",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "dd-ret-brand",
+              "products": [
+                "brand_center"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:campaigns",
+            "id": "dealdesk:campaigns",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "list"
+          ]
+        },
+        {
+          "id": "dd_allow_8",
+          "name": "Store-traffic via ssp",
+          "description": "Store-traffic visible with ssp",
+          "principal": {
+            "id": "dd-ret-ssp",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "dd-ret-ssp",
+              "products": [
+                "ssp"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:store-traffic",
+            "id": "dealdesk:store-traffic",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "list"
+          ]
+        },
+        {
+          "id": "dd_allow_9",
+          "name": "Store-traffic via trade",
+          "description": "Store-traffic visible with trade",
+          "principal": {
+            "id": "dd-ret-trade",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "dd-ret-trade",
+              "products": [
+                "trade"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:store-traffic",
+            "id": "dealdesk:store-traffic",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "list"
+          ]
+        },
+        {
+          "id": "dd_allow_10",
+          "name": "Base sites without dealdesk products",
+          "description": "Footprint sites is base — any retailer (qr only) can list",
+          "principal": {
+            "id": "dd-ret-qr",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "dd-ret-qr",
+              "products": [
+                "qr"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:sites",
+            "id": "dealdesk:sites",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "list"
+          ]
+        },
+        {
+          "id": "dd_allow_11",
+          "name": "Base blueprints without dealdesk products",
+          "description": "Footprint blueprint is base — any retailer (qr only) can view",
+          "principal": {
+            "id": "dd-ret-qr",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "dd-ret-qr",
+              "products": [
+                "qr"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:blueprints",
+            "id": "dealdesk:blueprints",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "view"
+          ]
+        },
+        {
+          "id": "dd_allow_12",
+          "name": "Brand path on brands",
+          "description": "Brand owner with brand_center + linked retailer can view dealdesk:brands",
+          "principal": {
+            "id": "dd-brand-owner",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "brand",
+              "userType": "owner",
+              "name": "dd-brand-owner",
+              "products": [
+                "brand_center"
+              ],
+              "agencyId": "agency-DD",
+              "brandId": "brand-1",
+              "retailerIds": [
+                "retail-DD"
+              ]
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:brands",
+            "id": "dealdesk:brands",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "view"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DealDesk Product Gating - Deny",
+      "description": "Per-surface product gating denies access when the required product is absent",
+      "tests": [
+        {
+          "id": "dd_deny_1",
+          "name": "SSP surface denied without ssp",
+          "description": "Retailer with only trade cannot list dealdesk:ssp",
+          "principal": {
+            "id": "dd-ret-trade",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "dd-ret-trade",
+              "products": [
+                "trade"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:ssp",
+            "id": "dealdesk:ssp",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "DENY",
+          "actions": [
+            "list"
+          ]
+        },
+        {
+          "id": "dd_deny_2",
+          "name": "Trade-ledgers denied without trade",
+          "description": "Retailer with only ssp cannot view dealdesk:trade-ledgers",
+          "principal": {
+            "id": "dd-ret-ssp",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "dd-ret-ssp",
+              "products": [
+                "ssp"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:trade-ledgers",
+            "id": "dealdesk:trade-ledgers",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "DENY",
+          "actions": [
+            "view"
+          ]
+        },
+        {
+          "id": "dd_deny_3",
+          "name": "Brands denied without brand_center",
+          "description": "Retailer with only trade cannot view dealdesk:brands",
+          "principal": {
+            "id": "dd-ret-trade",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "dd-ret-trade",
+              "products": [
+                "trade"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:brands",
+            "id": "dealdesk:brands",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "DENY",
+          "actions": [
+            "view"
+          ]
+        },
+        {
+          "id": "dd_deny_4",
+          "name": "Any-of-three denied with no dealdesk product",
+          "description": "Retailer with only qr cannot list dealdesk:campaigns",
+          "principal": {
+            "id": "dd-ret-qr",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "dd-ret-qr",
+              "products": [
+                "qr"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:campaigns",
+            "id": "dealdesk:campaigns",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "DENY",
+          "actions": [
+            "list"
+          ]
+        },
+        {
+          "id": "dd_deny_5",
+          "name": "Store-traffic denied for brand_center-only",
+          "description": "brand_center does not grant store-traffic (ssp/trade only)",
+          "principal": {
+            "id": "dd-ret-brand",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "dd-ret-brand",
+              "products": [
+                "brand_center"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:store-traffic",
+            "id": "dealdesk:store-traffic",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "DENY",
+          "actions": [
+            "list"
+          ]
+        },
+        {
+          "id": "dd_deny_6",
+          "name": "DSP-blocks denied for brand_center-only retailer",
+          "description": "brand_center does not grant ssp surface dsp-blocks",
+          "principal": {
+            "id": "dd-ret-brand",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "dd-ret-brand",
+              "products": [
+                "brand_center"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:dsp-blocks",
+            "id": "dealdesk:dsp-blocks",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "DENY",
+          "actions": [
+            "view"
+          ]
+        }
+      ]
     }
   ]
 }

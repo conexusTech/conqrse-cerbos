@@ -34,7 +34,11 @@ class ResourceDef:
                 self.category = "user_settings"
             else:
                 self.category = "admin_settings"
-        elif self.is_all_required:
+        elif (
+            self.name.startswith("dealdesk:")
+            or self.name.startswith("dealdesk_brand:")
+            or self.is_all_required
+        ):
             self.category = "dealdesk_resource"
         elif self.name.startswith("settings:"):
             self.category = "product_settings"
@@ -307,8 +311,8 @@ class PolicyRenderer:
         "retailer_owner",
         "retailer_manager",
     ]
-    # DealDesk retailer path: SU + Agency + Retailer tiers gated by
-    # ["ssp","trade","brand_center"].all(...) product check.
+    # DealDesk retailer path: SU + Agency + Retailer tiers gated by a
+    # per-surface product check (single `in`, multi `.exists`, or none for base).
     _DEALDESK_RETAILER_ROLES = [
         "root_user",
         "platform_administrator",
@@ -393,14 +397,34 @@ class PolicyRenderer:
     def _render_dealdesk_resource(resource: ResourceDef) -> str:
         """Render DealDesk resource rules — three rule blocks.
 
-        1. Retailer operators: full actions, gated by `.all()` product check + retailerId==.
+        1. Retailer operators: full actions, PER-SURFACE product check + retailerId== on items.
         2. Retailer collaborators (guest_collaborator only): read-only subset, same gates.
         3. Brand path: full actions, gated by brand_center + retailerId in retailerIds.
+
+        Product gating is per-surface (OR / `.exists`), not all-three (`.all`):
+          - 0 products  -> base: no product check at all (all retailers).
+          - 1 product   -> `"<p>" in P.attr.products`.
+          - 2+ products -> `[...].exists(p, p in P.attr.products)` (any one grants).
+        Product order follows the matrix column order (ssp, trade, brand_center), not sorted.
         """
         yaml = ""
 
-        products_str = ', '.join(f'"{p}"' for p in sorted(resource.products))
-        retailer_product_condition = f'[{products_str}].all(p, p in P.attr.products)'
+        # Per-surface retailer product check (None for base resources).
+        if not resource.products:
+            retailer_product_condition = None
+            gate_desc = "base (all retailers, no product gate)"
+        elif len(resource.products) == 1:
+            p = resource.products[0]
+            retailer_product_condition = f'"{p}" in P.attr.products'
+            gate_desc = f"requires {p} product"
+        else:
+            products_str = ', '.join(f'"{p}"' for p in resource.products)
+            retailer_product_condition = f'[{products_str}].exists(p, p in P.attr.products)'
+            if set(resource.products) == {"ssp", "trade", "brand_center"}:
+                gate_desc = "requires any of ssp/trade/brand_center"
+            else:
+                gate_desc = "requires " + " or ".join(resource.products)
+
         brand_product_condition = '["brand_center"].exists(p, p in P.attr.products)'
 
         is_item = resource.res_type == "item"
@@ -416,33 +440,43 @@ class PolicyRenderer:
         # Filter to declared actions only (some collections omit update/delete etc.)
         operator_actions = [a for a in operator_actions if a in resource.actions]
 
+        def _emit_condition() -> str:
+            """Emit the shared retailer-path condition block (product + item tenancy).
+
+            Omitted entirely when there is no product check and no item tenancy
+            (base collection resources), matching the hand-curated policies.
+            """
+            exprs = []
+            if retailer_product_condition:
+                exprs.append(retailer_product_condition)
+            if is_item:
+                exprs.append('P.attr.retailerId == R.attr.retailerId')
+            if not exprs:
+                return ""
+            block = "      condition:\n"
+            block += "        match:\n"
+            block += "          all:\n"
+            block += "            of:\n"
+            for expr in exprs:
+                block += f"              - expr: '{expr}'\n"
+            return block
+
         # Rule 1 — Retailer operators (SU / Agency / Retailer full tier)
-        yaml += "    # DealDesk retailer path — requires ssp AND trade AND brand_center\n"
+        yaml += f"    # DealDesk retailer path — {gate_desc}\n"
         yaml += "    - actions: [" + ", ".join(f'"{a}"' for a in operator_actions) + "]\n"
         yaml += "      effect: EFFECT_ALLOW\n"
-        yaml += "      condition:\n"
-        yaml += "        match:\n"
-        yaml += "          all:\n"
-        yaml += "            of:\n"
-        yaml += f"              - expr: '{retailer_product_condition}'\n"
-        if is_item:
-            yaml += "              - expr: 'P.attr.retailerId == R.attr.retailerId'\n"
+        yaml += _emit_condition()
         yaml += "      derivedRoles:\n"
         for role in PolicyRenderer._DEALDESK_RETAILER_ROLES:
             yaml += f"        - {role}\n"
 
         # Rule 2 — Retailer collaborators (guest_collaborator, read-only subset)
         if collaborator_actions:
-            yaml += "\n    # DealDesk retailer collaborator path — read-only\n"
+            collab_note = " (base, no product gate)" if retailer_product_condition is None else ""
+            yaml += f"\n    # DealDesk retailer collaborator path — read-only{collab_note}\n"
             yaml += "    - actions: [" + ", ".join(f'"{a}"' for a in collaborator_actions) + "]\n"
             yaml += "      effect: EFFECT_ALLOW\n"
-            yaml += "      condition:\n"
-            yaml += "        match:\n"
-            yaml += "          all:\n"
-            yaml += "            of:\n"
-            yaml += f"              - expr: '{retailer_product_condition}'\n"
-            if is_item:
-                yaml += "              - expr: 'P.attr.retailerId == R.attr.retailerId'\n"
+            yaml += _emit_condition()
             yaml += "      derivedRoles:\n"
             yaml += "        - guest_collaborator\n"
 
