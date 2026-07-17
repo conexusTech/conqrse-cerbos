@@ -430,7 +430,7 @@
     <div class="sec-head">
       <span class="sec-num">03 — Product × Resource matrix</span>
       <h2>Which products unlock which resources</h2>
-      <p>Filter by product or search a resource. A resource is only reachable if the account holds one of its required products (DealDesk gates <b>per-surface</b> — most rows need a single product; a few accept any one of <code>ssp</code>/<code>trade</code>/<code>brand_center</code>). <code>:item</code> resources additionally require the user's retailer to match the record's retailer.</p>
+      <p>Filter by one or more products (select several to see everything they unlock, combined) or search a resource. A resource is only reachable if the account holds one of its required products (DealDesk gates <b>per-surface</b> — most rows need a single product; a few accept any one of <code>ssp</code>/<code>trade</code>/<code>brand_center</code>). <code>:item</code> resources additionally require the user's retailer to match the record's retailer.</p>
     </div>
 
     <div class="controls">
@@ -463,7 +463,7 @@
 
     <div class="card-grid" style="margin-bottom:26px">
       <div class="card">
-        <h3>@conqrse/permission-types <span class="tag">v1.5.0</span></h3>
+        <h3>@conqrse/permission-types <span class="tag">v1.7.0</span></h3>
         <p class="desc">Auto-generated TypeScript enums &amp; types shared by <code>conqrse-admin</code> and <code>conqrse-api3</code>. Never hand-edit — it's generated from the matrix.</p>
         <div class="code-block">
           <div class="cb-head"><span class="dotset"><i></i><i></i><i></i></span> install in a consumer</div>
@@ -736,10 +736,12 @@ kubectl logs -n production job/cerbos-seed-policies | tail -20</code></pre>
       R('contents:channels:item','item',['signage'],'or',ITEM),
       R('contents:content_groups','collection',['signage'],'or',CRUD),
       R('contents:content_groups:item','item',['signage'],'or',ITEM),
-      R('contents:tags','collection',['qr','priceTags','compliance','product','signage'],'or',CRUD),
-      R('contents:tags:item','item',['qr','priceTags','compliance','product','signage'],'or',ITEM),
-      R('contents:tags_assignments','collection',['qr','priceTags','compliance','product','signage'],'or',CRUD),
-      R('contents:tags_assignments:item','item',['qr','priceTags','compliance','product','signage'],'or',ITEM),
+      R('contents:tags','collection',['qr','priceTags','compliance','product','signage','ssp','trade','brand_center'],'or',CRUD),
+      R('contents:tags:item','item',['qr','priceTags','compliance','product','signage','ssp','trade','brand_center'],'or',ITEM),
+      R('contents:tags_assignments','collection',['qr','priceTags','compliance','product','signage','ssp','trade','brand_center'],'or',CRUD),
+      R('contents:tags_assignments:item','item',['qr','priceTags','compliance','product','signage','ssp','trade','brand_center'],'or',ITEM),
+      R('contents:tags_taxonomy','collection',['qr','priceTags','compliance','product','signage','ssp','trade','brand_center'],'or','create (admin only)'),
+      R('contents:tags_taxonomy:item','item',['qr','priceTags','compliance','product','signage','ssp','trade','brand_center'],'or','update · delete (admin only)'),
       R('contents:landing_pages','collection',['landing'],'or',CRUD),
       R('contents:landing_pages:item','item',['landing'],'or',ITEM),
     ]),
@@ -800,6 +802,7 @@ kubectl logs -n production job/cerbos-seed-policies | tail -20</code></pre>
       R('dealdesk:dsp-blocks','collection',['ssp'],'or',CRUD),
       R('dealdesk:dsp-blocks:item','item',['ssp'],'or',ITEM),
       R('dealdesk:inventory','collection',['ssp','trade','brand_center'],'or',CRUD),
+      R('dealdesk:inventory-provisioning','collection',['ssp'],'or','create (admin only)'),
       R('dealdesk:line-items','collection',['trade'],'or',CRUD),
       R('dealdesk:line-items:item','item',['trade'],'or',ITEM),
       R('dealdesk:media-packages','collection',['trade'],'or',CRUD),
@@ -841,20 +844,36 @@ kubectl logs -n production job/cerbos-seed-policies | tail -20</code></pre>
     ]),
   ];
 
-  // ---------- render filters ----------
-  var activeProduct = 'all';
+  // ---------- render filters (multi-select) ----------
+  // activeProducts is a set of selected products; empty == "All products".
+  // Selecting several shows resources unlocked by ANY of them (OR / union),
+  // matching how product gating actually works.
+  var activeProducts = [];
   var search = '';
   var fWrap = document.getElementById('prodFilters');
-  var allBtn = mkBtn('all', 'All products');
-  fWrap.appendChild(allBtn);
+  fWrap.appendChild(mkBtn('all', 'All products'));
   PRODUCTS.forEach(function (p) { fWrap.appendChild(mkBtn(p, p)); });
+  function syncButtons() {
+    Array.prototype.forEach.call(fWrap.children, function (c) {
+      var v = c.getAttribute('data-p');
+      var on = v === 'all' ? activeProducts.length === 0 : activeProducts.indexOf(v) !== -1;
+      c.classList.toggle('active', on);
+      c.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
   function mkBtn(val, label) {
     var b = document.createElement('button');
     b.className = 'fbtn' + (val === 'all' ? ' active' : '');
     b.textContent = label; b.setAttribute('data-p', val);
+    b.setAttribute('aria-pressed', val === 'all' ? 'true' : 'false');
     b.addEventListener('click', function () {
-      activeProduct = val;
-      Array.prototype.forEach.call(fWrap.children, function (c) { c.classList.toggle('active', c === b); });
+      if (val === 'all') {
+        activeProducts = [];
+      } else {
+        var i = activeProducts.indexOf(val);
+        if (i === -1) activeProducts.push(val); else activeProducts.splice(i, 1);
+      }
+      syncButtons();
       render();
     });
     return b;
@@ -872,8 +891,8 @@ kubectl logs -n production job/cerbos-seed-policies | tail -20</code></pre>
   }
 
   function matches(row) {
-    var okP = activeProduct === 'all' ||
-      (activeProduct !== 'all' && row.products.indexOf(activeProduct) !== -1);
+    var okP = activeProducts.length === 0 ||
+      row.products.some(function (p) { return activeProducts.indexOf(p) !== -1; });
     var okS = !search || row.name.toLowerCase().indexOf(search) !== -1;
     return okP && okS;
   }
@@ -898,7 +917,7 @@ kubectl logs -n production job/cerbos-seed-policies | tail -20</code></pre>
     body.innerHTML = html || '<tr><td colspan="4" style="padding:24px;text-align:center;color:var(--text-faint)">No resources match.</td></tr>';
     var total = DATA.reduce(function (n, g) { return n + g.rows.length; }, 0);
     note.textContent = 'Showing ' + shown + ' of ' + total + ' resources' +
-      (activeProduct !== 'all' ? ' gated by “' + activeProduct + '”' : '') +
+      (activeProducts.length ? ' unlocked by ' + activeProducts.map(function (p) { return '“' + p + '”'; }).join(' or ') : '') +
       (search ? ' matching “' + search + '”' : '') + '.';
   }
   render();
