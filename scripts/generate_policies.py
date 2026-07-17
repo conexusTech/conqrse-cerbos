@@ -25,6 +25,7 @@ class ResourceDef:
     products: List[str]          # ["connect"] or [] for default
     is_default: bool             # True if default=required
     is_all_required: bool = False  # True if any product marker was "required-all" (AND semantics)
+    is_admin_only: bool = False  # True if any product marker was "required-admin" (owner/admin roles only)
     category: str = "unknown"    # "product_resource", "product_settings", "dealdesk_resource", etc.
 
     def __post_init__(self):
@@ -34,6 +35,12 @@ class ResourceDef:
                 self.category = "user_settings"
             else:
                 self.category = "admin_settings"
+        elif self.is_admin_only:
+            # Owner/admin-tier product resource (e.g. dealdesk:inventory-provisioning,
+            # contents:tags_taxonomy). Takes precedence over the dealdesk/product
+            # namespace defaults so an admin-only resource in any namespace renders
+            # the restricted role set (no collaborator, no brand path).
+            self.category = "admin_product_resource"
         elif (
             self.name.startswith("dealdesk:")
             or self.name.startswith("dealdesk_brand:")
@@ -179,9 +186,10 @@ class MatrixParser:
             default_col = parts[2].strip().lower() if len(parts) > 2 else ""
             is_default = default_col == "required"
 
-            # Extract required products; track whether any use required-all (AND semantics)
+            # Extract required products; track required-all (AND) and required-admin (owner/admin only)
             required_products = []
             is_all_required = False
+            is_admin_only = False
             if not is_default:
                 # product values start at column 3 (after default)
                 for i, product in enumerate(products):
@@ -194,9 +202,12 @@ class MatrixParser:
                     elif val == "required-all":
                         required_products.append(product)
                         is_all_required = True
+                    elif val == "required-admin":
+                        required_products.append(product)
+                        is_admin_only = True
 
             if resource_name and filename:
-                resource_matrix[resource_name] = (filename, required_products, is_default, is_all_required)
+                resource_matrix[resource_name] = (filename, required_products, is_default, is_all_required, is_admin_only)
 
         return resource_matrix
 
@@ -212,7 +223,7 @@ class MatrixParser:
 
         resources = []
 
-        for resource_name, (filename, products, is_default, is_all_required) in product_matrix.items():
+        for resource_name, (filename, products, is_default, is_all_required, is_admin_only) in product_matrix.items():
             if resource_name not in resource_actions:
                 print(f"Warning: No action definition found for {resource_name}", file=sys.stderr)
                 continue
@@ -227,6 +238,7 @@ class MatrixParser:
                 products=products,
                 is_default=is_default,
                 is_all_required=is_all_required,
+                is_admin_only=is_admin_only,
             )
             resources.append(resource)
 
@@ -258,6 +270,8 @@ class PolicyRenderer:
 
         if resource.category == "product_resource":
             yaml += PolicyRenderer._render_product_resource(resource)
+        elif resource.category == "admin_product_resource":
+            yaml += PolicyRenderer._render_admin_product_resource(resource)
         elif resource.category == "dealdesk_resource":
             yaml += PolicyRenderer._render_dealdesk_resource(resource)
         elif resource.category == "product_settings":
@@ -492,6 +506,41 @@ class PolicyRenderer:
         yaml += "              - expr: 'R.attr.retailerId in P.attr.retailerIds'\n"
         yaml += "      derivedRoles:\n"
         for role in PolicyRenderer._DEALDESK_BRAND_ROLES:
+            yaml += f"        - {role}\n"
+
+        return yaml
+
+    @staticmethod
+    def _render_admin_product_resource(resource: ResourceDef) -> str:
+        """Render an owner/admin-only product resource (no collaborator, no brand path).
+
+        Used for admin-gated surfaces outside the settings namespace — e.g.
+        dealdesk:inventory-provisioning (SSP sync trigger) and
+        contents:tags_taxonomy (taxonomy-key administration). Same shape as
+        product_settings: per-surface product `.exists()` gate, retailerId check
+        on items, restricted to the owner/admin role tier. Brand roles are
+        intentionally excluded (PRD §6.4).
+        """
+        yaml = ""
+
+        products_str = ', '.join(f'"{p}"' for p in sorted(resource.products))
+        product_condition = f'[{products_str}].exists(p, p in P.attr.products)'
+
+        is_item = resource.res_type == "item"
+        actions = resource.actions
+
+        yaml += "    # Admin-only access with product subscription check (owner/admin only)\n"
+        yaml += "    - actions: [" + ", ".join(f'"{a}"' for a in actions) + "]\n"
+        yaml += "      effect: EFFECT_ALLOW\n"
+        yaml += "      condition:\n"
+        yaml += "        match:\n"
+        yaml += "          all:\n"
+        yaml += "            of:\n"
+        yaml += f"              - expr: '{product_condition}'\n"
+        if is_item:
+            yaml += "              - expr: 'P.attr.retailerId == R.attr.retailerId'\n"
+        yaml += "      derivedRoles:\n"
+        for role in PolicyRenderer._PRODUCT_SETTINGS_ROLES:
             yaml += f"        - {role}\n"
 
         return yaml

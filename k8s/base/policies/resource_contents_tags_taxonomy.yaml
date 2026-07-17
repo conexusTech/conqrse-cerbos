@@ -1,0 +1,25 @@
+---
+apiVersion: "api.cerbos.dev/v1"
+resourcePolicy:
+  version: "default"
+  resource: "contents:tags_taxonomy"
+  importDerivedRoles:
+    - conqrse_roles
+  rules:
+    # Admin-only access with product subscription check (owner/admin only)
+    - actions: ["create"]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          all:
+            of:
+              - expr: '["brand_center", "compliance", "priceTags", "product", "qr", "signage", "ssp", "trade"].exists(p, p in P.attr.products)'
+      derivedRoles:
+        - root_user
+        - platform_administrator
+        - platform_lead
+        - agency_owner
+        - agency_manager
+        - agency_lead
+        - retailer_owner
+        - retailer_manager

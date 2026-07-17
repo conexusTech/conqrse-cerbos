@@ -1519,7 +1519,7 @@
         {
           "id": "dd_allow_10",
           "name": "Base sites without dealdesk products",
-          "description": "Footprint sites is base — any retailer (qr only) can list",
+          "description": "Footprint sites is base \u2014 any retailer (qr only) can list",
           "principal": {
             "id": "dd-ret-qr",
             "roles": [
@@ -1552,7 +1552,7 @@
         {
           "id": "dd_allow_11",
           "name": "Base blueprints without dealdesk products",
-          "description": "Footprint blueprint is base — any retailer (qr only) can view",
+          "description": "Footprint blueprint is base \u2014 any retailer (qr only) can view",
           "principal": {
             "id": "dd-ret-qr",
             "roles": [
@@ -1616,6 +1616,138 @@
           "expectedResult": "ALLOW",
           "actions": [
             "view"
+          ]
+        },
+        {
+          "id": "dd_allow_prov_admin",
+          "name": "Retailer admin triggers provisioning sync",
+          "description": "retailer_manager (admin) with ssp can create dealdesk:inventory-provisioning",
+          "principal": {
+            "id": "dd-ret-admin",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "admin",
+              "name": "dd-ret-admin",
+              "products": [
+                "ssp"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:inventory-provisioning",
+            "id": "dealdesk:inventory-provisioning",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "create"
+          ]
+        },
+        {
+          "id": "dd_allow_prov_owner",
+          "name": "Retailer owner triggers provisioning sync",
+          "description": "retailer_owner with ssp can create dealdesk:inventory-provisioning",
+          "principal": {
+            "id": "dd-ret-owner",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "dd-ret-owner",
+              "products": [
+                "ssp"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:inventory-provisioning",
+            "id": "dealdesk:inventory-provisioning",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "create"
+          ]
+        },
+        {
+          "id": "dd_allow_tags_ssp",
+          "name": "SSP-only retailer reads content tags",
+          "description": "retailer with only ssp can view contents:tags (extended product gate)",
+          "principal": {
+            "id": "dd-ret-ssp-tags",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "member",
+              "name": "dd-ret-ssp-tags",
+              "products": [
+                "ssp"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "contents:tags",
+            "id": "contents:tags",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "view"
+          ]
+        },
+        {
+          "id": "dd_allow_taxonomy_admin",
+          "name": "Retailer admin creates taxonomy key",
+          "description": "retailer_manager with ssp can create contents:tags_taxonomy",
+          "principal": {
+            "id": "dd-ret-admin-tax",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "admin",
+              "name": "dd-ret-admin-tax",
+              "products": [
+                "ssp"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "contents:tags_taxonomy",
+            "id": "contents:tags_taxonomy",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "create"
           ]
         }
       ]
@@ -1820,6 +1952,142 @@
           "expectedResult": "DENY",
           "actions": [
             "view"
+          ]
+        },
+        {
+          "id": "dd_deny_prov_member",
+          "name": "Retailer member cannot trigger provisioning sync",
+          "description": "staff_operator (member) with ssp is denied create on dealdesk:inventory-provisioning",
+          "principal": {
+            "id": "dd-ret-member",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "member",
+              "name": "dd-ret-member",
+              "products": [
+                "ssp"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:inventory-provisioning",
+            "id": "dealdesk:inventory-provisioning",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "DENY",
+          "actions": [
+            "create"
+          ]
+        },
+        {
+          "id": "dd_deny_prov_no_ssp",
+          "name": "Retailer admin without ssp cannot provision",
+          "description": "retailer_manager lacking ssp is denied create on dealdesk:inventory-provisioning",
+          "principal": {
+            "id": "dd-ret-admin-nossp",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "admin",
+              "name": "dd-ret-admin-nossp",
+              "products": [
+                "qr"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:inventory-provisioning",
+            "id": "dealdesk:inventory-provisioning",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "DENY",
+          "actions": [
+            "create"
+          ]
+        },
+        {
+          "id": "dd_deny_taxonomy_member",
+          "name": "Retailer member cannot create taxonomy key",
+          "description": "staff_operator (member) is denied create on contents:tags_taxonomy",
+          "principal": {
+            "id": "dd-ret-member-tax",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "member",
+              "name": "dd-ret-member-tax",
+              "products": [
+                "ssp"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "contents:tags_taxonomy",
+            "id": "contents:tags_taxonomy",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "DENY",
+          "actions": [
+            "create"
+          ]
+        },
+        {
+          "id": "dd_deny_taxonomy_brand",
+          "name": "Brand user cannot administer taxonomy",
+          "description": "brand user is denied create on contents:tags_taxonomy (brands excluded)",
+          "principal": {
+            "id": "dd-brand-tax",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "brand",
+              "userType": "owner",
+              "name": "dd-brand-tax",
+              "products": [
+                "brand_center"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD",
+              "brandId": "brand-DD",
+              "retailerIds": [
+                "retail-DD"
+              ]
+            }
+          },
+          "resource": {
+            "kind": "contents:tags_taxonomy",
+            "id": "contents:tags_taxonomy",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "DENY",
+          "actions": [
+            "create"
           ]
         }
       ]

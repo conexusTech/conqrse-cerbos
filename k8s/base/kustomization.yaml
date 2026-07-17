@@ -40,6 +40,8 @@ configMapGenerator:
       - policies/resource_contents_tags_assignments.yaml
       - policies/resource_contents_tags_item.yaml
       - policies/resource_contents_tags.yaml
+      - policies/resource_contents_tags_taxonomy_item.yaml
+      - policies/resource_contents_tags_taxonomy.yaml
       - policies/resource_contents_templates_item.yaml
       - policies/resource_contents_templates.yaml
       - policies/resource_dealdesk_blueprints.yaml
@@ -53,6 +55,7 @@ configMapGenerator:
       - policies/resource_dealdesk_dsp-blocks_item.yaml
       - policies/resource_dealdesk_dsp-blocks.yaml
       - policies/resource_dealdesk_inventory.yaml
+      - policies/resource_dealdesk_inventory-provisioning.yaml
       - policies/resource_dealdesk_line-items_item.yaml
       - policies/resource_dealdesk_line-items.yaml
       - policies/resource_dealdesk_media-packages_item.yaml

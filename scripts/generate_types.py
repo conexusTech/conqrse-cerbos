@@ -149,7 +149,7 @@ class MatrixParser:
             default_col = parts[2].strip().lower() if len(parts) > 2 else ""
             is_default = default_col == "required"
 
-            # Extract required products (both `required` and `required-all` markers)
+            # Extract required products (`required`, `required-all`, and `required-admin` markers)
             required_products = []
             if not is_default:
                 # product values start at column 3 (after default)
@@ -157,7 +157,7 @@ class MatrixParser:
                     col_index = 3 + i
                     if col_index < len(parts):
                         val = parts[col_index].strip().lower()
-                        if val in ("required", "required-all"):
+                        if val in ("required", "required-all", "required-admin"):
                             required_products.append(product)
 
             if resource_name:

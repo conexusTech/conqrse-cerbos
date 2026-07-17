@@ -13,7 +13,7 @@ resourcePolicy:
         match:
           all:
             of:
-              - expr: '["compliance", "priceTags", "product", "qr", "signage"].exists(p, p in P.attr.products)'
+              - expr: '["brand_center", "compliance", "priceTags", "product", "qr", "signage", "ssp", "trade"].exists(p, p in P.attr.products)'
       derivedRoles:
         - root_user
         - platform_administrator
@@ -37,7 +37,7 @@ resourcePolicy:
         match:
           all:
             of:
-              - expr: '["compliance", "priceTags", "product", "qr", "signage"].exists(p, p in P.attr.products)'
+              - expr: '["brand_center", "compliance", "priceTags", "product", "qr", "signage", "ssp", "trade"].exists(p, p in P.attr.products)'
       derivedRoles:
         - root_user
         - platform_administrator
