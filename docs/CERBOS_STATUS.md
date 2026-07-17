@@ -6,25 +6,24 @@
 
 > **See drift below?** Follow the [HOW TO — Update seeded policies](../README.md#how-to--update-seeded-policies-new--modified--removed) workflow in the README to bring an environment back in sync. Any policy change also requires bumping [`@conqrse/permission-types`](../README.md#how-to--update-conqrsepermission-types).
 
-- **Last regenerated:** 2026-07-15T10:38:16+00:00
-- **Repo HEAD:** `dacf3760ff98` — docs: consolidate cerbos docs and add CERBOS_STATUS SSoT
-- **HEAD author / date:** Joe Lacerna · 2026-07-15T17:01:35+08:00
-- **Unpushed commits on HEAD branch:** 2
+- **Last regenerated:** 2026-07-17T13:46:52+00:00
+- **Repo HEAD:** `9eb6ee428fea` — feat(deal-desk): add SSP provisioning + tag-taxonomy admin policies
+- **HEAD author / date:** Joe Lacerna · 2026-07-17T21:24:02+08:00
 - **kubectl context:** `arn:aws:eks:us-east-1:082585646836:cluster/conqrse`
 
 | Environment | Cerbos ready | Deployment last updated | Policies in ConfigMap |
 | --- | --- | --- | --- |
-| staging | ✅ 1/1 | 2026-07-11T06:30:07Z | 114 |
+| staging | ✅ 1/1 | 2026-07-11T06:30:07Z | 117 |
 | production | ✅ 1/1 | 2026-07-11T06:30:22Z | 114 |
 
 ## 1. Status by Consumer
 
-Total resources declared in the matrix: **131**
+Total resources declared in the matrix: **134**
 
 | Consumer | Integrated | Planned | Coverage |
 | --- | --- | --- | --- |
-| **conqrse-api3** | 0 | 0 | 0/131 (0%) |
-| **admin** | 0 | 0 | 0/131 (0%) |
+| **conqrse-api3** | 0 | 0 | 0/134 (0%) |
+| **admin** | 0 | 0 | 0/134 (0%) |
 
 ### conqrse-api3
 
@@ -81,7 +80,7 @@ _No resources integrated yet._
 
 ## 3. Resources
 
-Total: **131** resources across all groupings.
+Total: **134** resources across all groupings.
 
 ### `cms:*` (18)
 
@@ -113,7 +112,7 @@ Total: **131** resources across all groupings.
 | `connect:contacts` | collection | list, view, create, update, delete, export, import |
 | `connect:contacts:item` | item | view, update, delete |
 
-### `contents:*` (20)
+### `contents:*` (22)
 
 | Resource | Type | Actions |
 | --- | --- | --- |
@@ -135,10 +134,12 @@ Total: **131** resources across all groupings.
 | `contents:tags:item` | item | view, update, delete |
 | `contents:tags_assignments` | collection | list, view, create, update, delete, export, import |
 | `contents:tags_assignments:item` | item | view, update, delete |
+| `contents:tags_taxonomy` | collection | create |
+| `contents:tags_taxonomy:item` | item | update, delete |
 | `contents:templates` | collection | list, view, create, update, delete, export, import |
 | `contents:templates:item` | item | view, update, delete |
 
-### `dealdesk:*` (27)
+### `dealdesk:*` (28)
 
 | Resource | Type | Actions |
 | --- | --- | --- |
@@ -152,6 +153,7 @@ Total: **131** resources across all groupings.
 | `dealdesk:dsp-blocks` | collection | list, view, create, update, delete, export, import |
 | `dealdesk:dsp-blocks:item` | item | view, update, delete |
 | `dealdesk:inventory` | collection | list, view, create, update, delete, export, import |
+| `dealdesk:inventory-provisioning` | collection | create |
 | `dealdesk:line-items` | collection | list, view, create, update, delete, export, import |
 | `dealdesk:line-items:item` | item | view, update, delete |
 | `dealdesk:media-packages` | collection | list, view, create, update, delete, export, import |
@@ -266,7 +268,7 @@ Total: **131** resources across all groupings.
 
 ## 4. Product × Resource Matrix
 
-For a resource with multiple product marks, refer to the source doc `docs/RESOURCES_ACTIONS_MATRIX.md` for whether the semantics are OR (`required`) or AND (`required-all`). Dealdesk rows use **per-surface OR semantics**: each resource is marked with the product(s) its surface gates on — a single product (e.g. `dealdesk:ssp` → `ssp`; `dealdesk:trade-ledgers` → `trade`; `dealdesk:brands` → `brand_center`), any of the three for shared surfaces (`dealdesk:campaigns`, `:inventory`, `:reports`, `:placement-rules`, `:placement-types`, `:rate-cards`), `ssp`+`trade` for `dealdesk:store-traffic`, or **no mark** for base resources (`dealdesk:sites`, `dealdesk:blueprints` — all retailers). The former all-three (AND) gate has been removed.
+For a resource with multiple product marks, refer to the source doc `docs/RESOURCES_ACTIONS_MATRIX.md` for whether the semantics are OR (`required`) or AND (`required-all`). Dealdesk rows use AND semantics across `ssp`, `trade`, `brand_center`.
 
 | Resource | brand_center | cms | compliance | connect | landing | ppt | priceTags | product | qr | signage | ssp | trade |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -304,10 +306,12 @@ For a resource with multiple product marks, refer to the source doc `docs/RESOUR
 | `contents:landing_pages:item` |  |  |  |  | ✓ |  |  |  |  |  |  |  |
 | `contents:playlists` |  |  |  |  |  |  |  |  |  | ✓ |  |  |
 | `contents:playlists:item` |  |  |  |  |  |  |  |  |  | ✓ |  |  |
-| `contents:tags` |  |  | ✓ |  |  |  | ✓ | ✓ | ✓ | ✓ |  |  |
-| `contents:tags:item` |  |  | ✓ |  |  |  | ✓ | ✓ | ✓ | ✓ |  |  |
-| `contents:tags_assignments` |  |  | ✓ |  |  |  | ✓ | ✓ | ✓ | ✓ |  |  |
-| `contents:tags_assignments:item` |  |  | ✓ |  |  |  | ✓ | ✓ | ✓ | ✓ |  |  |
+| `contents:tags` | ✓ |  | ✓ |  |  |  | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| `contents:tags:item` | ✓ |  | ✓ |  |  |  | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| `contents:tags_assignments` | ✓ |  | ✓ |  |  |  | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| `contents:tags_assignments:item` | ✓ |  | ✓ |  |  |  | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| `contents:tags_taxonomy` | ✓ |  | ✓ |  |  |  | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| `contents:tags_taxonomy:item` | ✓ |  | ✓ |  |  |  | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | `contents:templates` |  |  |  |  |  |  | ✓ |  |  | ✓ |  |  |
 | `contents:templates:item` |  |  |  |  |  |  | ✓ |  |  | ✓ |  |  |
 | `dealdesk:blueprints` |  |  |  |  |  |  |  |  |  |  |  |  |
@@ -320,6 +324,7 @@ For a resource with multiple product marks, refer to the source doc `docs/RESOUR
 | `dealdesk:dsp-blocks` |  |  |  |  |  |  |  |  |  |  | ✓ |  |
 | `dealdesk:dsp-blocks:item` |  |  |  |  |  |  |  |  |  |  | ✓ |  |
 | `dealdesk:inventory` | ✓ |  |  |  |  |  |  |  |  |  | ✓ | ✓ |
+| `dealdesk:inventory-provisioning` |  |  |  |  |  |  |  |  |  |  | ✓ |  |
 | `dealdesk:line-items` |  |  |  |  |  |  |  |  |  |  |  | ✓ |
 | `dealdesk:line-items:item` |  |  |  |  |  |  |  |  |  |  |  | ✓ |
 | `dealdesk:media-packages` |  |  |  |  |  |  |  |  |  |  |  | ✓ |
@@ -404,8 +409,8 @@ For a resource with multiple product marks, refer to the source doc `docs/RESOUR
 
 ## 5. Sync Status
 
-- Policy files in `k8s/base/policies/`: **132**
-- Policy files listed in `k8s/base/kustomization.yaml` configMapGenerator: **114**
+- Policy files in `k8s/base/policies/`: **135**
+- Policy files listed in `k8s/base/kustomization.yaml` configMapGenerator: **117**
 
 > ⚠️ **18** policy file(s) exist in the repo but are NOT included in the kustomization allowlist. They will NEVER reach any cluster until added:
 >    - `resource_cms_api_key.yaml`
@@ -429,17 +434,23 @@ For a resource with multiple product marks, refer to the source doc `docs/RESOUR
 
 ### staging
 
-- Policies loaded in ConfigMap: **114**
+- Policies loaded in ConfigMap: **117**
 - ✅ **In sync with repo** — staging ConfigMap matches the kustomization allowlist.
 
 ### production
 
 - Policies loaded in ConfigMap: **114**
-- ✅ **In sync with repo** — production ConfigMap matches the kustomization allowlist.
+- ⚠️ Missing on production (in repo/kustomization but not deployed): **3**
+    - `resource_contents_tags_taxonomy.yaml`
+    - `resource_contents_tags_taxonomy_item.yaml`
+    - `resource_dealdesk_inventory-provisioning.yaml`
 
 ### staging ↔ production drift
 
-- ✅ **staging and production are in sync** (114 policies each).
+- Only on **staging** (3):
+    - `resource_contents_tags_taxonomy.yaml`
+    - `resource_contents_tags_taxonomy_item.yaml`
+    - `resource_dealdesk_inventory-provisioning.yaml`
 
 ## 6. Special Cases & Notes
 

@@ -312,23 +312,23 @@
     <div class="sec-head">
       <span class="sec-num">01 — At a glance</span>
       <h2>Where things stand right now</h2>
-      <p>Scan this first. Both Cerbos servers are healthy and now <b>in sync</b> — production was re-seeded with the DealDesk policies on 2026-07-15 and matches staging at 114 policies.</p>
+      <p>Scan this first. Both Cerbos servers are healthy, but <b>staging is ahead of production</b> — the SSP Digital Inventory Provisioning + tag-taxonomy admin policies were deployed to staging on 2026-07-17 (117 policies) and are pending promotion to production (114).</p>
     </div>
     <div class="tiles">
       <div class="tile good">
         <p class="k">Staging server</p>
         <div class="v">1/1 <small>ready</small></div>
-        <div class="sub">114 policies loaded · in sync with repo</div>
+        <div class="sub">117 policies loaded · in sync with repo</div>
       </div>
-      <div class="tile good">
+      <div class="tile warn">
         <p class="k">Production server</p>
         <div class="v">1/1 <small>ready</small></div>
-        <div class="sub">114 policies loaded · in sync with staging</div>
+        <div class="sub">114 policies loaded · 3 behind staging</div>
       </div>
-      <div class="tile good">
+      <div class="tile warn">
         <p class="k">Prod vs Staging drift</p>
-        <div class="v">0 <small>in sync</small></div>
-        <div class="sub">DealDesk re-seeded to prod 2026-07-15</div>
+        <div class="v">3 <small>staging ahead</small></div>
+        <div class="sub">SSP provisioning + tag-taxonomy pending prod</div>
       </div>
       <div class="tile warn">
         <p class="k">CMS policies</p>
@@ -419,7 +419,7 @@
 
     <div class="callout info" style="margin-top:20px">
       <div class="ico">#</div>
-      <div class="body"><b>Resources</b> are the things being protected — named <code>group:resource</code> (e.g. <code>qr:campaigns</code>) with an optional <code>:item</code> suffix for a single record. There are <b>114 deployed</b> policies across 10 groups: <code>settings</code>, <code>reports</code>, <code>footprints</code>, <code>contents</code>, <code>signages</code>, <code>connect</code>, <code>qr</code>, <code>dealdesk</code> (+ legacy <code>dealdesk_brand</code>), and <code>cms</code> (undeployed). Browse them all in the matrix below.</div>
+      <div class="body"><b>Resources</b> are the things being protected — named <code>group:resource</code> (e.g. <code>qr:campaigns</code>) with an optional <code>:item</code> suffix for a single record. There are <b>117 deployed</b> policies on staging (114 on production, pending promotion) across 10 groups: <code>settings</code>, <code>reports</code>, <code>footprints</code>, <code>contents</code>, <code>signages</code>, <code>connect</code>, <code>qr</code>, <code>dealdesk</code> (+ legacy <code>dealdesk_brand</code>), and <code>cms</code> (undeployed). Browse them all in the matrix below.</div>
     </div>
   </div>
 </section>
@@ -554,7 +554,7 @@ kubectl logs -n production job/cerbos-seed-policies | tail -20</code></pre>
     <div class="sec-head">
       <span class="sec-num">05 — Deployment status</span>
       <h2>Production vs Staging: are they in sync?</h2>
-      <p>Both environments inherit one shared base (overlays never touch the policy list), so the manifests always define an identical set. As of <b>2026-07-15</b> the runtime matches too — production was re-seeded with the DealDesk policies and now runs the full 114-policy set, same as staging.</p>
+      <p>Both environments inherit one shared base (overlays never touch the policy list), so the manifests always define an identical set. As of <b>2026-07-17</b> <b>staging is ahead</b> — the SSP Digital Inventory Provisioning + tag-taxonomy admin policies were deployed to staging (117 policies) and are pending promotion to production (114). Deploy them to prod with <code>./k8s/deploy.sh production</code> once verified.</p>
     </div>
 
     <div class="compare">
@@ -563,11 +563,11 @@ kubectl logs -n production job/cerbos-seed-policies | tail -20</code></pre>
           <span class="env-name"><span class="dot" style="width:9px;height:9px;color:var(--warn)"></span>Staging</span>
           <span class="pill good"><span class="dot"></span>1/1 ready</span>
         </div>
-        <div class="bignum" style="color:var(--good)">114</div>
+        <div class="bignum" style="color:var(--good)">117</div>
         <p style="color:var(--text-faint);font-size:12.5px;margin:2px 0 14px">policies loaded · in sync with repo</p>
         <dl>
           <dt>Ingress host</dt><dd>staging-cerbos.conqrse.com</dd>
-          <dt>Last updated</dt><dd>2026-07-11</dd>
+          <dt>Last updated</dt><dd>2026-07-17 (SSP provisioning)</dd>
           <dt>API Explorer</dt><dd>enabled</dd>
           <dt>Storage</dt><dd>sqlite3 / EBS</dd>
         </dl>
@@ -577,8 +577,8 @@ kubectl logs -n production job/cerbos-seed-policies | tail -20</code></pre>
           <span class="env-name"><span class="dot" style="width:9px;height:9px;color:var(--good)"></span>Production</span>
           <span class="pill good"><span class="dot"></span>1/1 ready</span>
         </div>
-        <div class="bignum" style="color:var(--good)">114</div>
-        <p style="color:var(--text-faint);font-size:12.5px;margin:2px 0 14px">policies loaded · <b style="color:var(--good)">in sync with staging</b></p>
+        <div class="bignum" style="color:var(--warn)">114</div>
+        <p style="color:var(--text-faint);font-size:12.5px;margin:2px 0 14px">policies loaded · <b style="color:var(--warn)">3 behind staging</b></p>
         <dl>
           <dt>Ingress host</dt><dd>cerbos.conqrse.com</dd>
           <dt>Last updated</dt><dd>2026-07-15 (re-seeded)</dd>
@@ -588,17 +588,17 @@ kubectl logs -n production job/cerbos-seed-policies | tail -20</code></pre>
       </div>
     </div>
 
-    <div class="callout good" style="margin-top:18px">
-      <div class="ico">✓</div>
-      <div class="body"><b>Resolved 2026-07-15.</b> The DealDesk group (28 policies: all <code>dealdesk:*</code> plus <code>dealdesk_brand:media-packages</code>) was re-seeded to production via <code>./k8s/deploy.sh production</code>. The seed job confirmed <code>Successfully seeded 114 policies</code> and the pod stayed healthy (1/1). <b>DealDesk authorization now exists in production.</b></div>
+    <div class="callout warn" style="margin-top:18px">
+      <div class="ico">!</div>
+      <div class="body"><b>Staging ahead of production (2026-07-17).</b> The SSP Digital Inventory Provisioning admin policies — <code>dealdesk:inventory-provisioning</code>, <code>contents:tags_taxonomy</code> (+<code>:item</code>), plus the extended <code>contents:tags</code>/<code>tags_assignments</code> product gates — were deployed to staging (<code>Successfully seeded 117 policies</code>, pod healthy 1/1) and verified via live check. Production still runs the 114-policy set; promote with <code>./k8s/deploy.sh production</code> once staging is signed off.</div>
     </div>
 
     <div class="table-scroll" style="margin-top:20px">
       <table>
         <thead><tr><th>Aspect</th><th>Staging</th><th>Production</th><th>Same?</th></tr></thead>
         <tbody>
-          <tr><td>Policies loaded (runtime)</td><td class="res">114</td><td class="res">114</td><td><span class="pill good"><span class="dot"></span>in sync</span></td></tr>
-          <tr><td>Policy set (manifests)</td><td class="res">114</td><td class="res">114</td><td><span class="pill good"><span class="dot"></span>identical</span></td></tr>
+          <tr><td>Policies loaded (runtime)</td><td class="res">117</td><td class="res">114</td><td><span class="pill warn"><span class="dot"></span>staging +3</span></td></tr>
+          <tr><td>Policy set (manifests)</td><td class="res">117</td><td class="res">114</td><td><span class="pill warn"><span class="dot"></span>staging +3</span></td></tr>
           <tr><td>Server health</td><td class="res">1/1</td><td class="res">1/1</td><td><span class="pill good"><span class="dot"></span>both up</span></td></tr>
           <tr><td>Cerbos image</td><td class="res">0.51.0</td><td class="res">0.51.0</td><td><span class="pill good"><span class="dot"></span>same</span></td></tr>
           <tr><td>Storage backend</td><td class="res">sqlite3/EBS</td><td class="res">sqlite3/EBS</td><td><span class="pill good"><span class="dot"></span>same</span></td></tr>
@@ -608,7 +608,7 @@ kubectl logs -n production job/cerbos-seed-policies | tail -20</code></pre>
         </tbody>
       </table>
     </div>
-    <p class="count-note">Basis: repo manifests + <code>docs/CERBOS_STATUS.md</code> (generated 2026-07-15). Config differences other than policy count are operational (namespace, ingress, API Explorer, CORS) and intentional.</p>
+    <p class="count-note">Basis: repo manifests + <code>docs/CERBOS_STATUS.md</code> (generated 2026-07-17). Config differences other than policy count are operational (namespace, ingress, API Explorer, CORS) and intentional.</p>
   </div>
 </section>
 
@@ -661,7 +661,7 @@ kubectl logs -n production job/cerbos-seed-policies | tail -20</code></pre>
 <footer class="site">
   <div class="wrap">
     <span>Generated from the <code>conqrse-cerbos</code> repository · source of truth: <code>docs/RESOURCES_ACTIONS_MATRIX.md</code></span>
-    <span>Snapshot: repo HEAD · 2026-07-15 · basis: repo files</span>
+    <span>Snapshot: repo HEAD · 2026-07-17 · basis: repo files</span>
   </div>
 </footer>
 
