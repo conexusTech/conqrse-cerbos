@@ -1,29 +1,39 @@
 {
   "name": "@conqrse/permission-types",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Enums and types for Conqrse permission integration with Cerbos",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "require": "./dist/index.js",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     },
     "./enums": {
       "types": "./dist/enums/index.d.ts",
-      "import": "./dist/enums/index.js"
+      "require": "./dist/enums/index.js",
+      "import": "./dist/enums/index.js",
+      "default": "./dist/enums/index.js"
     },
     "./enums/*": {
       "types": "./dist/enums/*.d.ts",
-      "import": "./dist/enums/*.js"
+      "require": "./dist/enums/*.js",
+      "import": "./dist/enums/*.js",
+      "default": "./dist/enums/*.js"
     },
     "./types": {
       "types": "./dist/types/index.d.ts",
-      "import": "./dist/types/index.js"
+      "require": "./dist/types/index.js",
+      "import": "./dist/types/index.js",
+      "default": "./dist/types/index.js"
     },
     "./types/*": {
       "types": "./dist/types/*.d.ts",
-      "import": "./dist/types/*.js"
+      "require": "./dist/types/*.js",
+      "import": "./dist/types/*.js",
+      "default": "./dist/types/*.js"
     }
   },
   "scripts": {
