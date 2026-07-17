@@ -103,7 +103,7 @@ Steps (in order):
       ⇒ per-surface gating confirmed live; umbrella grants nothing (⇒ D5 removal is safe).
 - [x] **D4 — Docs updated** (2026-07-16): `api3/docs/DEAL_DESK_CERBOS_POLICIES.md` — superseded banner + conventions rows now per-surface; historical umbrella snippets flagged, pointing to the conqrse-cerbos SSoT.
 - [x] **D5 — Umbrella removed** (2026-07-16): staging retailer `--remove-umbrella` (now per-surface only); `RetailerProduct.DEAL_DESK` removed from both api-types copies → published **`@conqrse/api-types@6.0.0`** (breaking); admin picker/label entries removed; admin + api3 on `^6.0.0`, `tsc` clean (admin) / prod build clean (api3, tests excluded). Completes **A2b + C1**.
-- [ ] **D6 — (Optional hardening, separate)** replace api3's hard-coded `@RequirePermission('dealdesk:…')` strings with `@conqrse/permission-types` `Resource`/`Action` enums. Not required for correctness.
+- [x] **D6 — Done** (2026-07-17): api3's `@RequirePermission('dealdesk:…')` strings replaced with `@conqrse/permission-types` `Resource`/`Action` enums — 133 calls across 21 controllers, via a deterministic ts-morph codemod (`api3/scripts/deal-desk-adopt-permission-enums.ts`). `permission-types ^1.7.0` added as a runtime dep. `tsc` 0 errors; eslint clean on changed files. No behavior change (enum values == prior strings).
 
 **Risk / ordering:** D2 is safe and reversible (additive). D5 is the only destructive step and must
 follow a green D3. Keep `dealdesk` and the three products coexisting through the transition window.
@@ -113,5 +113,5 @@ follow a green D3. Keep `dealdesk` and the three products coexisting through the
 ## Status (updated 2026-07-16)
 1. ✅ **A** (permission-types 1.6.0; api-types 5.15.0→6.0.0) · **B** (per-surface policies) · **C1/C2/C5** · **D1–D5**
 2. ✅ Staging retailer migrated to per-surface + verified against deployed Cerbos; umbrella `DEAL_DESK` removed everywhere.
-3. ⬜ **D6** (optional, separate) — api3 adopts `@conqrse/permission-types` `Resource`/`Action` enums instead of hard-coded `@RequirePermission('dealdesk:…')` strings. Not required for correctness.
-4. ⬜ **Housekeeping (non-Deal-Desk):** 4 pre-existing `tsc` test-file drift errors in api3 (`MediaPlayerMonitoringDto`/`BrandInventoryItemDto`/arg counts) surfaced by the api-types bump — not in the prod build; for the respective feature owners.
+3. ✅ **D6** — api3 now uses `@conqrse/permission-types` `Resource`/`Action` enums in `@RequirePermission` (133 calls / 21 controllers).
+4. ⬜ **Housekeeping (non-Deal-Desk, for feature owners):** pre-existing prettier debt in ~11 non-converted deal-desk controllers (strict `eslint` flags ~30, auto-fixed by the repo's `lint --fix`); and any api-types/DTO test drift the version bumps surface. Not Deal-Desk, not in scope.
