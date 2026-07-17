@@ -430,7 +430,7 @@
     <div class="sec-head">
       <span class="sec-num">03 — Product × Resource matrix</span>
       <h2>Which products unlock which resources</h2>
-      <p>Filter by one or more products (select several to see everything they unlock, combined) or search a resource. A resource is only reachable if the account holds one of its required products (DealDesk gates <b>per-surface</b> — most rows need a single product; a few accept any one of <code>ssp</code>/<code>trade</code>/<code>brand_center</code>). <code>:item</code> resources additionally require the user's retailer to match the record's retailer.</p>
+      <p>Filter by one or more products (select several to narrow to resources that list <b>all</b> of them) or search a resource. A resource is only reachable if the account holds one of its required products (DealDesk gates <b>per-surface</b> — most rows need a single product; a few accept any one of <code>ssp</code>/<code>trade</code>/<code>brand_center</code>). <code>:item</code> resources additionally require the user's retailer to match the record's retailer.</p>
     </div>
 
     <div class="controls">
@@ -846,8 +846,8 @@ kubectl logs -n production job/cerbos-seed-policies | tail -20</code></pre>
 
   // ---------- render filters (multi-select) ----------
   // activeProducts is a set of selected products; empty == "All products".
-  // Selecting several shows resources unlocked by ANY of them (OR / union),
-  // matching how product gating actually works.
+  // Selecting several narrows to resources that require ALL of them (AND /
+  // intersection) — a row matches only if its product list contains every pick.
   var activeProducts = [];
   var search = '';
   var fWrap = document.getElementById('prodFilters');
@@ -892,7 +892,7 @@ kubectl logs -n production job/cerbos-seed-policies | tail -20</code></pre>
 
   function matches(row) {
     var okP = activeProducts.length === 0 ||
-      row.products.some(function (p) { return activeProducts.indexOf(p) !== -1; });
+      activeProducts.every(function (p) { return row.products.indexOf(p) !== -1; });
     var okS = !search || row.name.toLowerCase().indexOf(search) !== -1;
     return okP && okS;
   }
@@ -917,7 +917,7 @@ kubectl logs -n production job/cerbos-seed-policies | tail -20</code></pre>
     body.innerHTML = html || '<tr><td colspan="4" style="padding:24px;text-align:center;color:var(--text-faint)">No resources match.</td></tr>';
     var total = DATA.reduce(function (n, g) { return n + g.rows.length; }, 0);
     note.textContent = 'Showing ' + shown + ' of ' + total + ' resources' +
-      (activeProducts.length ? ' unlocked by ' + activeProducts.map(function (p) { return '“' + p + '”'; }).join(' or ') : '') +
+      (activeProducts.length ? ' requiring ' + activeProducts.map(function (p) { return '“' + p + '”'; }).join(' and ') : '') +
       (search ? ' matching “' + search + '”' : '') + '.';
   }
   render();
