@@ -156,7 +156,7 @@ Deal Desk is a resource grouping — NOT a product. Access is gated per-surface 
 | `dealdesk:rate-cards`                 | Collection | list, view, create, update, delete, export, import |
 | `dealdesk:reports`                    | Collection | list, view, export                                 |
 | `dealdesk:sites`                      | Collection | list, view, create, update, delete, export, import |
-| `dealdesk:ssp`                        | Collection | list, view, create                                 |
+| `dealdesk:ssp`                        | Collection | list, view, create, update                         |
 | `dealdesk:store-traffic`              | Collection | list, view, create, update, delete, export, import |
 | `dealdesk:trade-ledgers`              | Collection | list, view, create, update, delete, export, import |
 | `dealdesk:trade-ledgers:item`         | Item       | view, update, delete                               |

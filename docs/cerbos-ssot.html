@@ -816,7 +816,7 @@ kubectl logs -n production job/cerbos-seed-policies | tail -20</code></pre>
       R('dealdesk:rate-cards','collection',['ssp','trade','brand_center'],'or',CRUD),
       R('dealdesk:reports','collection',['ssp','trade','brand_center'],'or',RPT),
       R('dealdesk:sites','collection',[],'none',CRUD),
-      R('dealdesk:ssp','collection',['ssp'],'or','list · view · create'),
+      R('dealdesk:ssp','collection',['ssp'],'or','list · view · create · update'),
       R('dealdesk:store-traffic','collection',['ssp','trade'],'or',CRUD),
       R('dealdesk:trade-ledgers','collection',['trade'],'or',CRUD),
       R('dealdesk:trade-ledgers:item','item',['trade'],'or',ITEM),

@@ -1749,6 +1749,39 @@
           "actions": [
             "create"
           ]
+        },
+        {
+          "id": "dd_allow_ssp_update",
+          "name": "SSP update with ssp product (DD-3a)",
+          "description": "Retailer owner with ssp can update dealdesk:ssp (Waterfall-config save)",
+          "principal": {
+            "id": "dd-ret-ssp",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "owner",
+              "name": "dd-ret-ssp",
+              "products": [
+                "ssp"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:ssp",
+            "id": "dealdesk:ssp",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "ALLOW",
+          "actions": [
+            "update"
+          ]
         }
       ]
     },
@@ -2088,6 +2121,39 @@
           "expectedResult": "DENY",
           "actions": [
             "create"
+          ]
+        },
+        {
+          "id": "dd_deny_ssp_update_collaborator",
+          "name": "SSP update denied for collaborator (DD-3a)",
+          "description": "guest_collaborator with ssp is read-only and cannot update dealdesk:ssp",
+          "principal": {
+            "id": "dd-ret-collab",
+            "roles": [
+              "user"
+            ],
+            "attr": {
+              "userLevel": "retailer",
+              "userType": "collaborator",
+              "name": "dd-ret-collab",
+              "products": [
+                "ssp"
+              ],
+              "agencyId": "agency-DD",
+              "retailerId": "retail-DD"
+            }
+          },
+          "resource": {
+            "kind": "dealdesk:ssp",
+            "id": "dealdesk:ssp",
+            "attr": {
+              "retailerId": "retail-DD",
+              "agencyId": "agency-DD"
+            }
+          },
+          "expectedResult": "DENY",
+          "actions": [
+            "update"
           ]
         }
       ]

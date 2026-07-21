@@ -78,7 +78,7 @@ export const RESOURCE_META: Record<Resource, ResourceMeta> = {
   [Resource.DEALDESK_RATE_CARDS]: { type: 'collection', actions: [Action.LIST, Action.VIEW, Action.CREATE, Action.UPDATE, Action.DELETE, Action.EXPORT, Action.IMPORT], products: [Product.SSP, Product.TRADE, Product.BRAND_CENTER] },
   [Resource.DEALDESK_REPORTS]: { type: 'collection', actions: [Action.LIST, Action.VIEW, Action.EXPORT], products: [Product.SSP, Product.TRADE, Product.BRAND_CENTER] },
   [Resource.DEALDESK_SITES]: { type: 'collection', actions: [Action.LIST, Action.VIEW, Action.CREATE, Action.UPDATE, Action.DELETE, Action.EXPORT, Action.IMPORT], products: [] },
-  [Resource.DEALDESK_SSP]: { type: 'collection', actions: [Action.LIST, Action.VIEW, Action.CREATE], products: [Product.SSP] },
+  [Resource.DEALDESK_SSP]: { type: 'collection', actions: [Action.LIST, Action.VIEW, Action.CREATE, Action.UPDATE], products: [Product.SSP] },
   [Resource.DEALDESK_STORE_TRAFFIC]: { type: 'collection', actions: [Action.LIST, Action.VIEW, Action.CREATE, Action.UPDATE, Action.DELETE, Action.EXPORT, Action.IMPORT], products: [Product.SSP, Product.TRADE] },
   [Resource.DEALDESK_TRADE_LEDGERS]: { type: 'collection', actions: [Action.LIST, Action.VIEW, Action.CREATE, Action.UPDATE, Action.DELETE, Action.EXPORT, Action.IMPORT], products: [Product.TRADE] },
   [Resource.DEALDESK_TRADE_LEDGERS_ITEM]: { type: 'item', actions: [Action.VIEW, Action.UPDATE, Action.DELETE], products: [Product.TRADE] },

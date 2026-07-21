@@ -7,7 +7,9 @@ resourcePolicy:
     - conqrse_roles
   rules:
     # DealDesk retailer path — requires ssp product
-    - actions: ["list", "view", "create"]
+    # `update` covers the Waterfall-config save (DD-3a); collaborator stays
+    # read-only (rule below) and the brand path has no update (retailer-owned config).
+    - actions: ["list", "view", "create", "update"]
       effect: EFFECT_ALLOW
       condition:
         match:
