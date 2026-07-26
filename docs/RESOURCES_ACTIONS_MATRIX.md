@@ -101,8 +101,8 @@ These are the resources that doesn't need product and retailer validation.
 | `contents:tags:item`                   | Item       | view, update, delete                               |
 | `contents:tags_assignments`            | Collection | list, view, create, update, delete, export, import |
 | `contents:tags_assignments:item`       | Item       | view, update, delete                               |
-| `contents:tags_taxonomy`               | Collection | create                                             |
-| `contents:tags_taxonomy:item`          | Item       | update, delete                                     |
+| `contents:tags_taxonomy`               | Collection | list, view, create                                 |
+| `contents:tags_taxonomy:item`          | Item       | view, update, delete                               |
 | `contents:content_groups`              | Collection | list, view, create, update, delete, export, import |
 | `contents:content_groups:item`         | Item       | view, update, delete                               |
 | `contents:landing_pages`               | Collection | list, view, create, update, delete, export, import |
@@ -393,6 +393,32 @@ Deal Desk is a resource grouping — NOT a product. Access is gated per-surface 
 | signages:places:item                            | resource_signages_places_item.yaml                           |          |          |           |            |          | required |          |          | required |          |              |              |              |
 | signages:things                                 | resource_signages_things.yaml                                |          |          |           |            |          | required |          |          | required |          |              |              |              |
 | signages:things:item                            | resource_signages_things_item.yaml                           |          |          |           |            |          | required |          |          | required |          |              |              |              |
+
+---
+
+## Attribute-Guarded Resources
+
+Most resources are gated by role tier and product subscription alone. A few need a finer distinction: *some rows within the resource* are more sensitive than others, and which row is being acted on is only knowable from the data, not from the URL.
+
+Cerbos answers these the same way it answers everything else — the calling API sends the relevant fields as resource attributes on the check, and the policy reads them as `R.attr.*`. The `Guard` column below names a rule set defined in `scripts/generate_policies.py`; the resource keeps its normal role tier for every row the guard does not match.
+
+| Resource                      | Guard                    |
+| ----------------------------- | ------------------------ |
+| `contents:tags_taxonomy`      | `protected_taxonomy_key` |
+| `contents:tags_taxonomy:item` | `protected_taxonomy_key` |
+
+### `protected_taxonomy_key`
+
+A taxonomy key is **protected** when either holds:
+
+- `R.attr.source == "dynamic"` — the value is supplied by the device at evaluation time. A dynamic key is meaningless unless firmware actually reports it, so a self-service one produces targeting rules that silently never fire.
+- `R.attr.origin == "system"` — the key is platform-seeded and platform code depends on it.
+
+Protected rows may be created, updated or deleted **only** by `root_user` and `platform_administrator`. Unprotected rows follow the resource's normal owner/admin tier. Reads are never guarded — rule authors must be able to see every key, including the ones they cannot assign.
+
+Both expressions are `has()`-guarded, so routes that send no such attribute (any read) are unaffected.
+
+**Requires** `conqrse-api3` to populate these attributes on the Cerbos check: `source` from the request body on create, and both fields from the loaded row on update and delete — never from the body, since the row already exists and the body is caller-controlled. See the Tag System Unification plan, decision D1.
 
 ---
 

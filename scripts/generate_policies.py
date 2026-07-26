@@ -26,6 +26,7 @@ class ResourceDef:
     is_default: bool             # True if default=required
     is_all_required: bool = False  # True if any product marker was "required-all" (AND semantics)
     is_admin_only: bool = False  # True if any product marker was "required-admin" (owner/admin roles only)
+    attr_guard: str = ""         # Guard name from the "Attribute-Guarded Resources" table, if any
     category: str = "unknown"    # "product_resource", "product_settings", "dealdesk_resource", etc.
 
     def __post_init__(self):
@@ -211,6 +212,51 @@ class MatrixParser:
 
         return resource_matrix
 
+    def parse_attribute_guards(self) -> Dict[str, str]:
+        """
+        Parse the "Attribute-Guarded Resources" table into {resource_name: guard_name}.
+
+        Rows look like: | `contents:tags_taxonomy` | `protected_taxonomy_key` |
+        Absent section, or no matching rows, yields an empty mapping — the guard
+        mechanism is strictly opt-in.
+        """
+        guards: Dict[str, str] = {}
+        lines = self.content.split('\n')
+
+        start_idx = None
+        for i, line in enumerate(lines):
+            if line.strip().startswith('## Attribute-Guarded Resources'):
+                start_idx = i
+                break
+        if start_idx is None:
+            return guards
+
+        for line in lines[start_idx + 1:]:
+            # Stop at the next section of equal or higher level
+            if line.startswith('## '):
+                break
+            if not line.startswith('|') or '---' in line:
+                continue
+
+            parts = [p.strip().strip('`') for p in line.split('|')]
+            parts = parts[1:-1] if len(parts) > 2 else parts
+            if len(parts) < 2:
+                continue
+
+            resource_name, guard_name = parts[0], parts[1]
+            # Skip the header row
+            if resource_name.lower() == 'resource' or not guard_name:
+                continue
+            if guard_name not in ATTR_GUARDS:
+                print(
+                    f"Warning: unknown guard '{guard_name}' for {resource_name} — ignored",
+                    file=sys.stderr,
+                )
+                continue
+            guards[resource_name] = guard_name
+
+        return guards
+
     def merge_data(self) -> List[ResourceDef]:
         """
         Merge resource actions and matrix data to create ResourceDefs.
@@ -220,6 +266,7 @@ class MatrixParser:
         """
         resource_actions = self.parse_resource_actions()
         product_matrix = self.parse_product_matrix()
+        attribute_guards = self.parse_attribute_guards()
 
         resources = []
 
@@ -239,10 +286,38 @@ class MatrixParser:
                 is_default=is_default,
                 is_all_required=is_all_required,
                 is_admin_only=is_admin_only,
+                attr_guard=attribute_guards.get(resource_name, ""),
             )
             resources.append(resource)
 
         return sorted(resources, key=lambda r: r.filename)
+
+
+# Roles permitted to act on attribute-protected rows. Deliberately narrower than
+# the full SU tier: platform_lead/member/collaborator are excluded, because a
+# protected row is protected from self-service, not merely from retailers.
+_SUPERUSER_ROLES = [
+    "root_user",
+    "platform_administrator",
+]
+
+# Attribute guards, keyed by the name used in the matrix's
+# "Attribute-Guarded Resources" table. Each guard narrows a subset of a
+# resource's actions to _SUPERUSER_ROLES for rows matching `protected_expr`,
+# while leaving every other row on the resource's normal role tier.
+#
+# `protected_expr` must be has()-guarded so that routes which send no such
+# attribute (every read) evaluate cleanly rather than erroring.
+ATTR_GUARDS = {
+    "protected_taxonomy_key": {
+        "actions": ["create", "update", "delete"],
+        "protected_expr": (
+            '(has(R.attr.source) && R.attr.source == "dynamic") || '
+            '(has(R.attr.origin) && R.attr.origin == "system")'
+        ),
+        "label": "dynamic or system taxonomy keys",
+    },
+}
 
 
 class PolicyRenderer:
@@ -313,6 +388,28 @@ class PolicyRenderer:
         "agency_lead",
         "agency_member",
         "agency_collaborator",
+        "guest_collaborator",
+    ]
+    # Everyone holding the product, regardless of tier — operators plus the
+    # read-only collaborator tier. Used for reads on admin-gated resources, where
+    # the write tier is deliberately narrow but the read must not be: key pickers,
+    # assignment panels and the rule builder are used by team_lead / staff_operator,
+    # who appear in neither _PRODUCT_SETTINGS_ROLES nor _PRODUCT_COLLABORATOR_ROLES.
+    _PRODUCT_READER_ROLES = [
+        "root_user",
+        "platform_administrator",
+        "platform_lead",
+        "platform_member",
+        "platform_collaborator",
+        "agency_owner",
+        "agency_manager",
+        "agency_lead",
+        "agency_member",
+        "agency_collaborator",
+        "retailer_owner",
+        "retailer_manager",
+        "team_lead",
+        "staff_operator",
         "guest_collaborator",
     ]
     _PRODUCT_SETTINGS_ROLES = [
@@ -521,27 +618,80 @@ class PolicyRenderer:
         on items, restricted to the owner/admin role tier. Brand roles are
         intentionally excluded (PRD §6.4).
         """
-        yaml = ""
-
         products_str = ', '.join(f'"{p}"' for p in sorted(resource.products))
         product_condition = f'[{products_str}].exists(p, p in P.attr.products)'
 
         is_item = resource.res_type == "item"
         actions = resource.actions
 
-        yaml += "    # Admin-only access with product subscription check (owner/admin only)\n"
-        yaml += "    - actions: [" + ", ".join(f'"{a}"' for a in actions) + "]\n"
-        yaml += "      effect: EFFECT_ALLOW\n"
-        yaml += "      condition:\n"
-        yaml += "        match:\n"
-        yaml += "          all:\n"
-        yaml += "            of:\n"
-        yaml += f"              - expr: '{product_condition}'\n"
-        if is_item:
-            yaml += "              - expr: 'P.attr.retailerId == R.attr.retailerId'\n"
-        yaml += "      derivedRoles:\n"
-        for role in PolicyRenderer._PRODUCT_SETTINGS_ROLES:
-            yaml += f"        - {role}\n"
+        def _rule(comment: str, acts, roles, extra_exprs=()) -> str:
+            """Emit one ALLOW rule, or nothing when it would have no actions."""
+            if not acts:
+                return ""
+            block = f"    # {comment}\n"
+            block += "    - actions: [" + ", ".join(f'"{a}"' for a in acts) + "]\n"
+            block += "      effect: EFFECT_ALLOW\n"
+            block += "      condition:\n"
+            block += "        match:\n"
+            block += "          all:\n"
+            block += "            of:\n"
+            block += f"              - expr: '{product_condition}'\n"
+            if is_item:
+                block += "              - expr: 'P.attr.retailerId == R.attr.retailerId'\n"
+            for expr in extra_exprs:
+                block += f"              - expr: '{expr}'\n"
+            block += "      derivedRoles:\n"
+            for role in roles:
+                block += f"        - {role}\n"
+            return block
+
+        # Reads open to everyone holding the product; writes stay owner/admin.
+        # An admin-gated resource nobody may list is unusable — key pickers,
+        # assignment panels and the rule builder all read a vocabulary they may
+        # not edit. Resources whose actions are all writes (e.g.
+        # dealdesk:inventory-provisioning) render exactly as before, because the
+        # read split below leaves nothing on one side.
+        read_actions = [a for a in actions if a in ["list", "view", "export"]]
+        write_actions = [a for a in actions if a not in read_actions]
+
+        guard = ATTR_GUARDS.get(resource.attr_guard) if resource.attr_guard else None
+        guarded = [a for a in write_actions if guard and a in guard["actions"]]
+        plain = [a for a in write_actions if a not in guarded]
+
+        yaml = ""
+
+        if read_actions:
+            yaml += _rule(
+                "Read access for any tier holding the product",
+                read_actions,
+                PolicyRenderer._PRODUCT_READER_ROLES,
+            )
+            if plain or guarded:
+                yaml += "\n"
+
+        yaml += _rule(
+            "Admin-only access with product subscription check (owner/admin only)",
+            plain,
+            PolicyRenderer._PRODUCT_SETTINGS_ROLES,
+        )
+
+        if guarded:
+            if plain:
+                yaml += "\n"
+            # Same tier as above, but only for rows the guard does not protect.
+            yaml += _rule(
+                f"Owner/admin tier — everything except {guard['label']}",
+                guarded,
+                PolicyRenderer._PRODUCT_SETTINGS_ROLES,
+                (f"!({guard['protected_expr']})",),
+            )
+            # Protected rows: superuser only. No protection expression here, so
+            # this rule also covers unprotected rows for these roles.
+            yaml += "\n" + _rule(
+                f"Superuser only — {guard['label']}",
+                guarded,
+                _SUPERUSER_ROLES,
+            )
 
         return yaml
 
