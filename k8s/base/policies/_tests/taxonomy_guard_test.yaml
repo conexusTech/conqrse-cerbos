@@ -1,0 +1,77 @@
+---
+name: TaxonomyGuardTests
+description: D1 (attribute guard) and D3 (read tier) on contents:tags_taxonomy
+resources:
+  normal_key:
+    id: "key-normal"
+    kind: contents:tags_taxonomy
+    attr: { retailerId: "r1" }
+  dynamic_key:
+    id: "key-dynamic"
+    kind: contents:tags_taxonomy
+    attr: { retailerId: "r1", source: "dynamic" }
+  system_key:
+    id: "key-system"
+    kind: contents:tags_taxonomy
+    attr: { retailerId: "r1", origin: "system" }
+principals:
+  su_admin:
+    id: su1
+    roles: ["user"]
+    attr: { userLevel: "su", userType: "admin", retailerId: "r1", products: ["signage"] }
+  retailer_owner:
+    id: ro1
+    roles: ["user"]
+    attr: { userLevel: "retailer", userType: "owner", retailerId: "r1", products: ["signage"] }
+  staff_operator:
+    id: so1
+    roles: ["user"]
+    attr: { userLevel: "retailer", userType: "member", retailerId: "r1", products: ["signage"] }
+  guest:
+    id: g1
+    roles: ["user"]
+    attr: { userLevel: "retailer", userType: "collaborator", retailerId: "r1", products: ["signage"] }
+  no_product:
+    id: np1
+    roles: ["user"]
+    attr: { userLevel: "retailer", userType: "owner", retailerId: "r1", products: ["cms"] }
+tests:
+  - name: D3 - reads open to every tier holding the product
+    input:
+      principals: [staff_operator, guest, retailer_owner, su_admin]
+      resources: [normal_key]
+      actions: [list, view]
+    expected:
+      - { principal: staff_operator, resource: normal_key, actions: { list: EFFECT_ALLOW, view: EFFECT_ALLOW } }
+      - { principal: guest,          resource: normal_key, actions: { list: EFFECT_ALLOW, view: EFFECT_ALLOW } }
+      - { principal: retailer_owner, resource: normal_key, actions: { list: EFFECT_ALLOW, view: EFFECT_ALLOW } }
+      - { principal: su_admin,       resource: normal_key, actions: { list: EFFECT_ALLOW, view: EFFECT_ALLOW } }
+
+  - name: D3 - writes stay owner/admin
+    input:
+      principals: [staff_operator, guest, retailer_owner]
+      resources: [normal_key]
+      actions: [create]
+    expected:
+      - { principal: staff_operator, resource: normal_key, actions: { create: EFFECT_DENY } }
+      - { principal: guest,          resource: normal_key, actions: { create: EFFECT_DENY } }
+      - { principal: retailer_owner, resource: normal_key, actions: { create: EFFECT_ALLOW } }
+
+  - name: D1 - dynamic and system keys are superuser only
+    input:
+      principals: [retailer_owner, su_admin]
+      resources: [dynamic_key, system_key]
+      actions: [create]
+    expected:
+      - { principal: retailer_owner, resource: dynamic_key, actions: { create: EFFECT_DENY } }
+      - { principal: retailer_owner, resource: system_key,  actions: { create: EFFECT_DENY } }
+      - { principal: su_admin,       resource: dynamic_key, actions: { create: EFFECT_ALLOW } }
+      - { principal: su_admin,       resource: system_key,  actions: { create: EFFECT_ALLOW } }
+
+  - name: product gate still applies
+    input:
+      principals: [no_product]
+      resources: [normal_key]
+      actions: [list, create]
+    expected:
+      - { principal: no_product, resource: normal_key, actions: { list: EFFECT_DENY, create: EFFECT_DENY } }
