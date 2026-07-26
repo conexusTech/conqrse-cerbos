@@ -396,6 +396,22 @@ Deal Desk is a resource grouping — NOT a product. Access is gated per-surface 
 
 ---
 
+## Brand-Path Action Exclusions
+
+DealDesk resources render three rule blocks: retailer operators, retailer collaborators, and the brand path (brand tier, cross-retailer via `P.attr.retailerIds`). By default the brand path gets the same actions as retailer operators.
+
+Sometimes it must not. A resource can be readable by a brand while remaining writable only by the retailer that owns it — the Waterfall config on `dealdesk:ssp` is the case that prompted this. List those exclusions here so the distinction is generated rather than hand-patched into the YAML.
+
+| Resource       | Actions withheld from the brand path | Why                                             |
+| -------------- | ------------------------------------ | ----------------------------------------------- |
+| `dealdesk:ssp` | `update`                             | Waterfall config is retailer-owned (DD-3a)      |
+
+Exclusions apply to the brand rule only; the retailer operator and collaborator rules are unaffected.
+
+**Before this existed**, `resource_dealdesk_ssp.yaml` was hand-edited to express it — which meant `generate_policies.py --force` silently granted brand users `update` on a retailer-owned config. If you add a case here, never encode it in the YAML instead.
+
+---
+
 ## Attribute-Guarded Resources
 
 Most resources are gated by role tier and product subscription alone. A few need a finer distinction: *some rows within the resource* are more sensitive than others, and which row is being acted on is only knowable from the data, not from the URL.

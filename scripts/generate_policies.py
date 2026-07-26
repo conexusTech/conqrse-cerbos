@@ -10,7 +10,7 @@ import re
 import sys
 import argparse
 from pathlib import Path
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Dict, List, Set, Optional
 from collections import defaultdict
 
@@ -27,6 +27,7 @@ class ResourceDef:
     is_all_required: bool = False  # True if any product marker was "required-all" (AND semantics)
     is_admin_only: bool = False  # True if any product marker was "required-admin" (owner/admin roles only)
     attr_guard: str = ""         # Guard name from the "Attribute-Guarded Resources" table, if any
+    brand_excluded_actions: List[str] = field(default_factory=list)  # Actions withheld from the DealDesk brand path
     category: str = "unknown"    # "product_resource", "product_settings", "dealdesk_resource", etc.
 
     def __post_init__(self):
@@ -257,6 +258,46 @@ class MatrixParser:
 
         return guards
 
+    def parse_brand_exclusions(self) -> Dict[str, List[str]]:
+        """
+        Parse "Brand-Path Action Exclusions" into {resource_name: [actions]}.
+
+        Rows look like: | `dealdesk:ssp` | `update` | Waterfall config ... |
+        Absent section yields an empty mapping — exclusions are strictly opt-in.
+        """
+        exclusions: Dict[str, List[str]] = {}
+        lines = self.content.split('\n')
+
+        start_idx = None
+        for i, line in enumerate(lines):
+            if line.strip().startswith('## Brand-Path Action Exclusions'):
+                start_idx = i
+                break
+        if start_idx is None:
+            return exclusions
+
+        for line in lines[start_idx + 1:]:
+            if line.startswith('## '):
+                break
+            if not line.startswith('|') or '---' in line:
+                continue
+
+            parts = [p.strip() for p in line.split('|')]
+            parts = parts[1:-1] if len(parts) > 2 else parts
+            if len(parts) < 2:
+                continue
+
+            resource_name = parts[0].strip('`')
+            if resource_name.lower() == 'resource' or not resource_name:
+                continue
+
+            actions = [a.strip().strip('`') for a in parts[1].split(',') if a.strip()]
+            actions = [a for a in actions if a]
+            if actions:
+                exclusions[resource_name] = actions
+
+        return exclusions
+
     def merge_data(self) -> List[ResourceDef]:
         """
         Merge resource actions and matrix data to create ResourceDefs.
@@ -267,6 +308,7 @@ class MatrixParser:
         resource_actions = self.parse_resource_actions()
         product_matrix = self.parse_product_matrix()
         attribute_guards = self.parse_attribute_guards()
+        brand_exclusions = self.parse_brand_exclusions()
 
         resources = []
 
@@ -287,6 +329,7 @@ class MatrixParser:
                 is_all_required=is_all_required,
                 is_admin_only=is_admin_only,
                 attr_guard=attribute_guards.get(resource_name, ""),
+                brand_excluded_actions=brand_exclusions.get(resource_name, []),
             )
             resources.append(resource)
 
@@ -592,18 +635,26 @@ class PolicyRenderer:
             yaml += "        - guest_collaborator\n"
 
         # Rule 3 — Brand path (Brand tier only, cross-retailer via retailerIds[])
-        yaml += "\n    # DealDesk brand path — brand_center product + cross-retailer scoping via P.attr.retailerIds\n"
-        yaml += "    - actions: [" + ", ".join(f'"{a}"' for a in operator_actions) + "]\n"
-        yaml += "      effect: EFFECT_ALLOW\n"
-        yaml += "      condition:\n"
-        yaml += "        match:\n"
-        yaml += "          all:\n"
-        yaml += "            of:\n"
-        yaml += f"              - expr: '{brand_product_condition}'\n"
-        yaml += "              - expr: 'R.attr.retailerId in P.attr.retailerIds'\n"
-        yaml += "      derivedRoles:\n"
-        for role in PolicyRenderer._DEALDESK_BRAND_ROLES:
-            yaml += f"        - {role}\n"
+        # Some actions are deliberately withheld here while staying available to
+        # the retailer path — see "Brand-Path Action Exclusions" in the matrix.
+        brand_actions = [a for a in operator_actions if a not in resource.brand_excluded_actions]
+        if brand_actions:
+            excluded_note = ""
+            if resource.brand_excluded_actions:
+                withheld = ", ".join(resource.brand_excluded_actions)
+                excluded_note = f"\n    # `{withheld}` withheld from the brand path — see the matrix for the reason."
+            yaml += f"\n    # DealDesk brand path — brand_center product + cross-retailer scoping via P.attr.retailerIds{excluded_note}\n"
+            yaml += "    - actions: [" + ", ".join(f'"{a}"' for a in brand_actions) + "]\n"
+            yaml += "      effect: EFFECT_ALLOW\n"
+            yaml += "      condition:\n"
+            yaml += "        match:\n"
+            yaml += "          all:\n"
+            yaml += "            of:\n"
+            yaml += f"              - expr: '{brand_product_condition}'\n"
+            yaml += "              - expr: 'R.attr.retailerId in P.attr.retailerIds'\n"
+            yaml += "      derivedRoles:\n"
+            for role in PolicyRenderer._DEALDESK_BRAND_ROLES:
+                yaml += f"        - {role}\n"
 
         return yaml
 
