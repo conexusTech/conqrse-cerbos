@@ -6,15 +6,15 @@
 
 > **See drift below?** Follow the [HOW TO — Update seeded policies](../README.md#how-to--update-seeded-policies-new--modified--removed) workflow in the README to bring an environment back in sync. Any policy change also requires bumping [`@conqrse/permission-types`](../README.md#how-to--update-conqrsepermission-types).
 
-- **Last regenerated:** 2026-07-17T13:46:52+00:00
-- **Repo HEAD:** `9eb6ee428fea` — feat(deal-desk): add SSP provisioning + tag-taxonomy admin policies
-- **HEAD author / date:** Joe Lacerna · 2026-07-17T21:24:02+08:00
+- **Last regenerated:** 2026-07-26T16:53:03+00:00
+- **Repo HEAD:** `8c24ff6613da` — test(tags-taxonomy): cover the D1 attribute guard and D3 read tier
+- **HEAD author / date:** Joe Lacerna · 2026-07-27T00:52:19+08:00
 - **kubectl context:** `arn:aws:eks:us-east-1:082585646836:cluster/conqrse`
 
 | Environment | Cerbos ready | Deployment last updated | Policies in ConfigMap |
 | --- | --- | --- | --- |
-| staging | ✅ 1/1 | 2026-07-11T06:30:07Z | 117 |
-| production | ✅ 1/1 | 2026-07-11T06:30:22Z | 114 |
+| staging | ✅ 1/1 | 2026-07-26T16:48:30Z | 117 |
+| production | ✅ 1/1 | 2026-07-25T06:39:57Z | 117 |
 
 ## 1. Status by Consumer
 
@@ -134,8 +134,8 @@ Total: **134** resources across all groupings.
 | `contents:tags:item` | item | view, update, delete |
 | `contents:tags_assignments` | collection | list, view, create, update, delete, export, import |
 | `contents:tags_assignments:item` | item | view, update, delete |
-| `contents:tags_taxonomy` | collection | create |
-| `contents:tags_taxonomy:item` | item | update, delete |
+| `contents:tags_taxonomy` | collection | list, view, create |
+| `contents:tags_taxonomy:item` | item | view, update, delete |
 | `contents:templates` | collection | list, view, create, update, delete, export, import |
 | `contents:templates:item` | item | view, update, delete |
 
@@ -167,7 +167,7 @@ Total: **134** resources across all groupings.
 | `dealdesk:rate-cards` | collection | list, view, create, update, delete, export, import |
 | `dealdesk:reports` | collection | list, view, export |
 | `dealdesk:sites` | collection | list, view, create, update, delete, export, import |
-| `dealdesk:ssp` | collection | list, view, create |
+| `dealdesk:ssp` | collection | list, view, create, update |
 | `dealdesk:store-traffic` | collection | list, view, create, update, delete, export, import |
 | `dealdesk:trade-ledgers` | collection | list, view, create, update, delete, export, import |
 | `dealdesk:trade-ledgers:item` | item | view, update, delete |
@@ -439,18 +439,12 @@ For a resource with multiple product marks, refer to the source doc `docs/RESOUR
 
 ### production
 
-- Policies loaded in ConfigMap: **114**
-- ⚠️ Missing on production (in repo/kustomization but not deployed): **3**
-    - `resource_contents_tags_taxonomy.yaml`
-    - `resource_contents_tags_taxonomy_item.yaml`
-    - `resource_dealdesk_inventory-provisioning.yaml`
+- Policies loaded in ConfigMap: **117**
+- ✅ **In sync with repo** — production ConfigMap matches the kustomization allowlist.
 
 ### staging ↔ production drift
 
-- Only on **staging** (3):
-    - `resource_contents_tags_taxonomy.yaml`
-    - `resource_contents_tags_taxonomy_item.yaml`
-    - `resource_dealdesk_inventory-provisioning.yaml`
+- ✅ **staging and production are in sync** (117 policies each).
 
 ## 6. Special Cases & Notes
 
