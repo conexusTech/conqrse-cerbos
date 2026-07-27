@@ -125,6 +125,18 @@ This section is the end-to-end workflow for changing what Cerbos enforces. It is
 2. **Kustomization allowlist is easy to forget.** A policy file that isn't listed in `k8s/base/kustomization.yaml`'s `configMapGenerator.files:` **will never reach any cluster.** The status generator flags this explicitly.
 3. **Every policy change bumps `@conqrse/permission-types`.** Consumers (`conqrse-admin`, `conqrse-api3`) rely on the generated enums. If a resource/role/product exists in the deployed policies but not in the enums (or vice versa), runtime auth breaks — this is why the version bump is mandatory, not optional.
 4. **Both environments get the same policies.** Never deploy a policy to production that hasn't run in staging first. Never leave staging ahead of production for more than one release cycle without an explicit reason (dealdesk pilot, feature flag, etc.).
+5. **Removing an action from the matrix breaks `conqrse-api3`'s build.** That is deliberate — see below.
+
+### The api3 route contract (CBS-4)
+
+`conqrse-api3` asserts, on every build, that each of its ~215 `@RequirePermission` decorators names a resource that exists in `RESOURCE_META` and an action that resource **grants** (`test/cerbos-route-contract.spec.ts`). This exists because the failure it catches is otherwise invisible: api3's decorator is typed `(resource: string, action: string)`, Cerbos is default-deny, and `PERMISSION_BYPASS=true` means the guard never asks the PDP. A route naming an action the matrix does not grant therefore compiles, passes its tests, and works in production — right up until enforcement is switched on, at which point it 403s for everyone with nothing in the logs explaining why.
+
+Two consequences for work in this repo:
+
+- **Narrowing a resource's action list is a breaking change for api3.** If you remove an action that a route still uses, api3's suite fails with the offending file and route named. Check consumers before narrowing, and land the api3 change first.
+- **Widening is always safe**, which is why adding the taxonomy read tier (CBS-1) needed no api3 coordination.
+
+Audited clean on 2026-07-27 against `permission-types` 1.9.0: 215 sites, 118 distinct resource+action pairs, zero mismatches — including `contents:tags:item`, which still matches after API-6 moved those routes under `/retailers/:retailer/`.
 
 ### HOW TO — Update seeded policies (new / modified / removed)
 
