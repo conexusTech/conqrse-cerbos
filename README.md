@@ -237,16 +237,87 @@ Look for:
 If any of that is off, do NOT proceed to production. Diagnose:
 - If the file didn't appear in the seed logs → check `k8s/base/kustomization.yaml` includes it.
 - If the seed job errored → check `cerbos compile` locally, review the specific YAML for syntax issues.
+- **If the seed died on `_derived_roles.yaml` with a bare `500 Failed to add/update policies`, your policy is almost certainly fine** — see the `SQLITE_BUSY` note below before you go looking for a syntax error.
+
+#### Expect the first seed to fail — `SQLITE_BUSY`
+
+Both tag-policy deploys to date (staging 2026-07-26, production 2026-07-27) failed on the **first** run with:
+
+```
+ERROR: Failed to seed _derived_roles.yaml: 500 {"code":13, "message":"Failed to add/update policies"}
+```
+
+That message names the first file alphabetically and says nothing useful. The real cause is only in the Cerbos pod logs:
+
+```bash
+kubectl logs -n <env> deployment/cerbos --tail=100 | grep -i sqlite
+# error: "database is locked (5) (SQLITE_BUSY)"
+```
+
+The store is SQLite on the `cerbos-data` PVC with a bare DSN — no `_busy_timeout`, no WAL — so a write fails instantly whenever a reader holds the lock, and Cerbos is serving live authz while the job writes 117 policies. It is a race, not a bad policy, which is why some deploys succeed.
+
+**Nothing breaks when this happens.** Cerbos logs `Error processing storage event, maintaining last valid state` and keeps serving the previous policy set. Recover with:
+
+```bash
+kubectl delete job/cerbos-seed-policies -n <env> --wait=true
+kubectl rollout restart deployment/cerbos -n <env>
+kubectl rollout status  deployment/cerbos -n <env> --timeout=5m
+kubectl apply -k k8s/overlays/<env>          # re-creates the seed job
+```
+
+The deployment is `Recreate` with one replica, so this costs a brief window with no PDP. Permanent fix (one line, not yet applied — it changes storage config for both environments): set the DSN to `/data/cerbos.db?_busy_timeout=5000&_journal_mode=WAL` in `k8s/base/configmap-config.yaml`.
+
+#### Verify against the PDP, not the ConfigMap
+
+`kubectl apply` updates the `cerbos-policies` ConfigMap immediately, but **the PDP serves from its SQLite store, which only the seed job writes.** So reading the ConfigMap back reports success before the seed has run — and is simply wrong if the seed then fails. Ask Cerbos directly:
+
+```bash
+kubectl port-forward -n <env> svc/cerbos 13592:3592 &   # allow ~8s to come up
+curl -s -X POST http://localhost:13592/api/check/resources \
+  -H 'Content-Type: application/json' -d '{
+  "requestId":"verify",
+  "principal":{"id":"p","roles":["user"],"attr":{
+    "userLevel":"retailer","userType":"member","retailerId":"r1","products":["signage"]}},
+  "resources":[{"resource":{"kind":"contents:tags_taxonomy","id":"k",
+    "attr":{"retailerId":"r1"}},"actions":["list","view","create"]}]}'
+```
+
+`userLevel` + `userType` select the derived roles; `products` must intersect the policy's product list or every action returns `EFFECT_DENY`. Check the negative cases too — a policy that allows everything passes a positive-only test.
 
 **Step 10. Deploy to production**
 
-Only after staging is verified:
+Only after staging is verified. **Establish the blast radius first** — `kubectl apply -k` ships the whole overlay, not just the files you changed, and production may be behind by more than your commit:
+
+```bash
+# what will actually change, server-side
+kubectl apply -k k8s/overlays/production --dry-run=server
+```
+
+To see it per-policy, diff the **kustomization allowlist** against the live ConfigMap — not the `policies/` directory. The repo holds more policy files than ship (the `cms_*` set is generated but not allowlisted), so a naive directory diff invents phantom additions:
+
+```bash
+kubectl -n production get cm cerbos-policies -o json > /tmp/prod-policies.json   # also your rollback copy
+python3 - <<'PY'
+import json, os, re
+live = json.load(open('/tmp/prod-policies.json'))['data']
+allow = [os.path.basename(m.group(1)) for m in
+         (re.match(r'\s*-\s*(policies/\S+\.yaml)\s*$', l)
+          for l in open('k8s/base/kustomization.yaml')) if m]
+repo = {f: open('k8s/base/policies/' + f).read() for f in allow}
+print('added  :', sorted(set(repo) - set(live)))
+print('removed:', sorted(set(live) - set(repo)))
+print('changed:', [k for k in sorted(set(repo) & set(live))
+                   if repo[k].strip() != live[k].strip()])
+PY
+```
+
+Sanity-check the result before applying: additive-only changes (new `EFFECT_ALLOW` rules, nothing removed) cannot break a working call under default-deny. Removals and new `EFFECT_DENY` rules can, and deserve a closer look.
 
 ```bash
 ./k8s/deploy.sh production
 ```
 
-Same script, same steps — but targeting the `production` namespace. The seed job will re-run against the production Cerbos server.
+Same script, same steps — but targeting the `production` namespace. The seed job will re-run against the production Cerbos server, and see the `SQLITE_BUSY` note above: production serves live reads, so the first attempt commonly fails.
 
 **Step 11. Verify production seeded correctly**
 
@@ -255,7 +326,7 @@ kubectl get job -n production cerbos-seed-policies
 kubectl logs -n production job/cerbos-seed-policies | tail -20
 ```
 
-Same checks as staging.
+Same checks as staging — **including the check request against the PDP**. A green seed log plus an updated ConfigMap is not proof the rules are live; only a `/api/check/resources` response is.
 
 **Step 12. Publish the permission-types package**
 

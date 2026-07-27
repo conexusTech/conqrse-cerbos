@@ -6,15 +6,15 @@
 
 > **See drift below?** Follow the [HOW TO — Update seeded policies](../README.md#how-to--update-seeded-policies-new--modified--removed) workflow in the README to bring an environment back in sync. Any policy change also requires bumping [`@conqrse/permission-types`](../README.md#how-to--update-conqrsepermission-types).
 
-- **Last regenerated:** 2026-07-26T16:53:03+00:00
-- **Repo HEAD:** `8c24ff6613da` — test(tags-taxonomy): cover the D1 attribute guard and D3 read tier
-- **HEAD author / date:** Joe Lacerna · 2026-07-27T00:52:19+08:00
+- **Last regenerated:** 2026-07-27T09:05:42+00:00
+- **Repo HEAD:** `fa70107bb782` — fix(generator): brand-path action exclusions — --force no longer escalates on ssp
+- **HEAD author / date:** Joe Lacerna · 2026-07-27T01:02:07+08:00
 - **kubectl context:** `arn:aws:eks:us-east-1:082585646836:cluster/conqrse`
 
 | Environment | Cerbos ready | Deployment last updated | Policies in ConfigMap |
 | --- | --- | --- | --- |
 | staging | ✅ 1/1 | 2026-07-26T16:48:30Z | 117 |
-| production | ✅ 1/1 | 2026-07-25T06:39:57Z | 117 |
+| production | ✅ 1/1 | 2026-07-27T07:44:10Z | 117 |
 
 ## 1. Status by Consumer
 
