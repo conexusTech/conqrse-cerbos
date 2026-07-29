@@ -46,15 +46,31 @@ data:
         # It has now failed 2 of 2 tag-policy deploys across both environments:
         # the default outcome, not the unlucky one.
         #
-        #   _journal_mode=WAL  readers and one writer coexist
-        #   _busy_timeout=5000 a contended write waits 5s rather than failing
+        #   journal_mode(WAL)     readers and one writer coexist
+        #   busy_timeout(5000)    a contended write waits 5s rather than failing
         #
-        # Safe to change in place: Cerbos converts the journal mode on first
-        # open, and a failed seed was never destructive anyway — it logs
-        # "maintaining last valid state" and keeps serving the previous policy
-        # set. The deployment is Recreate/1 replica, so applying this costs the
-        # same brief PDP gap the manual remediation already costs.
-        dsn: "/data/cerbos.db?_busy_timeout=5000&_journal_mode=WAL"
+        # THE SYNTAX IS DRIVER-SPECIFIC AND THE WRONG ONE FAILS SILENTLY.
+        # Cerbos 0.51.0 depends on `modernc.org/sqlite` (pure Go) directly;
+        # `mattn/go-sqlite3` appears only as an indirect dependency. modernc
+        # takes pragmas as repeatable `_pragma=name(value)` parameters and
+        # IGNORES unknown keys without complaint.
+        #
+        # The first attempt at this fix used mattn's spelling —
+        # `?_busy_timeout=5000&_journal_mode=WAL` — which modernc discarded.
+        # Cerbos logged the DSN back verbatim, so it looked applied, and the
+        # staging seed then succeeded, which looked like confirmation. It was
+        # not: Cerbos's own rule-table reader still logged SQLITE_BUSY during
+        # that seed, and under WAL a reader is never blocked by a writer. The
+        # seed passing was timing, not the fix. Verify by the absence of those
+        # reader warnings, never by the seed's exit code.
+        #
+        # Safe to change in place: journal_mode is a persistent property of the
+        # database file, converted on first open, and a failed seed was never
+        # destructive — Cerbos logs "maintaining last valid state" and keeps
+        # serving the previous policy set. The deployment is Recreate/1 replica,
+        # so applying this costs the same brief PDP gap the manual remediation
+        # already costs.
+        dsn: "file:/data/cerbos.db?_pragma=busy_timeout(5000)&_pragma=journal_mode(WAL)"
 
     logging:
       level: "info"
