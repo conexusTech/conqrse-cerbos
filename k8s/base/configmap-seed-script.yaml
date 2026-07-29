@@ -18,6 +18,24 @@ data:
     MAX_RETRIES = 30
     RETRY_DELAY = 2
 
+    # BL-8 — retry a policy POST that fails with a SERVER error.
+    #
+    # Cerbos stores policies in SQLite on a volume it is simultaneously serving
+    # reads from, so a write can lose a lock race and come back 500. That is
+    # transient by definition: the same request succeeds moments later, which is
+    # exactly what the manual "restart the pod and re-run the seed" remediation
+    # was doing by hand, twice, on two different deploys.
+    #
+    # The DSN now sets WAL + a 5s busy timeout, which should prevent the race
+    # rather than survive it. This is the second layer: cheap, and it means a
+    # deploy is not lost to any transient write contention the timeout does not
+    # happen to cover.
+    #
+    # 4xx is NOT retried. A malformed policy is a real error and retrying it
+    # just delays the report by ten seconds.
+    POST_ATTEMPTS = 4
+    POST_BACKOFF = 2
+
 
     def wait_for_cerbos():
         for i in range(MAX_RETRIES):
@@ -42,15 +60,37 @@ data:
             with open(os.path.join(POLICIES_DIR, filename)) as f:
                 policy = yaml.safe_load(f)
 
-            r = requests.post(
-                f"{CERBOS_BASE_URL}/admin/policy",
-                json={"policies": [policy]},
-                auth=auth,
-                timeout=10,
-            )
-            if r.status_code not in (200, 201):
-                print(f"ERROR: Failed to seed {filename}: {r.status_code} {r.text}")
-                sys.exit(1)
+            for attempt in range(1, POST_ATTEMPTS + 1):
+                r = requests.post(
+                    f"{CERBOS_BASE_URL}/admin/policy",
+                    json={"policies": [policy]},
+                    auth=auth,
+                    timeout=10,
+                )
+                if r.status_code in (200, 201):
+                    break
+                if r.status_code < 500 or attempt == POST_ATTEMPTS:
+                    print(f"ERROR: Failed to seed {filename}: {r.status_code} {r.text}")
+                    if r.status_code >= 500:
+                        # The response body is just "Failed to add/update
+                        # policies". Say where the real cause lives, because the
+                        # filename in this message is almost always innocent —
+                        # it is simply whichever file was being written when the
+                        # lock was contended, and sorted() makes that the first
+                        # one alphabetically.
+                        print(
+                            "HINT: a 5xx here is usually NOT a bad policy. Check the "
+                            "Cerbos pod logs for the server-side cause, e.g. "
+                            "'database is locked (5) (SQLITE_BUSY)'. Cerbos keeps "
+                            "serving its last valid policy set, so nothing is broken "
+                            "by this failure."
+                        )
+                    sys.exit(1)
+                print(
+                    f"WARN: {filename} got {r.status_code}, retrying "
+                    f"({attempt}/{POST_ATTEMPTS - 1}) in {POST_BACKOFF * attempt}s"
+                )
+                time.sleep(POST_BACKOFF * attempt)
             print(f"Seeded: {filename}")
 
         print(f"Successfully seeded {len(files)} policies")

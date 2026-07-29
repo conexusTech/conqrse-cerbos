@@ -30,7 +30,31 @@ data:
     storage:
       driver: "sqlite3"
       sqlite3:
-        dsn: "/data/cerbos.db"
+        # BL-8 — the seed job races live read traffic and loses.
+        #
+        # A bare `/data/cerbos.db` takes SQLite's defaults: rollback-journal
+        # mode, where a reader blocks a writer outright, and a busy timeout of
+        # ZERO, so a contended write fails instantly instead of waiting. Cerbos
+        # serves authz for the admin BFF continuously, so the seed job writes
+        # 117 policies into a database that is always being read.
+        #
+        # The result is a deploy that dies on `_derived_roles.yaml` — the first
+        # file alphabetically, not a malformed one — with a bare
+        # `500 Failed to add/update policies`. The real cause,
+        # `database is locked (5) (SQLITE_BUSY)`, appears only in the Cerbos pod
+        # logs, so the next person reasonably concludes their policy is broken.
+        # It has now failed 2 of 2 tag-policy deploys across both environments:
+        # the default outcome, not the unlucky one.
+        #
+        #   _journal_mode=WAL  readers and one writer coexist
+        #   _busy_timeout=5000 a contended write waits 5s rather than failing
+        #
+        # Safe to change in place: Cerbos converts the journal mode on first
+        # open, and a failed seed was never destructive anyway — it logs
+        # "maintaining last valid state" and keeps serving the previous policy
+        # set. The deployment is Recreate/1 replica, so applying this costs the
+        # same brief PDP gap the manual remediation already costs.
+        dsn: "/data/cerbos.db?_busy_timeout=5000&_journal_mode=WAL"
 
     logging:
       level: "info"

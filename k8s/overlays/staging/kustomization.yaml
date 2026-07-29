@@ -24,6 +24,22 @@ patches:
         path: /spec/rules/0/host
         value: staging-cerbos.conqrse.com
 
+  # WARNING: this replaces the WHOLE of cerbos.yaml, so it is a full copy of
+  # base/configmap-config.yaml that happens to differ in three places —
+  # apiExplorerEnabled, the CORS origins, and nothing else. Every other line is
+  # duplication, which means a change to the base config silently does NOT
+  # reach staging. That bit during BL-8 on 2026-07-29: the DSN fix landed in
+  # base, rendered correctly for production, and left staging on the old value.
+  #
+  # ANY EDIT TO base/configmap-config.yaml MUST BE MIRRORED HERE. Verify with
+  # `kubectl kustomize k8s/overlays/staging | grep dsn:` rather than trusting
+  # that the base edit was enough.
+  #
+  # It cannot be narrowed with a JSON patch: cerbos.yaml is a single string
+  # value, so there is no path to a key inside it. Fixing it properly means
+  # restructuring how the config is generated (per-env files via
+  # configMapGenerator), which changes the authz service's config layout and is
+  # its own piece of work.
   - target:
       kind: ConfigMap
       name: cerbos-config
@@ -57,7 +73,11 @@ patches:
           storage:
             driver: "sqlite3"
             sqlite3:
-              dsn: "/data/cerbos.db"
+              # BL-8 — must match base/configmap-config.yaml. See the note
+              # above the patch: WAL lets readers and one writer coexist, the
+              # busy timeout makes a contended write wait instead of failing
+              # instantly with SQLITE_BUSY.
+              dsn: "/data/cerbos.db?_busy_timeout=5000&_journal_mode=WAL"
 
           logging:
             level: "info"
