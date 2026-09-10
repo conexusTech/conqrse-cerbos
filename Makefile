@@ -1,4 +1,4 @@
-.PHONY: help generate-types generate-policies test test-js test-bash test-watch test-verbose test-ci results clean
+.PHONY: help gate okf-check generate-check build-types generate-types generate-policies test test-js test-bash test-watch test-verbose test-ci results clean
 
 # Configuration
 CERBOS_URL ?= http://localhost:3592
@@ -9,6 +9,10 @@ help:
 	@echo "Cerbos Policy Test Suite"
 	@echo ""
 	@echo "Usage:"
+	@echo "  make gate              Run the local process-v3 completion gate"
+	@echo "  make okf-check         Validate the OKF knowledge bundle"
+	@echo "  make generate-check    Parse the matrix and preview generated output"
+	@echo "  make build-types       Build the permission-types package"
 	@echo "  make generate-types    Generate TypeScript enums from matrix"
 	@echo "  make generate-policies Generate Cerbos policies from matrix"
 	@echo "  make test              Run tests (Node.js runner)"
@@ -28,6 +32,20 @@ help:
 	@echo "  make test"
 	@echo "  CERBOS_URL=http://cerbos.example.com:3592 make test"
 	@echo "  make test-watch"
+
+# Process-v3 local gate. Live Cerbos and cluster checks remain explicit because
+# they require external services and deployment authorization.
+gate: okf-check generate-check build-types
+
+okf-check:
+	@node scripts/okf-check.mjs
+
+generate-check:
+	@python3 scripts/generate_policies.py --dry-run
+	@python3 scripts/generate_types.py --dry-run
+
+build-types:
+	@npm --prefix packages/permission-types run build
 
 # Generate TypeScript enums and types from resource matrix
 generate-types:
