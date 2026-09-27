@@ -360,6 +360,25 @@ ATTR_GUARDS = {
         ),
         "label": "dynamic or system taxonomy keys",
     },
+    "team_resource_access": {
+        "access_expr": (
+            'P.attr.userLevel == "su" || P.attr.userLevel == "agency" || '
+            'P.attr.userType == "owner" || P.attr.userType == "admin" || '
+            '(has(R.attr.accessMode) && R.attr.accessMode == "all") || '
+            '(!has(R.attr.accessMode) && '
+            '(!has(R.attr.teamIds) || size(R.attr.teamIds) == 0)) || '
+            '((!has(R.attr.accessMode) || R.attr.accessMode == "restricted") && '
+            'has(R.attr.teamIds) && has(P.attr.teamIds) && '
+            'R.attr.teamIds.exists(teamId, teamId in P.attr.teamIds))'
+        ),
+    },
+    "team_tenant_scope": {
+        "access_expr": (
+            '!has(R.attr.retailerId) || P.attr.userLevel == "su" || '
+            '(P.attr.userLevel == "agency" && P.attr.agencyId == R.attr.agencyId) || '
+            '(P.attr.userLevel == "retailer" && P.attr.retailerId == R.attr.retailerId)'
+        ),
+    },
 }
 
 
@@ -409,12 +428,10 @@ class PolicyRenderer:
         "platform_administrator",
         "platform_lead",
         "platform_member",
-        "platform_collaborator",
         "agency_owner",
         "agency_manager",
         "agency_lead",
         "agency_member",
-        "agency_collaborator",
         "retailer_owner",
         "retailer_manager",
         "team_lead",
@@ -505,6 +522,26 @@ class PolicyRenderer:
             product_condition = 'true'
 
         is_item = resource.res_type == "item"
+        guard = ATTR_GUARDS.get(resource.attr_guard) if resource.attr_guard else None
+        access_expr = guard.get("access_expr") if guard else None
+        scoped_tenant_expr = (
+            'P.attr.userLevel == "su" || '
+            '(P.attr.userLevel == "agency" && ('
+            '(has(R.attr.agencyId) && P.attr.agencyId == R.attr.agencyId) || '
+            '(has(R.attr.retailerId) && has(P.attr.retailerId) && '
+            'P.attr.retailerId == R.attr.retailerId))) || '
+            '(P.attr.userLevel == "retailer" && has(R.attr.retailerId) && '
+            'P.attr.retailerId == R.attr.retailerId)'
+        )
+        # Collection checks may be intentionally unscoped while navigation is
+        # being resolved. Item checks never may: the API guard must hydrate the
+        # stored owner and the policy denies a missing tenant context.
+        tenant_scope_expr = (
+            scoped_tenant_expr
+            if is_item
+            else '(!has(R.attr.retailerId) && !has(R.attr.agencyId)) || '
+            + scoped_tenant_expr
+        )
 
         # Determine operator actions based on type
         if is_item:
@@ -523,8 +560,9 @@ class PolicyRenderer:
         yaml += "          all:\n"
         yaml += "            of:\n"
         yaml += f"              - expr: '{product_condition}'\n"
-        if is_item:
-            yaml += "              - expr: 'P.attr.retailerId == R.attr.retailerId'\n"
+        yaml += f"              - expr: '{tenant_scope_expr}'\n"
+        if access_expr:
+            yaml += f"              - expr: '{access_expr}'\n"
         yaml += "      derivedRoles:\n"
         for role in PolicyRenderer._PRODUCT_OPERATOR_ROLES:
             yaml += f"        - {role}\n"
@@ -539,8 +577,9 @@ class PolicyRenderer:
             yaml += "          all:\n"
             yaml += "            of:\n"
             yaml += f"              - expr: '{product_condition}'\n"
-            if is_item:
-                yaml += "              - expr: 'P.attr.retailerId == R.attr.retailerId'\n"
+            yaml += f"              - expr: '{tenant_scope_expr}'\n"
+            if access_expr:
+                yaml += f"              - expr: '{access_expr}'\n"
             yaml += "      derivedRoles:\n"
             for role in PolicyRenderer._PRODUCT_COLLABORATOR_ROLES:
                 yaml += f"        - {role}\n"
@@ -760,6 +799,67 @@ class PolicyRenderer:
         # Settings actions (all defined actions)
         actions = resource.actions
 
+        guard = ATTR_GUARDS.get(resource.attr_guard) if resource.attr_guard else None
+        access_expr = guard.get("access_expr") if guard else None
+
+        # Signage layouts are also the policy taxonomy for zones. Once a layout
+        # or zone carries team access attributes, use the same operator/read-only
+        # collaborator split as the other team-scoped signage resources. Other
+        # product settings retain their established manager-only role tier.
+        if access_expr:
+            scoped_tenant_expr = (
+                'P.attr.userLevel == "su" || '
+                '(P.attr.userLevel == "agency" && ('
+                '(has(R.attr.agencyId) && P.attr.agencyId == R.attr.agencyId) || '
+                '(has(R.attr.retailerId) && has(P.attr.retailerId) && '
+                'P.attr.retailerId == R.attr.retailerId))) || '
+                '(P.attr.userLevel == "retailer" && has(R.attr.retailerId) && '
+                'P.attr.retailerId == R.attr.retailerId)'
+            )
+            tenant_scope_expr = (
+                scoped_tenant_expr
+                if is_item
+                else '(!has(R.attr.retailerId) && !has(R.attr.agencyId)) || '
+                + scoped_tenant_expr
+            )
+            collaborator_actions = [
+                action for action in actions if action in ["list", "view", "export"]
+            ]
+
+            def _team_rule(comment: str, rule_actions, roles) -> str:
+                if not rule_actions:
+                    return ""
+                block = f"    # {comment}\n"
+                block += "    - actions: [" + ", ".join(
+                    f'"{PolicyRenderer._action_prefix(action)}{action}"'
+                    for action in rule_actions
+                ) + "]\n"
+                block += "      effect: EFFECT_ALLOW\n"
+                block += "      condition:\n"
+                block += "        match:\n"
+                block += "          all:\n"
+                block += "            of:\n"
+                block += f"              - expr: '{product_condition}'\n"
+                block += f"              - expr: '{tenant_scope_expr}'\n"
+                block += f"              - expr: '{access_expr}'\n"
+                block += "      derivedRoles:\n"
+                for role in roles:
+                    block += f"        - {role}\n"
+                return block
+
+            yaml += _team_rule(
+                "Team-scoped settings access with product subscription check",
+                actions,
+                PolicyRenderer._PRODUCT_OPERATOR_ROLES,
+            )
+            if collaborator_actions:
+                yaml += "\n" + _team_rule(
+                    "Team-scoped settings collaborator access (read-only)",
+                    collaborator_actions,
+                    PolicyRenderer._PRODUCT_COLLABORATOR_ROLES,
+                )
+            return yaml
+
         yaml += "    # Settings access with product subscription check (owner/admin only)\n"
         yaml += "    - actions: [" + ", ".join(f'"{PolicyRenderer._action_prefix(a)}{a}"' for a in actions) + "]\n"
         yaml += "      effect: EFFECT_ALLOW\n"
@@ -783,17 +883,31 @@ class PolicyRenderer:
 
         # All defined actions
         actions = resource.actions
+        guard = ATTR_GUARDS.get(resource.attr_guard) if resource.attr_guard else None
+        access_expr = guard.get("access_expr") if guard else None
 
-        yaml += "    # Admin settings access (all owner/admin at all levels)\n"
+        is_platform_only = resource.name in {
+            "settings:admin_cerbos",
+            "settings:admin_cerbos:item",
+        }
+        if is_platform_only:
+            yaml += "    # Cerbos policy settings are restricted to platform administrators\n"
+        else:
+            yaml += "    # Admin settings access (all owner/admin at all levels)\n"
         yaml += "    - actions: [" + ", ".join(f'"{PolicyRenderer._action_prefix(a)}{a}"' for a in actions) + "]\n"
         yaml += "      effect: EFFECT_ALLOW\n"
+        if access_expr:
+            yaml += "      condition:\n"
+            yaml += "        match:\n"
+            yaml += f"          expr: '{access_expr}'\n"
         yaml += "      derivedRoles:\n"
         yaml += "        - root_user\n"
         yaml += "        - platform_administrator\n"
-        yaml += "        - agency_owner\n"
-        yaml += "        - agency_manager\n"
-        yaml += "        - retailer_owner\n"
-        yaml += "        - retailer_manager\n"
+        if not is_platform_only:
+            yaml += "        - agency_owner\n"
+            yaml += "        - agency_manager\n"
+            yaml += "        - retailer_owner\n"
+            yaml += "        - retailer_manager\n"
 
         return yaml
 

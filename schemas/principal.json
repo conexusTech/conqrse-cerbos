@@ -24,6 +24,13 @@
         "type": "string"
       },
       "description": "Array of product identifiers accessible to this user"
+    },
+    "teamIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Trusted team identifiers used for department-scoped resource access"
     }
   },
   "required": ["userLevel"],

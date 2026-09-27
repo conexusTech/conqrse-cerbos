@@ -8,9 +8,12 @@ server:
       passwordHash: JDJ5JDEwJHhvTjd2RjhlNEVZa3hmdVFYMWlrME9XOWNDemV5RzlYcERTYUNHVWZkcWo2ODdRdkhIcUcyCgo=
 
 storage:
-  driver: "sqlite3"
-  sqlite3:
-    dsn: "/data/cerbos.db"
+  # Local Docker runs directly from the checked-in policy bundle. Kubernetes
+  # supplies its own SQLite configuration through configmap-config.yaml.
+  driver: "disk"
+  disk:
+    directory: "/policies"
+    watchForChanges: true
 
 logging:
   level: "info"

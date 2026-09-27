@@ -34,9 +34,13 @@ docker run -d \
   --name cerbos-dev \
   -p 3592:3592 \
   -p 3593:3593 \
-  -v $(pwd)/k8s/base/policies:/policies \
+  -v $(pwd)/k8s/base/policies:/policies:ro \
   cerbos:local
 ```
+
+The local configuration uses Cerbos's disk driver and reads the checked-in
+policy bundle directly. Kubernetes supplies a separate SQLite configuration;
+the local container does not create or persist policy state.
 
 Cerbos will be available on:
 - **HTTP API & Admin UI**: `http://localhost:3592`

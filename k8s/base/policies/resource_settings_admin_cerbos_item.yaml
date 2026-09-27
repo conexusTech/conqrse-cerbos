@@ -6,13 +6,9 @@ resourcePolicy:
   importDerivedRoles:
     - conqrse_roles
   rules:
-    # Admin settings access (all owner/admin at all levels)
+    # Cerbos policy settings are restricted to platform administrators
     - actions: ["view", "update", "delete"]
       effect: EFFECT_ALLOW
       derivedRoles:
         - root_user
         - platform_administrator
-        - agency_owner
-        - agency_manager
-        - retailer_owner
-        - retailer_manager

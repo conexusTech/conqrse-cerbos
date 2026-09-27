@@ -1,0 +1,3587 @@
+---
+name: GeneratedResourceMatrixTests
+description: Generated from tests/test-cases.json; do not edit by hand.
+resources:
+  allow_1_resource:
+    kind: qr:campaigns
+    id: qr:campaigns
+    attr:
+      product: qr
+      retailerId: retail-789
+      agencyId: agency-456
+  allow_2_resource:
+    kind: settings:admin_users
+    id: settings:admin_users
+    attr:
+      product: settings
+  allow_3_resource:
+    kind: qr:campaigns
+    id: qr:campaigns
+    attr:
+      product: qr
+      agencyId: agency-456
+  allow_4_resource:
+    kind: settings:admin_users
+    id: settings:admin_users
+    attr:
+      product: settings
+      retailerId: retail-789
+      agencyId: agency-456
+  allow_5_resource:
+    kind: settings:admin_cerbos
+    id: settings:admin_cerbos
+    attr:
+      product: settings
+  allow_6_resource:
+    kind: settings:user_profile:item
+    id: settings:user_profile:item
+    attr:
+      product: settings
+  allow_7_resource:
+    kind: footprints:sites
+    id: footprints:sites
+    attr:
+      product: footprints
+      retailerId: retail-789
+      agencyId: agency-456
+  allow_8_resource:
+    kind: settings:admin_general_retailer:item
+    id: settings:admin_general_retailer:item
+    attr:
+      product: settings
+      retailerId: retail-789
+  allow_9_resource:
+    kind: qr:campaigns
+    id: qr:campaigns
+    attr:
+      product: qr
+      retailerId: retail-789
+      agencyId: agency-456
+  allow_10_resource:
+    kind: contents:templates
+    id: contents:templates
+    attr:
+      product: contents
+      retailerId: retail-789
+      agencyId: agency-456
+  allow_11_resource:
+    kind: contents:assets
+    id: contents:assets
+    attr:
+      product: contents
+      retailerId: retail-789
+      agencyId: agency-456
+  allow_12_resource:
+    kind: signages:people
+    id: signages:people
+    attr:
+      product: signage
+      retailerId: retail-789
+      agencyId: agency-456
+  allow_13_resource:
+    kind: signages:places:item
+    id: signages:places:item:123
+    attr:
+      product: signage
+      retailerId: retail-789
+      agencyId: agency-456
+  allow_14_resource:
+    kind: connect:contacts
+    id: connect:contacts
+    attr:
+      product: connect
+      retailerId: retail-789
+      agencyId: agency-456
+  allow_15_resource:
+    kind: settings:qr_design
+    id: settings:qr_design
+    attr:
+      product: settings
+      retailerId: retail-789
+  allow_16_resource:
+    kind: reports:qr_performance
+    id: reports:qr_performance
+    attr:
+      product: qr
+      retailerId: retail-789
+  allow_17_resource:
+    kind: settings:admin_cerbos
+    id: settings:admin_cerbos
+    attr:
+      product: settings
+  allow_18_resource:
+    kind: contents:channels
+    id: contents:channels
+    attr:
+      product: signage
+      retailerId: retail-789
+      agencyId: agency-456
+  allow_19_resource:
+    kind: cms:collection
+    id: cms:collection
+    attr:
+      product: cms
+      retailerId: retail-789
+      agencyId: agency-456
+  allow_20_resource:
+    kind: cms:website:item
+    id: cms:website:item
+    attr:
+      product: cms
+      retailerId: retail-789
+      agencyId: agency-456
+  allow_21_resource:
+    kind: cms:page
+    id: cms:page
+    attr:
+      product: cms
+      retailerId: retail-789
+      agencyId: agency-456
+  deny_1_resource:
+    kind: qr:campaigns
+    id: qr:campaigns
+    attr:
+      product: qr
+      retailerId: retail-789
+      agencyId: agency-456
+  deny_2_resource:
+    kind: contents:templates
+    id: contents:templates
+    attr:
+      product: contents
+      retailerId: retail-789
+      agencyId: agency-456
+  deny_3_resource:
+    kind: settings:admin_cerbos
+    id: settings:admin_cerbos
+    attr:
+      product: settings
+  deny_4_resource:
+    kind: settings:admin_users
+    id: settings:admin_users
+    attr:
+      product: settings
+      agencyId: agency-456
+  deny_5_resource:
+    kind: qr:campaigns
+    id: qr:campaigns
+    attr:
+      product: qr
+      agencyId: agency-456
+  deny_6_resource:
+    kind: settings:admin_general_retailer:item
+    id: settings:admin_general_retailer:item
+    attr:
+      product: settings
+      retailerId: retail-789
+  deny_7_resource:
+    kind: qr:campaigns
+    id: qr:campaigns
+    attr:
+      product: qr
+      retailerId: retail-999
+      agencyId: agency-456
+  deny_8_resource:
+    kind: footprints:sites
+    id: footprints:sites
+    attr:
+      product: footprints
+      retailerId: retail-999
+      agencyId: agency-456
+  deny_9_resource:
+    kind: contents:assets
+    id: contents:assets
+    attr:
+      product: contents
+      retailerId: retail-789
+      agencyId: agency-456
+  deny_10_resource:
+    kind: signages:people
+    id: signages:people
+    attr:
+      product: signage
+      retailerId: retail-789
+      agencyId: agency-456
+  deny_11_resource:
+    kind: contents:channels
+    id: contents:channels
+    attr:
+      product: signage
+      retailerId: retail-789
+      agencyId: agency-456
+  deny_12_resource:
+    kind: settings:admin_cerbos
+    id: settings:admin_cerbos
+    attr:
+      product: settings
+  deny_13_resource:
+    kind: cms:collection
+    id: cms:collection
+    attr:
+      product: cms
+      retailerId: retail-789
+      agencyId: agency-456
+  deny_14_resource:
+    kind: cms:entry
+    id: cms:entry
+    attr:
+      product: cms
+      retailerId: retail-789
+      agencyId: agency-456
+  deny_15_resource:
+    kind: cms:website:item
+    id: cms:website:item
+    attr:
+      product: cms
+      retailerId: retail-OTHER
+      agencyId: agency-OTHER
+  dd_allow_1_resource:
+    kind: dealdesk:ssp
+    id: dealdesk:ssp
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_allow_2_resource:
+    kind: dealdesk:dsp-blocks
+    id: dealdesk:dsp-blocks
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_allow_3_resource:
+    kind: dealdesk:trade-ledgers
+    id: dealdesk:trade-ledgers
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_allow_4_resource:
+    kind: dealdesk:media-packages
+    id: dealdesk:media-packages
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_allow_5_resource:
+    kind: dealdesk:brands
+    id: dealdesk:brands
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_allow_6_resource:
+    kind: dealdesk:campaigns
+    id: dealdesk:campaigns
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_allow_7_resource:
+    kind: dealdesk:campaigns
+    id: dealdesk:campaigns
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_allow_8_resource:
+    kind: dealdesk:store-traffic
+    id: dealdesk:store-traffic
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_allow_9_resource:
+    kind: dealdesk:store-traffic
+    id: dealdesk:store-traffic
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_allow_10_resource:
+    kind: dealdesk:sites
+    id: dealdesk:sites
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_allow_11_resource:
+    kind: dealdesk:blueprints
+    id: dealdesk:blueprints
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_allow_12_resource:
+    kind: dealdesk:brands
+    id: dealdesk:brands
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_allow_prov_admin_resource:
+    kind: dealdesk:inventory-provisioning
+    id: dealdesk:inventory-provisioning
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_allow_prov_owner_resource:
+    kind: dealdesk:inventory-provisioning
+    id: dealdesk:inventory-provisioning
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_allow_tags_ssp_resource:
+    kind: contents:tags
+    id: contents:tags
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_allow_taxonomy_admin_resource:
+    kind: contents:tags_taxonomy
+    id: contents:tags_taxonomy
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_allow_ssp_update_resource:
+    kind: dealdesk:ssp
+    id: dealdesk:ssp
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_deny_1_resource:
+    kind: dealdesk:ssp
+    id: dealdesk:ssp
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_deny_2_resource:
+    kind: dealdesk:trade-ledgers
+    id: dealdesk:trade-ledgers
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_deny_3_resource:
+    kind: dealdesk:brands
+    id: dealdesk:brands
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_deny_4_resource:
+    kind: dealdesk:campaigns
+    id: dealdesk:campaigns
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_deny_5_resource:
+    kind: dealdesk:store-traffic
+    id: dealdesk:store-traffic
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_deny_6_resource:
+    kind: dealdesk:dsp-blocks
+    id: dealdesk:dsp-blocks
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_deny_prov_member_resource:
+    kind: dealdesk:inventory-provisioning
+    id: dealdesk:inventory-provisioning
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_deny_prov_no_ssp_resource:
+    kind: dealdesk:inventory-provisioning
+    id: dealdesk:inventory-provisioning
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_deny_taxonomy_member_resource:
+    kind: contents:tags_taxonomy
+    id: contents:tags_taxonomy
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_deny_taxonomy_brand_resource:
+    kind: contents:tags_taxonomy
+    id: contents:tags_taxonomy
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  dd_deny_ssp_update_collaborator_resource:
+    kind: dealdesk:ssp
+    id: dealdesk:ssp
+    attr:
+      retailerId: retail-DD
+      agencyId: agency-DD
+  department_playlist_member_allow_resource:
+    kind: contents:playlists:item
+    id: playlist-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  department_playlist_nonmember_deny_resource:
+    kind: contents:playlists:item
+    id: playlist-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  department_playlist_removed_member_deny_resource:
+    kind: contents:playlists:item
+    id: playlist-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  department_playlist_unrestricted_allow_resource:
+    kind: contents:playlists:item
+    id: playlist-2
+    attr:
+      retailerId: retailer-1
+      accessMode: all
+      teamIds: []
+  department_playlist_foreign_tenant_deny_resource:
+    kind: contents:playlists:item
+    id: playlist-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  department_playlist_su_allow_resource:
+    kind: contents:playlists:item
+    id: playlist-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  department_playlist_agency_allow_resource:
+    kind: contents:playlists:item
+    id: playlist-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  department_playlist_owner_allow_resource:
+    kind: contents:playlists:item
+    id: playlist-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  department_playlist_admin_allow_resource:
+    kind: contents:playlists:item
+    id: playlist-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  product_item_missing_tenant_deny_resource:
+    kind: contents:channels:item
+    id: channel-1
+    attr: {}
+  department_team_same_tenant_allow_resource:
+    kind: settings:admin_teams:item
+    id: team-1
+    attr:
+      retailerId: retailer-1
+      agencyId: agency-1
+  department_team_foreign_tenant_deny_resource:
+    kind: settings:admin_teams:item
+    id: team-2
+    attr:
+      retailerId: retailer-2
+      agencyId: agency-2
+  team_channel_member_allow_resource:
+    kind: contents:channels:item
+    id: channel-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_channel_nonmember_deny_resource:
+    kind: contents:channels:item
+    id: channel-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_channel_removed_member_deny_resource:
+    kind: contents:channels:item
+    id: channel-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_channel_all_allow_resource:
+    kind: contents:channels:item
+    id: channel-2
+    attr:
+      retailerId: retailer-1
+      accessMode: all
+      teamIds: []
+  team_zone_member_allow_resource:
+    kind: settings:signage_layout:item
+    id: zone-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_zone_nonmember_deny_resource:
+    kind: settings:signage_layout:item
+    id: zone-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_zone_removed_member_deny_resource:
+    kind: settings:signage_layout:item
+    id: zone-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_zone_all_allow_resource:
+    kind: settings:signage_layout:item
+    id: zone-2
+    attr:
+      retailerId: retailer-1
+      accessMode: all
+      teamIds: []
+  team_site_member_allow_resource:
+    kind: footprints:sites:item
+    id: site-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_site_nonmember_deny_resource:
+    kind: footprints:sites:item
+    id: site-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_site_removed_member_deny_resource:
+    kind: footprints:sites:item
+    id: site-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_site_all_allow_resource:
+    kind: footprints:sites:item
+    id: site-2
+    attr:
+      retailerId: retailer-1
+      accessMode: all
+      teamIds: []
+  team_endpoint_member_allow_resource:
+    kind: footprints:endpoints:item
+    id: endpoint-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_endpoint_nonmember_deny_resource:
+    kind: footprints:endpoints:item
+    id: endpoint-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_endpoint_removed_member_deny_resource:
+    kind: footprints:endpoints:item
+    id: endpoint-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_endpoint_all_allow_resource:
+    kind: footprints:endpoints:item
+    id: endpoint-2
+    attr:
+      retailerId: retailer-1
+      accessMode: all
+      teamIds: []
+  team_playlist_collection_member_allow_resource:
+    kind: contents:playlists
+    id: playlist-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_playlist_collection_nonmember_deny_resource:
+    kind: contents:playlists
+    id: playlist-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_channel_collection_member_allow_resource:
+    kind: contents:channels
+    id: channel-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_channel_collection_nonmember_deny_resource:
+    kind: contents:channels
+    id: channel-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_zone_collection_member_allow_resource:
+    kind: settings:signage_layout
+    id: zone-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_zone_collection_nonmember_deny_resource:
+    kind: settings:signage_layout
+    id: zone-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_site_collection_member_allow_resource:
+    kind: footprints:sites
+    id: site-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_site_collection_nonmember_deny_resource:
+    kind: footprints:sites
+    id: site-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_endpoint_collection_member_allow_resource:
+    kind: footprints:endpoints
+    id: endpoint-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_endpoint_collection_nonmember_deny_resource:
+    kind: footprints:endpoints
+    id: endpoint-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_channel_agency_bypass_allow_resource:
+    kind: contents:channels:item
+    id: channel-1
+    attr:
+      retailerId: retailer-1
+      agencyId: agency-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_zone_owner_bypass_allow_resource:
+    kind: settings:signage_layout:item
+    id: zone-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_site_admin_bypass_allow_resource:
+    kind: footprints:sites:item
+    id: site-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_endpoint_su_bypass_allow_resource:
+    kind: footprints:endpoints:item
+    id: endpoint-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_legacy_missing_mode_no_teams_allow_resource:
+    kind: contents:channels:item
+    id: channel-legacy
+    attr:
+      retailerId: retailer-1
+      teamIds: []
+  team_legacy_missing_mode_with_teams_restricted_resource:
+    kind: contents:channels:item
+    id: channel-legacy
+    attr:
+      retailerId: retailer-1
+      teamIds:
+      - team-1
+  team_restricted_without_assignments_deny_resource:
+    kind: contents:channels:item
+    id: channel-invalid
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds: []
+  team_matching_membership_without_product_deny_resource:
+    kind: contents:channels:item
+    id: channel-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  team_manager_foreign_tenant_deny_resource:
+    kind: footprints:sites:item
+    id: site-2
+    attr:
+      retailerId: retailer-2
+      accessMode: restricted
+      teamIds:
+      - team-1
+  department_team_name_cannot_grant_access_resource:
+    kind: contents:playlists:item
+    id: playlist-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+  department_team_id_cannot_grant_access_resource:
+    kind: contents:playlists:item
+    id: playlist-1
+    attr:
+      retailerId: retailer-1
+      accessMode: restricted
+      teamIds:
+      - team-1
+principals:
+  allow_1_principal:
+    id: user-123
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      name: john.doe
+      products:
+      - qr
+      agencyId: agency-456
+      retailerId: retail-789
+  allow_2_principal:
+    id: su-user-001
+    roles:
+    - user
+    attr:
+      userLevel: su
+      userType: admin
+      name: admin@platform.com
+      products:
+      - footprints
+      - signage
+      - qr
+  allow_3_principal:
+    id: agency-user-002
+    roles:
+    - user
+    attr:
+      userLevel: agency
+      userType: admin
+      name: manager@agency.com
+      products:
+      - footprints
+      - qr
+      agencyId: agency-456
+  allow_4_principal:
+    id: agency-user-001
+    roles:
+    - user
+    attr:
+      userLevel: agency
+      userType: owner
+      name: owner@agency.com
+      products:
+      - footprints
+      - signage
+      - qr
+      agencyId: agency-456
+  allow_5_principal:
+    id: su-user-000
+    roles:
+    - user
+    attr:
+      userLevel: su
+      userType: owner
+      name: owner@platform.com
+      products:
+      - footprints
+      - signage
+      - qr
+  allow_6_principal:
+    id: su-user-003
+    roles:
+    - user
+    attr:
+      userLevel: su
+      userType: lead
+      name: lead@platform.com
+      products:
+      - footprints
+      - signage
+      - qr
+  allow_7_principal:
+    id: agency-user-004
+    roles:
+    - user
+    attr:
+      userLevel: agency
+      userType: member
+      name: operator@agency.com
+      products:
+      - footprints
+      - qr
+      agencyId: agency-456
+  allow_8_principal:
+    id: user-200
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: owner@retailer.com
+      products:
+      - footprints
+      - qr
+      agencyId: agency-456
+      retailerId: retail-789
+  allow_9_principal:
+    id: user-500
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: owner@retailer-789.com
+      products:
+      - qr
+      agencyId: agency-456
+      retailerId: retail-789
+  allow_10_principal:
+    id: user-600
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: owner@retailer-789.com
+      products:
+      - signage
+      - qr
+      agencyId: agency-456
+      retailerId: retail-789
+  allow_11_principal:
+    id: user-610
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      name: member@retailer-789.com
+      products:
+      - signage
+      agencyId: agency-456
+      retailerId: retail-789
+  allow_12_principal:
+    id: user-700
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: owner@retailer-789.com
+      products:
+      - signage
+      agencyId: agency-456
+      retailerId: retail-789
+  allow_13_principal:
+    id: user-710
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      name: member@retailer-789.com
+      products:
+      - signage
+      agencyId: agency-456
+      retailerId: retail-789
+  allow_14_principal:
+    id: user-800
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: admin
+      name: admin@retailer-789.com
+      products:
+      - connect
+      agencyId: agency-456
+      retailerId: retail-789
+  allow_15_principal:
+    id: user-900
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: owner@retailer-789.com
+      products:
+      - qr
+      agencyId: agency-456
+      retailerId: retail-789
+  allow_16_principal:
+    id: user-950
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: owner@retailer-789.com
+      products:
+      - qr
+      agencyId: agency-456
+      retailerId: retail-789
+  allow_17_principal:
+    id: su-user-010
+    roles:
+    - user
+    attr:
+      userLevel: su
+      userType: admin
+      name: admin@platform.com
+      products:
+      - footprints
+      - signage
+      - qr
+  allow_18_principal:
+    id: user-980
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: owner@retailer-789.com
+      products:
+      - signage
+      agencyId: agency-456
+      retailerId: retail-789
+  allow_19_principal:
+    id: user-1001
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: owner@retailer-789.com
+      products:
+      - cms
+      agencyId: agency-456
+      retailerId: retail-789
+  allow_20_principal:
+    id: user-1002
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      name: member@retailer-789.com
+      products:
+      - cms
+      agencyId: agency-456
+      retailerId: retail-789
+  allow_21_principal:
+    id: agency-user-200
+    roles:
+    - user
+    attr:
+      userLevel: agency
+      userType: admin
+      name: manager@agency.com
+      products:
+      - cms
+      agencyId: agency-456
+      retailerId: retail-789
+  deny_1_principal:
+    id: user-456
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: collaborator
+      name: guest@retailer.com
+      products:
+      - qr
+      agencyId: agency-456
+      retailerId: retail-789
+  deny_2_principal:
+    id: user-789
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      name: staff@retailer.com
+      products:
+      - qr
+      agencyId: agency-456
+      retailerId: retail-789
+  deny_3_principal:
+    id: su-user-005
+    roles:
+    - user
+    attr:
+      userLevel: su
+      userType: collaborator
+      name: viewer@platform.com
+      products:
+      - footprints
+  deny_4_principal:
+    id: agency-user-006
+    roles:
+    - user
+    attr:
+      userLevel: agency
+      userType: lead
+      name: lead@agency.com
+      products:
+      - qr
+      agencyId: agency-456
+  deny_5_principal:
+    id: agency-user-007
+    roles:
+    - user
+    attr:
+      userLevel: agency
+      userType: collaborator
+      name: viewer@agency.com
+      products:
+      - qr
+      agencyId: agency-456
+  deny_6_principal:
+    id: user-204
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: lead
+      name: lead@retailer.com
+      products:
+      - qr
+      agencyId: agency-456
+      retailerId: retail-789
+  deny_7_principal:
+    id: user-501
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: owner@retailer-789.com
+      products:
+      - qr
+      agencyId: agency-456
+      retailerId: retail-789
+  deny_8_principal:
+    id: user-502
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      name: staff@retailer-789.com
+      products:
+      - footprints
+      agencyId: agency-456
+      retailerId: retail-789
+  deny_9_principal:
+    id: agency-user-050
+    roles:
+    - user
+    attr:
+      userLevel: agency
+      userType: member
+      name: member@agency.com
+      products:
+      - qr
+      agencyId: agency-456
+  deny_10_principal:
+    id: user-720
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: collaborator
+      name: collaborator@retailer-789.com
+      products:
+      - signage
+      agencyId: agency-456
+      retailerId: retail-789
+  deny_11_principal:
+    id: user-730
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: collaborator
+      name: collaborator@retailer-789.com
+      products:
+      - signage
+      agencyId: agency-456
+      retailerId: retail-789
+  deny_12_principal:
+    id: agency-user-100
+    roles:
+    - user
+    attr:
+      userLevel: agency
+      userType: owner
+      name: owner@agency.com
+      products:
+      - footprints
+      - qr
+      agencyId: agency-456
+  deny_13_principal:
+    id: user-2001
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: owner@retailer-789.com
+      products:
+      - qr
+      agencyId: agency-456
+      retailerId: retail-789
+  deny_14_principal:
+    id: user-2002
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: collaborator
+      name: guest@retailer-789.com
+      products:
+      - cms
+      agencyId: agency-456
+      retailerId: retail-789
+  deny_15_principal:
+    id: user-2003
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: owner@retailer-789.com
+      products:
+      - cms
+      agencyId: agency-456
+      retailerId: retail-789
+  dd_allow_1_principal:
+    id: dd-ret-ssp
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: dd-ret-ssp
+      products:
+      - ssp
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_allow_2_principal:
+    id: dd-ret-ssp
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: dd-ret-ssp
+      products:
+      - ssp
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_allow_3_principal:
+    id: dd-ret-trade
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: dd-ret-trade
+      products:
+      - trade
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_allow_4_principal:
+    id: dd-ret-trade
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: dd-ret-trade
+      products:
+      - trade
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_allow_5_principal:
+    id: dd-ret-brand
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: dd-ret-brand
+      products:
+      - brand_center
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_allow_6_principal:
+    id: dd-ret-trade
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: dd-ret-trade
+      products:
+      - trade
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_allow_7_principal:
+    id: dd-ret-brand
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: dd-ret-brand
+      products:
+      - brand_center
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_allow_8_principal:
+    id: dd-ret-ssp
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: dd-ret-ssp
+      products:
+      - ssp
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_allow_9_principal:
+    id: dd-ret-trade
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: dd-ret-trade
+      products:
+      - trade
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_allow_10_principal:
+    id: dd-ret-qr
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: dd-ret-qr
+      products:
+      - qr
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_allow_11_principal:
+    id: dd-ret-qr
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: dd-ret-qr
+      products:
+      - qr
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_allow_12_principal:
+    id: dd-brand-owner
+    roles:
+    - user
+    attr:
+      userLevel: brand
+      userType: owner
+      name: dd-brand-owner
+      products:
+      - brand_center
+      agencyId: agency-DD
+      brandId: brand-1
+      retailerIds:
+      - retail-DD
+  dd_allow_prov_admin_principal:
+    id: dd-ret-admin
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: admin
+      name: dd-ret-admin
+      products:
+      - ssp
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_allow_prov_owner_principal:
+    id: dd-ret-owner
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: dd-ret-owner
+      products:
+      - ssp
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_allow_tags_ssp_principal:
+    id: dd-ret-ssp-tags
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      name: dd-ret-ssp-tags
+      products:
+      - ssp
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_allow_taxonomy_admin_principal:
+    id: dd-ret-admin-tax
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: admin
+      name: dd-ret-admin-tax
+      products:
+      - ssp
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_allow_ssp_update_principal:
+    id: dd-ret-ssp
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: dd-ret-ssp
+      products:
+      - ssp
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_deny_1_principal:
+    id: dd-ret-trade
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: dd-ret-trade
+      products:
+      - trade
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_deny_2_principal:
+    id: dd-ret-ssp
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: dd-ret-ssp
+      products:
+      - ssp
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_deny_3_principal:
+    id: dd-ret-trade
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: dd-ret-trade
+      products:
+      - trade
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_deny_4_principal:
+    id: dd-ret-qr
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: dd-ret-qr
+      products:
+      - qr
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_deny_5_principal:
+    id: dd-ret-brand
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: dd-ret-brand
+      products:
+      - brand_center
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_deny_6_principal:
+    id: dd-ret-brand
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: dd-ret-brand
+      products:
+      - brand_center
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_deny_prov_member_principal:
+    id: dd-ret-member
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      name: dd-ret-member
+      products:
+      - ssp
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_deny_prov_no_ssp_principal:
+    id: dd-ret-admin-nossp
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: admin
+      name: dd-ret-admin-nossp
+      products:
+      - qr
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_deny_taxonomy_member_principal:
+    id: dd-ret-member-tax
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      name: dd-ret-member-tax
+      products:
+      - ssp
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_deny_taxonomy_brand_principal:
+    id: dd-brand-tax
+    roles:
+    - user
+    attr:
+      userLevel: brand
+      userType: owner
+      name: dd-brand-tax
+      products:
+      - brand_center
+      agencyId: agency-DD
+      retailerId: retail-DD
+      brandId: brand-DD
+      retailerIds:
+      - retail-DD
+  dd_deny_ssp_update_collaborator_principal:
+    id: dd-ret-collab
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: collaborator
+      name: dd-ret-collab
+      products:
+      - ssp
+      agencyId: agency-DD
+      retailerId: retail-DD
+  department_playlist_member_allow_principal:
+    id: member-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-1
+  department_playlist_nonmember_deny_principal:
+    id: member-2
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-2
+  department_playlist_removed_member_deny_principal:
+    id: member-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds: []
+  department_playlist_unrestricted_allow_principal:
+    id: member-2
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds: []
+  department_playlist_foreign_tenant_deny_principal:
+    id: member-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-2
+      teamIds:
+      - team-1
+  department_playlist_su_allow_principal:
+    id: su-1
+    roles:
+    - user
+    attr:
+      userLevel: su
+      userType: owner
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds: []
+  department_playlist_agency_allow_principal:
+    id: agency-1
+    roles:
+    - user
+    attr:
+      userLevel: agency
+      userType: admin
+      products:
+      - signage
+      retailerId: retailer-1
+      agencyId: agency-1
+      teamIds: []
+  department_playlist_owner_allow_principal:
+    id: owner-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds: []
+  department_playlist_admin_allow_principal:
+    id: admin-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: admin
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds: []
+  product_item_missing_tenant_deny_principal:
+    id: admin-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: admin
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds: []
+  department_team_same_tenant_allow_principal:
+    id: admin-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: admin
+      products: []
+      retailerId: retailer-1
+      teamIds: []
+  department_team_foreign_tenant_deny_principal:
+    id: admin-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: admin
+      products: []
+      retailerId: retailer-1
+      teamIds: []
+  team_channel_member_allow_principal:
+    id: member-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-1
+  team_channel_nonmember_deny_principal:
+    id: member-2
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-2
+  team_channel_removed_member_deny_principal:
+    id: member-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds: []
+  team_channel_all_allow_principal:
+    id: member-2
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds: []
+  team_zone_member_allow_principal:
+    id: member-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-1
+  team_zone_nonmember_deny_principal:
+    id: member-2
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-2
+  team_zone_removed_member_deny_principal:
+    id: member-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds: []
+  team_zone_all_allow_principal:
+    id: member-2
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds: []
+  team_site_member_allow_principal:
+    id: member-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-1
+  team_site_nonmember_deny_principal:
+    id: member-2
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-2
+  team_site_removed_member_deny_principal:
+    id: member-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds: []
+  team_site_all_allow_principal:
+    id: member-2
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds: []
+  team_endpoint_member_allow_principal:
+    id: member-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-1
+  team_endpoint_nonmember_deny_principal:
+    id: member-2
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-2
+  team_endpoint_removed_member_deny_principal:
+    id: member-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds: []
+  team_endpoint_all_allow_principal:
+    id: member-2
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds: []
+  team_playlist_collection_member_allow_principal:
+    id: member-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-1
+  team_playlist_collection_nonmember_deny_principal:
+    id: member-2
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-2
+  team_channel_collection_member_allow_principal:
+    id: member-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-1
+  team_channel_collection_nonmember_deny_principal:
+    id: member-2
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-2
+  team_zone_collection_member_allow_principal:
+    id: member-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-1
+  team_zone_collection_nonmember_deny_principal:
+    id: member-2
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-2
+  team_site_collection_member_allow_principal:
+    id: member-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-1
+  team_site_collection_nonmember_deny_principal:
+    id: member-2
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-2
+  team_endpoint_collection_member_allow_principal:
+    id: member-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-1
+  team_endpoint_collection_nonmember_deny_principal:
+    id: member-2
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-2
+  team_channel_agency_bypass_allow_principal:
+    id: agency-member-1
+    roles:
+    - user
+    attr:
+      userLevel: agency
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      agencyId: agency-1
+      teamIds: []
+  team_zone_owner_bypass_allow_principal:
+    id: owner-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds: []
+  team_site_admin_bypass_allow_principal:
+    id: admin-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: admin
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds: []
+  team_endpoint_su_bypass_allow_principal:
+    id: su-member-1
+    roles:
+    - user
+    attr:
+      userLevel: su
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds: []
+  team_legacy_missing_mode_no_teams_allow_principal:
+    id: member-2
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds: []
+  team_legacy_missing_mode_with_teams_restricted_principal:
+    id: member-2
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-2
+  team_restricted_without_assignments_deny_principal:
+    id: member-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds:
+      - team-1
+  team_matching_membership_without_product_deny_principal:
+    id: member-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products: []
+      retailerId: retailer-1
+      teamIds:
+      - team-1
+  team_manager_foreign_tenant_deny_principal:
+    id: admin-1
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: admin
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds: []
+  department_team_name_cannot_grant_access_principal:
+    id: member-department-name
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds: []
+      department: Electronics
+  department_team_id_cannot_grant_access_principal:
+    id: member-department-id
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      products:
+      - signage
+      retailerId: retailer-1
+      teamIds: []
+      department: team-1
+tests:
+- name: allow_1 - Retailer Member Listing QR Campaigns
+  input:
+    principals:
+    - allow_1_principal
+    resources:
+    - allow_1_resource
+    actions:
+    - list
+  expected:
+  - principal: allow_1_principal
+    resource: allow_1_resource
+    actions:
+      list: EFFECT_ALLOW
+- name: allow_2 - SU Admin Managing Agency Configuration
+  input:
+    principals:
+    - allow_2_principal
+    resources:
+    - allow_2_resource
+    actions:
+    - create
+  expected:
+  - principal: allow_2_principal
+    resource: allow_2_resource
+    actions:
+      create: EFFECT_ALLOW
+- name: allow_3 - Agency Admin Creating QR Campaign
+  input:
+    principals:
+    - allow_3_principal
+    resources:
+    - allow_3_resource
+    actions:
+    - create
+  expected:
+  - principal: allow_3_principal
+    resource: allow_3_resource
+    actions:
+      create: EFFECT_ALLOW
+- name: allow_4 - Agency Owner Creating a User for Child Retailer
+  input:
+    principals:
+    - allow_4_principal
+    resources:
+    - allow_4_resource
+    actions:
+    - create
+  expected:
+  - principal: allow_4_principal
+    resource: allow_4_resource
+    actions:
+      create: EFFECT_ALLOW
+- name: allow_5 - SU Owner Managing System Configuration
+  input:
+    principals:
+    - allow_5_principal
+    resources:
+    - allow_5_resource
+    actions:
+    - update
+  expected:
+  - principal: allow_5_principal
+    resource: allow_5_resource
+    actions:
+      update: EFFECT_ALLOW
+- name: allow_6 - SU Lead Viewing Own User Profile
+  input:
+    principals:
+    - allow_6_principal
+    resources:
+    - allow_6_resource
+    actions:
+    - view
+  expected:
+  - principal: allow_6_principal
+    resource: allow_6_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: allow_7 - Agency Member Viewing Child Retailer Resources
+  input:
+    principals:
+    - allow_7_principal
+    resources:
+    - allow_7_resource
+    actions:
+    - list
+  expected:
+  - principal: allow_7_principal
+    resource: allow_7_resource
+    actions:
+      list: EFFECT_ALLOW
+- name: allow_8 - Retailer Owner Managing Store Settings
+  input:
+    principals:
+    - allow_8_principal
+    resources:
+    - allow_8_resource
+    actions:
+    - update
+  expected:
+  - principal: allow_8_principal
+    resource: allow_8_resource
+    actions:
+      update: EFFECT_ALLOW
+- name: allow_9 - Retailer Owner Accessing Own Retailer Resources
+  input:
+    principals:
+    - allow_9_principal
+    resources:
+    - allow_9_resource
+    actions:
+    - view
+  expected:
+  - principal: allow_9_principal
+    resource: allow_9_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: allow_10 - Retailer Owner Accessing Content Templates
+  input:
+    principals:
+    - allow_10_principal
+    resources:
+    - allow_10_resource
+    actions:
+    - view
+  expected:
+  - principal: allow_10_principal
+    resource: allow_10_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: allow_11 - Retailer Member Accessing Content Assets
+  input:
+    principals:
+    - allow_11_principal
+    resources:
+    - allow_11_resource
+    actions:
+    - list
+  expected:
+  - principal: allow_11_principal
+    resource: allow_11_resource
+    actions:
+      list: EFFECT_ALLOW
+- name: allow_12 - Retailer Owner Accessing Signages People
+  input:
+    principals:
+    - allow_12_principal
+    resources:
+    - allow_12_resource
+    actions:
+    - view
+  expected:
+  - principal: allow_12_principal
+    resource: allow_12_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: allow_13 - Retailer Member Accessing Signages Places Items
+  input:
+    principals:
+    - allow_13_principal
+    resources:
+    - allow_13_resource
+    actions:
+    - view
+  expected:
+  - principal: allow_13_principal
+    resource: allow_13_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: allow_14 - Retailer Admin Accessing Connect Contacts
+  input:
+    principals:
+    - allow_14_principal
+    resources:
+    - allow_14_resource
+    actions:
+    - view
+  expected:
+  - principal: allow_14_principal
+    resource: allow_14_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: allow_15 - Retailer Owner Accessing QR Design Settings
+  input:
+    principals:
+    - allow_15_principal
+    resources:
+    - allow_15_resource
+    actions:
+    - update
+  expected:
+  - principal: allow_15_principal
+    resource: allow_15_resource
+    actions:
+      update: EFFECT_ALLOW
+- name: allow_16 - Retailer Owner Viewing QR Performance Report
+  input:
+    principals:
+    - allow_16_principal
+    resources:
+    - allow_16_resource
+    actions:
+    - view
+  expected:
+  - principal: allow_16_principal
+    resource: allow_16_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: allow_17 - SU Admin Accessing Cerbos Policy Settings
+  input:
+    principals:
+    - allow_17_principal
+    resources:
+    - allow_17_resource
+    actions:
+    - view
+  expected:
+  - principal: allow_17_principal
+    resource: allow_17_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: allow_18 - Retailer Owner Listing Content Channels
+  input:
+    principals:
+    - allow_18_principal
+    resources:
+    - allow_18_resource
+    actions:
+    - list
+  expected:
+  - principal: allow_18_principal
+    resource: allow_18_resource
+    actions:
+      list: EFFECT_ALLOW
+- name: allow_19 - Retailer Owner Listing CMS Collections
+  input:
+    principals:
+    - allow_19_principal
+    resources:
+    - allow_19_resource
+    actions:
+    - list
+  expected:
+  - principal: allow_19_principal
+    resource: allow_19_resource
+    actions:
+      list: EFFECT_ALLOW
+- name: allow_20 - Retailer Member Viewing CMS Website Item
+  input:
+    principals:
+    - allow_20_principal
+    resources:
+    - allow_20_resource
+    actions:
+    - view
+  expected:
+  - principal: allow_20_principal
+    resource: allow_20_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: allow_21 - Agency Manager Creating CMS Page
+  input:
+    principals:
+    - allow_21_principal
+    resources:
+    - allow_21_resource
+    actions:
+    - create
+  expected:
+  - principal: allow_21_principal
+    resource: allow_21_resource
+    actions:
+      create: EFFECT_ALLOW
+- name: deny_1 - Retailer Collaborator Attempting to Create
+  input:
+    principals:
+    - deny_1_principal
+    resources:
+    - deny_1_resource
+    actions:
+    - create
+  expected:
+  - principal: deny_1_principal
+    resource: deny_1_resource
+    actions:
+      create: EFFECT_DENY
+- name: deny_2 - Retailer Member Accessing Product Not in Subscription
+  input:
+    principals:
+    - deny_2_principal
+    resources:
+    - deny_2_resource
+    actions:
+    - list
+  expected:
+  - principal: deny_2_principal
+    resource: deny_2_resource
+    actions:
+      list: EFFECT_DENY
+- name: deny_3 - SU Collaborator Attempting to Create Settings
+  input:
+    principals:
+    - deny_3_principal
+    resources:
+    - deny_3_resource
+    actions:
+    - create
+  expected:
+  - principal: deny_3_principal
+    resource: deny_3_resource
+    actions:
+      create: EFFECT_DENY
+- name: deny_4 - Agency Lead Attempting to Modify Settings
+  input:
+    principals:
+    - deny_4_principal
+    resources:
+    - deny_4_resource
+    actions:
+    - create
+  expected:
+  - principal: deny_4_principal
+    resource: deny_4_resource
+    actions:
+      create: EFFECT_DENY
+- name: deny_5 - Agency Collaborator Attempting to Create Resource
+  input:
+    principals:
+    - deny_5_principal
+    resources:
+    - deny_5_resource
+    actions:
+    - create
+  expected:
+  - principal: deny_5_principal
+    resource: deny_5_resource
+    actions:
+      create: EFFECT_DENY
+- name: deny_6 - Retailer Lead Attempting to Modify Settings
+  input:
+    principals:
+    - deny_6_principal
+    resources:
+    - deny_6_resource
+    actions:
+    - update
+  expected:
+  - principal: deny_6_principal
+    resource: deny_6_resource
+    actions:
+      update: EFFECT_DENY
+- name: deny_7 - Retailer Owner Accessing Different Retailer Resources
+  input:
+    principals:
+    - deny_7_principal
+    resources:
+    - deny_7_resource
+    actions:
+    - view
+  expected:
+  - principal: deny_7_principal
+    resource: deny_7_resource
+    actions:
+      view: EFFECT_DENY
+- name: deny_8 - Retailer Member Accessing Different Retailer Footprints
+  input:
+    principals:
+    - deny_8_principal
+    resources:
+    - deny_8_resource
+    actions:
+    - list
+  expected:
+  - principal: deny_8_principal
+    resource: deny_8_resource
+    actions:
+      list: EFFECT_DENY
+- name: deny_9 - Agency Member Attempting to Access Contents Without Subscription
+  input:
+    principals:
+    - deny_9_principal
+    resources:
+    - deny_9_resource
+    actions:
+    - view
+  expected:
+  - principal: deny_9_principal
+    resource: deny_9_resource
+    actions:
+      view: EFFECT_DENY
+- name: deny_10 - Retailer Member Attempting to Modify Signages People
+  input:
+    principals:
+    - deny_10_principal
+    resources:
+    - deny_10_resource
+    actions:
+    - create
+  expected:
+  - principal: deny_10_principal
+    resource: deny_10_resource
+    actions:
+      create: EFFECT_DENY
+- name: deny_11 - Retailer Collaborator Attempting to Create Content Channel
+  input:
+    principals:
+    - deny_11_principal
+    resources:
+    - deny_11_resource
+    actions:
+    - create
+  expected:
+  - principal: deny_11_principal
+    resource: deny_11_resource
+    actions:
+      create: EFFECT_DENY
+- name: deny_12 - Agency Owner Attempting to Access Cerbos Settings
+  input:
+    principals:
+    - deny_12_principal
+    resources:
+    - deny_12_resource
+    actions:
+    - view
+  expected:
+  - principal: deny_12_principal
+    resource: deny_12_resource
+    actions:
+      view: EFFECT_DENY
+- name: deny_13 - Retailer Without CMS Subscription Accessing CMS Collection
+  input:
+    principals:
+    - deny_13_principal
+    resources:
+    - deny_13_resource
+    actions:
+    - list
+  expected:
+  - principal: deny_13_principal
+    resource: deny_13_resource
+    actions:
+      list: EFFECT_DENY
+- name: deny_14 - Retailer Collaborator Attempting to Create CMS Entry
+  input:
+    principals:
+    - deny_14_principal
+    resources:
+    - deny_14_resource
+    actions:
+    - create
+  expected:
+  - principal: deny_14_principal
+    resource: deny_14_resource
+    actions:
+      create: EFFECT_DENY
+- name: deny_15 - Cross-Retailer Access to CMS Website Item
+  input:
+    principals:
+    - deny_15_principal
+    resources:
+    - deny_15_resource
+    actions:
+    - view
+  expected:
+  - principal: deny_15_principal
+    resource: deny_15_resource
+    actions:
+      view: EFFECT_DENY
+- name: dd_allow_1 - SSP surface with ssp product
+  input:
+    principals:
+    - dd_allow_1_principal
+    resources:
+    - dd_allow_1_resource
+    actions:
+    - list
+  expected:
+  - principal: dd_allow_1_principal
+    resource: dd_allow_1_resource
+    actions:
+      list: EFFECT_ALLOW
+- name: dd_allow_2 - DSP-blocks with ssp product
+  input:
+    principals:
+    - dd_allow_2_principal
+    resources:
+    - dd_allow_2_resource
+    actions:
+    - view
+  expected:
+  - principal: dd_allow_2_principal
+    resource: dd_allow_2_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: dd_allow_3 - Trade-ledgers with trade product
+  input:
+    principals:
+    - dd_allow_3_principal
+    resources:
+    - dd_allow_3_resource
+    actions:
+    - view
+  expected:
+  - principal: dd_allow_3_principal
+    resource: dd_allow_3_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: dd_allow_4 - Media-packages with trade product
+  input:
+    principals:
+    - dd_allow_4_principal
+    resources:
+    - dd_allow_4_resource
+    actions:
+    - list
+  expected:
+  - principal: dd_allow_4_principal
+    resource: dd_allow_4_resource
+    actions:
+      list: EFFECT_ALLOW
+- name: dd_allow_5 - Brands with brand_center product
+  input:
+    principals:
+    - dd_allow_5_principal
+    resources:
+    - dd_allow_5_resource
+    actions:
+    - view
+  expected:
+  - principal: dd_allow_5_principal
+    resource: dd_allow_5_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: dd_allow_6 - Any-of-three campaigns via trade
+  input:
+    principals:
+    - dd_allow_6_principal
+    resources:
+    - dd_allow_6_resource
+    actions:
+    - list
+  expected:
+  - principal: dd_allow_6_principal
+    resource: dd_allow_6_resource
+    actions:
+      list: EFFECT_ALLOW
+- name: dd_allow_7 - Any-of-three campaigns via brand_center
+  input:
+    principals:
+    - dd_allow_7_principal
+    resources:
+    - dd_allow_7_resource
+    actions:
+    - list
+  expected:
+  - principal: dd_allow_7_principal
+    resource: dd_allow_7_resource
+    actions:
+      list: EFFECT_ALLOW
+- name: dd_allow_8 - Store-traffic via ssp
+  input:
+    principals:
+    - dd_allow_8_principal
+    resources:
+    - dd_allow_8_resource
+    actions:
+    - list
+  expected:
+  - principal: dd_allow_8_principal
+    resource: dd_allow_8_resource
+    actions:
+      list: EFFECT_ALLOW
+- name: dd_allow_9 - Store-traffic via trade
+  input:
+    principals:
+    - dd_allow_9_principal
+    resources:
+    - dd_allow_9_resource
+    actions:
+    - list
+  expected:
+  - principal: dd_allow_9_principal
+    resource: dd_allow_9_resource
+    actions:
+      list: EFFECT_ALLOW
+- name: dd_allow_10 - Base sites without dealdesk products
+  input:
+    principals:
+    - dd_allow_10_principal
+    resources:
+    - dd_allow_10_resource
+    actions:
+    - list
+  expected:
+  - principal: dd_allow_10_principal
+    resource: dd_allow_10_resource
+    actions:
+      list: EFFECT_ALLOW
+- name: dd_allow_11 - Base blueprints without dealdesk products
+  input:
+    principals:
+    - dd_allow_11_principal
+    resources:
+    - dd_allow_11_resource
+    actions:
+    - view
+  expected:
+  - principal: dd_allow_11_principal
+    resource: dd_allow_11_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: dd_allow_12 - Brand path on brands
+  input:
+    principals:
+    - dd_allow_12_principal
+    resources:
+    - dd_allow_12_resource
+    actions:
+    - view
+  expected:
+  - principal: dd_allow_12_principal
+    resource: dd_allow_12_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: dd_allow_prov_admin - Retailer admin triggers provisioning sync
+  input:
+    principals:
+    - dd_allow_prov_admin_principal
+    resources:
+    - dd_allow_prov_admin_resource
+    actions:
+    - create
+  expected:
+  - principal: dd_allow_prov_admin_principal
+    resource: dd_allow_prov_admin_resource
+    actions:
+      create: EFFECT_ALLOW
+- name: dd_allow_prov_owner - Retailer owner triggers provisioning sync
+  input:
+    principals:
+    - dd_allow_prov_owner_principal
+    resources:
+    - dd_allow_prov_owner_resource
+    actions:
+    - create
+  expected:
+  - principal: dd_allow_prov_owner_principal
+    resource: dd_allow_prov_owner_resource
+    actions:
+      create: EFFECT_ALLOW
+- name: dd_allow_tags_ssp - SSP-only retailer reads content tags
+  input:
+    principals:
+    - dd_allow_tags_ssp_principal
+    resources:
+    - dd_allow_tags_ssp_resource
+    actions:
+    - view
+  expected:
+  - principal: dd_allow_tags_ssp_principal
+    resource: dd_allow_tags_ssp_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: dd_allow_taxonomy_admin - Retailer admin creates taxonomy key
+  input:
+    principals:
+    - dd_allow_taxonomy_admin_principal
+    resources:
+    - dd_allow_taxonomy_admin_resource
+    actions:
+    - create
+  expected:
+  - principal: dd_allow_taxonomy_admin_principal
+    resource: dd_allow_taxonomy_admin_resource
+    actions:
+      create: EFFECT_ALLOW
+- name: dd_allow_ssp_update - SSP update with ssp product (DD-3a)
+  input:
+    principals:
+    - dd_allow_ssp_update_principal
+    resources:
+    - dd_allow_ssp_update_resource
+    actions:
+    - update
+  expected:
+  - principal: dd_allow_ssp_update_principal
+    resource: dd_allow_ssp_update_resource
+    actions:
+      update: EFFECT_ALLOW
+- name: dd_deny_1 - SSP surface denied without ssp
+  input:
+    principals:
+    - dd_deny_1_principal
+    resources:
+    - dd_deny_1_resource
+    actions:
+    - list
+  expected:
+  - principal: dd_deny_1_principal
+    resource: dd_deny_1_resource
+    actions:
+      list: EFFECT_DENY
+- name: dd_deny_2 - Trade-ledgers denied without trade
+  input:
+    principals:
+    - dd_deny_2_principal
+    resources:
+    - dd_deny_2_resource
+    actions:
+    - view
+  expected:
+  - principal: dd_deny_2_principal
+    resource: dd_deny_2_resource
+    actions:
+      view: EFFECT_DENY
+- name: dd_deny_3 - Brands denied without brand_center
+  input:
+    principals:
+    - dd_deny_3_principal
+    resources:
+    - dd_deny_3_resource
+    actions:
+    - view
+  expected:
+  - principal: dd_deny_3_principal
+    resource: dd_deny_3_resource
+    actions:
+      view: EFFECT_DENY
+- name: dd_deny_4 - Any-of-three denied with no dealdesk product
+  input:
+    principals:
+    - dd_deny_4_principal
+    resources:
+    - dd_deny_4_resource
+    actions:
+    - list
+  expected:
+  - principal: dd_deny_4_principal
+    resource: dd_deny_4_resource
+    actions:
+      list: EFFECT_DENY
+- name: dd_deny_5 - Store-traffic denied for brand_center-only
+  input:
+    principals:
+    - dd_deny_5_principal
+    resources:
+    - dd_deny_5_resource
+    actions:
+    - list
+  expected:
+  - principal: dd_deny_5_principal
+    resource: dd_deny_5_resource
+    actions:
+      list: EFFECT_DENY
+- name: dd_deny_6 - DSP-blocks denied for brand_center-only retailer
+  input:
+    principals:
+    - dd_deny_6_principal
+    resources:
+    - dd_deny_6_resource
+    actions:
+    - view
+  expected:
+  - principal: dd_deny_6_principal
+    resource: dd_deny_6_resource
+    actions:
+      view: EFFECT_DENY
+- name: dd_deny_prov_member - Retailer member cannot trigger provisioning sync
+  input:
+    principals:
+    - dd_deny_prov_member_principal
+    resources:
+    - dd_deny_prov_member_resource
+    actions:
+    - create
+  expected:
+  - principal: dd_deny_prov_member_principal
+    resource: dd_deny_prov_member_resource
+    actions:
+      create: EFFECT_DENY
+- name: dd_deny_prov_no_ssp - Retailer admin without ssp cannot provision
+  input:
+    principals:
+    - dd_deny_prov_no_ssp_principal
+    resources:
+    - dd_deny_prov_no_ssp_resource
+    actions:
+    - create
+  expected:
+  - principal: dd_deny_prov_no_ssp_principal
+    resource: dd_deny_prov_no_ssp_resource
+    actions:
+      create: EFFECT_DENY
+- name: dd_deny_taxonomy_member - Retailer member cannot create taxonomy key
+  input:
+    principals:
+    - dd_deny_taxonomy_member_principal
+    resources:
+    - dd_deny_taxonomy_member_resource
+    actions:
+    - create
+  expected:
+  - principal: dd_deny_taxonomy_member_principal
+    resource: dd_deny_taxonomy_member_resource
+    actions:
+      create: EFFECT_DENY
+- name: dd_deny_taxonomy_brand - Brand user cannot administer taxonomy
+  input:
+    principals:
+    - dd_deny_taxonomy_brand_principal
+    resources:
+    - dd_deny_taxonomy_brand_resource
+    actions:
+    - create
+  expected:
+  - principal: dd_deny_taxonomy_brand_principal
+    resource: dd_deny_taxonomy_brand_resource
+    actions:
+      create: EFFECT_DENY
+- name: dd_deny_ssp_update_collaborator - SSP update denied for collaborator (DD-3a)
+  input:
+    principals:
+    - dd_deny_ssp_update_collaborator_principal
+    resources:
+    - dd_deny_ssp_update_collaborator_resource
+    actions:
+    - update
+  expected:
+  - principal: dd_deny_ssp_update_collaborator_principal
+    resource: dd_deny_ssp_update_collaborator_resource
+    actions:
+      update: EFFECT_DENY
+- name: department_playlist_member_allow - Assigned department member can view a restricted playlist
+  input:
+    principals:
+    - department_playlist_member_allow_principal
+    resources:
+    - department_playlist_member_allow_resource
+    actions:
+    - view
+  expected:
+  - principal: department_playlist_member_allow_principal
+    resource: department_playlist_member_allow_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: department_playlist_nonmember_deny - Non-member cannot view a restricted playlist
+  input:
+    principals:
+    - department_playlist_nonmember_deny_principal
+    resources:
+    - department_playlist_nonmember_deny_resource
+    actions:
+    - view
+  expected:
+  - principal: department_playlist_nonmember_deny_principal
+    resource: department_playlist_nonmember_deny_resource
+    actions:
+      view: EFFECT_DENY
+- name: department_playlist_removed_member_deny - Removed member loses restricted playlist access
+  input:
+    principals:
+    - department_playlist_removed_member_deny_principal
+    resources:
+    - department_playlist_removed_member_deny_resource
+    actions:
+    - view
+  expected:
+  - principal: department_playlist_removed_member_deny_principal
+    resource: department_playlist_removed_member_deny_resource
+    actions:
+      view: EFFECT_DENY
+- name: department_playlist_unrestricted_allow - Retailer member can view an unrestricted playlist
+  input:
+    principals:
+    - department_playlist_unrestricted_allow_principal
+    resources:
+    - department_playlist_unrestricted_allow_resource
+    actions:
+    - view
+  expected:
+  - principal: department_playlist_unrestricted_allow_principal
+    resource: department_playlist_unrestricted_allow_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: department_playlist_foreign_tenant_deny - Assigned team does not bypass retailer isolation
+  input:
+    principals:
+    - department_playlist_foreign_tenant_deny_principal
+    resources:
+    - department_playlist_foreign_tenant_deny_resource
+    actions:
+    - view
+  expected:
+  - principal: department_playlist_foreign_tenant_deny_principal
+    resource: department_playlist_foreign_tenant_deny_resource
+    actions:
+      view: EFFECT_DENY
+- name: department_playlist_su_allow - Super-user can manage a restricted playlist in the selected retailer context
+  input:
+    principals:
+    - department_playlist_su_allow_principal
+    resources:
+    - department_playlist_su_allow_resource
+    actions:
+    - update
+  expected:
+  - principal: department_playlist_su_allow_principal
+    resource: department_playlist_su_allow_resource
+    actions:
+      update: EFFECT_ALLOW
+- name: department_playlist_agency_allow - Agency user can manage a restricted playlist in its retailer context
+  input:
+    principals:
+    - department_playlist_agency_allow_principal
+    resources:
+    - department_playlist_agency_allow_resource
+    actions:
+    - update
+  expected:
+  - principal: department_playlist_agency_allow_principal
+    resource: department_playlist_agency_allow_resource
+    actions:
+      update: EFFECT_ALLOW
+- name: department_playlist_owner_allow - Retailer owner can manage a restricted playlist without membership
+  input:
+    principals:
+    - department_playlist_owner_allow_principal
+    resources:
+    - department_playlist_owner_allow_resource
+    actions:
+    - update
+  expected:
+  - principal: department_playlist_owner_allow_principal
+    resource: department_playlist_owner_allow_resource
+    actions:
+      update: EFFECT_ALLOW
+- name: department_playlist_admin_allow - Retailer administrator can manage a restricted playlist without membership
+  input:
+    principals:
+    - department_playlist_admin_allow_principal
+    resources:
+    - department_playlist_admin_allow_resource
+    actions:
+    - update
+  expected:
+  - principal: department_playlist_admin_allow_principal
+    resource: department_playlist_admin_allow_resource
+    actions:
+      update: EFFECT_ALLOW
+- name: product_item_missing_tenant_deny - Retailer item access fails closed without stored tenant attributes
+  input:
+    principals:
+    - product_item_missing_tenant_deny_principal
+    resources:
+    - product_item_missing_tenant_deny_resource
+    actions:
+    - view
+  expected:
+  - principal: product_item_missing_tenant_deny_principal
+    resource: product_item_missing_tenant_deny_resource
+    actions:
+      view: EFFECT_DENY
+- name: department_team_same_tenant_allow - Retailer administrator can update a same-retailer team
+  input:
+    principals:
+    - department_team_same_tenant_allow_principal
+    resources:
+    - department_team_same_tenant_allow_resource
+    actions:
+    - update
+  expected:
+  - principal: department_team_same_tenant_allow_principal
+    resource: department_team_same_tenant_allow_resource
+    actions:
+      update: EFFECT_ALLOW
+- name: department_team_foreign_tenant_deny - Retailer administrator cannot update a foreign team
+  input:
+    principals:
+    - department_team_foreign_tenant_deny_principal
+    resources:
+    - department_team_foreign_tenant_deny_resource
+    actions:
+    - update
+  expected:
+  - principal: department_team_foreign_tenant_deny_principal
+    resource: department_team_foreign_tenant_deny_resource
+    actions:
+      update: EFFECT_DENY
+- name: team_channel_member_allow - Assigned team member can view a restricted channel
+  input:
+    principals:
+    - team_channel_member_allow_principal
+    resources:
+    - team_channel_member_allow_resource
+    actions:
+    - view
+  expected:
+  - principal: team_channel_member_allow_principal
+    resource: team_channel_member_allow_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: team_channel_nonmember_deny - Non-member cannot view a restricted channel
+  input:
+    principals:
+    - team_channel_nonmember_deny_principal
+    resources:
+    - team_channel_nonmember_deny_resource
+    actions:
+    - view
+  expected:
+  - principal: team_channel_nonmember_deny_principal
+    resource: team_channel_nonmember_deny_resource
+    actions:
+      view: EFFECT_DENY
+- name: team_channel_removed_member_deny - Removed member loses restricted channel access
+  input:
+    principals:
+    - team_channel_removed_member_deny_principal
+    resources:
+    - team_channel_removed_member_deny_resource
+    actions:
+    - view
+  expected:
+  - principal: team_channel_removed_member_deny_principal
+    resource: team_channel_removed_member_deny_resource
+    actions:
+      view: EFFECT_DENY
+- name: team_channel_all_allow - Retailer member can view an all-access channel
+  input:
+    principals:
+    - team_channel_all_allow_principal
+    resources:
+    - team_channel_all_allow_resource
+    actions:
+    - view
+  expected:
+  - principal: team_channel_all_allow_principal
+    resource: team_channel_all_allow_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: team_zone_member_allow - Assigned team member can view a restricted zone through the signage layout policy
+  input:
+    principals:
+    - team_zone_member_allow_principal
+    resources:
+    - team_zone_member_allow_resource
+    actions:
+    - view
+  expected:
+  - principal: team_zone_member_allow_principal
+    resource: team_zone_member_allow_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: team_zone_nonmember_deny - Non-member cannot view a restricted zone
+  input:
+    principals:
+    - team_zone_nonmember_deny_principal
+    resources:
+    - team_zone_nonmember_deny_resource
+    actions:
+    - view
+  expected:
+  - principal: team_zone_nonmember_deny_principal
+    resource: team_zone_nonmember_deny_resource
+    actions:
+      view: EFFECT_DENY
+- name: team_zone_removed_member_deny - Removed member loses restricted zone access
+  input:
+    principals:
+    - team_zone_removed_member_deny_principal
+    resources:
+    - team_zone_removed_member_deny_resource
+    actions:
+    - view
+  expected:
+  - principal: team_zone_removed_member_deny_principal
+    resource: team_zone_removed_member_deny_resource
+    actions:
+      view: EFFECT_DENY
+- name: team_zone_all_allow - Retailer member can view an all-access zone
+  input:
+    principals:
+    - team_zone_all_allow_principal
+    resources:
+    - team_zone_all_allow_resource
+    actions:
+    - view
+  expected:
+  - principal: team_zone_all_allow_principal
+    resource: team_zone_all_allow_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: team_site_member_allow - Assigned team member can view a restricted site
+  input:
+    principals:
+    - team_site_member_allow_principal
+    resources:
+    - team_site_member_allow_resource
+    actions:
+    - view
+  expected:
+  - principal: team_site_member_allow_principal
+    resource: team_site_member_allow_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: team_site_nonmember_deny - Non-member cannot view a restricted site
+  input:
+    principals:
+    - team_site_nonmember_deny_principal
+    resources:
+    - team_site_nonmember_deny_resource
+    actions:
+    - view
+  expected:
+  - principal: team_site_nonmember_deny_principal
+    resource: team_site_nonmember_deny_resource
+    actions:
+      view: EFFECT_DENY
+- name: team_site_removed_member_deny - Removed member loses restricted site access
+  input:
+    principals:
+    - team_site_removed_member_deny_principal
+    resources:
+    - team_site_removed_member_deny_resource
+    actions:
+    - view
+  expected:
+  - principal: team_site_removed_member_deny_principal
+    resource: team_site_removed_member_deny_resource
+    actions:
+      view: EFFECT_DENY
+- name: team_site_all_allow - Retailer member can view an all-access site
+  input:
+    principals:
+    - team_site_all_allow_principal
+    resources:
+    - team_site_all_allow_resource
+    actions:
+    - view
+  expected:
+  - principal: team_site_all_allow_principal
+    resource: team_site_all_allow_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: team_endpoint_member_allow - Assigned team member can view a restricted endpoint
+  input:
+    principals:
+    - team_endpoint_member_allow_principal
+    resources:
+    - team_endpoint_member_allow_resource
+    actions:
+    - view
+  expected:
+  - principal: team_endpoint_member_allow_principal
+    resource: team_endpoint_member_allow_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: team_endpoint_nonmember_deny - Non-member cannot view a restricted endpoint
+  input:
+    principals:
+    - team_endpoint_nonmember_deny_principal
+    resources:
+    - team_endpoint_nonmember_deny_resource
+    actions:
+    - view
+  expected:
+  - principal: team_endpoint_nonmember_deny_principal
+    resource: team_endpoint_nonmember_deny_resource
+    actions:
+      view: EFFECT_DENY
+- name: team_endpoint_removed_member_deny - Removed member loses restricted endpoint access
+  input:
+    principals:
+    - team_endpoint_removed_member_deny_principal
+    resources:
+    - team_endpoint_removed_member_deny_resource
+    actions:
+    - view
+  expected:
+  - principal: team_endpoint_removed_member_deny_principal
+    resource: team_endpoint_removed_member_deny_resource
+    actions:
+      view: EFFECT_DENY
+- name: team_endpoint_all_allow - Retailer member can view an all-access endpoint
+  input:
+    principals:
+    - team_endpoint_all_allow_principal
+    resources:
+    - team_endpoint_all_allow_resource
+    actions:
+    - view
+  expected:
+  - principal: team_endpoint_all_allow_principal
+    resource: team_endpoint_all_allow_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: team_playlist_collection_member_allow - Assigned member can list a restricted playlist collection row
+  input:
+    principals:
+    - team_playlist_collection_member_allow_principal
+    resources:
+    - team_playlist_collection_member_allow_resource
+    actions:
+    - list
+  expected:
+  - principal: team_playlist_collection_member_allow_principal
+    resource: team_playlist_collection_member_allow_resource
+    actions:
+      list: EFFECT_ALLOW
+- name: team_playlist_collection_nonmember_deny - Non-member cannot list a restricted playlist collection row
+  input:
+    principals:
+    - team_playlist_collection_nonmember_deny_principal
+    resources:
+    - team_playlist_collection_nonmember_deny_resource
+    actions:
+    - list
+  expected:
+  - principal: team_playlist_collection_nonmember_deny_principal
+    resource: team_playlist_collection_nonmember_deny_resource
+    actions:
+      list: EFFECT_DENY
+- name: team_channel_collection_member_allow - Assigned member can list a restricted channel collection row
+  input:
+    principals:
+    - team_channel_collection_member_allow_principal
+    resources:
+    - team_channel_collection_member_allow_resource
+    actions:
+    - list
+  expected:
+  - principal: team_channel_collection_member_allow_principal
+    resource: team_channel_collection_member_allow_resource
+    actions:
+      list: EFFECT_ALLOW
+- name: team_channel_collection_nonmember_deny - Non-member cannot list a restricted channel collection row
+  input:
+    principals:
+    - team_channel_collection_nonmember_deny_principal
+    resources:
+    - team_channel_collection_nonmember_deny_resource
+    actions:
+    - list
+  expected:
+  - principal: team_channel_collection_nonmember_deny_principal
+    resource: team_channel_collection_nonmember_deny_resource
+    actions:
+      list: EFFECT_DENY
+- name: team_zone_collection_member_allow - Assigned member can list a restricted zone collection row
+  input:
+    principals:
+    - team_zone_collection_member_allow_principal
+    resources:
+    - team_zone_collection_member_allow_resource
+    actions:
+    - list
+  expected:
+  - principal: team_zone_collection_member_allow_principal
+    resource: team_zone_collection_member_allow_resource
+    actions:
+      list: EFFECT_ALLOW
+- name: team_zone_collection_nonmember_deny - Non-member cannot list a restricted zone collection row
+  input:
+    principals:
+    - team_zone_collection_nonmember_deny_principal
+    resources:
+    - team_zone_collection_nonmember_deny_resource
+    actions:
+    - list
+  expected:
+  - principal: team_zone_collection_nonmember_deny_principal
+    resource: team_zone_collection_nonmember_deny_resource
+    actions:
+      list: EFFECT_DENY
+- name: team_site_collection_member_allow - Assigned member can list a restricted site collection row
+  input:
+    principals:
+    - team_site_collection_member_allow_principal
+    resources:
+    - team_site_collection_member_allow_resource
+    actions:
+    - list
+  expected:
+  - principal: team_site_collection_member_allow_principal
+    resource: team_site_collection_member_allow_resource
+    actions:
+      list: EFFECT_ALLOW
+- name: team_site_collection_nonmember_deny - Non-member cannot list a restricted site collection row
+  input:
+    principals:
+    - team_site_collection_nonmember_deny_principal
+    resources:
+    - team_site_collection_nonmember_deny_resource
+    actions:
+    - list
+  expected:
+  - principal: team_site_collection_nonmember_deny_principal
+    resource: team_site_collection_nonmember_deny_resource
+    actions:
+      list: EFFECT_DENY
+- name: team_endpoint_collection_member_allow - Assigned member can list a restricted endpoint collection row
+  input:
+    principals:
+    - team_endpoint_collection_member_allow_principal
+    resources:
+    - team_endpoint_collection_member_allow_resource
+    actions:
+    - list
+  expected:
+  - principal: team_endpoint_collection_member_allow_principal
+    resource: team_endpoint_collection_member_allow_resource
+    actions:
+      list: EFFECT_ALLOW
+- name: team_endpoint_collection_nonmember_deny - Non-member cannot list a restricted endpoint collection row
+  input:
+    principals:
+    - team_endpoint_collection_nonmember_deny_principal
+    resources:
+    - team_endpoint_collection_nonmember_deny_resource
+    actions:
+    - list
+  expected:
+  - principal: team_endpoint_collection_nonmember_deny_principal
+    resource: team_endpoint_collection_nonmember_deny_resource
+    actions:
+      list: EFFECT_DENY
+- name: team_channel_agency_bypass_allow - Agency member retains access to a restricted same-tenant channel
+  input:
+    principals:
+    - team_channel_agency_bypass_allow_principal
+    resources:
+    - team_channel_agency_bypass_allow_resource
+    actions:
+    - update
+  expected:
+  - principal: team_channel_agency_bypass_allow_principal
+    resource: team_channel_agency_bypass_allow_resource
+    actions:
+      update: EFFECT_ALLOW
+- name: team_zone_owner_bypass_allow - Retailer owner retains access to a restricted same-tenant zone
+  input:
+    principals:
+    - team_zone_owner_bypass_allow_principal
+    resources:
+    - team_zone_owner_bypass_allow_resource
+    actions:
+    - update
+  expected:
+  - principal: team_zone_owner_bypass_allow_principal
+    resource: team_zone_owner_bypass_allow_resource
+    actions:
+      update: EFFECT_ALLOW
+- name: team_site_admin_bypass_allow - Retailer administrator retains access to a restricted same-tenant site
+  input:
+    principals:
+    - team_site_admin_bypass_allow_principal
+    resources:
+    - team_site_admin_bypass_allow_resource
+    actions:
+    - update
+  expected:
+  - principal: team_site_admin_bypass_allow_principal
+    resource: team_site_admin_bypass_allow_resource
+    actions:
+      update: EFFECT_ALLOW
+- name: team_endpoint_su_bypass_allow - Super-user member retains access to a restricted endpoint
+  input:
+    principals:
+    - team_endpoint_su_bypass_allow_principal
+    resources:
+    - team_endpoint_su_bypass_allow_resource
+    actions:
+    - update
+  expected:
+  - principal: team_endpoint_su_bypass_allow_principal
+    resource: team_endpoint_su_bypass_allow_resource
+    actions:
+      update: EFFECT_ALLOW
+- name: team_legacy_missing_mode_no_teams_allow - Legacy item with no access mode and no teams remains retailer-wide
+  input:
+    principals:
+    - team_legacy_missing_mode_no_teams_allow_principal
+    resources:
+    - team_legacy_missing_mode_no_teams_allow_resource
+    actions:
+    - view
+  expected:
+  - principal: team_legacy_missing_mode_no_teams_allow_principal
+    resource: team_legacy_missing_mode_no_teams_allow_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: team_legacy_missing_mode_with_teams_restricted - Legacy item with teams and no access mode remains restricted
+  input:
+    principals:
+    - team_legacy_missing_mode_with_teams_restricted_principal
+    resources:
+    - team_legacy_missing_mode_with_teams_restricted_resource
+    actions:
+    - view
+  expected:
+  - principal: team_legacy_missing_mode_with_teams_restricted_principal
+    resource: team_legacy_missing_mode_with_teams_restricted_resource
+    actions:
+      view: EFFECT_DENY
+- name: team_restricted_without_assignments_deny - Restricted item without assigned teams fails closed for ordinary users
+  input:
+    principals:
+    - team_restricted_without_assignments_deny_principal
+    resources:
+    - team_restricted_without_assignments_deny_resource
+    actions:
+    - view
+  expected:
+  - principal: team_restricted_without_assignments_deny_principal
+    resource: team_restricted_without_assignments_deny_resource
+    actions:
+      view: EFFECT_DENY
+- name: team_matching_membership_without_product_deny - Matching team membership does not bypass product subscription
+  input:
+    principals:
+    - team_matching_membership_without_product_deny_principal
+    resources:
+    - team_matching_membership_without_product_deny_resource
+    actions:
+    - view
+  expected:
+  - principal: team_matching_membership_without_product_deny_principal
+    resource: team_matching_membership_without_product_deny_resource
+    actions:
+      view: EFFECT_DENY
+- name: team_manager_foreign_tenant_deny - Manager team bypass does not cross retailer boundaries
+  input:
+    principals:
+    - team_manager_foreign_tenant_deny_principal
+    resources:
+    - team_manager_foreign_tenant_deny_resource
+    actions:
+    - view
+  expected:
+  - principal: team_manager_foreign_tenant_deny_principal
+    resource: team_manager_foreign_tenant_deny_resource
+    actions:
+      view: EFFECT_DENY
+- name: department_team_name_cannot_grant_access - Department name cannot grant restricted resource access
+  input:
+    principals:
+    - department_team_name_cannot_grant_access_principal
+    resources:
+    - department_team_name_cannot_grant_access_resource
+    actions:
+    - view
+  expected:
+  - principal: department_team_name_cannot_grant_access_principal
+    resource: department_team_name_cannot_grant_access_resource
+    actions:
+      view: EFFECT_DENY
+- name: department_team_id_cannot_grant_access - Department identifier cannot grant restricted resource access
+  input:
+    principals:
+    - department_team_id_cannot_grant_access_principal
+    resources:
+    - department_team_id_cannot_grant_access_resource
+    actions:
+    - view
+  expected:
+  - principal: department_team_id_cannot_grant_access_principal
+    resource: department_team_id_cannot_grant_access_resource
+    actions:
+      view: EFFECT_DENY
