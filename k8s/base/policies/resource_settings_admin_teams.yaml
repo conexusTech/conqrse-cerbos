@@ -9,6 +9,9 @@ resourcePolicy:
     # Admin settings access (all owner/admin at all levels)
     - actions: ["list", "view", "create", "update", "delete", "export", "import"]
       effect: EFFECT_ALLOW
+      condition:
+        match:
+          expr: '!has(R.attr.retailerId) || P.attr.userLevel == "su" || (P.attr.userLevel == "agency" && P.attr.agencyId == R.attr.agencyId) || (P.attr.userLevel == "retailer" && P.attr.retailerId == R.attr.retailerId)'
       derivedRoles:
         - root_user
         - platform_administrator

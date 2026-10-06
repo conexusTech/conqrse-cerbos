@@ -35,7 +35,7 @@
           },
           "expectedResult": "ALLOW",
           "actions": [
-            "resource:list"
+            "list"
           ]
         },
         {
@@ -59,15 +59,15 @@
             }
           },
           "resource": {
-            "kind": "settings:admin:users",
-            "id": "settings:admin:users",
+            "kind": "settings:admin_users",
+            "id": "settings:admin_users",
             "attr": {
               "product": "settings"
             }
           },
           "expectedResult": "ALLOW",
           "actions": [
-            "resource:create"
+            "create"
           ]
         },
         {
@@ -100,7 +100,7 @@
           },
           "expectedResult": "ALLOW",
           "actions": [
-            "resource:create"
+            "create"
           ]
         },
         {
@@ -125,8 +125,8 @@
             }
           },
           "resource": {
-            "kind": "settings:admin:users",
-            "id": "settings:admin:users",
+            "kind": "settings:admin_users",
+            "id": "settings:admin_users",
             "attr": {
               "product": "settings",
               "retailerId": "retail-789",
@@ -135,7 +135,7 @@
           },
           "expectedResult": "ALLOW",
           "actions": [
-            "resource:create"
+            "create"
           ]
         },
         {
@@ -159,15 +159,15 @@
             }
           },
           "resource": {
-            "kind": "settings:admin:general",
-            "id": "settings:admin:general",
+            "kind": "settings:admin_cerbos",
+            "id": "settings:admin_cerbos",
             "attr": {
               "product": "settings"
             }
           },
           "expectedResult": "ALLOW",
           "actions": [
-            "resource:update"
+            "update"
           ]
         },
         {
@@ -191,15 +191,15 @@
             }
           },
           "resource": {
-            "kind": "settings:user:profile",
-            "id": "settings:user:profile",
+            "kind": "settings:user_profile:item",
+            "id": "settings:user_profile:item",
             "attr": {
               "product": "settings"
             }
           },
           "expectedResult": "ALLOW",
           "actions": [
-            "resource:view"
+            "view"
           ]
         },
         {
@@ -233,7 +233,7 @@
           },
           "expectedResult": "ALLOW",
           "actions": [
-            "resource:list"
+            "list"
           ]
         },
         {
@@ -258,8 +258,8 @@
             }
           },
           "resource": {
-            "kind": "settings:admin:general",
-            "id": "settings:admin:general",
+            "kind": "settings:admin_general_retailer:item",
+            "id": "settings:admin_general_retailer:item",
             "attr": {
               "product": "settings",
               "retailerId": "retail-789"
@@ -267,7 +267,7 @@
           },
           "expectedResult": "ALLOW",
           "actions": [
-            "resource:update"
+            "update"
           ]
         },
         {
@@ -301,7 +301,7 @@
           },
           "expectedResult": "ALLOW",
           "actions": [
-            "resource:view"
+            "view"
           ]
         },
         {
@@ -336,7 +336,7 @@
           },
           "expectedResult": "ALLOW",
           "actions": [
-            "resource:view"
+            "view"
           ]
         },
         {
@@ -370,7 +370,7 @@
           },
           "expectedResult": "ALLOW",
           "actions": [
-            "resource:list"
+            "list"
           ]
         },
         {
@@ -404,7 +404,7 @@
           },
           "expectedResult": "ALLOW",
           "actions": [
-            "resource:view"
+            "view"
           ]
         },
         {
@@ -438,7 +438,7 @@
           },
           "expectedResult": "ALLOW",
           "actions": [
-            "resource:list"
+            "view"
           ]
         },
         {
@@ -472,7 +472,7 @@
           },
           "expectedResult": "ALLOW",
           "actions": [
-            "resource:view"
+            "view"
           ]
         },
         {
@@ -505,7 +505,7 @@
           },
           "expectedResult": "ALLOW",
           "actions": [
-            "resource:update"
+            "update"
           ]
         },
         {
@@ -529,8 +529,8 @@
             }
           },
           "resource": {
-            "kind": "reports:qr-performance",
-            "id": "reports:qr-performance",
+            "kind": "reports:qr_performance",
+            "id": "reports:qr_performance",
             "attr": {
               "product": "qr",
               "retailerId": "retail-789"
@@ -538,7 +538,7 @@
           },
           "expectedResult": "ALLOW",
           "actions": [
-            "resource:view"
+            "view"
           ]
         },
         {
@@ -562,15 +562,15 @@
             }
           },
           "resource": {
-            "kind": "settings:admin:cerbos",
-            "id": "settings:admin:cerbos",
+            "kind": "settings:admin_cerbos",
+            "id": "settings:admin_cerbos",
             "attr": {
               "product": "settings"
             }
           },
           "expectedResult": "ALLOW",
           "actions": [
-            "resource:view"
+            "view"
           ]
         },
         {
@@ -604,7 +604,7 @@
           },
           "expectedResult": "ALLOW",
           "actions": [
-            "resource:list"
+            "list"
           ]
         },
         {
@@ -638,7 +638,7 @@
           },
           "expectedResult": "ALLOW",
           "actions": [
-            "resource:list"
+            "list"
           ]
         },
         {
@@ -672,7 +672,7 @@
           },
           "expectedResult": "ALLOW",
           "actions": [
-            "resource:view"
+            "view"
           ]
         },
         {
@@ -706,7 +706,7 @@
           },
           "expectedResult": "ALLOW",
           "actions": [
-            "resource:create"
+            "create"
           ]
         }
       ]
@@ -746,7 +746,7 @@
           },
           "expectedResult": "DENY",
           "actions": [
-            "resource:create"
+            "create"
           ]
         },
         {
@@ -780,7 +780,7 @@
           },
           "expectedResult": "DENY",
           "actions": [
-            "resource:list"
+            "list"
           ]
         },
         {
@@ -802,15 +802,15 @@
             }
           },
           "resource": {
-            "kind": "settings:admin:general",
-            "id": "settings:admin:general",
+            "kind": "settings:admin_cerbos",
+            "id": "settings:admin_cerbos",
             "attr": {
               "product": "settings"
             }
           },
           "expectedResult": "DENY",
           "actions": [
-            "resource:create"
+            "create"
           ]
         },
         {
@@ -833,8 +833,8 @@
             }
           },
           "resource": {
-            "kind": "settings:admin:users",
-            "id": "settings:admin:users",
+            "kind": "settings:admin_users",
+            "id": "settings:admin_users",
             "attr": {
               "product": "settings",
               "agencyId": "agency-456"
@@ -842,7 +842,7 @@
           },
           "expectedResult": "DENY",
           "actions": [
-            "resource:create"
+            "create"
           ]
         },
         {
@@ -874,7 +874,7 @@
           },
           "expectedResult": "DENY",
           "actions": [
-            "resource:create"
+            "create"
           ]
         },
         {
@@ -898,8 +898,8 @@
             }
           },
           "resource": {
-            "kind": "settings:admin:general",
-            "id": "settings:admin:general",
+            "kind": "settings:admin_general_retailer:item",
+            "id": "settings:admin_general_retailer:item",
             "attr": {
               "product": "settings",
               "retailerId": "retail-789"
@@ -907,7 +907,7 @@
           },
           "expectedResult": "DENY",
           "actions": [
-            "resource:update"
+            "update"
           ]
         },
         {
@@ -941,7 +941,7 @@
           },
           "expectedResult": "DENY",
           "actions": [
-            "resource:view"
+            "view"
           ]
         },
         {
@@ -975,7 +975,7 @@
           },
           "expectedResult": "DENY",
           "actions": [
-            "resource:list"
+            "list"
           ]
         },
         {
@@ -1008,7 +1008,7 @@
           },
           "expectedResult": "DENY",
           "actions": [
-            "resource:view"
+            "view"
           ]
         },
         {
@@ -1042,7 +1042,7 @@
           },
           "expectedResult": "DENY",
           "actions": [
-            "resource:create"
+            "create"
           ]
         },
         {
@@ -1076,7 +1076,7 @@
           },
           "expectedResult": "DENY",
           "actions": [
-            "resource:create"
+            "create"
           ]
         },
         {
@@ -1100,15 +1100,15 @@
             }
           },
           "resource": {
-            "kind": "settings:admin:cerbos",
-            "id": "settings:admin:cerbos",
+            "kind": "settings:admin_cerbos",
+            "id": "settings:admin_cerbos",
             "attr": {
               "product": "settings"
             }
           },
           "expectedResult": "DENY",
           "actions": [
-            "resource:view"
+            "view"
           ]
         },
         {
@@ -1142,7 +1142,7 @@
           },
           "expectedResult": "DENY",
           "actions": [
-            "resource:list"
+            "list"
           ]
         },
         {
@@ -1176,7 +1176,7 @@
           },
           "expectedResult": "DENY",
           "actions": [
-            "resource:create"
+            "create"
           ]
         },
         {
@@ -1210,7 +1210,7 @@
           },
           "expectedResult": "DENY",
           "actions": [
-            "resource:view"
+            "view"
           ]
         }
       ]
@@ -2155,6 +2155,404 @@
           "actions": [
             "update"
           ]
+        }
+      ]
+    },
+    {
+      "name": "Team Resource Access Enforcement",
+      "description": "Team-scoped resources and team administration remain tenant- and product-scoped",
+      "tests": [
+        {
+          "id": "department_playlist_member_allow",
+          "name": "Assigned department member can view a restricted playlist",
+          "principal": { "id": "member-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-1"] } },
+          "resource": { "kind": "contents:playlists:item", "id": "playlist-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "ALLOW",
+          "actions": ["view"]
+        },
+        {
+          "id": "department_playlist_nonmember_deny",
+          "name": "Non-member cannot view a restricted playlist",
+          "principal": { "id": "member-2", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-2"] } },
+          "resource": { "kind": "contents:playlists:item", "id": "playlist-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "DENY",
+          "actions": ["view"]
+        },
+        {
+          "id": "department_playlist_removed_member_deny",
+          "name": "Removed member loses restricted playlist access",
+          "principal": { "id": "member-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "contents:playlists:item", "id": "playlist-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "DENY",
+          "actions": ["view"]
+        },
+        {
+          "id": "department_playlist_unrestricted_allow",
+          "name": "Retailer member can view an unrestricted playlist",
+          "principal": { "id": "member-2", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "contents:playlists:item", "id": "playlist-2", "attr": { "retailerId": "retailer-1", "accessMode": "all", "teamIds": [] } },
+          "expectedResult": "ALLOW",
+          "actions": ["view"]
+        },
+        {
+          "id": "department_playlist_foreign_tenant_deny",
+          "name": "Assigned team does not bypass retailer isolation",
+          "principal": { "id": "member-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-2", "teamIds": ["team-1"] } },
+          "resource": { "kind": "contents:playlists:item", "id": "playlist-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "DENY",
+          "actions": ["view"]
+        },
+        {
+          "id": "department_playlist_su_allow",
+          "name": "Super-user can manage a restricted playlist in the selected retailer context",
+          "principal": { "id": "su-1", "roles": ["user"], "attr": { "userLevel": "su", "userType": "owner", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "contents:playlists:item", "id": "playlist-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "ALLOW",
+          "actions": ["update"]
+        },
+        {
+          "id": "department_playlist_agency_allow",
+          "name": "Agency user can manage a restricted playlist in its retailer context",
+          "principal": { "id": "agency-1", "roles": ["user"], "attr": { "userLevel": "agency", "userType": "admin", "products": ["signage"], "retailerId": "retailer-1", "agencyId": "agency-1", "teamIds": [] } },
+          "resource": { "kind": "contents:playlists:item", "id": "playlist-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "ALLOW",
+          "actions": ["update"]
+        },
+        {
+          "id": "department_playlist_owner_allow",
+          "name": "Retailer owner can manage a restricted playlist without membership",
+          "principal": { "id": "owner-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "owner", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "contents:playlists:item", "id": "playlist-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "ALLOW",
+          "actions": ["update"]
+        },
+        {
+          "id": "department_playlist_admin_allow",
+          "name": "Retailer administrator can manage a restricted playlist without membership",
+          "principal": { "id": "admin-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "admin", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "contents:playlists:item", "id": "playlist-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "ALLOW",
+          "actions": ["update"]
+        },
+        {
+          "id": "product_item_missing_tenant_deny",
+          "name": "Retailer item access fails closed without stored tenant attributes",
+          "principal": { "id": "admin-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "admin", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "contents:channels:item", "id": "channel-1", "attr": {} },
+          "expectedResult": "DENY",
+          "actions": ["view"]
+        },
+        {
+          "id": "department_team_same_tenant_allow",
+          "name": "Retailer administrator can update a same-retailer team",
+          "principal": { "id": "admin-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "admin", "products": [], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "settings:admin_teams:item", "id": "team-1", "attr": { "retailerId": "retailer-1", "agencyId": "agency-1" } },
+          "expectedResult": "ALLOW",
+          "actions": ["update"]
+        },
+        {
+          "id": "department_team_foreign_tenant_deny",
+          "name": "Retailer administrator cannot update a foreign team",
+          "principal": { "id": "admin-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "admin", "products": [], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "settings:admin_teams:item", "id": "team-2", "attr": { "retailerId": "retailer-2", "agencyId": "agency-2" } },
+          "expectedResult": "DENY",
+          "actions": ["update"]
+        },
+        {
+          "id": "team_channel_member_allow",
+          "name": "Assigned team member can view a restricted channel",
+          "principal": { "id": "member-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-1"] } },
+          "resource": { "kind": "contents:channels:item", "id": "channel-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "ALLOW",
+          "actions": ["view"]
+        },
+        {
+          "id": "team_channel_nonmember_deny",
+          "name": "Non-member cannot view a restricted channel",
+          "principal": { "id": "member-2", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-2"] } },
+          "resource": { "kind": "contents:channels:item", "id": "channel-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "DENY",
+          "actions": ["view"]
+        },
+        {
+          "id": "team_channel_removed_member_deny",
+          "name": "Removed member loses restricted channel access",
+          "principal": { "id": "member-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "contents:channels:item", "id": "channel-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "DENY",
+          "actions": ["view"]
+        },
+        {
+          "id": "team_channel_all_allow",
+          "name": "Retailer member can view an all-access channel",
+          "principal": { "id": "member-2", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "contents:channels:item", "id": "channel-2", "attr": { "retailerId": "retailer-1", "accessMode": "all", "teamIds": [] } },
+          "expectedResult": "ALLOW",
+          "actions": ["view"]
+        },
+        {
+          "id": "team_zone_member_allow",
+          "name": "Assigned team member can view a restricted zone through the signage layout policy",
+          "principal": { "id": "member-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-1"] } },
+          "resource": { "kind": "settings:signage_layout:item", "id": "zone-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "ALLOW",
+          "actions": ["view"]
+        },
+        {
+          "id": "team_zone_nonmember_deny",
+          "name": "Non-member cannot view a restricted zone",
+          "principal": { "id": "member-2", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-2"] } },
+          "resource": { "kind": "settings:signage_layout:item", "id": "zone-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "DENY",
+          "actions": ["view"]
+        },
+        {
+          "id": "team_zone_removed_member_deny",
+          "name": "Removed member loses restricted zone access",
+          "principal": { "id": "member-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "settings:signage_layout:item", "id": "zone-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "DENY",
+          "actions": ["view"]
+        },
+        {
+          "id": "team_zone_all_allow",
+          "name": "Retailer member can view an all-access zone",
+          "principal": { "id": "member-2", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "settings:signage_layout:item", "id": "zone-2", "attr": { "retailerId": "retailer-1", "accessMode": "all", "teamIds": [] } },
+          "expectedResult": "ALLOW",
+          "actions": ["view"]
+        },
+        {
+          "id": "team_site_member_allow",
+          "name": "Assigned team member can view a restricted site",
+          "principal": { "id": "member-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-1"] } },
+          "resource": { "kind": "footprints:sites:item", "id": "site-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "ALLOW",
+          "actions": ["view"]
+        },
+        {
+          "id": "team_site_nonmember_deny",
+          "name": "Non-member cannot view a restricted site",
+          "principal": { "id": "member-2", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-2"] } },
+          "resource": { "kind": "footprints:sites:item", "id": "site-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "DENY",
+          "actions": ["view"]
+        },
+        {
+          "id": "team_site_removed_member_deny",
+          "name": "Removed member loses restricted site access",
+          "principal": { "id": "member-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "footprints:sites:item", "id": "site-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "DENY",
+          "actions": ["view"]
+        },
+        {
+          "id": "team_site_all_allow",
+          "name": "Retailer member can view an all-access site",
+          "principal": { "id": "member-2", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "footprints:sites:item", "id": "site-2", "attr": { "retailerId": "retailer-1", "accessMode": "all", "teamIds": [] } },
+          "expectedResult": "ALLOW",
+          "actions": ["view"]
+        },
+        {
+          "id": "team_endpoint_member_allow",
+          "name": "Assigned team member can view a restricted endpoint",
+          "principal": { "id": "member-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-1"] } },
+          "resource": { "kind": "footprints:endpoints:item", "id": "endpoint-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "ALLOW",
+          "actions": ["view"]
+        },
+        {
+          "id": "team_endpoint_nonmember_deny",
+          "name": "Non-member cannot view a restricted endpoint",
+          "principal": { "id": "member-2", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-2"] } },
+          "resource": { "kind": "footprints:endpoints:item", "id": "endpoint-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "DENY",
+          "actions": ["view"]
+        },
+        {
+          "id": "team_endpoint_removed_member_deny",
+          "name": "Removed member loses restricted endpoint access",
+          "principal": { "id": "member-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "footprints:endpoints:item", "id": "endpoint-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "DENY",
+          "actions": ["view"]
+        },
+        {
+          "id": "team_endpoint_all_allow",
+          "name": "Retailer member can view an all-access endpoint",
+          "principal": { "id": "member-2", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "footprints:endpoints:item", "id": "endpoint-2", "attr": { "retailerId": "retailer-1", "accessMode": "all", "teamIds": [] } },
+          "expectedResult": "ALLOW",
+          "actions": ["view"]
+        },
+        {
+          "id": "team_playlist_collection_member_allow",
+          "name": "Assigned member can list a restricted playlist collection row",
+          "principal": { "id": "member-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-1"] } },
+          "resource": { "kind": "contents:playlists", "id": "playlist-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "ALLOW",
+          "actions": ["list"]
+        },
+        {
+          "id": "team_playlist_collection_nonmember_deny",
+          "name": "Non-member cannot list a restricted playlist collection row",
+          "principal": { "id": "member-2", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-2"] } },
+          "resource": { "kind": "contents:playlists", "id": "playlist-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "DENY",
+          "actions": ["list"]
+        },
+        {
+          "id": "team_channel_collection_member_allow",
+          "name": "Assigned member can list a restricted channel collection row",
+          "principal": { "id": "member-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-1"] } },
+          "resource": { "kind": "contents:channels", "id": "channel-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "ALLOW",
+          "actions": ["list"]
+        },
+        {
+          "id": "team_channel_collection_nonmember_deny",
+          "name": "Non-member cannot list a restricted channel collection row",
+          "principal": { "id": "member-2", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-2"] } },
+          "resource": { "kind": "contents:channels", "id": "channel-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "DENY",
+          "actions": ["list"]
+        },
+        {
+          "id": "team_zone_collection_member_allow",
+          "name": "Assigned member can list a restricted zone collection row",
+          "principal": { "id": "member-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-1"] } },
+          "resource": { "kind": "settings:signage_layout", "id": "zone-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "ALLOW",
+          "actions": ["list"]
+        },
+        {
+          "id": "team_zone_collection_nonmember_deny",
+          "name": "Non-member cannot list a restricted zone collection row",
+          "principal": { "id": "member-2", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-2"] } },
+          "resource": { "kind": "settings:signage_layout", "id": "zone-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "DENY",
+          "actions": ["list"]
+        },
+        {
+          "id": "team_site_collection_member_allow",
+          "name": "Assigned member can list a restricted site collection row",
+          "principal": { "id": "member-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-1"] } },
+          "resource": { "kind": "footprints:sites", "id": "site-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "ALLOW",
+          "actions": ["list"]
+        },
+        {
+          "id": "team_site_collection_nonmember_deny",
+          "name": "Non-member cannot list a restricted site collection row",
+          "principal": { "id": "member-2", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-2"] } },
+          "resource": { "kind": "footprints:sites", "id": "site-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "DENY",
+          "actions": ["list"]
+        },
+        {
+          "id": "team_endpoint_collection_member_allow",
+          "name": "Assigned member can list a restricted endpoint collection row",
+          "principal": { "id": "member-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-1"] } },
+          "resource": { "kind": "footprints:endpoints", "id": "endpoint-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "ALLOW",
+          "actions": ["list"]
+        },
+        {
+          "id": "team_endpoint_collection_nonmember_deny",
+          "name": "Non-member cannot list a restricted endpoint collection row",
+          "principal": { "id": "member-2", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-2"] } },
+          "resource": { "kind": "footprints:endpoints", "id": "endpoint-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "DENY",
+          "actions": ["list"]
+        },
+        {
+          "id": "team_channel_agency_bypass_allow",
+          "name": "Agency member retains access to a restricted same-tenant channel",
+          "principal": { "id": "agency-member-1", "roles": ["user"], "attr": { "userLevel": "agency", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "agencyId": "agency-1", "teamIds": [] } },
+          "resource": { "kind": "contents:channels:item", "id": "channel-1", "attr": { "retailerId": "retailer-1", "agencyId": "agency-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "ALLOW",
+          "actions": ["update"]
+        },
+        {
+          "id": "team_zone_owner_bypass_allow",
+          "name": "Retailer owner retains access to a restricted same-tenant zone",
+          "principal": { "id": "owner-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "owner", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "settings:signage_layout:item", "id": "zone-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "ALLOW",
+          "actions": ["update"]
+        },
+        {
+          "id": "team_site_admin_bypass_allow",
+          "name": "Retailer administrator retains access to a restricted same-tenant site",
+          "principal": { "id": "admin-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "admin", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "footprints:sites:item", "id": "site-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "ALLOW",
+          "actions": ["update"]
+        },
+        {
+          "id": "team_endpoint_su_bypass_allow",
+          "name": "Super-user member retains access to a restricted endpoint",
+          "principal": { "id": "su-member-1", "roles": ["user"], "attr": { "userLevel": "su", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "footprints:endpoints:item", "id": "endpoint-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "ALLOW",
+          "actions": ["update"]
+        },
+        {
+          "id": "team_legacy_missing_mode_no_teams_allow",
+          "name": "Legacy item with no access mode and no teams remains retailer-wide",
+          "principal": { "id": "member-2", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "contents:channels:item", "id": "channel-legacy", "attr": { "retailerId": "retailer-1", "teamIds": [] } },
+          "expectedResult": "ALLOW",
+          "actions": ["view"]
+        },
+        {
+          "id": "team_legacy_missing_mode_with_teams_restricted",
+          "name": "Legacy item with teams and no access mode remains restricted",
+          "principal": { "id": "member-2", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-2"] } },
+          "resource": { "kind": "contents:channels:item", "id": "channel-legacy", "attr": { "retailerId": "retailer-1", "teamIds": ["team-1"] } },
+          "expectedResult": "DENY",
+          "actions": ["view"]
+        },
+        {
+          "id": "team_restricted_without_assignments_deny",
+          "name": "Restricted item without assigned teams fails closed for ordinary users",
+          "principal": { "id": "member-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": ["team-1"] } },
+          "resource": { "kind": "contents:channels:item", "id": "channel-invalid", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": [] } },
+          "expectedResult": "DENY",
+          "actions": ["view"]
+        },
+        {
+          "id": "team_matching_membership_without_product_deny",
+          "name": "Matching team membership does not bypass product subscription",
+          "principal": { "id": "member-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": [], "retailerId": "retailer-1", "teamIds": ["team-1"] } },
+          "resource": { "kind": "contents:channels:item", "id": "channel-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "DENY",
+          "actions": ["view"]
+        },
+        {
+          "id": "team_manager_foreign_tenant_deny",
+          "name": "Manager team bypass does not cross retailer boundaries",
+          "principal": { "id": "admin-1", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "admin", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "footprints:sites:item", "id": "site-2", "attr": { "retailerId": "retailer-2", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "DENY",
+          "actions": ["view"]
+        },
+        {
+          "id": "department_team_name_cannot_grant_access",
+          "name": "Department name cannot grant restricted resource access",
+          "principal": { "id": "member-department-name", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [], "department": "Electronics" } },
+          "resource": { "kind": "contents:playlists:item", "id": "playlist-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "DENY",
+          "actions": ["view"]
+        },
+        {
+          "id": "department_team_id_cannot_grant_access",
+          "name": "Department identifier cannot grant restricted resource access",
+          "principal": { "id": "member-department-id", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "member", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [], "department": "team-1" } },
+          "resource": { "kind": "contents:playlists:item", "id": "playlist-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
+          "expectedResult": "DENY",
+          "actions": ["view"]
         }
       ]
     }

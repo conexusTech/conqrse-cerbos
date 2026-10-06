@@ -422,6 +422,18 @@ Cerbos answers these the same way it answers everything else — the calling API
 | ----------------------------- | ------------------------ |
 | `contents:tags_taxonomy`      | `protected_taxonomy_key` |
 | `contents:tags_taxonomy:item` | `protected_taxonomy_key` |
+| `contents:playlists`          | `team_resource_access`     |
+| `contents:playlists:item`     | `team_resource_access`     |
+| `contents:channels`           | `team_resource_access`     |
+| `contents:channels:item`      | `team_resource_access`     |
+| `settings:signage_layout`     | `team_resource_access`     |
+| `settings:signage_layout:item` | `team_resource_access`    |
+| `footprints:sites`            | `team_resource_access`     |
+| `footprints:sites:item`       | `team_resource_access`     |
+| `footprints:endpoints`        | `team_resource_access`     |
+| `footprints:endpoints:item`   | `team_resource_access`     |
+| `settings:admin_teams`        | `team_tenant_scope` |
+| `settings:admin_teams:item`   | `team_tenant_scope` |
 
 ### `protected_taxonomy_key`
 
@@ -435,6 +447,26 @@ Protected rows may be created, updated or deleted **only** by `root_user` and `p
 Both expressions are `has()`-guarded, so routes that send no such attribute (any read) are unaffected.
 
 **Requires** `conqrse-api3` to populate these attributes on the Cerbos check: `source` from the request body on create, and both fields from the loaded row on update and delete — never from the body, since the row already exists and the body is caller-controlled. See the Tag System Unification plan, decision D1.
+
+### `team_resource_access`
+
+Playlists, channels, signage layouts/zones, sites, and endpoints use one access
+rule. `accessMode: all` is retailer-wide. `accessMode: restricted` requires an
+ordinary user's trusted `P.attr.teamIds` to intersect the resource's stored
+`R.attr.teamIds`. Legacy rows with neither an access mode nor team assignments
+remain retailer-wide; legacy rows with team assignments remain restricted.
+Super-users, agency users, retailer owners, and retailer administrators bypass
+the team intersection but not the existing product and tenant conditions. User
+profile `department` metadata is never an authorization input.
+
+### `team_tenant_scope`
+
+Team administration is tenant-scoped: retailer administrators may manage only
+their retailer, agency administrators only retailers in their agency, and SU
+administrators may manage any tenant. API3 supplies the team's stored retailer
+and the retailer's agency; list routes supply the selected retailer. The existing
+multipart create route is additionally tenant-validated by API3 after parsing,
+because Nest guards run before the multipart interceptor populates its body.
 
 ---
 

@@ -1,4 +1,4 @@
-.PHONY: help generate-types generate-policies test test-js test-bash test-watch test-verbose test-ci results clean
+.PHONY: help gate okf-check generate-check build-types generate-types generate-policies generate-tests policy-tests test test-js test-bash test-watch test-verbose test-ci results clean
 
 # Configuration
 CERBOS_URL ?= http://localhost:3592
@@ -9,10 +9,14 @@ help:
 	@echo "Cerbos Policy Test Suite"
 	@echo ""
 	@echo "Usage:"
+	@echo "  make gate              Run the local process-v3 completion gate"
+	@echo "  make okf-check         Validate the OKF knowledge bundle"
+	@echo "  make generate-check    Parse the matrix and preview generated output"
+	@echo "  make build-types       Build the permission-types package"
 	@echo "  make generate-types    Generate TypeScript enums from matrix"
 	@echo "  make generate-policies Generate Cerbos policies from matrix"
-	@echo "  make test              Run tests (Node.js runner)"
-	@echo "  make test-js           Run tests with Node.js"
+	@echo "  make test              Run native Cerbos policy decision tests"
+	@echo "  make test-js           Compatibility alias for native policy tests"
 	@echo "  make test-bash         Run tests with Bash"
 	@echo "  make test-watch        Run tests in watch mode"
 	@echo "  make test-verbose      Run tests with verbose output"
@@ -29,6 +33,21 @@ help:
 	@echo "  CERBOS_URL=http://cerbos.example.com:3592 make test"
 	@echo "  make test-watch"
 
+# Process-v3 local gate. Live Cerbos and cluster checks remain explicit because
+# they require external services and deployment authorization.
+gate: okf-check generate-check build-types policy-tests
+
+okf-check:
+	@node scripts/okf-check.mjs
+
+generate-check:
+	@python3 scripts/generate_policies.py --dry-run
+	@python3 scripts/generate_types.py --dry-run
+	@python3 scripts/generate_policy_tests.py --check
+
+build-types:
+	@npm --prefix packages/permission-types run build
+
 # Generate TypeScript enums and types from resource matrix
 generate-types:
 	@echo "Generating TypeScript enums and types..."
@@ -39,13 +58,17 @@ generate-policies:
 	@echo "Generating Cerbos policy files..."
 	@python3 scripts/generate_policies.py
 
-# Run tests with Node.js (default)
-test: test-js
+# Generate native Cerbos compile tests from the maintained JSON cases.
+generate-tests:
+	@python3 scripts/generate_policy_tests.py
 
-# Run tests with Node.js
-test-js:
-	@echo "Running Cerbos policy tests (Node.js)..."
-	@CERBOS_URL=$(CERBOS_URL) OUTPUT_DIR=$(OUTPUT_DIR) node tests/run-tests.js
+# Evaluate checked-in policies and all native test cases in an ephemeral PDP image.
+policy-tests:
+	@docker run --rm -v "$(CURDIR)/k8s/base/policies:/policies:ro" ghcr.io/cerbos/cerbos:0.51.0 compile /policies
+
+test: policy-tests
+
+test-js: policy-tests
 
 # Run tests with Bash
 test-bash:

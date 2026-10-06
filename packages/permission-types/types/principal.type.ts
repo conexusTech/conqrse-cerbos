@@ -8,4 +8,5 @@ export type Principal = {
   userType: UserType;
   retailerId?: string;
   products?: Product[];
+  teamIds?: string[];
 };
