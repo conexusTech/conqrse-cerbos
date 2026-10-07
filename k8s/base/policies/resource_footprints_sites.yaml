@@ -13,7 +13,7 @@ resourcePolicy:
         match:
           all:
             of:
-              - expr: '["compliance", "priceTags", "product", "qr", "signage"].exists(p, p in P.attr.products)'
+              - expr: '["brand_center", "compliance", "priceTags", "product", "qr", "signage", "ssp", "trade"].exists(p, p in P.attr.products)'
               - expr: '(!has(R.attr.retailerId) && !has(R.attr.agencyId)) || P.attr.userLevel == "su" || (P.attr.userLevel == "agency" && ((has(R.attr.agencyId) && P.attr.agencyId == R.attr.agencyId) || (has(R.attr.retailerId) && has(P.attr.retailerId) && P.attr.retailerId == R.attr.retailerId))) || (P.attr.userLevel == "retailer" && has(R.attr.retailerId) && P.attr.retailerId == R.attr.retailerId)'
               - expr: 'P.attr.userLevel == "su" || P.attr.userLevel == "agency" || P.attr.userType == "owner" || P.attr.userType == "admin" || (has(R.attr.accessMode) && R.attr.accessMode == "all") || (!has(R.attr.accessMode) && (!has(R.attr.teamIds) || size(R.attr.teamIds) == 0)) || ((!has(R.attr.accessMode) || R.attr.accessMode == "restricted") && has(R.attr.teamIds) && has(P.attr.teamIds) && R.attr.teamIds.exists(teamId, teamId in P.attr.teamIds))'
       derivedRoles:
@@ -37,7 +37,7 @@ resourcePolicy:
         match:
           all:
             of:
-              - expr: '["compliance", "priceTags", "product", "qr", "signage"].exists(p, p in P.attr.products)'
+              - expr: '["brand_center", "compliance", "priceTags", "product", "qr", "signage", "ssp", "trade"].exists(p, p in P.attr.products)'
               - expr: '(!has(R.attr.retailerId) && !has(R.attr.agencyId)) || P.attr.userLevel == "su" || (P.attr.userLevel == "agency" && ((has(R.attr.agencyId) && P.attr.agencyId == R.attr.agencyId) || (has(R.attr.retailerId) && has(P.attr.retailerId) && P.attr.retailerId == R.attr.retailerId))) || (P.attr.userLevel == "retailer" && has(R.attr.retailerId) && P.attr.retailerId == R.attr.retailerId)'
               - expr: 'P.attr.userLevel == "su" || P.attr.userLevel == "agency" || P.attr.userType == "owner" || P.attr.userType == "admin" || (has(R.attr.accessMode) && R.attr.accessMode == "all") || (!has(R.attr.accessMode) && (!has(R.attr.teamIds) || size(R.attr.teamIds) == 0)) || ((!has(R.attr.accessMode) || R.attr.accessMode == "restricted") && has(R.attr.teamIds) && has(P.attr.teamIds) && R.attr.teamIds.exists(teamId, teamId in P.attr.teamIds))'
       derivedRoles:

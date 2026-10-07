@@ -2553,6 +2553,70 @@
           "resource": { "kind": "contents:playlists:item", "id": "playlist-1", "attr": { "retailerId": "retailer-1", "accessMode": "restricted", "teamIds": ["team-1"] } },
           "expectedResult": "DENY",
           "actions": ["view"]
+        },
+        {
+          "id": "cpf2_ssp_admin_lists_sites",
+          "name": "Deal Desk (ssp) retailer admin can list and view sites",
+          "principal": { "id": "dd-cpf2_ssp_admin_lists_sites", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "admin", "products": ["ssp"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "footprints:sites", "id": "sites", "attr": { "retailerId": "retailer-1" } },
+          "expectedResult": "ALLOW",
+          "actions": ["list","view"]
+        },
+        {
+          "id": "cpf2_trade_admin_lists_sites",
+          "name": "Deal Desk (trade) retailer admin can list and view sites",
+          "principal": { "id": "dd-cpf2_trade_admin_lists_sites", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "admin", "products": ["trade"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "footprints:sites", "id": "sites", "attr": { "retailerId": "retailer-1" } },
+          "expectedResult": "ALLOW",
+          "actions": ["list","view"]
+        },
+        {
+          "id": "cpf2_brand_center_admin_lists_sites",
+          "name": "Deal Desk (brand_center) retailer admin can list and view sites",
+          "principal": { "id": "dd-cpf2_brand_center_admin_lists_sites", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "admin", "products": ["brand_center"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "footprints:sites", "id": "sites", "attr": { "retailerId": "retailer-1" } },
+          "expectedResult": "ALLOW",
+          "actions": ["list","view"]
+        },
+        {
+          "id": "cpf2_ssp_admin_views_site_item",
+          "name": "Deal Desk (ssp) retailer admin can view a site",
+          "principal": { "id": "dd-cpf2_ssp_admin_views_site_item", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "admin", "products": ["ssp"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "footprints:sites:item", "id": "site-1", "attr": { "retailerId": "retailer-1" } },
+          "expectedResult": "ALLOW",
+          "actions": ["view"]
+        },
+        {
+          "id": "cpf2_ssp_admin_views_multi_store_map",
+          "name": "Deal Desk (ssp) retailer admin can view the multi-store map",
+          "principal": { "id": "dd-cpf2_ssp_admin_views_multi_store_map", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "admin", "products": ["ssp"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "dealdesk:sites", "id": "sites", "attr": { "retailerId": "retailer-1" } },
+          "expectedResult": "ALLOW",
+          "actions": ["view"]
+        },
+        {
+          "id": "cpf2_unentitled_admin_denied_sites",
+          "name": "A retailer admin holding no sites or Deal Desk product is still denied sites",
+          "principal": { "id": "dd-cpf2_unentitled_admin_denied_sites", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "admin", "products": ["landing"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "footprints:sites", "id": "sites", "attr": { "retailerId": "retailer-1" } },
+          "expectedResult": "DENY",
+          "actions": ["list","view"]
+        },
+        {
+          "id": "cpf2_ssp_admin_denied_proof_of_play",
+          "name": "Deal Desk only (ssp) is not entitled to the signage Content Proof of Play report",
+          "principal": { "id": "dd-cpf2_ssp_admin_denied_proof_of_play", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "admin", "products": ["ssp"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "reports:content_proof_of_play", "id": "reports", "attr": { "retailerId": "retailer-1" } },
+          "expectedResult": "DENY",
+          "actions": ["view"]
+        },
+        {
+          "id": "cpf2_signage_admin_denied_dealdesk_reports",
+          "name": "Signage only is not entitled to Deal Desk reports",
+          "principal": { "id": "dd-cpf2_signage_admin_denied_dealdesk_reports", "roles": ["user"], "attr": { "userLevel": "retailer", "userType": "admin", "products": ["signage"], "retailerId": "retailer-1", "teamIds": [] } },
+          "resource": { "kind": "dealdesk:reports", "id": "reports", "attr": { "retailerId": "retailer-1" } },
+          "expectedResult": "DENY",
+          "actions": ["view"]
         }
       ]
     }
