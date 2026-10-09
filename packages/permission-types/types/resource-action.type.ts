@@ -82,6 +82,7 @@ export const RESOURCE_META: Record<Resource, ResourceMeta> = {
   [Resource.DEALDESK_STORE_TRAFFIC]: { type: 'collection', actions: [Action.LIST, Action.VIEW, Action.CREATE, Action.UPDATE, Action.DELETE, Action.EXPORT, Action.IMPORT], products: [Product.SSP, Product.TRADE] },
   [Resource.DEALDESK_TRADE_LEDGERS]: { type: 'collection', actions: [Action.LIST, Action.VIEW, Action.CREATE, Action.UPDATE, Action.DELETE, Action.EXPORT, Action.IMPORT], products: [Product.TRADE] },
   [Resource.DEALDESK_TRADE_LEDGERS_ITEM]: { type: 'item', actions: [Action.VIEW, Action.UPDATE, Action.DELETE], products: [Product.TRADE] },
+  [Resource.DEALDESK_BRAND_CREATIVES]: { type: 'collection', actions: [Action.CREATE], products: [Product.BRAND_CENTER] },
   [Resource.DEALDESK_BRAND_MEDIA_PACKAGES]: { type: 'collection', actions: [Action.LIST, Action.VIEW], products: [Product.BRAND_CENTER] },
   [Resource.FOOTPRINTS_ENDPOINTS]: { type: 'collection', actions: [Action.LIST, Action.VIEW, Action.CREATE, Action.UPDATE, Action.DELETE, Action.EXPORT, Action.IMPORT], products: [Product.PRICE_TAGS, Product.SIGNAGE] },
   [Resource.FOOTPRINTS_ENDPOINTS_ITEM]: { type: 'item', actions: [Action.VIEW, Action.UPDATE, Action.DELETE], products: [Product.PRICE_TAGS, Product.SIGNAGE] },

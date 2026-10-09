@@ -2619,6 +2619,66 @@
           "actions": ["view"]
         }
       ]
+    },
+    {
+      "name": "DealDesk Brand Creatives (Cue Media Optimizer CMO-0.3)",
+      "description": "The Brand Hub video draft route: a brand drafts only into a retailer it belongs to, with Brand Center; an operator acting as the brand needs Brand Center.",
+      "tests": [
+        {
+          "id": "dd_brand_creatives_allow_1",
+          "name": "Brand member drafts into its own retailer",
+          "description": "brand_center, and the retailer is one of the brand's",
+          "principal": {"id": "dd-brand-member", "roles": ["user"], "attr": {"userLevel": "brand", "userType": "member", "name": "dd-brand-member", "products": ["brand_center"], "retailerIds": ["retail-DD"], "brandId": "brand-DD"}},
+          "resource": {"kind": "dealdesk_brand:creatives", "id": "dealdesk_brand:creatives", "attr": {"retailerId": "retail-DD"}},
+          "expectedResult": "ALLOW",
+          "actions": ["create"]
+        },
+        {
+          "id": "dd_brand_creatives_allow_2",
+          "name": "Retailer owner drafts as the brand",
+          "description": "View-as-Brand operator path with brand_center",
+          "principal": {"id": "dd-ret-owner", "roles": ["user"], "attr": {"userLevel": "retailer", "userType": "owner", "name": "dd-ret-owner", "products": ["brand_center"], "agencyId": "agency-DD", "retailerId": "retail-DD"}},
+          "resource": {"kind": "dealdesk_brand:creatives", "id": "dealdesk_brand:creatives", "attr": {"retailerId": "retail-DD"}},
+          "expectedResult": "ALLOW",
+          "actions": ["create"]
+        },
+        {
+          "id": "dd_brand_creatives_deny_1",
+          "name": "Brand member cannot draft into another retailer",
+          "description": "Tenant isolation: the resource's retailer is not one of the brand's",
+          "principal": {"id": "dd-brand-member", "roles": ["user"], "attr": {"userLevel": "brand", "userType": "member", "name": "dd-brand-member", "products": ["brand_center"], "retailerIds": ["retail-DD"], "brandId": "brand-DD"}},
+          "resource": {"kind": "dealdesk_brand:creatives", "id": "dealdesk_brand:creatives", "attr": {"retailerId": "retail-OTHER"}},
+          "expectedResult": "DENY",
+          "actions": ["create"]
+        },
+        {
+          "id": "dd_brand_creatives_deny_2",
+          "name": "Brand member without Brand Center",
+          "description": "Product gate on the brand path",
+          "principal": {"id": "dd-brand-member", "roles": ["user"], "attr": {"userLevel": "brand", "userType": "member", "name": "dd-brand-member", "products": [], "retailerIds": ["retail-DD"], "brandId": "brand-DD"}},
+          "resource": {"kind": "dealdesk_brand:creatives", "id": "dealdesk_brand:creatives", "attr": {"retailerId": "retail-DD"}},
+          "expectedResult": "DENY",
+          "actions": ["create"]
+        },
+        {
+          "id": "dd_brand_creatives_deny_3",
+          "name": "Retailer owner without Brand Center",
+          "description": "Product gate on the operator path",
+          "principal": {"id": "dd-ret-owner", "roles": ["user"], "attr": {"userLevel": "retailer", "userType": "owner", "name": "dd-ret-owner", "products": ["signage"], "agencyId": "agency-DD", "retailerId": "retail-DD"}},
+          "resource": {"kind": "dealdesk_brand:creatives", "id": "dealdesk_brand:creatives", "attr": {"retailerId": "retail-DD"}},
+          "expectedResult": "DENY",
+          "actions": ["create"]
+        },
+        {
+          "id": "dd_brand_creatives_deny_4",
+          "name": "Only create is granted",
+          "description": "No other action exists on the resource",
+          "principal": {"id": "dd-brand-member", "roles": ["user"], "attr": {"userLevel": "brand", "userType": "member", "name": "dd-brand-member", "products": ["brand_center"], "retailerIds": ["retail-DD"], "brandId": "brand-DD"}},
+          "resource": {"kind": "dealdesk_brand:creatives", "id": "dealdesk_brand:creatives", "attr": {"retailerId": "retail-DD"}},
+          "expectedResult": "DENY",
+          "actions": ["delete"]
+        }
+      ]
     }
   ]
 }

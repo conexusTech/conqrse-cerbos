@@ -819,6 +819,36 @@ resources:
     id: reports
     attr:
       retailerId: retailer-1
+  dd_brand_creatives_allow_1_resource:
+    kind: dealdesk_brand:creatives
+    id: dealdesk_brand:creatives
+    attr:
+      retailerId: retail-DD
+  dd_brand_creatives_allow_2_resource:
+    kind: dealdesk_brand:creatives
+    id: dealdesk_brand:creatives
+    attr:
+      retailerId: retail-DD
+  dd_brand_creatives_deny_1_resource:
+    kind: dealdesk_brand:creatives
+    id: dealdesk_brand:creatives
+    attr:
+      retailerId: retail-OTHER
+  dd_brand_creatives_deny_2_resource:
+    kind: dealdesk_brand:creatives
+    id: dealdesk_brand:creatives
+    attr:
+      retailerId: retail-DD
+  dd_brand_creatives_deny_3_resource:
+    kind: dealdesk_brand:creatives
+    id: dealdesk_brand:creatives
+    attr:
+      retailerId: retail-DD
+  dd_brand_creatives_deny_4_resource:
+    kind: dealdesk_brand:creatives
+    id: dealdesk_brand:creatives
+    attr:
+      retailerId: retail-DD
 principals:
   allow_1_principal:
     id: user-123
@@ -2243,6 +2273,81 @@ principals:
       - signage
       retailerId: retailer-1
       teamIds: []
+  dd_brand_creatives_allow_1_principal:
+    id: dd-brand-member
+    roles:
+    - user
+    attr:
+      userLevel: brand
+      userType: member
+      name: dd-brand-member
+      products:
+      - brand_center
+      retailerIds:
+      - retail-DD
+      brandId: brand-DD
+  dd_brand_creatives_allow_2_principal:
+    id: dd-ret-owner
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: dd-ret-owner
+      products:
+      - brand_center
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_brand_creatives_deny_1_principal:
+    id: dd-brand-member
+    roles:
+    - user
+    attr:
+      userLevel: brand
+      userType: member
+      name: dd-brand-member
+      products:
+      - brand_center
+      retailerIds:
+      - retail-DD
+      brandId: brand-DD
+  dd_brand_creatives_deny_2_principal:
+    id: dd-brand-member
+    roles:
+    - user
+    attr:
+      userLevel: brand
+      userType: member
+      name: dd-brand-member
+      products: []
+      retailerIds:
+      - retail-DD
+      brandId: brand-DD
+  dd_brand_creatives_deny_3_principal:
+    id: dd-ret-owner
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: dd-ret-owner
+      products:
+      - signage
+      agencyId: agency-DD
+      retailerId: retail-DD
+  dd_brand_creatives_deny_4_principal:
+    id: dd-brand-member
+    roles:
+    - user
+    attr:
+      userLevel: brand
+      userType: member
+      name: dd-brand-member
+      products:
+      - brand_center
+      retailerIds:
+      - retail-DD
+      brandId: brand-DD
 tests:
 - name: allow_1 - Retailer Member Listing QR Campaigns
   input:
@@ -3825,3 +3930,81 @@ tests:
     resource: cpf2_signage_admin_denied_dealdesk_reports_resource
     actions:
       view: EFFECT_DENY
+- name: dd_brand_creatives_allow_1 - Brand member drafts into its own retailer
+  input:
+    principals:
+    - dd_brand_creatives_allow_1_principal
+    resources:
+    - dd_brand_creatives_allow_1_resource
+    actions:
+    - create
+  expected:
+  - principal: dd_brand_creatives_allow_1_principal
+    resource: dd_brand_creatives_allow_1_resource
+    actions:
+      create: EFFECT_ALLOW
+- name: dd_brand_creatives_allow_2 - Retailer owner drafts as the brand
+  input:
+    principals:
+    - dd_brand_creatives_allow_2_principal
+    resources:
+    - dd_brand_creatives_allow_2_resource
+    actions:
+    - create
+  expected:
+  - principal: dd_brand_creatives_allow_2_principal
+    resource: dd_brand_creatives_allow_2_resource
+    actions:
+      create: EFFECT_ALLOW
+- name: dd_brand_creatives_deny_1 - Brand member cannot draft into another retailer
+  input:
+    principals:
+    - dd_brand_creatives_deny_1_principal
+    resources:
+    - dd_brand_creatives_deny_1_resource
+    actions:
+    - create
+  expected:
+  - principal: dd_brand_creatives_deny_1_principal
+    resource: dd_brand_creatives_deny_1_resource
+    actions:
+      create: EFFECT_DENY
+- name: dd_brand_creatives_deny_2 - Brand member without Brand Center
+  input:
+    principals:
+    - dd_brand_creatives_deny_2_principal
+    resources:
+    - dd_brand_creatives_deny_2_resource
+    actions:
+    - create
+  expected:
+  - principal: dd_brand_creatives_deny_2_principal
+    resource: dd_brand_creatives_deny_2_resource
+    actions:
+      create: EFFECT_DENY
+- name: dd_brand_creatives_deny_3 - Retailer owner without Brand Center
+  input:
+    principals:
+    - dd_brand_creatives_deny_3_principal
+    resources:
+    - dd_brand_creatives_deny_3_resource
+    actions:
+    - create
+  expected:
+  - principal: dd_brand_creatives_deny_3_principal
+    resource: dd_brand_creatives_deny_3_resource
+    actions:
+      create: EFFECT_DENY
+- name: dd_brand_creatives_deny_4 - Only create is granted
+  input:
+    principals:
+    - dd_brand_creatives_deny_4_principal
+    resources:
+    - dd_brand_creatives_deny_4_resource
+    actions:
+    - delete
+  expected:
+  - principal: dd_brand_creatives_deny_4_principal
+    resource: dd_brand_creatives_deny_4_resource
+    actions:
+      delete: EFFECT_DENY

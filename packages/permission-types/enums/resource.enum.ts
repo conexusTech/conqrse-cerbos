@@ -70,6 +70,7 @@ export enum Resource {
   DEALDESK_STORE_TRAFFIC = 'dealdesk:store-traffic',
   DEALDESK_TRADE_LEDGERS = 'dealdesk:trade-ledgers',
   DEALDESK_TRADE_LEDGERS_ITEM = 'dealdesk:trade-ledgers:item',
+  DEALDESK_BRAND_CREATIVES = 'dealdesk_brand:creatives',
   DEALDESK_BRAND_MEDIA_PACKAGES = 'dealdesk_brand:media-packages',
   FOOTPRINTS_ENDPOINTS = 'footprints:endpoints',
   FOOTPRINTS_ENDPOINTS_ITEM = 'footprints:endpoints:item',

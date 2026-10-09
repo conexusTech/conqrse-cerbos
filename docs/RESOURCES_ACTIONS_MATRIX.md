@@ -160,6 +160,7 @@ Deal Desk is a resource grouping — NOT a product. Access is gated per-surface 
 | `dealdesk:store-traffic`              | Collection | list, view, create, update, delete, export, import |
 | `dealdesk:trade-ledgers`              | Collection | list, view, create, update, delete, export, import |
 | `dealdesk:trade-ledgers:item`         | Item       | view, update, delete                               |
+| `dealdesk_brand:creatives`            | Collection | create                                             |
 | `dealdesk_brand:media-packages`       | Collection | list, view                                         |
 
 ### QR Resource
@@ -329,6 +330,7 @@ Deal Desk is a resource grouping — NOT a product. Access is gated per-surface 
 | dealdesk:store-traffic                          | resource_dealdesk_store-traffic.yaml                         |          |          |           |            |          |          |          |          |          |          | required     | required     |              |
 | dealdesk:trade-ledgers                          | resource_dealdesk_trade-ledgers.yaml                         |          |          |           |            |          |          |          |          |          |          |              | required     |              |
 | dealdesk:trade-ledgers:item                     | resource_dealdesk_trade-ledgers_item.yaml                    |          |          |           |            |          |          |          |          |          |          |              | required     |              |
+| dealdesk_brand:creatives                        | resource_dealdesk_brand_creatives.yaml                       |          |          |           |            |          |          |          |          |          |          |              |              | required     |
 | dealdesk_brand:media-packages                   | resource_dealdesk_brand_media-packages.yaml                  |          |          |           |            |          |          |          |          |          |          |              |              | required     |
 | footprints:endpoints                            | resource_footprints_endpoints.yaml                           |          |          | required  |            |          | required |          |          |          |          |              |              |              |
 | footprints:endpoints:item                       | resource_footprints_endpoints_item.yaml                      |          |          | required  |            |          | required |          |          |          |          |              |              |              |
@@ -519,7 +521,7 @@ Example #2: `connect:contacts:item`
 
    **Retailer path** — for principals with `userLevel` ∈ {su, agency, retailer}:
    - Product check: **per-surface** — each resource gates on the product(s) its surface belongs to, not on all three together. The gate is one of:
-     - single product: `"ssp" in P.attr.products` (SSP: `ssp`, `dsp-blocks`), `"trade" in P.attr.products` (Trade: `trade-ledgers`, `media-packages`, `line-items`, `photo-verifications`), `"brand_center" in P.attr.products` (Brand Center: `brands`, `brand-users`, `dealdesk_brand:media-packages`).
+     - single product: `"ssp" in P.attr.products` (SSP: `ssp`, `dsp-blocks`), `"trade" in P.attr.products` (Trade: `trade-ledgers`, `media-packages`, `line-items`, `photo-verifications`), `"brand_center" in P.attr.products` (Brand Center: `brands`, `brand-users`, `dealdesk_brand:creatives`, `dealdesk_brand:media-packages`).
      - any-of-three (shared shell): `["ssp","trade","brand_center"].exists(p, p in P.attr.products)` (`campaigns`, `inventory`, `reports`, `placement-rules`, `placement-types`, `rate-cards`).
      - ssp-or-trade: `["ssp","trade"].exists(p, p in P.attr.products)` (`store-traffic`).
      - base — no product check at all (all retailers): `sites`, `blueprints` (Footprint store-map / blueprint).

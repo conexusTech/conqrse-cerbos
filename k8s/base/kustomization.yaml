@@ -47,6 +47,7 @@ configMapGenerator:
       - policies/resource_dealdesk_blueprints.yaml
       - policies/resource_dealdesk_brand-users_item.yaml
       - policies/resource_dealdesk_brand-users.yaml
+      - policies/resource_dealdesk_brand_creatives.yaml
       - policies/resource_dealdesk_brand_media-packages.yaml
       - policies/resource_dealdesk_brands_item.yaml
       - policies/resource_dealdesk_brands.yaml
