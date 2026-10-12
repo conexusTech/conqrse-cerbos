@@ -14,6 +14,7 @@ resourcePolicy:
           all:
             of:
               - expr: '["compliance", "priceTags", "product"].exists(p, p in P.attr.products)'
+              - expr: '(!has(R.attr.retailerId) && !has(R.attr.agencyId)) || P.attr.userLevel == "su" || (P.attr.userLevel == "agency" && ((has(R.attr.agencyId) && P.attr.agencyId == R.attr.agencyId) || (has(R.attr.retailerId) && has(P.attr.retailerId) && P.attr.retailerId == R.attr.retailerId))) || (P.attr.userLevel == "retailer" && has(R.attr.retailerId) && P.attr.retailerId == R.attr.retailerId)'
       derivedRoles:
         - root_user
         - platform_administrator

@@ -802,26 +802,29 @@ class PolicyRenderer:
         guard = ATTR_GUARDS.get(resource.attr_guard) if resource.attr_guard else None
         access_expr = guard.get("access_expr") if guard else None
 
+        # Tenant scope shared by team-scoped and plain item settings.
+        scoped_tenant_expr = (
+            'P.attr.userLevel == "su" || '
+            '(P.attr.userLevel == "agency" && ('
+            '(has(R.attr.agencyId) && P.attr.agencyId == R.attr.agencyId) || '
+            '(has(R.attr.retailerId) && has(P.attr.retailerId) && '
+            'P.attr.retailerId == R.attr.retailerId))) || '
+            '(P.attr.userLevel == "retailer" && has(R.attr.retailerId) && '
+            'P.attr.retailerId == R.attr.retailerId)'
+        )
+
+        tenant_scope_expr = (
+            scoped_tenant_expr
+            if is_item
+            else '(!has(R.attr.retailerId) && !has(R.attr.agencyId)) || '
+            + scoped_tenant_expr
+        )
+
         # Signage layouts are also the policy taxonomy for zones. Once a layout
         # or zone carries team access attributes, use the same operator/read-only
         # collaborator split as the other team-scoped signage resources. Other
         # product settings retain their established manager-only role tier.
         if access_expr:
-            scoped_tenant_expr = (
-                'P.attr.userLevel == "su" || '
-                '(P.attr.userLevel == "agency" && ('
-                '(has(R.attr.agencyId) && P.attr.agencyId == R.attr.agencyId) || '
-                '(has(R.attr.retailerId) && has(P.attr.retailerId) && '
-                'P.attr.retailerId == R.attr.retailerId))) || '
-                '(P.attr.userLevel == "retailer" && has(R.attr.retailerId) && '
-                'P.attr.retailerId == R.attr.retailerId)'
-            )
-            tenant_scope_expr = (
-                scoped_tenant_expr
-                if is_item
-                else '(!has(R.attr.retailerId) && !has(R.attr.agencyId)) || '
-                + scoped_tenant_expr
-            )
             collaborator_actions = [
                 action for action in actions if action in ["list", "view", "export"]
             ]
@@ -868,8 +871,7 @@ class PolicyRenderer:
         yaml += "          all:\n"
         yaml += "            of:\n"
         yaml += f"              - expr: '{product_condition}'\n"
-        if is_item:
-            yaml += "              - expr: 'P.attr.retailerId == R.attr.retailerId'\n"
+        yaml += f"              - expr: '{tenant_scope_expr}'\n"
         yaml += "      derivedRoles:\n"
         for role in PolicyRenderer._PRODUCT_SETTINGS_ROLES:
             yaml += f"        - {role}\n"
