@@ -843,6 +843,51 @@ resources:
     attr:
       retailerId: retailer-2
       agencyId: agency-1
+  sip_coll_retailer_create_own_resource:
+    kind: settings:signage_people_property
+    id: people-property
+    attr:
+      retailerId: retailer-1
+      agencyId: agency-1
+  sip_coll_retailer_create_other_resource:
+    kind: settings:signage_people_property
+    id: people-property
+    attr:
+      retailerId: retailer-2
+      agencyId: agency-1
+  sip_coll_su_create_resource:
+    kind: settings:signage_people_property
+    id: people-property
+    attr:
+      retailerId: retailer-1
+      agencyId: agency-1
+  sip_coll_agency_create_same_resource:
+    kind: settings:signage_people_property
+    id: people-property
+    attr:
+      retailerId: retailer-1
+      agencyId: agency-1
+  sip_coll_agency_create_other_resource:
+    kind: settings:signage_people_property
+    id: people-property
+    attr:
+      retailerId: retailer-9
+      agencyId: agency-2
+  sip_coll_retailer_create_unscoped_resource:
+    kind: settings:signage_people_property
+    id: people-property
+    attr: {}
+  sip_item_agency_denied_other_agency_resource:
+    kind: settings:signage_people_property:item
+    id: people-property
+    attr:
+      retailerId: retailer-9
+      agencyId: agency-2
+  sip_item_agency_no_agencyid_denied_resource:
+    kind: settings:signage_people_property:item
+    id: people-property
+    attr:
+      retailerId: retailer-1
 principals:
   allow_1_principal:
     id: user-123
@@ -2309,6 +2354,87 @@ principals:
       - ppt
       agencyId: agency-1
       retailerId: retailer-1
+  sip_coll_retailer_create_own_principal:
+    id: u-sip_coll_retailer_create_own
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      products:
+      - ppt
+      agencyId: agency-1
+      retailerId: retailer-1
+  sip_coll_retailer_create_other_principal:
+    id: u-sip_coll_retailer_create_other
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      products:
+      - ppt
+      agencyId: agency-1
+      retailerId: retailer-1
+  sip_coll_su_create_principal:
+    id: u-sip_coll_su_create
+    roles:
+    - user
+    attr:
+      userLevel: su
+      userType: owner
+      products:
+      - ppt
+  sip_coll_agency_create_same_principal:
+    id: u-sip_coll_agency_create_same
+    roles:
+    - user
+    attr:
+      userLevel: agency
+      userType: owner
+      products:
+      - ppt
+      agencyId: agency-1
+  sip_coll_agency_create_other_principal:
+    id: u-sip_coll_agency_create_other
+    roles:
+    - user
+    attr:
+      userLevel: agency
+      userType: owner
+      products:
+      - ppt
+      agencyId: agency-1
+  sip_coll_retailer_create_unscoped_principal:
+    id: u-sip_coll_retailer_create_unscoped
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      products:
+      - ppt
+      agencyId: agency-1
+      retailerId: retailer-1
+  sip_item_agency_denied_other_agency_principal:
+    id: u-sip_item_agency_denied_other_agency
+    roles:
+    - user
+    attr:
+      userLevel: agency
+      userType: owner
+      products:
+      - ppt
+      agencyId: agency-1
+  sip_item_agency_no_agencyid_denied_principal:
+    id: u-sip_item_agency_no_agencyid_denied
+    roles:
+    - user
+    attr:
+      userLevel: agency
+      userType: owner
+      products:
+      - ppt
 tests:
 - name: allow_1 - Retailer Member Listing QR Campaigns
   input:
@@ -3941,5 +4067,109 @@ tests:
   expected:
   - principal: sip_item_retailer_denied_other_principal
     resource: sip_item_retailer_denied_other_resource
+    actions:
+      update: EFFECT_DENY
+- name: sip_coll_retailer_create_own - Retailer owner may create a people property in their retailer
+  input:
+    principals:
+    - sip_coll_retailer_create_own_principal
+    resources:
+    - sip_coll_retailer_create_own_resource
+    actions:
+    - create
+  expected:
+  - principal: sip_coll_retailer_create_own_principal
+    resource: sip_coll_retailer_create_own_resource
+    actions:
+      create: EFFECT_ALLOW
+- name: sip_coll_retailer_create_other - Retailer owner is denied creating a people property in another retailer
+  input:
+    principals:
+    - sip_coll_retailer_create_other_principal
+    resources:
+    - sip_coll_retailer_create_other_resource
+    actions:
+    - create
+  expected:
+  - principal: sip_coll_retailer_create_other_principal
+    resource: sip_coll_retailer_create_other_resource
+    actions:
+      create: EFFECT_DENY
+- name: sip_coll_su_create - SU owner may create a people property in any retailer
+  input:
+    principals:
+    - sip_coll_su_create_principal
+    resources:
+    - sip_coll_su_create_resource
+    actions:
+    - create
+  expected:
+  - principal: sip_coll_su_create_principal
+    resource: sip_coll_su_create_resource
+    actions:
+      create: EFFECT_ALLOW
+- name: sip_coll_agency_create_same - Agency owner may create a people property in their agency
+  input:
+    principals:
+    - sip_coll_agency_create_same_principal
+    resources:
+    - sip_coll_agency_create_same_resource
+    actions:
+    - create
+  expected:
+  - principal: sip_coll_agency_create_same_principal
+    resource: sip_coll_agency_create_same_resource
+    actions:
+      create: EFFECT_ALLOW
+- name: sip_coll_agency_create_other - Agency owner is denied creating a people property in another agency
+  input:
+    principals:
+    - sip_coll_agency_create_other_principal
+    resources:
+    - sip_coll_agency_create_other_resource
+    actions:
+    - create
+  expected:
+  - principal: sip_coll_agency_create_other_principal
+    resource: sip_coll_agency_create_other_resource
+    actions:
+      create: EFFECT_DENY
+- name: sip_coll_retailer_create_unscoped - Retailer owner may use a collection resource carrying no tenant attributes
+  input:
+    principals:
+    - sip_coll_retailer_create_unscoped_principal
+    resources:
+    - sip_coll_retailer_create_unscoped_resource
+    actions:
+    - create
+  expected:
+  - principal: sip_coll_retailer_create_unscoped_principal
+    resource: sip_coll_retailer_create_unscoped_resource
+    actions:
+      create: EFFECT_ALLOW
+- name: sip_item_agency_denied_other_agency - Agency owner is denied a people property item in another agency
+  input:
+    principals:
+    - sip_item_agency_denied_other_agency_principal
+    resources:
+    - sip_item_agency_denied_other_agency_resource
+    actions:
+    - update
+  expected:
+  - principal: sip_item_agency_denied_other_agency_principal
+    resource: sip_item_agency_denied_other_agency_resource
+    actions:
+      update: EFFECT_DENY
+- name: sip_item_agency_no_agencyid_denied - Agency principal with no agencyId is denied an item with no agencyId
+  input:
+    principals:
+    - sip_item_agency_no_agencyid_denied_principal
+    resources:
+    - sip_item_agency_no_agencyid_denied_resource
+    actions:
+    - update
+  expected:
+  - principal: sip_item_agency_no_agencyid_denied_principal
+    resource: sip_item_agency_no_agencyid_denied_resource
     actions:
       update: EFFECT_DENY

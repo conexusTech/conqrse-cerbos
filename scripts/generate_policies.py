@@ -813,17 +813,18 @@ class PolicyRenderer:
             'P.attr.retailerId == R.attr.retailerId)'
         )
 
+        tenant_scope_expr = (
+            scoped_tenant_expr
+            if is_item
+            else '(!has(R.attr.retailerId) && !has(R.attr.agencyId)) || '
+            + scoped_tenant_expr
+        )
+
         # Signage layouts are also the policy taxonomy for zones. Once a layout
         # or zone carries team access attributes, use the same operator/read-only
         # collaborator split as the other team-scoped signage resources. Other
         # product settings retain their established manager-only role tier.
         if access_expr:
-            tenant_scope_expr = (
-                scoped_tenant_expr
-                if is_item
-                else '(!has(R.attr.retailerId) && !has(R.attr.agencyId)) || '
-                + scoped_tenant_expr
-            )
             collaborator_actions = [
                 action for action in actions if action in ["list", "view", "export"]
             ]
@@ -870,8 +871,7 @@ class PolicyRenderer:
         yaml += "          all:\n"
         yaml += "            of:\n"
         yaml += f"              - expr: '{product_condition}'\n"
-        if is_item:
-            yaml += f"              - expr: '{scoped_tenant_expr}'\n"
+        yaml += f"              - expr: '{tenant_scope_expr}'\n"
         yaml += "      derivedRoles:\n"
         for role in PolicyRenderer._PRODUCT_SETTINGS_ROLES:
             yaml += f"        - {role}\n"
