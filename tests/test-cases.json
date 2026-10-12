@@ -2619,6 +2619,16 @@
           "actions": ["view"]
         }
       ]
+    },
+    {
+      "name": "Settings Item Tenancy",
+      "description": "settings:*:item policies admit su and same-agency users, and isolate retailers",
+      "tests": [
+        {"id": "sip_item_su_allowed", "name": "SU owner without retailerId may update a people property item", "principal": {"id": "u-sip_item_su_allowed", "roles": ["user"], "attr": {"userLevel": "su", "userType": "owner", "products": ["ppt"]}}, "resource": {"kind": "settings:signage_people_property:item", "id": "people-property", "attr": {"retailerId": "retailer-1", "agencyId": "agency-1"}}, "expectedResult": "ALLOW", "actions": ["update"]},
+        {"id": "sip_item_agency_allowed_by_agency", "name": "Agency owner may update a people property item in their agency", "principal": {"id": "u-sip_item_agency_allowed_by_agency", "roles": ["user"], "attr": {"userLevel": "agency", "userType": "owner", "products": ["ppt"], "agencyId": "agency-1", "retailerId": "retailer-own"}}, "resource": {"kind": "settings:signage_people_property:item", "id": "people-property", "attr": {"retailerId": "retailer-1", "agencyId": "agency-1"}}, "expectedResult": "ALLOW", "actions": ["update"]},
+        {"id": "sip_item_retailer_allowed_own", "name": "Retailer owner may update a people property item in their retailer", "principal": {"id": "u-sip_item_retailer_allowed_own", "roles": ["user"], "attr": {"userLevel": "retailer", "userType": "owner", "products": ["ppt"], "agencyId": "agency-1", "retailerId": "retailer-1"}}, "resource": {"kind": "settings:signage_people_property:item", "id": "people-property", "attr": {"retailerId": "retailer-1", "agencyId": "agency-1"}}, "expectedResult": "ALLOW", "actions": ["update"]},
+        {"id": "sip_item_retailer_denied_other", "name": "Retailer owner is denied a people property item in another retailer", "principal": {"id": "u-sip_item_retailer_denied_other", "roles": ["user"], "attr": {"userLevel": "retailer", "userType": "owner", "products": ["ppt"], "agencyId": "agency-1", "retailerId": "retailer-1"}}, "resource": {"kind": "settings:signage_people_property:item", "id": "people-property", "attr": {"retailerId": "retailer-2", "agencyId": "agency-1"}}, "expectedResult": "DENY", "actions": ["update"]}
+      ]
     }
   ]
 }

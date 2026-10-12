@@ -819,6 +819,30 @@ resources:
     id: reports
     attr:
       retailerId: retailer-1
+  sip_item_su_allowed_resource:
+    kind: settings:signage_people_property:item
+    id: people-property
+    attr:
+      retailerId: retailer-1
+      agencyId: agency-1
+  sip_item_agency_allowed_by_agency_resource:
+    kind: settings:signage_people_property:item
+    id: people-property
+    attr:
+      retailerId: retailer-1
+      agencyId: agency-1
+  sip_item_retailer_allowed_own_resource:
+    kind: settings:signage_people_property:item
+    id: people-property
+    attr:
+      retailerId: retailer-1
+      agencyId: agency-1
+  sip_item_retailer_denied_other_resource:
+    kind: settings:signage_people_property:item
+    id: people-property
+    attr:
+      retailerId: retailer-2
+      agencyId: agency-1
 principals:
   allow_1_principal:
     id: user-123
@@ -2243,6 +2267,48 @@ principals:
       - signage
       retailerId: retailer-1
       teamIds: []
+  sip_item_su_allowed_principal:
+    id: u-sip_item_su_allowed
+    roles:
+    - user
+    attr:
+      userLevel: su
+      userType: owner
+      products:
+      - ppt
+  sip_item_agency_allowed_by_agency_principal:
+    id: u-sip_item_agency_allowed_by_agency
+    roles:
+    - user
+    attr:
+      userLevel: agency
+      userType: owner
+      products:
+      - ppt
+      agencyId: agency-1
+      retailerId: retailer-own
+  sip_item_retailer_allowed_own_principal:
+    id: u-sip_item_retailer_allowed_own
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      products:
+      - ppt
+      agencyId: agency-1
+      retailerId: retailer-1
+  sip_item_retailer_denied_other_principal:
+    id: u-sip_item_retailer_denied_other
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      products:
+      - ppt
+      agencyId: agency-1
+      retailerId: retailer-1
 tests:
 - name: allow_1 - Retailer Member Listing QR Campaigns
   input:
@@ -3825,3 +3891,55 @@ tests:
     resource: cpf2_signage_admin_denied_dealdesk_reports_resource
     actions:
       view: EFFECT_DENY
+- name: sip_item_su_allowed - SU owner without retailerId may update a people property item
+  input:
+    principals:
+    - sip_item_su_allowed_principal
+    resources:
+    - sip_item_su_allowed_resource
+    actions:
+    - update
+  expected:
+  - principal: sip_item_su_allowed_principal
+    resource: sip_item_su_allowed_resource
+    actions:
+      update: EFFECT_ALLOW
+- name: sip_item_agency_allowed_by_agency - Agency owner may update a people property item in their agency
+  input:
+    principals:
+    - sip_item_agency_allowed_by_agency_principal
+    resources:
+    - sip_item_agency_allowed_by_agency_resource
+    actions:
+    - update
+  expected:
+  - principal: sip_item_agency_allowed_by_agency_principal
+    resource: sip_item_agency_allowed_by_agency_resource
+    actions:
+      update: EFFECT_ALLOW
+- name: sip_item_retailer_allowed_own - Retailer owner may update a people property item in their retailer
+  input:
+    principals:
+    - sip_item_retailer_allowed_own_principal
+    resources:
+    - sip_item_retailer_allowed_own_resource
+    actions:
+    - update
+  expected:
+  - principal: sip_item_retailer_allowed_own_principal
+    resource: sip_item_retailer_allowed_own_resource
+    actions:
+      update: EFFECT_ALLOW
+- name: sip_item_retailer_denied_other - Retailer owner is denied a people property item in another retailer
+  input:
+    principals:
+    - sip_item_retailer_denied_other_principal
+    resources:
+    - sip_item_retailer_denied_other_resource
+    actions:
+    - update
+  expected:
+  - principal: sip_item_retailer_denied_other_principal
+    resource: sip_item_retailer_denied_other_resource
+    actions:
+      update: EFFECT_DENY
