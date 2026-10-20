@@ -21,8 +21,12 @@ tags: [log, okf]
   collaborators included. Brands are excluded. Being a collection, the policy has no tenant
   condition; api3 scopes each optimizer route to the caller's retailer.
 - Fourteen native test cases; seeded the `media-optimizer-permissions` capability and
-  checklist. `@conqrse/permission-types` bumped to `1.10.0-cmo.1` (dist-tag `cmo`); not
-  published by this change.
+  checklist. `@conqrse/permission-types` bumped to `1.10.0-cmo.1` (for dist-tag `cmo`); the
+  tarball was packed, not published — publishing is pending Leo's approval.
+- `brand-creative-upload` updated: api3 now asks Cerbos `dealdesk_brand:creatives` `create`
+  on the brand draft, upload and register routes, as a brand principal built from the brand
+  context (an act-as-brand operator is evaluated as that brand). The 2026-10-09 entry's
+  "api3 does not check it yet" is superseded.
 
 ## 2026-10-09 — Brand creative upload resource (Cue Media Optimizer CMO-0.3)
 

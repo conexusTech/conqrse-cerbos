@@ -20,13 +20,14 @@ tags: [qa, authorization, deal-desk, brand-portal]
 - No Brand Center is denied (`dd_brand_creatives_deny_2`)
 
 ### Check: brand-creative-upload-operator
-**Requirement:** An operator acting as a brand needs Brand Center
+**Requirement:** An operator acting as a brand is decided as that brand
 **Surface:** Cerbos resource `dealdesk_brand:creatives`
-**Automated:** tests/test-cases.json
+**Automated:** tests/test-cases.json; the principal api3 builds for an act-as-brand operator is proven in api3 (`conqrse-api3:/qa/content.md`)
 
 **Do:**
-- Evaluate `create` as a retailer owner with and without Brand Center, and `delete` as a brand member
+- Evaluate `create` as the principal api3 builds for an operator acting as a brand — a brand member whose only retailer is the one being driven, carrying that retailer's products — with and without Brand Center
+- Evaluate `delete` as the same brand member
 
 **Expect:**
-- With Brand Center the owner is allowed (`dd_brand_creatives_allow_2`); without it, denied (`dd_brand_creatives_deny_3`)
+- With Brand Center it is allowed (`dd_brand_creatives_allow_1`); without it, denied (`dd_brand_creatives_deny_2`)
 - `delete` is denied (`dd_brand_creatives_deny_4`)

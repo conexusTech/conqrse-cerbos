@@ -20,7 +20,7 @@ tags: [qa, authorization, contents, media-optimizer]
 - Every other tier is denied every write (`mo_deny_team_lead_write`, `mo_deny_member_write`, `mo_deny_guest_write`, `mo_deny_agency_member_write`)
 
 ### Check: media-optimizer-read-tier
-**Requirement:** Everyone holding Signage sees scan results and presets
+**Requirement:** Cerbos lets every Signage holder view, but only owners and admins see the optimizer
 **Surface:** Cerbos resource `contents:media_optimizer`, action `view`
 **Automated:** tests/test-cases.json
 

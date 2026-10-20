@@ -14,10 +14,11 @@ tags: [authorization, contents, signage, media-optimizer]
 
 **Checked by:** media-optimizer-admin-tier
 
-#### Scenario: Everyone holding Signage sees scan results and presets
+#### Scenario: Cerbos lets every Signage holder view, but only owners and admins see the optimizer
 - GIVEN a retailer user of any tier with Signage
-- WHEN they view the optimizer's scan results and presets
-- THEN it is allowed, including for a team lead, a member and a guest collaborator
+- WHEN Cerbos is asked whether they may view the optimizer's scan results and presets
+- THEN it allows it, including for a team lead, a member and a guest collaborator
+- AND in practice only owners and admins see them, because api3 narrows every optimizer route, views included, to owners and admins, and the admin screens show only to owners and admins who hold the write grants
 
 **Checked by:** media-optimizer-read-tier
 
