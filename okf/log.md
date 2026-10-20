@@ -8,6 +8,22 @@ tags: [log, okf]
 
 # Cerbos OKF log
 
+## 2026-10-20 — Media optimizer admin resource (Cue Media Optimizer media-optimizer-permissions)
+
+- Added `contents:media_optimizer` (collection; `view`, `create`, `update`, `delete`;
+  Signage, `required-admin`) to the matrix, modelled on `contents:tags_taxonomy`, per the
+  accepted decision on question #58 (no generator change). `view` covers scan results and
+  presets, `create` starting a scan and creating a preset, `update` advanced settings and
+  editing a preset, `delete` deleting a preset. Per-video edit rights (options, re-optimize,
+  retry, download original) keep checking `contents:assets:item` `update`.
+- The generator's admin-only shape gives writes to the owner/admin tier (including
+  `platform_lead` and `agency_lead`) and `view` to every tier holding the product, guest
+  collaborators included. Brands are excluded. Being a collection, the policy has no tenant
+  condition; api3 scopes each optimizer route to the caller's retailer.
+- Fourteen native test cases; seeded the `media-optimizer-permissions` capability and
+  checklist. `@conqrse/permission-types` bumped to `1.10.0-cmo.1` (dist-tag `cmo`); not
+  published by this change.
+
 ## 2026-10-09 — Brand creative upload resource (Cue Media Optimizer CMO-0.3)
 
 - Added `dealdesk_brand:creatives` (collection, `create`, Brand Center) to the matrix and

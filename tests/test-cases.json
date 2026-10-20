@@ -2679,6 +2679,138 @@
           "actions": ["delete"]
         }
       ]
+    },
+    {
+      "name": "Contents Media Optimizer (Cue Media Optimizer media-optimizer-permissions)",
+      "description": "contents:media_optimizer is admin-only: the owner/admin tier with Signage may start a scan, create and edit presets, set advanced settings and delete presets; every tier holding Signage may view scan results and presets; brands are excluded.",
+      "tests": [
+        {
+          "id": "mo_allow_retailer_owner",
+          "name": "Retailer owner manages the optimizer",
+          "description": "retailer_owner with signage: view scan results and presets, start a scan or create a preset, set advanced settings or edit a preset, delete a preset",
+          "principal": {"id": "mo-ret-owner", "roles": ["user"], "attr": {"userLevel": "retailer", "userType": "owner", "name": "mo-ret-owner", "products": ["signage"], "agencyId": "agency-MO", "retailerId": "retail-MO"}},
+          "resource": {"kind": "contents:media_optimizer", "id": "contents:media_optimizer", "attr": {"retailerId": "retail-MO", "agencyId": "agency-MO"}},
+          "expectedResult": "ALLOW",
+          "actions": ["view", "create", "update", "delete"]
+        },
+        {
+          "id": "mo_allow_retailer_admin",
+          "name": "Retailer admin manages the optimizer",
+          "description": "retailer_manager (admin) with signage: every optimizer action",
+          "principal": {"id": "mo-ret-admin", "roles": ["user"], "attr": {"userLevel": "retailer", "userType": "admin", "name": "mo-ret-admin", "products": ["signage"], "agencyId": "agency-MO", "retailerId": "retail-MO"}},
+          "resource": {"kind": "contents:media_optimizer", "id": "contents:media_optimizer", "attr": {"retailerId": "retail-MO", "agencyId": "agency-MO"}},
+          "expectedResult": "ALLOW",
+          "actions": ["view", "create", "update", "delete"]
+        },
+        {
+          "id": "mo_allow_agency_owner",
+          "name": "Agency owner manages the optimizer",
+          "description": "agency_owner with signage: every optimizer action (owner/admin tier)",
+          "principal": {"id": "mo-agency-owner", "roles": ["user"], "attr": {"userLevel": "agency", "userType": "owner", "name": "mo-agency-owner", "products": ["signage"], "agencyId": "agency-MO"}},
+          "resource": {"kind": "contents:media_optimizer", "id": "contents:media_optimizer", "attr": {"retailerId": "retail-MO", "agencyId": "agency-MO"}},
+          "expectedResult": "ALLOW",
+          "actions": ["view", "create", "update", "delete"]
+        },
+        {
+          "id": "mo_allow_agency_admin",
+          "name": "Agency admin manages the optimizer",
+          "description": "agency_manager (admin) with signage: every optimizer action (owner/admin tier)",
+          "principal": {"id": "mo-agency-admin", "roles": ["user"], "attr": {"userLevel": "agency", "userType": "admin", "name": "mo-agency-admin", "products": ["signage"], "agencyId": "agency-MO"}},
+          "resource": {"kind": "contents:media_optimizer", "id": "contents:media_optimizer", "attr": {"retailerId": "retail-MO", "agencyId": "agency-MO"}},
+          "expectedResult": "ALLOW",
+          "actions": ["view", "create", "update", "delete"]
+        },
+        {
+          "id": "mo_allow_team_lead_view",
+          "name": "Team lead sees scan results and presets",
+          "description": "team_lead with signage: view is open to every tier holding the product",
+          "principal": {"id": "mo-ret-lead", "roles": ["user"], "attr": {"userLevel": "retailer", "userType": "lead", "name": "mo-ret-lead", "products": ["signage"], "agencyId": "agency-MO", "retailerId": "retail-MO"}},
+          "resource": {"kind": "contents:media_optimizer", "id": "contents:media_optimizer", "attr": {"retailerId": "retail-MO", "agencyId": "agency-MO"}},
+          "expectedResult": "ALLOW",
+          "actions": ["view"]
+        },
+        {
+          "id": "mo_deny_team_lead_write",
+          "name": "Team lead cannot scan, change settings or manage presets",
+          "description": "team_lead is outside the owner/admin tier",
+          "principal": {"id": "mo-ret-lead", "roles": ["user"], "attr": {"userLevel": "retailer", "userType": "lead", "name": "mo-ret-lead", "products": ["signage"], "agencyId": "agency-MO", "retailerId": "retail-MO"}},
+          "resource": {"kind": "contents:media_optimizer", "id": "contents:media_optimizer", "attr": {"retailerId": "retail-MO", "agencyId": "agency-MO"}},
+          "expectedResult": "DENY",
+          "actions": ["create", "update", "delete"]
+        },
+        {
+          "id": "mo_allow_member_view",
+          "name": "Retailer member sees scan results and presets",
+          "description": "staff_operator (member) with signage: view is open to every tier holding the product",
+          "principal": {"id": "mo-ret-member", "roles": ["user"], "attr": {"userLevel": "retailer", "userType": "member", "name": "mo-ret-member", "products": ["signage"], "agencyId": "agency-MO", "retailerId": "retail-MO"}},
+          "resource": {"kind": "contents:media_optimizer", "id": "contents:media_optimizer", "attr": {"retailerId": "retail-MO", "agencyId": "agency-MO"}},
+          "expectedResult": "ALLOW",
+          "actions": ["view"]
+        },
+        {
+          "id": "mo_deny_member_write",
+          "name": "Retailer member cannot scan, change settings or manage presets",
+          "description": "staff_operator (member) is outside the owner/admin tier",
+          "principal": {"id": "mo-ret-member", "roles": ["user"], "attr": {"userLevel": "retailer", "userType": "member", "name": "mo-ret-member", "products": ["signage"], "agencyId": "agency-MO", "retailerId": "retail-MO"}},
+          "resource": {"kind": "contents:media_optimizer", "id": "contents:media_optimizer", "attr": {"retailerId": "retail-MO", "agencyId": "agency-MO"}},
+          "expectedResult": "DENY",
+          "actions": ["create", "update", "delete"]
+        },
+        {
+          "id": "mo_allow_guest_view",
+          "name": "Guest collaborator sees scan results and presets",
+          "description": "guest_collaborator with signage: view is open to every tier holding the product",
+          "principal": {"id": "mo-ret-guest", "roles": ["user"], "attr": {"userLevel": "retailer", "userType": "collaborator", "name": "mo-ret-guest", "products": ["signage"], "agencyId": "agency-MO", "retailerId": "retail-MO"}},
+          "resource": {"kind": "contents:media_optimizer", "id": "contents:media_optimizer", "attr": {"retailerId": "retail-MO", "agencyId": "agency-MO"}},
+          "expectedResult": "ALLOW",
+          "actions": ["view"]
+        },
+        {
+          "id": "mo_deny_guest_write",
+          "name": "Guest collaborator cannot scan, change settings or manage presets",
+          "description": "guest_collaborator is read-only",
+          "principal": {"id": "mo-ret-guest", "roles": ["user"], "attr": {"userLevel": "retailer", "userType": "collaborator", "name": "mo-ret-guest", "products": ["signage"], "agencyId": "agency-MO", "retailerId": "retail-MO"}},
+          "resource": {"kind": "contents:media_optimizer", "id": "contents:media_optimizer", "attr": {"retailerId": "retail-MO", "agencyId": "agency-MO"}},
+          "expectedResult": "DENY",
+          "actions": ["create", "update", "delete"]
+        },
+        {
+          "id": "mo_deny_agency_member_write",
+          "name": "Agency member cannot scan, change settings or manage presets",
+          "description": "agency_member is outside the owner/admin tier",
+          "principal": {"id": "mo-agency-member", "roles": ["user"], "attr": {"userLevel": "agency", "userType": "member", "name": "mo-agency-member", "products": ["signage"], "agencyId": "agency-MO"}},
+          "resource": {"kind": "contents:media_optimizer", "id": "contents:media_optimizer", "attr": {"retailerId": "retail-MO", "agencyId": "agency-MO"}},
+          "expectedResult": "DENY",
+          "actions": ["create", "update", "delete"]
+        },
+        {
+          "id": "mo_deny_brand",
+          "name": "Brand user has no optimizer access",
+          "description": "brand roles are excluded from admin-only resources, even with signage and the retailer in retailerIds",
+          "principal": {"id": "mo-brand-owner", "roles": ["user"], "attr": {"userLevel": "brand", "userType": "owner", "name": "mo-brand-owner", "products": ["brand_center", "signage"], "brandId": "brand-MO", "retailerIds": ["retail-MO"]}},
+          "resource": {"kind": "contents:media_optimizer", "id": "contents:media_optimizer", "attr": {"retailerId": "retail-MO", "agencyId": "agency-MO"}},
+          "expectedResult": "DENY",
+          "actions": ["view", "create", "update", "delete"]
+        },
+        {
+          "id": "mo_deny_no_signage",
+          "name": "Retailer owner without Signage has no optimizer access",
+          "description": "product gate: signage is required for every action",
+          "principal": {"id": "mo-ret-owner-nosig", "roles": ["user"], "attr": {"userLevel": "retailer", "userType": "owner", "name": "mo-ret-owner-nosig", "products": ["qr"], "agencyId": "agency-MO", "retailerId": "retail-MO"}},
+          "resource": {"kind": "contents:media_optimizer", "id": "contents:media_optimizer", "attr": {"retailerId": "retail-MO", "agencyId": "agency-MO"}},
+          "expectedResult": "DENY",
+          "actions": ["view", "create", "update", "delete"]
+        },
+        {
+          "id": "mo_allow_other_tenant_owner",
+          "name": "Cerbos does not scope the collection by tenant",
+          "description": "contents:media_optimizer is a collection: like every collection resource the policy carries no tenant condition, so the retailer of another tenant is decided by role and product alone; api3 scopes each optimizer route to the caller's retailer",
+          "principal": {"id": "mo-other-owner", "roles": ["user"], "attr": {"userLevel": "retailer", "userType": "owner", "name": "mo-other-owner", "products": ["signage"], "agencyId": "agency-OTHER", "retailerId": "retail-OTHER"}},
+          "resource": {"kind": "contents:media_optimizer", "id": "contents:media_optimizer", "attr": {"retailerId": "retail-MO", "agencyId": "agency-MO"}},
+          "expectedResult": "ALLOW",
+          "actions": ["view", "create", "update", "delete"]
+        }
+      ]
     }
   ]
 }

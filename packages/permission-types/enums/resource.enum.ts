@@ -32,6 +32,7 @@ export enum Resource {
   CONTENTS_CONTENT_GROUPS_ITEM = 'contents:content_groups:item',
   CONTENTS_LANDING_PAGES = 'contents:landing_pages',
   CONTENTS_LANDING_PAGES_ITEM = 'contents:landing_pages:item',
+  CONTENTS_MEDIA_OPTIMIZER = 'contents:media_optimizer',
   CONTENTS_PLAYLISTS = 'contents:playlists',
   CONTENTS_PLAYLISTS_ITEM = 'contents:playlists:item',
   CONTENTS_TAGS = 'contents:tags',

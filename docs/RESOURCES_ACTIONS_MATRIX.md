@@ -107,6 +107,7 @@ These are the resources that doesn't need product and retailer validation.
 | `contents:content_groups:item`         | Item       | view, update, delete                               |
 | `contents:landing_pages`               | Collection | list, view, create, update, delete, export, import |
 | `contents:landing_pages:item`          | Item       | view, update, delete                               |
+| `contents:media_optimizer`             | Collection | view, create, update, delete                       |
 
 ### Signage Resource
 
@@ -292,6 +293,7 @@ Deal Desk is a resource grouping — NOT a product. Access is gated per-surface 
 | contents:content_groups:item                    | resource_contents_content_groups_item.yaml                   |          |          |           |            |          | required |          |          |          |          |              |              |              |
 | contents:landing_pages                          | resource_contents_landing_pages.yaml                         |          |          |           |            |          |          | required |          |          |          |              |              |              |
 | contents:landing_pages:item                     | resource_contents_landing_pages_item.yaml                    |          |          |           |            |          |          | required |          |          |          |              |              |              |
+| contents:media_optimizer                        | resource_contents_media_optimizer.yaml                       |          |          |           |            |          | required-admin |          |          |          |          |              |              |              |
 | contents:playlists                              | resource_contents_playlists.yaml                             |          |          |           |            |          | required |          |          |          |          |              |              |              |
 | contents:playlists:item                         | resource_contents_playlists_item.yaml                        |          |          |           |            |          | required |          |          |          |          |              |              |              |
 | contents:tags                                   | resource_contents_tags.yaml                                  |          | required | required  | required   | required | required |          |          |          |          | required     | required     | required     |

@@ -849,6 +849,90 @@ resources:
     id: dealdesk_brand:creatives
     attr:
       retailerId: retail-DD
+  mo_allow_retailer_owner_resource:
+    kind: contents:media_optimizer
+    id: contents:media_optimizer
+    attr:
+      retailerId: retail-MO
+      agencyId: agency-MO
+  mo_allow_retailer_admin_resource:
+    kind: contents:media_optimizer
+    id: contents:media_optimizer
+    attr:
+      retailerId: retail-MO
+      agencyId: agency-MO
+  mo_allow_agency_owner_resource:
+    kind: contents:media_optimizer
+    id: contents:media_optimizer
+    attr:
+      retailerId: retail-MO
+      agencyId: agency-MO
+  mo_allow_agency_admin_resource:
+    kind: contents:media_optimizer
+    id: contents:media_optimizer
+    attr:
+      retailerId: retail-MO
+      agencyId: agency-MO
+  mo_allow_team_lead_view_resource:
+    kind: contents:media_optimizer
+    id: contents:media_optimizer
+    attr:
+      retailerId: retail-MO
+      agencyId: agency-MO
+  mo_deny_team_lead_write_resource:
+    kind: contents:media_optimizer
+    id: contents:media_optimizer
+    attr:
+      retailerId: retail-MO
+      agencyId: agency-MO
+  mo_allow_member_view_resource:
+    kind: contents:media_optimizer
+    id: contents:media_optimizer
+    attr:
+      retailerId: retail-MO
+      agencyId: agency-MO
+  mo_deny_member_write_resource:
+    kind: contents:media_optimizer
+    id: contents:media_optimizer
+    attr:
+      retailerId: retail-MO
+      agencyId: agency-MO
+  mo_allow_guest_view_resource:
+    kind: contents:media_optimizer
+    id: contents:media_optimizer
+    attr:
+      retailerId: retail-MO
+      agencyId: agency-MO
+  mo_deny_guest_write_resource:
+    kind: contents:media_optimizer
+    id: contents:media_optimizer
+    attr:
+      retailerId: retail-MO
+      agencyId: agency-MO
+  mo_deny_agency_member_write_resource:
+    kind: contents:media_optimizer
+    id: contents:media_optimizer
+    attr:
+      retailerId: retail-MO
+      agencyId: agency-MO
+  mo_deny_brand_resource:
+    kind: contents:media_optimizer
+    id: contents:media_optimizer
+    attr:
+      retailerId: retail-MO
+      agencyId: agency-MO
+  mo_deny_no_signage_resource:
+    kind: contents:media_optimizer
+    id: contents:media_optimizer
+    attr:
+      retailerId: retail-MO
+      agencyId: agency-MO
+  mo_allow_other_tenant_owner_resource:
+    kind: contents:media_optimizer
+    id: contents:media_optimizer
+    attr:
+      retailerId: retail-MO
+      agencyId: agency-MO
 principals:
   allow_1_principal:
     id: user-123
@@ -2348,6 +2432,173 @@ principals:
       retailerIds:
       - retail-DD
       brandId: brand-DD
+  mo_allow_retailer_owner_principal:
+    id: mo-ret-owner
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: mo-ret-owner
+      products:
+      - signage
+      agencyId: agency-MO
+      retailerId: retail-MO
+  mo_allow_retailer_admin_principal:
+    id: mo-ret-admin
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: admin
+      name: mo-ret-admin
+      products:
+      - signage
+      agencyId: agency-MO
+      retailerId: retail-MO
+  mo_allow_agency_owner_principal:
+    id: mo-agency-owner
+    roles:
+    - user
+    attr:
+      userLevel: agency
+      userType: owner
+      name: mo-agency-owner
+      products:
+      - signage
+      agencyId: agency-MO
+  mo_allow_agency_admin_principal:
+    id: mo-agency-admin
+    roles:
+    - user
+    attr:
+      userLevel: agency
+      userType: admin
+      name: mo-agency-admin
+      products:
+      - signage
+      agencyId: agency-MO
+  mo_allow_team_lead_view_principal:
+    id: mo-ret-lead
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: lead
+      name: mo-ret-lead
+      products:
+      - signage
+      agencyId: agency-MO
+      retailerId: retail-MO
+  mo_deny_team_lead_write_principal:
+    id: mo-ret-lead
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: lead
+      name: mo-ret-lead
+      products:
+      - signage
+      agencyId: agency-MO
+      retailerId: retail-MO
+  mo_allow_member_view_principal:
+    id: mo-ret-member
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      name: mo-ret-member
+      products:
+      - signage
+      agencyId: agency-MO
+      retailerId: retail-MO
+  mo_deny_member_write_principal:
+    id: mo-ret-member
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: member
+      name: mo-ret-member
+      products:
+      - signage
+      agencyId: agency-MO
+      retailerId: retail-MO
+  mo_allow_guest_view_principal:
+    id: mo-ret-guest
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: collaborator
+      name: mo-ret-guest
+      products:
+      - signage
+      agencyId: agency-MO
+      retailerId: retail-MO
+  mo_deny_guest_write_principal:
+    id: mo-ret-guest
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: collaborator
+      name: mo-ret-guest
+      products:
+      - signage
+      agencyId: agency-MO
+      retailerId: retail-MO
+  mo_deny_agency_member_write_principal:
+    id: mo-agency-member
+    roles:
+    - user
+    attr:
+      userLevel: agency
+      userType: member
+      name: mo-agency-member
+      products:
+      - signage
+      agencyId: agency-MO
+  mo_deny_brand_principal:
+    id: mo-brand-owner
+    roles:
+    - user
+    attr:
+      userLevel: brand
+      userType: owner
+      name: mo-brand-owner
+      products:
+      - brand_center
+      - signage
+      brandId: brand-MO
+      retailerIds:
+      - retail-MO
+  mo_deny_no_signage_principal:
+    id: mo-ret-owner-nosig
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: mo-ret-owner-nosig
+      products:
+      - qr
+      agencyId: agency-MO
+      retailerId: retail-MO
+  mo_allow_other_tenant_owner_principal:
+    id: mo-other-owner
+    roles:
+    - user
+    attr:
+      userLevel: retailer
+      userType: owner
+      name: mo-other-owner
+      products:
+      - signage
+      agencyId: agency-OTHER
+      retailerId: retail-OTHER
 tests:
 - name: allow_1 - Retailer Member Listing QR Campaigns
   input:
@@ -4008,3 +4259,243 @@ tests:
     resource: dd_brand_creatives_deny_4_resource
     actions:
       delete: EFFECT_DENY
+- name: mo_allow_retailer_owner - Retailer owner manages the optimizer
+  input:
+    principals:
+    - mo_allow_retailer_owner_principal
+    resources:
+    - mo_allow_retailer_owner_resource
+    actions:
+    - view
+    - create
+    - update
+    - delete
+  expected:
+  - principal: mo_allow_retailer_owner_principal
+    resource: mo_allow_retailer_owner_resource
+    actions:
+      view: EFFECT_ALLOW
+      create: EFFECT_ALLOW
+      update: EFFECT_ALLOW
+      delete: EFFECT_ALLOW
+- name: mo_allow_retailer_admin - Retailer admin manages the optimizer
+  input:
+    principals:
+    - mo_allow_retailer_admin_principal
+    resources:
+    - mo_allow_retailer_admin_resource
+    actions:
+    - view
+    - create
+    - update
+    - delete
+  expected:
+  - principal: mo_allow_retailer_admin_principal
+    resource: mo_allow_retailer_admin_resource
+    actions:
+      view: EFFECT_ALLOW
+      create: EFFECT_ALLOW
+      update: EFFECT_ALLOW
+      delete: EFFECT_ALLOW
+- name: mo_allow_agency_owner - Agency owner manages the optimizer
+  input:
+    principals:
+    - mo_allow_agency_owner_principal
+    resources:
+    - mo_allow_agency_owner_resource
+    actions:
+    - view
+    - create
+    - update
+    - delete
+  expected:
+  - principal: mo_allow_agency_owner_principal
+    resource: mo_allow_agency_owner_resource
+    actions:
+      view: EFFECT_ALLOW
+      create: EFFECT_ALLOW
+      update: EFFECT_ALLOW
+      delete: EFFECT_ALLOW
+- name: mo_allow_agency_admin - Agency admin manages the optimizer
+  input:
+    principals:
+    - mo_allow_agency_admin_principal
+    resources:
+    - mo_allow_agency_admin_resource
+    actions:
+    - view
+    - create
+    - update
+    - delete
+  expected:
+  - principal: mo_allow_agency_admin_principal
+    resource: mo_allow_agency_admin_resource
+    actions:
+      view: EFFECT_ALLOW
+      create: EFFECT_ALLOW
+      update: EFFECT_ALLOW
+      delete: EFFECT_ALLOW
+- name: mo_allow_team_lead_view - Team lead sees scan results and presets
+  input:
+    principals:
+    - mo_allow_team_lead_view_principal
+    resources:
+    - mo_allow_team_lead_view_resource
+    actions:
+    - view
+  expected:
+  - principal: mo_allow_team_lead_view_principal
+    resource: mo_allow_team_lead_view_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: mo_deny_team_lead_write - Team lead cannot scan, change settings or manage presets
+  input:
+    principals:
+    - mo_deny_team_lead_write_principal
+    resources:
+    - mo_deny_team_lead_write_resource
+    actions:
+    - create
+    - update
+    - delete
+  expected:
+  - principal: mo_deny_team_lead_write_principal
+    resource: mo_deny_team_lead_write_resource
+    actions:
+      create: EFFECT_DENY
+      update: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: mo_allow_member_view - Retailer member sees scan results and presets
+  input:
+    principals:
+    - mo_allow_member_view_principal
+    resources:
+    - mo_allow_member_view_resource
+    actions:
+    - view
+  expected:
+  - principal: mo_allow_member_view_principal
+    resource: mo_allow_member_view_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: mo_deny_member_write - Retailer member cannot scan, change settings or manage presets
+  input:
+    principals:
+    - mo_deny_member_write_principal
+    resources:
+    - mo_deny_member_write_resource
+    actions:
+    - create
+    - update
+    - delete
+  expected:
+  - principal: mo_deny_member_write_principal
+    resource: mo_deny_member_write_resource
+    actions:
+      create: EFFECT_DENY
+      update: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: mo_allow_guest_view - Guest collaborator sees scan results and presets
+  input:
+    principals:
+    - mo_allow_guest_view_principal
+    resources:
+    - mo_allow_guest_view_resource
+    actions:
+    - view
+  expected:
+  - principal: mo_allow_guest_view_principal
+    resource: mo_allow_guest_view_resource
+    actions:
+      view: EFFECT_ALLOW
+- name: mo_deny_guest_write - Guest collaborator cannot scan, change settings or manage presets
+  input:
+    principals:
+    - mo_deny_guest_write_principal
+    resources:
+    - mo_deny_guest_write_resource
+    actions:
+    - create
+    - update
+    - delete
+  expected:
+  - principal: mo_deny_guest_write_principal
+    resource: mo_deny_guest_write_resource
+    actions:
+      create: EFFECT_DENY
+      update: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: mo_deny_agency_member_write - Agency member cannot scan, change settings or manage presets
+  input:
+    principals:
+    - mo_deny_agency_member_write_principal
+    resources:
+    - mo_deny_agency_member_write_resource
+    actions:
+    - create
+    - update
+    - delete
+  expected:
+  - principal: mo_deny_agency_member_write_principal
+    resource: mo_deny_agency_member_write_resource
+    actions:
+      create: EFFECT_DENY
+      update: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: mo_deny_brand - Brand user has no optimizer access
+  input:
+    principals:
+    - mo_deny_brand_principal
+    resources:
+    - mo_deny_brand_resource
+    actions:
+    - view
+    - create
+    - update
+    - delete
+  expected:
+  - principal: mo_deny_brand_principal
+    resource: mo_deny_brand_resource
+    actions:
+      view: EFFECT_DENY
+      create: EFFECT_DENY
+      update: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: mo_deny_no_signage - Retailer owner without Signage has no optimizer access
+  input:
+    principals:
+    - mo_deny_no_signage_principal
+    resources:
+    - mo_deny_no_signage_resource
+    actions:
+    - view
+    - create
+    - update
+    - delete
+  expected:
+  - principal: mo_deny_no_signage_principal
+    resource: mo_deny_no_signage_resource
+    actions:
+      view: EFFECT_DENY
+      create: EFFECT_DENY
+      update: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: mo_allow_other_tenant_owner - Cerbos does not scope the collection by tenant
+  input:
+    principals:
+    - mo_allow_other_tenant_owner_principal
+    resources:
+    - mo_allow_other_tenant_owner_resource
+    actions:
+    - view
+    - create
+    - update
+    - delete
+  expected:
+  - principal: mo_allow_other_tenant_owner_principal
+    resource: mo_allow_other_tenant_owner_resource
+    actions:
+      view: EFFECT_ALLOW
+      create: EFFECT_ALLOW
+      update: EFFECT_ALLOW
+      delete: EFFECT_ALLOW
