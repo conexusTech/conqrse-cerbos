@@ -2,7 +2,10 @@
 
 This is the canonical instruction file for Codex/ChatGPT and other coding agents
 working on Conqrse authorization policies and permission types. Repository
-knowledge lives in `okf/`; start with `okf/service.md`.
+knowledge lives in the OKF database (source `conqrse-cerbos`), read and written
+through the `okf` MCP server and browsable at https://okf.conqrse.com; start with
+`okf_get conqrse-cerbos:/service.md`. The repo `okf/` folder was removed on
+2026-10-29 (git history keeps it).
 
 ## Absolute guardrails
 
@@ -12,7 +15,7 @@ knowledge lives in `okf/`; start with `okf/service.md`.
   mutate a cluster without explicit user approval in the current conversation.
 - Never add `Co-Authored-By:` or an agent signature to a commit.
 - Preserve unrelated work. Never reset or clean changes you did not create.
-- Never weaken policy tests, schemas, consumer contracts, or OKF checks to make a
+- Never weaken policy tests, schemas, consumer contracts, or OKF concepts to make a
   gate pass.
 
 ## Calibrated autonomy
@@ -43,9 +46,9 @@ for delegated work. A worker does not certify its own changes.
 The workspace methodology at `../.claude/rules/methodology.md` governs this repo.
 
 - One change equals one user-meaningful authorization outcome and exit criterion.
-- `../okf/roadmap.md` is the only status surface.
-- Implemented behavior is recorded in `okf/capabilities/`; its proof contract is
-  recorded in the matching `okf/qa/` file.
+- `workspace:/roadmap.md` (`../roadmap.md`) is the only status surface.
+- Implemented behavior is recorded in `conqrse-cerbos:/capabilities/`; its proof
+  contract is recorded in the matching `conqrse-cerbos:/qa/` concept.
 - Temporary plans live under `artifacts/<slug>/` and are removed when landed.
 - Plan and land are the two human gates.
 - `_proposals/` is non-authoritative input or history.
@@ -69,11 +72,14 @@ The workspace methodology at `../.claude/rules/methodology.md` governs this repo
 
 ## OKF protocol
 
-Before changing policies, read `okf/service.md`, the relevant business/integration
-concepts, and the matching capability and QA checklist. Inspect Admin and API3
-OKF when the contract affects consumers. Update concepts with the code, add
-capability scenarios only for implemented and verified behavior, and give every
-scenario a matching QA check. Record durable learnings and updates in `okf/log.md`.
+Before changing policies, `okf_get conqrse-cerbos:/service.md`, then use
+`okf_search` / `okf_list` / `okf_links` for the relevant business/integration
+concepts and the matching capability and QA checklist. Inspect the Admin and API3
+sources when the contract affects consumers. When a public surface changes,
+`okf_concept_update` the concept in the same change; use `okf_concept_create` for
+stubs and `okf_propose` for bigger rewrites. Add capability scenarios only for
+implemented and verified behavior, and give every scenario a matching QA check.
+Record durable learnings and updates with `okf_log_append` (Update or Learning).
 
 ## Verification gate
 
@@ -84,6 +90,6 @@ completion, run:
 make gate
 ```
 
-The gate validates the OKF bundle, generated permission-types package, policy
+The gate validates the generated permission-types package, policy
 matrix synchronization, and locally available policy tests. Live-server or
 cluster verification is additional evidence and never implied by a static gate.
