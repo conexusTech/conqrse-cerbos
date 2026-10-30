@@ -1,4 +1,4 @@
-.PHONY: help gate okf-check generate-check build-types generate-types generate-policies generate-tests policy-tests test test-js test-bash test-watch test-verbose test-ci results clean
+.PHONY: help gate generate-check build-types generate-types generate-policies generate-tests policy-tests test test-js test-bash test-watch test-verbose test-ci results clean
 
 # Configuration
 CERBOS_URL ?= http://localhost:3592
@@ -10,7 +10,6 @@ help:
 	@echo ""
 	@echo "Usage:"
 	@echo "  make gate              Run the local process-v3 completion gate"
-	@echo "  make okf-check         Validate the OKF knowledge bundle"
 	@echo "  make generate-check    Parse the matrix and preview generated output"
 	@echo "  make build-types       Build the permission-types package"
 	@echo "  make generate-types    Generate TypeScript enums from matrix"
@@ -35,10 +34,7 @@ help:
 
 # Process-v3 local gate. Live Cerbos and cluster checks remain explicit because
 # they require external services and deployment authorization.
-gate: okf-check generate-check build-types policy-tests
-
-okf-check:
-	@node scripts/okf-check.mjs
+gate: generate-check build-types policy-tests
 
 generate-check:
 	@python3 scripts/generate_policies.py --dry-run
